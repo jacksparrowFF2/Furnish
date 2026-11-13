@@ -16,8 +16,8 @@ assert(require('../src/render/furniture-svg.js').render(base.type,86,10,'#fff',{
   const f={...base,panelVariant:key},asset=A.variants[key];assert.equal(asset.sourceSha256,sha(path.join(sourceDir,key+'.glb')));assert.equal(new Set(asset.parts.map(p=>p.identity)).size,asset.parts.length);
   const model=M.build(T,f);model.updateMatrixWorld(true);const b=new T.Box3().setFromObject(model);
   near((b.max.x-b.min.x)*1000,86);near((b.max.y-b.min.y)*1000,86);near((b.max.z-b.min.z)*1000,10);near(b.min.y*1000,1200);
-  assert(model.children.every(m=>m.userData.furnishStablePart.startsWith('panel-bull-g12:'+key+':')));
-  for(const m of model.children){assert(m.geometry.attributes.normal.array.every(Number.isFinite));assert(m.material.roughness>=0&&m.material.roughness<=1);}
+  assert(model.children.filter(m=>m.isMesh).every(m=>m.userData.furnishStablePart.startsWith('panel-bull-g12:'+key+':')));
+  for(const m of model.children.filter(m=>m.isMesh)){assert(m.geometry.attributes.normal.array.every(Number.isFinite));assert(m.material.roughness>=0&&m.material.roughness<=1);}
   const solids=G.bodyParts(f);assert.equal(solids.length,asset.parts.length,'all production parts are recorded after variant changes');
   const meshNames=solids.map(s=>s.partRole).sort();assert(meshNames.every(n=>n.includes(key+':')),'solid cache reads variant');
   const resized=M.build(T,{...f,w:129,d:15,h:103.2,mountHeight:0}),rb=new T.Box3().setFromObject(resized);near(rb.min.y*1000,0);near(rb.max.y*1000,103.2);near((rb.max.x-rb.min.x)*1000,129);near((rb.max.z-rb.min.z)*1000,15);

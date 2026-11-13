@@ -148,6 +148,7 @@ const LIB = [
     ["bathtub","浴缸",1600,750,"#eef3f6",4800]
   ]},
   {cat:'灯具', items:[
+    ['surface_light','柔光吸顶灯 · 通用规划占位',600,400,'#f5f5f2',undefined,50],
     ["floorlamp","落地灯",450,450,"#3d3a34",600],
     ["pendant","吊灯",700,700,"#e8dfc8",900],
     ["pendant","餐厅吊灯",900,900,"#d9cdb2",1200]
@@ -277,7 +278,7 @@ const navigationTypeGroups={
  'appliances/laundry':['washer','washer_littleswan_tg10k60w','dryer'],
  'appliances/climate':['fan_airmate_fa18_x231','aircon','aircon_midea_ultra_2hp','acwall','waterheater','waterheater_flat','bath_heater_aopu_se2','bath_heater_300x600'],
  'appliances/services':['heating_manifold','electrical_box_strong','electrical_box_weak'],
- 'decor/lighting':['floorlamp','pendant','panel_light_300x600','downlight_philips_dl269']
+ 'decor/lighting':['surface_light','floorlamp','pendant','panel_light_300x600','downlight_philips_dl269']
 };
 function navigationCategory(it,cat){
  if(it[7])return 'other/custom';

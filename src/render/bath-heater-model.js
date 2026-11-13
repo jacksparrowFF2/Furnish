@@ -2,18 +2,24 @@
 (function(root){
 'use strict';
 const products=()=>root.FurnishProducts||require('../core/product-rules.js');
-const supported=f=>!!products().definition(f)?.ceilingPanel&&!f.obj;
+const supported=f=>!!(products().definition(f)?.ceilingPanel||products().definition(f)?.panelLight)&&!f.obj;
+function heaterLight(T,g,f){
+ const P=products(),light=P.definition(f)?.heaterLight;if(!light)return g;
+ g.traverse(o=>{if(o.name===light.part&&o.material?.emissive){o.material.emissive.set(light.color);o.material.emissiveIntensity=1.5;(o.material.userData||={}).ceilingPanelEmitter=true;}});
+ if(T.SpotLight&&T.Object3D)for(const z of [-.25,0,.25]){const lamp=new T.SpotLight(light.color,light.previewCandela/3,0,Math.PI/2,1,2),target=new T.Object3D(),y=P.value(f,'mountHeight')/1000;lamp.position.set(f.w*.1375/1000,y-.002,f.d*z/1000);target.position.copy(lamp.position);target.position.y-=1;lamp.target=target;lamp.userData.ceilingPanelLight=true;g.add(lamp,target);}
+ return g;
+}
 function build(T,f){
- if(products().definition(f).ceilingPanel.profile==='se2'){
+ if(products().definition(f).ceilingPanel?.profile==='se2'){
   const asset=root.FurnishSE2BlenderAsset||(typeof require==='function'?require('../data/se2-blender-asset.js'):null);
   const loader=root.FurnishStaticAssetModel||(typeof require==='function'?require('./static-asset-model.js'):null);
-  if(asset&&loader)return loader.build(T,asset,{...f,h:products().height(f)},products().value(f,'mountHeight'));
-  return buildSE2(T,f);
+  if(asset&&loader)return heaterLight(T,loader.build(T,asset,{...f,h:products().height(f)},products().value(f,'mountHeight')),f);
+  return heaterLight(T,buildSE2(T,f),f);
  }
- const P=products(),spec=P.definition(f).ceilingPanel,g=new T.Group(),base=P.value(f,'mountHeight')/1000,w=f.w/1000,d=f.d/1000,h=P.height(f)/1000,rim=Math.min(spec.rim/1000,h);
+ const P=products(),spec=P.definition(f).ceilingPanel||{rim:3},g=new T.Group(),base=P.value(f,'mountHeight')/1000,w=f.w/1000,d=f.d/1000,h=P.height(f)/1000,rim=Math.min(spec.rim/1000,h);
  const white=new T.MeshStandardMaterial({color:f.color||'#f5f5f0',roughness:.48}),dark=new T.MeshStandardMaterial({color:'#454a4c',roughness:.8}),metal=new T.MeshStandardMaterial({color:'#a7acae',metalness:.4,roughness:.65});
  function box(name,width,height,depth,x,y,z,material){const m=new T.Mesh(new T.BoxGeometry(width,height,depth),material);m.position.set(x,base+y,z);m.name=name;m.userData.furnishPartSource='bath-heater:'+name;m.userData.furnishStablePart='bath-heater:'+name;m.userData.ceilingOwnMaterial=true;m.castShadow=m.receiveShadow=true;g.add(m);}
- const light=P.definition(f).panelLight;
+ const light=P.definition(f).panelLight,energy=light?.referenceArea?Math.max(.15,Math.min(2,f.w*f.d/light.referenceArea)):1;
  if(light){
   const edge=Math.min(light.frame/1000,w/4,d/4),glow=new T.MeshStandardMaterial({color:'#fafbf8',emissive:light.color,emissiveIntensity:1.5,roughness:.65});
   (glow.userData||={}).ceilingPanelEmitter=true;
@@ -27,14 +33,14 @@ function build(T,f){
   if(T.SpotLight&&T.Object3D)for(let row=0;row<light.rows;row++)for(let col=0;col<light.columns;col++){
    // Integrate samples over the diffuser. A fully feathered downward hemisphere
    // avoids the cone edge of a spotlight on nearby walls; no finite range cutoff.
-   const lamp=new T.SpotLight(light.color,light.previewCandela/(light.rows*light.columns),0,Math.PI/2,1,2),target=new T.Object3D();
+   const lamp=new T.SpotLight(light.color,light.previewCandela*energy/(light.rows*light.columns),0,Math.PI/2,1,2),target=new T.Object3D();
    const x=((col+.5)/light.columns-.5)*(w-2*edge),z=((row+.5)/light.rows-.5)*(d-2*edge);
    lamp.position.set(x,base-.001,z);target.position.set(x,base-1,z);lamp.target=target;
    lamp.name='Panel diffuser '+row+':'+col;lamp.userData.ceilingPanelLight=true;g.add(lamp,target);
   }
   // Raster-only returned light from lower room surfaces; shadowed to stay local.
   if(T.SpotLight&&T.Object3D)for(const side of [-1,1]){
-   const lamp=new T.SpotLight(light.color,light.bounceCandela/2,light.bounceReach/1000,Math.PI*.45,1,2),target=new T.Object3D();
+   const lamp=new T.SpotLight(light.color,light.bounceCandela*energy/2,light.bounceReach/1000,Math.PI*.45,1,2),target=new T.Object3D();
    const y=base-light.bounceDrop/1000,z=side*d/4;
    lamp.position.set(0,y,z);target.position.set(0,y+1,z);lamp.target=target;
    lamp.name='Panel reflected light '+side;lamp.userData.ceilingPanelLight=true;lamp.userData.ceilingPanelBounce=true;

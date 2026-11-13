@@ -1,3 +1,5 @@
+2026-11-13（吊顶照明规划）：MCP核心与桥接新增区域读写、单件批量新增、显式删除与已有场景设置，共16工具，沿共享核心／mutate／flush。surface_light复用参数灯体，SE2／G12只增加运行时展示光；原实体与安装语义保持。正式渲染按相机及显卡能力限制采样与阴影，修复全屋灯光uniform溢出；无新方案字段／保存通道。见[契约](LIGHTING-PLANNING.md)。
+
 2026-11-13（柜体编辑复查）：共享componentInspector补齐抽面外观，native-adapter沿原草稿补齐水槽、台面与整组字段；同一选择保留折叠。kitchen-core统一设备开孔与固定顶板选择，生产CSG／数值实体消费相同孔环，邻接设备在标高边界换算一次；停用部件校验不临时强制启用。抽面最低v89沿原项目／仓库／缓存，无新脚本、构建或保存通道；适用开孔派生规则v2。见[验收](validation/cabinet-editor-audit-20261113/README.md)。
 
 2026-11-12（组件编辑体验）：cabinet-builder.mountShell共用本机调宽与属性优先布局，native-adapter以同一@worktop选择连续台面；未新增脚本或保存通道。product-rules.plinthAppearance声明可选踢脚色最低v88，builder-core受限识别实际踢脚，生产模型按组件覆盖材质并排除硬件。完整配置驱动显示缓存，原空间签名继续排除配色；项目／仓库／缓存保留旧版读取。见[验收](validation/cabinet-editor-experience-20261112/README.md)。

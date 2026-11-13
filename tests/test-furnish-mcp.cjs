@@ -7,7 +7,7 @@ const Core=require('../src/core/mcp-core.js'),Bridge=require('../scripts/desktop
  const message=async(method,params={},id=1)=>{text='';input.write(JSON.stringify({jsonrpc:'2.0',id,method,params})+'\n');await session.idle();return JSON.parse(text);};
  assert.equal((await message('tools/list')).error.code,-32002);
  assert.equal((await message('initialize',{protocolVersion:'2025-11-25'})).result.protocolVersion,'2025-11-25');
- assert.equal((await message('tools/list')).result.tools.length,11);
+ const discovered=(await message('tools/list')).result.tools;assert.equal(discovered.length,Core.tools.length);for(const name of ['get_ceilings','configure_ceilings','remove_furniture','configure_scene'])assert(discovered.some(t=>t.name===name));
  assert.equal((await message('execute_code')).error.code,-32601);
  assert.equal((await message('tools/call',{name:'get_current_plan'})).result.isError,true);
  const calls=[],server=await Bridge.start({root,dispatch:async(name,args)=>{calls.push([name,args]);return {name,args,...(name==='take_screenshot'?{image:{mimeType:'image/png',data:'iVBORw0KGgo=',width:1,height:1}}:{})};}});
@@ -24,6 +24,12 @@ const Core=require('../src/core/mcp-core.js'),Bridge=require('../scripts/desktop
   assert.throws(()=>Core.validate('update_furniture',{planId:'p',revision:'r',requestId:'i',updates:[{id:'f',cx:1},{id:'f',cy:2}]}));
   assert.throws(()=>Core.validate('copy_design',{name:'x'}));
   const write={planId:'p',revision:'r',requestId:'i'};
+  Core.validate('add_furniture_batch',{...write,items:[{catalogKey:'key',cx:0,cy:0,parameters:{mountHeight:300}}]});assert.throws(()=>Core.validate('add_furniture_batch',{...write,items:[]}));assert.throws(()=>Core.validate('add_furniture_batch',{...write,items:[{catalogKey:'key',cx:0,cy:0,w:0}]}));
+  Core.validate('configure_ceilings',{...write,regions:[{id:'ceiling-a'}]});
+  for(const args of [{},{regions:[]},{regions:[{}]},{regions:[{id:'a'},{id:'a'}]},{regions:[{id:'a'}],removeIds:['a']},{removeIds:['a','a']},{regions:[JSON.parse('{"id":"a","__proto__":{}}')]}])assert.throws(()=>Core.validate('configure_ceilings',{...write,...args}));
+  Core.validate('remove_furniture',{...write,ids:['a']});assert.throws(()=>Core.validate('remove_furniture',{...write,ids:['a','a']}));
+  Core.validate('configure_scene',{...write,settings:{night:true,lamps:false,hour:12}});
+  for(const settings of [{},{night:1},{hour:19},{cut:2.4},{code:'arbitrary'}])assert.throws(()=>Core.validate('configure_scene',{...write,settings}));
   assert.throws(()=>Core.validate('set_camera',{...write,view:'3d',position:{x:0,y:0,z:0}}));
   assert.throws(()=>Core.validate('set_camera',{...write,view:'3d',preset:'typo'}));
   assert.throws(()=>Core.validate('set_camera',{...write,view:'2d',horizontalFov:60}));

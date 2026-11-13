@@ -3,12 +3,26 @@
  'use strict';
  const clone=v=>JSON.parse(JSON.stringify(v)),core=FurnishMcpCore,receipts=new Map(),session=Array.from(crypto.getRandomValues(new Uint32Array(4))).join('-');
  let queue=Promise.resolve();
- const writes=new Set(['copy_design','update_furniture','add_furniture','configure_furniture']);
+ const writes=new Set(['copy_design','update_furniture','add_furniture','add_furniture_batch','configure_furniture','configure_ceilings','remove_furniture','configure_scene']);
  function catalog(){return libAll().flatMap(c=>c.items.map(it=>({catalogKey:JSON.stringify([it[0],it[1],it[7]||null,it[9]||null,it[10]||null]),category:c.cat,it})));}
  function parameters(id,f=getF(id)){if(!f)throw Error('家具不存在：'+id);const def=FurnishProducts.definition(f),fields={...Object.fromEntries(Object.entries(core.commonParameters).map(([k,rule])=>[k,{...rule,value:f[k]??null}])),...Object.fromEntries((def?.fields||[]).map(k=>[k,{...FurnishProducts.fields[k],value:f[k]??null,default:def.defaults?.[k]??null}]))};if(def?.inventoryArray&&!f.obj){fields.inventoryArray.readOnly=true;fields.arrayEdit={value:null,limits:def.inventoryArray,description:'阵列动作：新建{memberIds:[现有ID按顺序],arrayId:新ID,columns,rows,gapX,gapZ,gapY,pattern,angle}，须与原位置完全一致且不移动；已在阵列中时可编辑count/columns/rows/gapX/gapZ/gapY/pattern/angle，或{detach:true}。动作不持久化。'};}fields.replacementCatalogKey={type:'string',minLength:1,maxLength:2000,value:null,description:'使用list_catalog的catalogKey替换为单件模型，保持ID和中心；只写动作，不持久化此键'};if(FurnishCabinet.supported(f)&&!f.kitchen)fields.cabinet={value:f.cabinet??null,description:'完整 cabinet 结构替换，沿柜体核心校验'};if(FurnishCabinet.supported(f)&&!f.kitchen&&!FurnishCabinetBuilder.is(f))fields.cabinetUpgrade={type:'boolean',value:null,description:'true 显式升级支持的普通柜为组件柜，保留ID/位置/尺寸/参考价；不支持的结构拒绝。动作不持久化，不能与cabinet或替换动作混用。'};if(FurnishProducts.supports(f,'paperArray'))Object.assign(fields.paperArray,{value:FurnishProducts.paperArrayConfig(f),limits:def.paperArray,description:'完整阵列对象；单件尺寸和间距为mm。编辑自动计算w/d/h；null恢复原单层排列，保留单件尺寸。'});return {id,type:f.type,parameters:clone(fields),furniture:clone(f),semantics:'null 删除可选覆盖；嵌套对象整体替换。使用 update_furniture 调整位置和机身尺寸。'};}
  function visualReady(){ready();if(typeof drag!=='undefined'&&drag||ui.mA||!$('#dlg').hidden||globalThis.FurnishCatalog?.active()||globalThis.FurnishWorkflowTools?.styleId())throw Error('请先结束拖动、绘制、模态编辑或临时预览');}
  async function camera(){const r=$('#stage').getBoundingClientRect();return {view:is3D()?'3d':'2d',camera:is3D()?await window.View3D.automationCamera():null,planView:clone(view),viewport:{x:Math.round(r.x),y:Math.round(r.y),width:Math.round(r.width),height:Math.round(r.height)}};}
  function applyWork(work){FurnishProject.validateWork(work);const preview=clone(work);normalizeFurnitureEdit(preview,state);FurnishLayers.assertEditable(state,preview);FurnishProject.validateWork(preview);FurnishProject.validatePlanWork(PLAN,preview);mutate(()=>{state.furniture=work.furniture;if(work.objectLayers)state.objectLayers=work.objectLayers;else delete state.objectLayers;});}
+ function ceilings(){
+  const plan=FurnishProject.effectivePlan(PLAN,state),data=clone(state.ceilings||{version:1,items:[]});
+  return {ceilings:data,measurements:(data.regions||[]).map(r=>({id:r.id,...FurnishCeiling.heightMeasurements(plan,r.polygon,FurnishCeiling.regionItems(r).map(c=>c.kind==='flat'?c.height:c.height-Math.max(...FurnishCeiling.sectionPoints(c.section).map(v=>v.d))))})),sectionPresets:{plain:FurnishCeiling.sectionPreset('plain'),up:FurnishCeiling.sectionPreset('upMount')},heightSemantics:'region.height及构件标高为模型绝对mm；measurements为完成面派生读数，不直接回写height'};
+ }
+ function applyCeilings(args){
+  let next=clone(state);const regions=args.regions||[],removed=args.removeIds||[];
+  for(const id of [...regions.map(r=>r.id),...removed]){const before=state.ceilings?.regions?.find(r=>r.id===id),after=regions.find(r=>r.id===id),parts=(state.ceilings?.items||[]).filter(c=>c.regionId===id);if(before&&after&&FurnishCeiling.sameValue(before,after))continue;if(parts.some(c=>FurnishLayers.locked(state,'ceiling:'+c.id))||!parts.length&&FurnishLayers.list(state).some(l=>l.id==='0'&&l.locked))throw Error('吊顶区域或默认图层已锁定：'+id);}
+  for(const id of removed)next=FurnishCeiling.removeRegion(next,id);
+  for(const region of regions)next=FurnishCeiling.setRegion(next,region);
+  const remaining=new Set((next.ceilings?.items||[]).map(c=>'ceiling:'+c.id));
+  if(next.objectLayers)for(const c of state.ceilings?.items||[])if(!remaining.has('ceiling:'+c.id))delete next.objectLayers.assignments['ceiling:'+c.id];
+  FurnishLayers.assertEditable(state,next);FurnishProject.validateWork(next);FurnishProject.validatePlanWork(PLAN,next);
+  mutate(()=>{if(next.ceilings)state.ceilings=next.ceilings;else delete state.ceilings;if(next.objectLayers)state.objectLayers=next.objectLayers;});
+ }
  function ready(writing=false){
   if(repositoryBooting||storageWiping)throw Error('Furnish 尚未就绪');
   if(writing&&(typeof drag!=='undefined'&&drag||ui.mA||!$('#dlg').hidden))throw Error('请先完成当前拖动、绘制或编辑窗口');
@@ -26,6 +40,7 @@
  async function execute(name,args){
   core.validate(name,args);ready(writes.has(name));
   if(name==='get_current_plan')return read(args.includeDetails);
+  if(name==='get_ceilings'){const source=revisionSource();return {revision:await revision(source),...ceilings()};}
   if(name==='list_catalog')return {items:catalog().filter(c=>!args.query||[...c.it,c.category].join(' ').toLowerCase().includes(args.query.toLowerCase())).map(({it,...c})=>({...c,type:it[0],name:it[1],w:it[2],d:it[3],h:FurnishCatalogData.itemHeight(it)??null,kind:FurnishProducts.kind(it[0]),assembly:FurnishKitchen.isLaundryAreaItem(it)}))};
   if(name==='get_furniture_parameters'){const source=revisionSource(),result=parameters(args.id);return {revision:await revision(source),...result};}
   if(name==='get_camera')return {revision:await revision(),...await camera()};
@@ -36,8 +51,22 @@
   await repositoryClient.flush();ready(true);
   await assertRevision(args);ready(true);
   let addedIds;
+  if(['add_furniture','add_furniture_batch'].includes(name)&&FurnishLayers.list(state).some(l=>l.id==='0'&&l.locked))throw Error('默认图层已锁定，请先解锁');
   if(name==='copy_design')FurnishDesignUI.createDesign(args.name);
-  else if(name==='add_furniture'){
+  else if(name==='configure_ceilings')applyCeilings(args);
+  else if(name==='configure_scene'){
+   const scene3d=FurnishDesign.sceneSettings({...FurnishDesign.sceneSettings(state.scene3d),...args.settings});FurnishProject.validateWork({...state,scene3d});mutate(()=>{state.scene3d=scene3d;});
+  }else if(name==='remove_furniture'){
+   for(const id of args.ids){const f=getF(id);if(!f)throw Error('家具不存在：'+id);if(furnitureLocked(f))throw Error('家具或所在图层已锁定：'+id);}
+   const ids=new Set(args.ids),work=clone(state);work.furniture=work.furniture.filter(f=>!ids.has(f.id));if(work.objectLayers)for(const id of ids)delete work.objectLayers.assignments['furniture:'+id];applyWork(work);ui.sel=null;
+  }
+  else if(name==='add_furniture_batch'){
+   const work=clone(state),entries=catalog();addedIds=[];
+   for(const item of args.items){const entry=entries.find(c=>c.catalogKey===item.catalogKey);if(!entry||FurnishKitchen.isLaundryAreaItem(entry.it))throw Error('批量新增须使用有效的单件家具库条目');const created=createCatalogFurniture(entry.it,item.cx,item.cy);if(created.length!==1)throw Error('批量新增不支持关联组合');let f=created[0];const sizes=Object.fromEntries(['w','d','h'].filter(k=>Object.hasOwn(item,k)).map(k=>[k,item[k]]));if(Object.keys(sizes).length)f=FurnishDesign.resizeFurniture(f,sizes);if(item.rot!==undefined)f.rot=((item.rot%360)+360)%360;
+    for(const [key,value]of Object.entries(item.parameters||{})){if(Object.hasOwn(core.commonParameters,key)){if(value===null)throw Error('批量新建通用参数须显式填写');core.validateCommonParameter(key,value);}else{if(!FurnishProducts.supports(f,key)||['inventoryArray','paperArray'].includes(key))throw Error('批量新增不支持此参数或结构动作：'+key);if(value!==null)FurnishProducts.validateField(f,key,value);}if(value===null)delete f[key];else f[key]=clone(value);}
+    FurnishProducts.validate(f);work.furniture.push(f);addedIds.push(f.id);
+   }applyWork(work);
+  }else if(name==='add_furniture'){
    const entry=catalog().find(c=>c.catalogKey===args.catalogKey);if(!entry)throw Error('家具库条目已变化或不存在，请重新查询');
    const items=createCatalogFurniture(entry.it,args.cx,args.cy),work=clone(state);work.furniture.push(...items);applyWork(work);addedIds=items.map(f=>f.id);
   }else if(name==='configure_furniture'){
@@ -57,7 +86,7 @@
   }
   let saveError=null;try{await repositoryClient.flush();}catch(e){saveError=e.message;}
   const result={applied:true,persisted:!saveError&&!repositoryClient.blocked&&repositoryClient.status.mode==='saved',...(saveError?{saveError}:{}),...(addedIds?{addedIds}:{}),...(name==='copy_design'?{undoable:false}:{}),...await read()};
-  toast(name==='copy_design'?'MCP 已复制当前方案':'MCP 已调整家具，可使用撤销');return result;
+  toast(name==='copy_design'?'MCP 已复制当前方案':'MCP 已应用调整，可使用撤销');return result;
  }
  window.FurnishMcp=Object.freeze({execute(name,args={}){
   try{core.validate(name,args);}catch(e){return Promise.reject(e);}

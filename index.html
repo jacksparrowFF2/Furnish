@@ -1408,7 +1408,7 @@ function buildFurn(work=state){
   }
   furnG.children.slice().forEach(o => { if (!keep.has(o.userData.fid)){ clearGroup(o); furnG.remove(o); } });
   furnG.visible = opt.furn&&!globalThis.FurnishTilePresetUI?.inspecting(); selKey = null; applyGrow();
-  FurnishDownlightModel.setLights(furnG,opt.lamps);
+  FurnishDownlightModel.setLights(furnG,opt.lamps,{night:opt.night});
   syncModelErrors();
 }
 
@@ -1499,7 +1499,7 @@ function applyGrow(){
 
 /* ======================= 日照 / 夜景 ======================= */
 function applyLight(){
-  FurnishDownlightModel.setLights(furnG,opt.lamps);
+  FurnishDownlightModel.setLights(furnG,opt.lamps,{night:opt.night});
   const t = (opt.hour - 6) / 12, az = Math.PI * (.15 + t*.7), el = Math.sin(Math.PI*t) * 1.05 + .15, warm = 1 - Math.sin(Math.PI*t);
   const horizontal=globalThis.FurnishDrawing?FurnishDrawing.sun([Math.cos(az)*18,-Math.sin(az)*10+8],state.drawing):[Math.cos(az)*18,-Math.sin(az)*10+8];
   sun.position.set(horizontal[0], Math.sin(el)*20 + 3, horizontal[1]); sun.target.position.set(0, 0, 0);
@@ -1621,7 +1621,7 @@ async function enter(){
   const A = planPose(), B = isoFrom(A);
   setPose(A);
   stage.classList.add('animating');
-  startLoop(); renderer.render(scene, camera);
+  startLoop(); renderScene();
   stage.classList.add('is3d');                       // 交叉淡入：此刻 3D 画面与 2D 平面完全重合
   // Camera-only transition retains rigid geometry and cached shadows.
   await animate(220, t => camTween(A, B, ease(t)));
@@ -2016,6 +2016,7 @@ function bindUI(){
 }
 
 /* ======================= 主循环 ======================= */
+function renderScene(){FurnishDownlightModel.limitLights(scene,camera,renderer.capabilities);renderer.render(scene,camera);}
 const clock = new THREE.Clock();
 function startLoop(){ invalidate(); if (!raf){ clock.getDelta(); raf = requestAnimationFrame(loop); } }
 function loop(){
@@ -2045,7 +2046,7 @@ function loop(){
   selHelper?.children.forEach(h => {if(h.userData.layerMeshes){h.box.makeEmpty();for(const o of h.userData.layerMeshes)if(sceneObjectShown(o))h.box.union(new THREE.Box3().setFromObject(o));}else h.update?.();});
   clearanceG.visible=opt.clearances&&opt.furn&&!globalThis.FurnishTilePresetUI?.inspecting();
   applyObservationLayers();
-  renderer.render(scene, camera);
+  renderScene();
   clearanceG.traverse(o=>{if(o.isCSS2DObject)o.visible=clearanceG.visible&&!anim;});
   for(const group of [elevationG,issueG]){const visible=opt.furn&&!globalThis.FurnishTilePresetUI?.inspecting()&&opt.mode==='orbit'&&!anim;group.visible=visible;group.traverse(o=>{if(o.isCSS2DObject)o.visible=visible;});}
   for(const o of wallLabelG.children)if(o.userData.wallTileLabel){const f=o.userData.wallTileLabel;o.visible=active&&opt.wallNumbers&&opt.mode==='orbit'&&!anim&&!stage.classList.contains('animating')&&(f.normal===0?camera.position.x-o.position.x:camera.position.z-o.position.z)*f.side>0;}
@@ -2076,7 +2077,7 @@ async function automationReady(){
  // Saved furniture states must reach their production motion endpoints before capture.
  const moving=()=>doors.some(d=>d.cur!==(d.open?d.a1:d.a0))||[...slidingDoors,...furnG.children.map(g=>g.userData.slidingDoor).filter(Boolean)].some(d=>d.cur!==(d.open?1:0))||furnG.children.map(g=>g.userData.curtain).filter(Boolean).some(d=>d.cur!==(d.target??(d.open?1:0)));
  while(moving()){if(performance.now()>until)throw Error('活动部件尚未稳定');await new Promise(r=>setTimeout(r,30));}
- renderer.render(scene,camera);labelRenderer.render(scene,camera);
+ renderScene();labelRenderer.render(scene,camera);
 }
 async function automationCamera(options){
  if(!inited||!active)return null;
@@ -2102,7 +2103,7 @@ async function automationCamera(options){
  return {mode:opt.mode,position:point(camera.position),target:point(target),horizontalFov:2*Math.atan(Math.tan(camera.fov*Math.PI/360)*camera.aspect)*180/Math.PI,verticalFov:camera.fov,aspect:camera.aspect,unit:'mm',coordinateSystem:'x/y 为户型模型坐标，z 为绝对离地高度',cut:opt.cut,focusIds:observationTarget?[...observationTarget]:[],temporaryFocusClipping:!!observationTarget};
 }
 function shot(){ const a = document.createElement('a'); a.download = tr('户型装修方案', 'floor-plan-design') + '-3D.png'; a.href = renderer.domElement.toDataURL('image/png'); a.click(); }
-function image(){if(globalThis.FurnishCatalog?.active())return null;if(globalThis.FurnishWorkflowTools?.styleId()||!inited||anim||stage.classList.contains('animating'))return null;if(!active)return capturedState===JSON.stringify(state)?capturedImage:null;renderer.render(scene,camera);return renderer.domElement.toDataURL('image/png');}
+function image(){if(globalThis.FurnishCatalog?.active())return null;if(globalThis.FurnishWorkflowTools?.styleId()||!inited||anim||stage.classList.contains('animating'))return null;if(!active)return capturedState===JSON.stringify(state)?capturedImage:null;renderScene();return renderer.domElement.toDataURL('image/png');}
 
 function relang(){ syncWalkTexts(); if (inited){updateProjection();buildLabels();buildHeaterClearances();} }
 // 户型切换后：重算中心、清空缓存签名，进入时强制重建

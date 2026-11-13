@@ -13,12 +13,17 @@ MCP 连接正在运行的 Furnish 桌面主窗口。它读取的是当前画布�
 | `update_furniture` | 按家具 ID 一次批量修改 `cx/cy/w/d/h/rot`，先完整预演与校验，再通过一次原 `mutate()` 应用，整批可从界面撤销／重做。 |
 | `list_catalog` | 查询内置及“我的家具”，可按 `query` 过滤；返回唯一 `catalogKey`、初始尺寸及组合标记。 |
 | `add_furniture` | 用 `catalogKey/cx/cy` 在精确模型中心新增。与界面共用 `createCatalogFurniture`，完整洗衣区连同关联成员一起新增；返回全部 `addedIds`。不吸附、取整或自动避让。 |
+| `add_furniture_batch` | 最多100个单件库条目，连同普通尺寸／参数整批预演，一次撤销与保存；返回顺序对应输入。组合及结构动作走原专用入口。 |
 | `get_furniture_parameters` | 按 `id` 返回当前家具、通用参数与产品能力、范围、默认值；普通柜另提供完整 `cabinet`。 |
 | `configure_furniture` | `updates:[{id,parameters:{...}}]` 批量配置名称、颜色、镜像、前方预留及产品支持的安装、开合、照明、柜体／厨房等参数。完整预演后一次 `mutate`、撤销和保存。 |
 | `get_camera` | 返回二维／三维模式、当前视口、二维视图及三维生产相机的实际位姿、FOV和临时聚焦裁切标记。 |
 | `set_camera` | 切换 `view:2d/3d`；三维支持鸟瞰／漫游、预设、家具／房间聚焦、显式位置与目标及水平 FOV。相机调整不写项目、不进撤销栈。 |
 | `take_screenshot` | `target:viewport/window`，默认画布。桌面原生 PNG 以 MCP `image` 内容块返回，并附 revision、相机、保存状态及图片宽高；没有任意路径写入或自动下载。 |
 | `check_space` | 使用当前方案保存的 `spaceThreshold` 和生产 `spaceCheck`；支持 `focusIds`，输出未知信息和既有确认状态，不改变家具或确认记录。 |
+| `get_ceilings` | 读取完整区域、实际生产构件、完成面净高／距顶范围和新建截面示例。 |
+| `configure_ceilings` | 按完整区域批量新增／替换，或按区域 ID 删除；调用 `setRegion/removeRegion` 重新生成生产构件，一次 `mutate` 和正式保存。 |
+| `remove_furniture` | 删除明确指定的家具并清理图层分配；锁定／重复／不存在的 ID 整批拒绝，不隐式级联。 |
+| `configure_scene` | 编辑原 `scene3d` 的昼夜、灯具总开关、日照、剖切及标注设置；原撤销／保存链，不新增展示字段。 |
 
 输入使用 mm，`cx/cy` 是户型模型坐标中的家具中心，`w/d` 是家具局部宽深，`h` 是机身高度，`rot` 是角度。屏幕旋转、缩放、镜像不改变这些输入的解释。尺寸调整复用 `resizeFurniture` 及原尺寸基准；尺寸可能联动中心或关联家具，调用者应读取返回的实际结果。省略字段保持原值，不把缺失高度补成厂家尺寸。安装高度、开合、灯光和柜体／厨房结构由参数接口按原产品能力编辑；墙体编辑和新材质节点仍不在此接口范围。
 
@@ -69,11 +74,11 @@ node scripts/register-codex-mcp.cjs --no-automatic
 
 工具会从 PATH 和本机 Codex 安装目录发现 CLI；特殊位置可用 `FURNISH_CODEX_CLI` 或 `--codex` 指定实际程序，桌面程序可用 `--desktop` 指定，工作目录可用 `--root` 指定。已有同目录注册直接保留命令、超时、工具限制和禁用设置，不重复注册；同名 `furnish` 指向其它目录时拒绝覆盖。首次写入前备份现有 Codex 配置到被 Git 忽略的 `.local/codex-mcp-backups`，实际写入交给 `codex mcp add`，不自行重写 TOML，也不把全局配置纳入仓库。
 
-菜单“检查 Codex 注册与工具”及 CLI `--status` 为只读注册检查，验证的是**新 stdio 连接**。注册／启动不等于刷新当前 Codex 聊天：已经加载的旧进程仍可能只显示4工具，需由 Codex 重载 MCP。新服务应返回11工具；若已有 `enabled_tools/disabled_tools` 限制，另报有效数量并保留原限制。自动检查失败只记录诊断，不妨碍 Furnish 编辑；可随时再次点击连接入口。`FURNISH_MCP_DISABLE=1` 继续禁止桌面端点和一键启动。
+菜单“检查 Codex 注册与工具”及 CLI `--status` 为只读注册检查，验证的是**新 stdio 连接**。注册／启动不等于刷新当前 Codex 聊天：已经加载的旧进程仍可能只显示4工具，需由 Codex 重载 MCP。新服务应返回16工具；若已有 `enabled_tools/disabled_tools` 限制，另报有效数量并保留原限制。自动检查失败只记录诊断，不妨碍 Furnish 编辑；可随时再次点击连接入口。`FURNISH_MCP_DISABLE=1` 继续禁止桌面端点和一键启动。
 
 ## 连接与本机配置
 
-入口为 `node scripts/furnish-mcp.cjs`，或 `npm run mcp`。它使用 MCP 2025-11-25 的 stdio 生命周期和换行 JSON-RPC，协商兼容 2025-06-18、2025-03-26、2024-11-05；宣告上述 11 个工具，不提供脚本执行、任意文件或远程网络访问工具。无新增 npm 依赖。
+入口为 `node scripts/furnish-mcp.cjs`，或 `npm run mcp`。它使用 MCP 2025-11-25 的 stdio 生命周期和换行 JSON-RPC，协商兼容 2025-06-18、2025-03-26、2024-11-05；宣告上述 16 个工具，不提供脚本执行、任意文件或远程网络访问工具。无新增 npm 依赖。
 
 在 Codex 配置中添加 stdio 服务，例如从本仓库运行：
 
@@ -101,3 +106,20 @@ get_furniture_parameters返回只写动作replacementCatalogKey。configure_furn
 ## 2026-11-07：保留现有成员的物品阵列
 
 三类产品参数增加只读inventoryArray及受限arrayEdit动作；新建指定已有memberIds与唯一arrayId，须匹配当前位置／姿态才关联，既有关联可编辑数量／行列／间距／排列／转向或解除。整批预演、revision／requestId、一次mutate和保存回执保持，动作键不持久化。参数与示例见[物品阵列](INVENTORY-ARRAY.md)。
+
+
+## 吊顶与照明场景编辑（2026-11-13）
+
+新增吊顶／照明工具与批量新增入口后共16个工具；已加载的桌面主进程和stdio服务需要重新启动才能发现新清单，重启前应先由用户完成未保存的编辑器草稿。仍使用当前桌面状态，不能用改写正式JSON代替接口。
+
+`configure_ceilings` 接收可选 `regions:[完整区域]` 和 `removeIds:[区域ID]`，至少提供一项有效操作。同一ID不能重复或同时新增／替换与删除。先 `get_ceilings` 读取，再保留所编辑区域的 `id/partIds/centerId`；无关区域与独立旧构件保持。全部区域通过共享吊顶核心重新生成，最后统一检查项目、锁定图层、模板截面与实际生产构件一致性；任何错误均不应用整批。删除构件同时移除对应图层分配，原撤销可完整恢复。
+
+保存的 `region.height` 是模型绝对标高mm。`get_ceilings.measurements` 的 `aboveFloor` 和 `roofGap` 由实际生产构件与完成地面派生，不可将净高直接回写height；无实体或未知地面返回null，不补造高度。`sectionPresets` 是现有共享构造的示例，并非本户型或厂家安装要求。
+
+`remove_furniture` 只删明确指定的ID，沿现有家具删除与图层清理语义，不自动扩大到其它家具。操作前应先读完整组合，列出需要一起删除的成员。
+
+`configure_scene.settings` 仅包含 `night/lamps/hour/cut/furn/labels/wallNumbers/clearances` 的任意非空子集，复用原默认值和项目校验。与相机接口不同，此操作修改原scene3d并可撤销和保存；不新增持久字段，不改变单灯参数，也不表示真实照度、感应范围或电气联动已验证。
+
+上述编辑工具沿已有revision/requestId鉴权、请求去重、排队及flush回执。编辑器打开时写操作拒绝；applied:true/persisted:false仍必须报告未保存，不换请求ID重试。专项回归包含区域增删改、错误整批回滚、锁定、撤销重做、保存刷新与正式文件隔离。
+
+`add_furniture_batch` 接受最多100个单件库产品，按输入顺序返回addedIds。每项可带cx/cy/w/d/h/rot和普通产品parameters，复用库构造、resizeFurniture、产品规则与applyWork，整批一次mutate/flush。组合、物品阵列和柜体／替换等结构动作须走原专用入口；某一项无效或默认层锁定时整批拒绝，不遗留半成品。
