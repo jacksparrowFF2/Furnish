@@ -1,3 +1,5 @@
+2026-11-13（抽面与浅柜）：cabinetBuilder.drawerAppearance声明drawers／drawerModule／slidingTop的可选六位color、solid／wood饰面及最低v89；drawers显式handle同版。缺失沿原外观，覆盖仅抽面，恢复删除字段，配色不清空间确认。boxDimensions集中标准柜150mm与保留物理框架50mm最小深度。deviceOpenings.version=2仅用于适用厨房派生空间规则，不物化到kitchen字段；见[验证及边界](validation/cabinet-editor-audit-20261113/README.md)。
+
 2026-11-12（踢脚配色）：cabinetBuilder.plinthAppearance.formatVersion=88；v2踢脚和由生产元数据cabinetSection=plinth识别的原形状板件可保存可选color（#RRGGBB），其它board不开放此字段。新旧缺失保持原生产材质，恢复默认删除覆盖，不改几何／空间语义；支脚与卡扣排除。显式配色沿原组件复用、当前／命名／库／项目／仓库与缓存恢复；完整配置进入三维缓存，空间签名仍剔除颜色。见[验收](validation/cabinet-editor-experience-20261112/README.md)。
 
 2026-11-11（86面板）：panel_bull_g12集中37个panelVariant枚举、默认斜五孔及mountHeight新建0；缺失仅读默认，同型替换保留、跨型清理；含类型或字段最低v84，价格／配色不清空间确认。可见厚度10mm为布局估算。见[参数与边界](PANEL-BULL-G12.md)。

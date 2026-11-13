@@ -1,3 +1,5 @@
+2026-11-13（柜体编辑复查）：共享componentInspector补齐抽面外观，native-adapter沿原草稿补齐水槽、台面与整组字段；同一选择保留折叠。kitchen-core统一设备开孔与固定顶板选择，生产CSG／数值实体消费相同孔环，邻接设备在标高边界换算一次；停用部件校验不临时强制启用。抽面最低v89沿原项目／仓库／缓存，无新脚本、构建或保存通道；适用开孔派生规则v2。见[验收](validation/cabinet-editor-audit-20261113/README.md)。
+
 2026-11-12（组件编辑体验）：cabinet-builder.mountShell共用本机调宽与属性优先布局，native-adapter以同一@worktop选择连续台面；未新增脚本或保存通道。product-rules.plinthAppearance声明可选踢脚色最低v88，builder-core受限识别实际踢脚，生产模型按组件覆盖材质并排除硬件。完整配置驱动显示缓存，原空间签名继续排除配色；项目／仓库／缓存保留旧版读取。见[验收](validation/cabinet-editor-experience-20261112/README.md)。
 
 2026-11-12（厨房柜箱台面）：cabinet-assembly-core将显式轮廓生成复用于一字/L/U厨房，worktopSupports共用同顶高实际承托轮廓与局部正面出挑。kitchen-core从kitchen.worktop供2D、生产台面、扣孔、下挂、实体与分边正视；无新脚本或保存通道。显式新轮廓最低v87，旧洗衣柜laundry.worktop不迁移。见[KITCHEN-DESIGN.md](KITCHEN-DESIGN.md#按柜箱轮廓生成厨房台面2026-11-12)。

@@ -65,7 +65,7 @@ result.push({boardIndex:result.length,poly:poly.map(([x,z])=>[(x+offset[0])*1000
   if(furnitureSolids()?.supported(f))return furnitureSolids().parts(f,{furniture,plan});
   const products=root.FurnishProducts||require('./product-rules.js');furniture=furniture.filter(v=>validModel(v,products));
   const originalFurniture=f;f=products.elevationSource(f);
-  const kitchen=root.FurnishKitchen||require('./kitchen-core.js');
+  const kitchen=root.FurnishKitchen||require('./kitchen-core.js');if(f.kitchen)furniture=kitchen.relativeDevices(furniture,kitchen.baseElevation(originalFurniture)-kitchen.baseElevation(f));
   // Record the actual scene inputs read by buildRaw/slabGeometry, rather than
   // invalidating every cabinet when any unrelated cabinet moves. Full device
   // records include notch/installation changes as well as their opening rings.
@@ -91,7 +91,7 @@ result.push({boardIndex:result.length,poly:poly.map(([x,z])=>[(x+offset[0])*1000
   };
   const primitive=(poly,bottom,top,name,prefix)=>add({poly,bottom,top,boardIndex:prefix,metadata:{},phase:0},identity,0,name+':');
   if(f.kitchen){
-   const k=f.kitchen,base=K.baseElevation(f);
+   const k=f.kitchen,base=K.baseElevation(f),bodyCuts=K.deviceBodyCuts(f,furniture);
    for(const m of K.cabinetLayout(f)){
     if(m.role==='empty')continue;
     const part={...K.moduleFurniture(f,m),cx:0,cy:0,rot:0,flip:false},sideCuts=K.adjacentOpenings(f,m,K.cornerLayout(f),false).map(opening=>({...opening,bottom:K.plinth(f)+18,top:k.baseHeight-18})),angle=m.rot*Math.PI/180;
@@ -100,14 +100,14 @@ result.push({boardIndex:result.length,poly:poly.map(([x,z])=>[(x+offset[0])*1000
     for(const b of boards(part,{includeStatic:true,sideCuts,floorOpen:!!k.laundry?.floorOpen&&m.role==='sink'})){
      const cutters=[];
      if(!b.motion&&notch.length)cutters.push({poly:notch.map(local),bottom:-100-K.moduleMountHeight(f,m),top:K.bodyHeight(f)+100-K.moduleMountHeight(f,m)});
-     if(b.metadata.cabinetTop)for(const {device,ring}of K.deviceOpenings(f,furniture).filter(v=>K.arrowSink(v.device)||v.device.sinkNotch||v.device.id?.endsWith(':sink')))cutters.push({poly:ring.map(local),bottom:k.baseHeight+40-(device.h??240)-60-K.moduleMountHeight(f,m),top:k.baseHeight+40-K.moduleMountHeight(f,m)});
+     if(!b.motion&&K.deviceTopBoard(b.metadata,b.bottom+K.moduleMountHeight(f,m),b.top+K.moduleMountHeight(f,m),K.moduleHeight(f,m)+K.moduleMountHeight(f,m)))for(const {ring,bottom,top}of bodyCuts)cutters.push({poly:ring.map(local),bottom:bottom-K.moduleMountHeight(f,m),top:top-K.moduleMountHeight(f,m)});
      for(const piece of subtract(b,cutters))add(piece,transform,base+K.moduleMountHeight(f,m),'module:'+m.index+'/');
     }
    }
    for(const [i,b]of [...K.cornerBoards(f),...K.cornerPlinth(f),...K.edgeParts(f),...K.laundrySideBoards(f),...K.laundryNotchBoards(f)].entries())primitive([[b.x-b.w/2,b.y-b.d/2],[b.x+b.w/2,b.y-b.d/2],[b.x+b.w/2,b.y+b.d/2],[b.x-b.w/2,b.y+b.d/2]],b.bottom+base,b.top+base,'结构板',i);
    if(K.hasCountertop(f)){const rings=K.slabGeometry(f,furniture).rings;for(const [i,poly]of z.decompose(rings,p=>rings.reduce((inside,r)=>inside!==z.inside(p,r),false)).entries())primitive(poly,k.baseHeight+base,k.baseHeight+k.thickness+base,'台面',i);}
    for(const {key:section,furniture:part} of K.laundryParts(f).filter(p=>p.key!=='sink')){
-    const [x,q]=K.local(f,part.cx,part.cy),a=(f.flip?-1:1)*((part.rot||0)-(f.rot||0))*Math.PI/180;for(const b of boards({...part,cx:0,cy:0,rot:0,flip:false},{includeStatic:true}))add(b,([u,v])=>[x+u*Math.cos(a)-v*Math.sin(a),q+u*Math.sin(a)+v*Math.cos(a)],part.mountHeight,'laundry:'+section+'/');
+    const [x,q]=K.local(f,part.cx,part.cy),a=(f.flip?-1:1)*((part.rot||0)-(f.rot||0))*Math.PI/180,c=Math.cos(a),s=Math.sin(a),height=part.mountHeight-base;for(const b of boards({...part,cx:0,cy:0,rot:0,flip:false},{includeStatic:true})){const cutters=!b.motion&&K.deviceTopBoard(b.metadata,b.bottom+height,b.top+height,height+part.h)?bodyCuts.map(({ring,bottom,top})=>({poly:ring.map(([u,v])=>[(u-x)*c+(v-q)*s,-(u-x)*s+(v-q)*c]),bottom:bottom-height,top:top-height})):[];for(const piece of subtract(b,cutters))add(piece,([u,v])=>[x+u*c-v*s,q+u*s+v*c],part.mountHeight,'laundry:'+section+'/');}
    }
   }else{
    const base=f.type==='kitchenwall'?P.value(f,'mountHeight'):f.type==='vanity'?P.cabinetBase(f):0;
