@@ -1,0 +1,75 @@
+{
+  "date": "2026-11-13",
+  "platform": "win32",
+  "arch": "x64",
+  "electron": "45.0.0",
+  "chromium": "156.0.8078.48",
+  "gpuFeatures": {
+    "2d_canvas": "enabled",
+    "direct_rendering_display_compositor": "disabled_off_ok",
+    "gpu_compositing": "enabled",
+    "multiple_raster_threads": "enabled_on",
+    "opengl": "enabled_on",
+    "rasterization": "enabled",
+    "raw_draw": "disabled_off_ok",
+    "skia_graphite": "disabled_off",
+    "trees_in_viz": "disabled_off",
+    "video_decode": "enabled",
+    "video_encode": "enabled",
+    "webgl": "enabled",
+    "webgpu": "enabled",
+    "webnn": "disabled_off"
+  },
+  "first3dMs": 4124,
+  "processMemory": [
+    {
+      "type": "Browser",
+      "memoryKiB": {
+        "workingSetSize": 337860,
+        "peakWorkingSetSize": 461180,
+        "privateBytes": 251988
+      }
+    },
+    {
+      "type": "GPU",
+      "memoryKiB": {
+        "workingSetSize": 640136,
+        "peakWorkingSetSize": 640136,
+        "privateBytes": 1726576
+      }
+    },
+    {
+      "type": "Utility",
+      "memoryKiB": {
+        "workingSetSize": 56700,
+        "peakWorkingSetSize": 73888,
+        "privateBytes": 17532
+      }
+    },
+    {
+      "type": "Tab",
+      "memoryKiB": {
+        "workingSetSize": 1614132,
+        "peakWorkingSetSize": 1785280,
+        "privateBytes": 1603516
+      }
+    }
+  ],
+  "checks": [
+    "existing workspace loaded with original plan, work slots and furniture",
+    "sandboxed renderer without Node integration",
+    "production mutate, undo/redo, file save and refresh",
+    "native download exports existing editable project",
+    "file input reimports exported plan with edited furniture intact",
+    "390px desktop viewport without document overflow",
+    "production WebGL 3D and original Blender status interface",
+    "Chromium print-to-PDF renders existing page",
+    "HTTP browser shares desktop workspace",
+    "direct file:// 2D and offline Three.js 3D",
+    "window exit stops owned backend; restart restores saved edit",
+    "original user workspace unchanged; no renderer exceptions"
+  ],
+  "errors": [],
+  "originalWorkspaceUnchanged": true,
+  "macOSAcceptance": "not-executed"
+}

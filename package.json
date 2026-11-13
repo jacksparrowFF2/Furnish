@@ -7,6 +7,7 @@
     "desktop": "electron desktop/main.cjs",
     "desktop:package": "node scripts/package-desktop.cjs",
     "verify:desktop": "node scripts/verify-desktop.cjs",
+    "doctor:mac": "node scripts/doctor-macos.cjs",
     "mcp": "node scripts/furnish-mcp.cjs",
     "mcp:connect": "node scripts/register-codex-mcp.cjs --automatic --start-desktop",
     "test:codex-blender": "node tests/test-codex-blender-plugin.cjs",

@@ -1,5 +1,10 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path');
+// The writable workspace lives beside the .app, never inside its signed bundle.
+function applicationRoot({packaged,executable,sourceRoot,platform=process.platform}){
+ if(!packaged)return sourceRoot;
+ return platform==='darwin'?path.resolve(path.dirname(executable),'../../..'):path.dirname(executable);
+}
 function workspaceRoot({appRoot,config,override}){
  const root=path.resolve(override||config?.root||appRoot);
  for(const file of ['index.html','scripts/serve.cjs','src/core/repository-core.js'])
@@ -8,4 +13,4 @@ function workspaceRoot({appRoot,config,override}){
 }
 function localPage(url,base){try{const u=new URL(url);return u.origin===new URL(base).origin;}catch{return false;}}
 function externalPage(url){try{return ['https:','http:'].includes(new URL(url).protocol);}catch{return false;}}
-module.exports={workspaceRoot,localPage,externalPage};
+module.exports={applicationRoot,workspaceRoot,localPage,externalPage};

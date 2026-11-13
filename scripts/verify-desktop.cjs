@@ -39,13 +39,15 @@ async function main(){
   const settings=await desktop.evaluate(({BrowserWindow})=>BrowserWindow.getAllWindows()[0].webContents.getLastWebPreferences());
   assert.equal(settings.nodeIntegration,false);assert.equal(settings.contextIsolation,true);assert.equal(settings.sandbox,true);
   checks.push('sandboxed renderer without Node integration');
+  const environment=await desktop.evaluate(async({app})=>({platform:process.platform,arch:process.arch,versions:process.versions,systemMemory:process.getSystemMemoryInfo(),gpuFeatures:app.getGPUFeatureStatus(),gpuInfo:await app.getGPUInfo('basic')}));
   const edit=await page.evaluate(()=>{
    const f=state.furniture.find(f=>!f.locked);if(!f)throw Error('No editable furniture for verification');
    const id=f.id,before=f.color;mutate(()=>{state.furniture.find(f=>f.id===id).color='#73918a';});
    return {id,before};
   });
-  await page.keyboard.press('Control+z');assert.equal(await page.evaluate(id=>state.furniture.find(f=>f.id===id).color,edit.id),edit.before);
-  await page.keyboard.press('Control+Shift+z');assert.equal(await page.evaluate(id=>state.furniture.find(f=>f.id===id).color,edit.id),'#73918a');
+  const modifier=process.platform==='darwin'?'Meta':'Control';
+  await page.keyboard.press(modifier+'+z');assert.equal(await page.evaluate(id=>state.furniture.find(f=>f.id===id).color,edit.id),edit.before);
+  await page.keyboard.press(modifier+'+Shift+z');assert.equal(await page.evaluate(id=>state.furniture.find(f=>f.id===id).color,edit.id),'#73918a');
   await page.evaluate(()=>FurnishRepository.flush());
   await page.reload();await page.locator('#repository-loading').waitFor({state:'hidden'});
   assert.equal(await page.evaluate(id=>state.furniture.find(f=>f.id===id).color,edit.id),'#73918a');
@@ -66,8 +68,10 @@ async function main(){
   await page.screenshot({path:path.join(run,'desktop-narrow.png')});
   await desktop.evaluate(({BrowserWindow})=>BrowserWindow.getAllWindows()[0].setContentSize(1440,960));
   checks.push('390px desktop viewport without document overflow');
+  const switchStart=Date.now();
   await page.locator('[data-view="3d"]').click();
   await page.waitForFunction(()=>document.body.classList.contains('m3d')&&!switching,null,{timeout:120000});
+  const first3dMs=Date.now()-switchStart,processMetrics=await desktop.evaluate(({app})=>app.getAppMetrics());
   await page.screenshot({path:path.join(run,'desktop-3d.png')});
   assert.equal((await fetch(`http://127.0.0.1:${port}/api/furnish/blender/status`)).status,200);
   checks.push('production WebGL 3D and original Blender status interface');
@@ -95,7 +99,7 @@ async function main(){
   checks.push('window exit stops owned backend; restart restores saved edit');
   assert.deepEqual(errors,[]);assert.equal(hash(source),before);
   checks.push('original user workspace unchanged; no renderer exceptions');
-  fs.writeFileSync(path.join(run,'results.json'),JSON.stringify({executable,checks,errors,originalWorkspaceUnchanged:hash(source)===before},null,2));
+  fs.writeFileSync(path.join(run,'results.json'),JSON.stringify({executable,environment,first3dMs,processMetrics,checks,errors,originalWorkspaceUnchanged:hash(source)===before},null,2));
   console.log(checks.map(s=>'PASS '+s).join('\n'));
  }finally{
   if(browser)await browser.close();if(desktop)await desktop.close();

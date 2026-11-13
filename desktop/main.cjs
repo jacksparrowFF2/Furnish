@@ -1,15 +1,15 @@
 'use strict';
 const {app,BrowserWindow,Menu,dialog,shell}=require('electron');
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
-const {workspaceRoot,localPage,externalPage}=require('./policy.cjs');
+const {applicationRoot,workspaceRoot,localPage,externalPage}=require('./policy.cjs');
 const {connect}=require('./backend.cjs');
-const appRoot=app.isPackaged?path.dirname(process.execPath):path.resolve(__dirname,'..');
+const appRoot=applicationRoot({packaged:app.isPackaged,executable:process.execPath,sourceRoot:path.resolve(__dirname,'..')});
 let root,backend,mcpStarting,mainWindow,quitting=false,reopenRequested=false;
 let diagnostics={record(){},window(){}};
 try{
  const file=path.join(appRoot,'furnish-desktop.json');
  root=workspaceRoot({appRoot,config:fs.existsSync(file)?JSON.parse(fs.readFileSync(file,'utf8')):null,override:process.env.FURNISH_DESKTOP_ROOT});
- const id=crypto.createHash('sha256').update(root.toLowerCase()).digest('hex').slice(0,16);
+ const id=crypto.createHash('sha256').update(process.platform==='win32'?root.toLowerCase():root).digest('hex').slice(0,16);
  app.setPath('userData',process.env.FURNISH_DESKTOP_PROFILE||path.join(app.getPath('appData'),'Furnish','desktop',id));
  diagnostics=require('./diagnostics.cjs').start({root,app});
 }catch(e){app.whenReady().then(()=>{dialog.showErrorBox('Furnish 无法启动',e.message);app.exit(1);});}
@@ -83,21 +83,48 @@ function codexMenu(){return {label:'MCP',submenu:[
  {id:'mcp-auto-register',label:'启动时检查 Codex 注册',type:'checkbox',checked:codexSetup().preference(root),click:item=>{try{codexSetup().setAutomatic(root,item.checked);if(item.checked)configureCodex();}catch(e){item.checked=!item.checked;dialog.showErrorBox('MCP 设置未保存',e.message);}}}
 ]};}
 
+// macOS menu accelerators consume key events. Route canvas commands through the
+// existing keyboard/mutate chain, while native text fields keep native editing.
+async function macEdit(action,key,shiftKey=false){
+ const win=BrowserWindow.getFocusedWindow?.()||mainWindow;if(!win||win.isDestroyed())return;
+ try{
+  const handled=await win.webContents.executeJavaScript(`(()=>{const target=document.activeElement||document.body;if(target.matches('input,textarea,select')||target.isContentEditable)return false;target.dispatchEvent(new KeyboardEvent('keydown',{key:${JSON.stringify(key)},metaKey:true,shiftKey:${shiftKey},bubbles:true,cancelable:true}));return true;})()`,true);
+  if(!handled&&!win.isDestroyed())win.webContents[action]();
+ }catch(e){diagnostics.record('menu-edit-error',{message:e.message});}
+}
+function macEditMenu(){return {label:'编辑',submenu:[
+ {label:'撤销',accelerator:'Cmd+Z',click:()=>macEdit('undo','z')},
+ {label:'重做',accelerator:'Cmd+Shift+Z',click:()=>macEdit('redo','z',true)},
+ {type:'separator'},
+ ...[['剪切','cut','x'],['复制','copy','c'],['粘贴','paste','v'],['全选','selectAll','a']].map(([label,action,key])=>({label,accelerator:'Cmd+'+key.toUpperCase(),click:()=>macEdit(action,key)}))
+]};}
+function activateMainWindow(){
+ if(quitting||!backend)return;
+ const win=mainWindow;
+ if(win&&!win.isDestroyed()){if(win.isMinimized())win.restore();win.show();win.focus();return;}
+ createWindow().catch(e=>{dialog.showErrorBox('Furnish 无法打开窗口',e.message);app.quit();});
+}
+function aboutFurnish(){
+ const options={title:'Furnish 桌面版',message:'Furnish 本地装修设计',detail:'工作目录：'+root+'\n在“保存／导出 → 保存位置与历史备份”查看或修改正式文件位置。\n桌面缓存：'+app.getPath('userData')+'\nElectron '+process.versions.electron+'；离线可用。',buttons:['确定']};
+ return mainWindow&&!mainWindow.isDestroyed()?dialog.showMessageBox(mainWindow,options):dialog.showMessageBox(options);
+}
+
 if(root){
  if(!app.requestSingleInstanceLock())app.quit();
  else{
   app.on('second-instance',()=>{
    if(quitting){reopenRequested=true;return;}
-   const win=mainWindow;if(!win||win.isDestroyed())return;
+   const win=mainWindow;if(!win||win.isDestroyed()){if(process.platform==='darwin')activateMainWindow();return;}
    if(win.isMinimized())win.restore();win.show();win.focus();
   });
   app.whenReady().then(async()=>{
    backend=await connect({root,executable:process.execPath,port:Number(process.env.FURNISH_PORT||8765)});
    Menu.setApplicationMenu(Menu.buildFromTemplate([
     {label:'Furnish',submenu:[{label:'打开工作目录',click:()=>shell.openPath(root)},{label:'在浏览器中打开',click:()=>shell.openExternal(backend.url)},{type:'separator'},{role:'quit',label:'退出'}]},
+    ...(process.platform==='darwin'?[macEditMenu()]:[]),
     codexMenu(),
     {label:'视图',submenu:[{role:'reload',label:'刷新'},{role:'togglefullscreen',label:'全屏'},{role:'toggleDevTools',label:'开发者工具'}]},
-    {label:'帮助',submenu:[{label:'关于 Furnish',click:()=>dialog.showMessageBox(mainWindow,{title:'Furnish 桌面版',message:'Furnish 本地装修设计',detail:'工作目录：'+root+'\n在“保存／导出 → 保存位置与历史备份”查看或修改正式文件位置。\n桌面缓存：'+app.getPath('userData')+'\nElectron '+process.versions.electron+'；离线可用。',buttons:['确定']})}]}
+    {label:'帮助',submenu:[{label:'关于 Furnish',click:aboutFurnish}]}
    ]));
    await createWindow();
    if(quitting||!mainWindow||mainWindow.isDestroyed())return;
@@ -106,7 +133,8 @@ if(root){
     catch(e){diagnostics.record('mcp-start-error',{message:e.message});console.error('Furnish MCP 未启动，桌面继续运行，可从 MCP 菜单重试：'+e.message);}
    }
   }).catch(e=>{diagnostics.record('startup-error',{message:e.message});console.error(e.stack||e);dialog.showErrorBox('Furnish 无法启动',e.message);app.quit();});
-  app.on('window-all-closed',()=>app.quit());
+  app.on('window-all-closed',()=>{if(process.platform!=='darwin')app.quit();});
+  app.on('activate',activateMainWindow);
   app.on('will-quit',event=>{if(backend&&!quitting){
    event.preventDefault();quitting=true;
    // Keep the instance lock until the owned backend stops; queue a quick reopen.

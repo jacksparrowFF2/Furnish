@@ -1,3 +1,5 @@
+2026-11-13（macOS准备）：desktop/policy共用.app外工作目录，main增加Mac菜单编辑路由与关窗重开；原mutate、后台归属和持久链不变。package-desktop复用离线复制，新增原生Mach-O架构门禁、Helper标识及本机签名校验；.command保持LF／可执行位，Blender与CLI补Mac路径。doctor-macos只读预检，原隔离verify-desktop记录环境／内存与3D首开耗时；无新前端脚本或构建工具。Mac实机待验，见[迁移](MACOS.md)与[准备验收](validation/macos-preparation-20261113/README.md)。
+
 2026-11-13（吊顶照明规划）：MCP核心与桥接新增区域读写、单件批量新增、显式删除与已有场景设置，共16工具，沿共享核心／mutate／flush。surface_light复用参数灯体，SE2／G12只增加运行时展示光；原实体与安装语义保持。正式渲染按相机及显卡能力限制采样与阴影，修复全屋灯光uniform溢出；无新方案字段／保存通道。见[契约](LIGHTING-PLANNING.md)。
 
 2026-11-13（柜体编辑复查）：共享componentInspector补齐抽面外观，native-adapter沿原草稿补齐水槽、台面与整组字段；同一选择保留折叠。kitchen-core统一设备开孔与固定顶板选择，生产CSG／数值实体消费相同孔环，邻接设备在标高边界换算一次；停用部件校验不临时强制启用。抽面最低v89沿原项目／仓库／缓存，无新脚本、构建或保存通道；适用开孔派生规则v2。见[验收](validation/cabinet-editor-audit-20261113/README.md)。

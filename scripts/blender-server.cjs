@@ -4,13 +4,18 @@ const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypt
 const LIMIT=256*1024*1024;
 const refinedProjects=require('./blender-project.cjs');
 function candidates(env=process.env,platform=process.platform){
+ const locations=platform==='darwin'?path.posix:path;
  const list=[];if(env.FURNISH_BLENDER)list.push(env.FURNISH_BLENDER);
+ if(platform==='darwin'){
+  for(const base of ['/Applications',env.HOME&&locations.join(env.HOME,'Applications')].filter(Boolean))list.push(locations.join(base,'Blender.app/Contents/MacOS/Blender'));
+  list.push('/opt/homebrew/bin/blender','/usr/local/bin/blender');
+ }
  if(platform==='win32'){
   const scoop=env.SCOOP||(env.USERPROFILE&&path.join(env.USERPROFILE,'scoop'));
   if(scoop)list.push(path.join(scoop,'apps/blender/current/blender.exe'));
  }
  if(platform==='win32'&&env.LOCALAPPDATA)list.push(path.join(env.LOCALAPPDATA,'Microsoft/WindowsApps/blender-launcher.exe'));
- for(const dir of (env.PATH||env.Path||'').split(path.delimiter).filter(Boolean))list.push(path.join(dir,platform==='win32'?'blender.exe':'blender'));
+ for(const dir of (env.PATH||env.Path||'').split(platform==='win32'?';':':').filter(Boolean))list.push(locations.join(dir,platform==='win32'?'blender.exe':'blender'));
  if(platform==='win32')for(const base of [env.ProgramFiles&&path.join(env.ProgramFiles,'Blender Foundation'),env.LOCALAPPDATA&&path.join(env.LOCALAPPDATA,'Programs/Blender Foundation')].filter(Boolean)){
   try{for(const name of fs.readdirSync(base).sort((a,b)=>b.localeCompare(a,undefined,{numeric:true})))if(/^Blender/i.test(name))list.push(path.join(base,name,'blender.exe'));}catch{/* Optional installation directory. */}
  }

@@ -5,6 +5,10 @@ try{
  assert.deepEqual(B.candidates({...env,FURNISH_BLENDER:'explicit'},'win32').slice(0,3),['explicit',scoop,store]);
  assert.equal(B.candidates({...env,SCOOP:path.join(root,'portable')},'win32')[0],custom);
  assert(!B.candidates(env,'linux').includes(scoop));
+ const mac=B.candidates({HOME:'/Users/test user',PATH:'/custom/bin:/other/bin',FURNISH_BLENDER:'/explicit/blender'},'darwin');
+ assert.equal(mac[0],'/explicit/blender');
+ for(const file of ['/Applications/Blender.app/Contents/MacOS/Blender','/Users/test user/Applications/Blender.app/Contents/MacOS/Blender','/opt/homebrew/bin/blender','/usr/local/bin/blender','/custom/bin/blender','/other/bin/blender'])assert(mac.includes(file),file);
+ assert(!mac.includes(scoop));assert(!mac.some(p=>p.endsWith('.exe')));
  if(process.platform==='win32'){
   fs.mkdirSync(path.dirname(store),{recursive:true});fs.writeFileSync(store,'store fixture');assert.equal(B.findBlender(env),store,'missing Scoop falls back to Store');
   fs.mkdirSync(path.dirname(scoop),{recursive:true});fs.writeFileSync(scoop,'scoop fixture');assert.equal(B.findBlender(env),scoop,'Scoop actual executable wins over Store');

@@ -1,4 +1,5 @@
 *.pdf binary
+*.command text eol=lf
 
 # Text fixtures are edited by exact DXF token pairs in regression tests.
 /examples/*.dxf text eol=lf

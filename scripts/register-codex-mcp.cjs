@@ -9,13 +9,14 @@ function defaultRoot({base=path.resolve(__dirname,'..'),env=process.env}={}){
 function findCodex({env=process.env,platform=process.platform}={}){
  const candidates=[];
  if(env.FURNISH_CODEX_CLI){if(!path.isAbsolute(env.FURNISH_CODEX_CLI)||!fs.statSync(env.FURNISH_CODEX_CLI,{throwIfNoEntry:false})?.isFile())throw Error('FURNISH_CODEX_CLI 指定的 Codex 程序不存在。');return fs.realpathSync(env.FURNISH_CODEX_CLI);}
- for(const directory of (env.PATH||env.Path||'').split(path.delimiter).filter(Boolean))candidates.push(path.join(directory,platform==='win32'?'codex.exe':'codex'));
+ for(const directory of (env.PATH||env.Path||'').split(platform==='win32'?';':':').filter(Boolean))candidates.push(path.join(directory,platform==='win32'?'codex.exe':'codex'));
+ if(platform==='darwin')candidates.push('/opt/homebrew/bin/codex','/usr/local/bin/codex');
  if(platform==='win32'&&env.LOCALAPPDATA){
   const bin=path.join(env.LOCALAPPDATA,'OpenAI','Codex','bin');candidates.push(path.join(bin,'codex.exe'));
   try{candidates.push(...fs.readdirSync(bin,{withFileTypes:true}).filter(e=>e.isDirectory()).map(e=>path.join(bin,e.name,'codex.exe')).filter(p=>fs.existsSync(p)).sort((a,b)=>fs.statSync(b).mtimeMs-fs.statSync(a).mtimeMs));}catch{}
  }
  const found=candidates.find(p=>{try{return path.isAbsolute(p)&&fs.statSync(p,{throwIfNoEntry:false})?.isFile();}catch{return false;}});
- if(!found)throw Error('未找到 Codex CLI。请安装 Codex，或用 FURNISH_CODEX_CLI 指定 codex.exe 的完整路径。');
+ if(!found)throw Error('未找到 Codex CLI。请安装 Codex CLI，或用 FURNISH_CODEX_CLI 指定 codex 可执行文件的完整路径。');
  return fs.realpathSync(found);
 }
 function run(file,args,{env=process.env,timeout=15000}={}){
@@ -93,7 +94,7 @@ async function startDesktop({root=defaultRoot(),executable,env=process.env,timeo
  try{await read();return {started:false,running:true};}catch{}
  const chosen=require('./launch-desktop.cjs').desktopExecutable(root,{executable,env});
  require('./windows-integrity.cjs').assertDesktopIntegrity(chosen);
- if(!chosen||!fs.statSync(chosen,{throwIfNoEntry:false})?.isFile())throw Error('未找到 Furnish 桌面程序。请先打开桌面快捷方式，或用 --desktop 指定 Furnish.exe。');
+ if(!chosen||!fs.statSync(chosen,{throwIfNoEntry:false})?.isFile())throw Error('未找到 Furnish 桌面程序。请先打开桌面应用，或用 --desktop 指定其可执行文件。');
  const desktopEnv={...env,FURNISH_DESKTOP_ROOT:root};delete desktopEnv.ELECTRON_RUN_AS_NODE;
  const child=spawn(chosen,[],{cwd:root,env:desktopEnv,detached:true,windowsHide:false,stdio:'ignore'});let failure=null;child.on('error',e=>{failure=e;});child.unref();
  const end=Date.now()+timeout;

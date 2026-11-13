@@ -41,8 +41,9 @@ const ownerTimer=instance.owner?setInterval(()=>{if(runtime.ownerStopped(instanc
 ownerTimer?.unref();server.on('close',()=>clearInterval(ownerTimer));
 const url=`http://127.0.0.1:${port}/`;
 function openPage(){
- if(!process.argv.includes('--open')||process.platform!=='win32')return;
- const browser=require('node:child_process').spawn('explorer.exe',[url],{stdio:'ignore'});
+ if(!process.argv.includes('--open'))return;
+ const opener=process.platform==='win32'?'explorer.exe':process.platform==='darwin'?'/usr/bin/open':'xdg-open';
+ const browser=require('node:child_process').spawn(opener,[url],{stdio:'ignore',windowsHide:true});
  browser.on('error',e=>console.error(`Open the URL above in your browser: ${e.message}`));
  browser.unref();
 }

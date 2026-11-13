@@ -1,10 +1,12 @@
-# Furnish Windows 桌面版
+# Furnish 桌面版
+
+2026-11-13：新增 macOS arm64/x64 原生打包和 `.command` 入口、`.app` 外工作目录、Mac 编辑菜单及关窗后 Dock 重开。Mac mini 24GB 的环境准备、迁移和待实测项见 [macOS](MACOS.md)；本页其余 Windows 路径仍指 Windows，macOS 实机尚未执行。
 
 2026-11-07（图标）：正式EXE、窗口、桌面和已固定任务栏入口统一使用暖陶色户型标识，打包自动写入八档原生ICO资源。源SVG、重建入口、本机备份及验证见[应用图标](DESKTOP-IDENTITY.md)。
 
 2026-11-07：桌面退出排查新增本机有界生命周期日志（`.local/desktop-runtime/events.jsonl`），并修复可选MCP桥启动失败会关闭已加载窗口的路径。用户约5分钟3D自退出尚未复现；实际415秒隔离测试、系统卡死记录与部署范围见[排查记录](validation/desktop-exit-20261107/README.md)。
 
-桌面版提供独立窗口和自带的 Electron 45.0.0 运行环境。解包后双击 `Furnish.exe`，无需另装 Node.js 或浏览器，运行不需要联网。当前打包入口支持 Windows x64；这仍是使用 Chromium 内核的桌面程序。
+桌面版提供独立窗口和自带的 Electron 45.0.0 运行环境。Windows 解包后双击 `Furnish.exe`，无需另装 Node.js 或浏览器，运行不需要联网。打包入口支持 Windows x64 和 macOS arm64/x64，须在目标系统用对应架构依赖原生打包；这仍是使用 Chromium 内核的桌面程序。
 
 2026-10-31：Ctrl+S立即保存当前已应用方案；未保存修改最迟1分钟自动保存。顶部保存状态显示未保存／保存中／最后成功时间，点击可立即保存或查看路径和失败原因。每次编辑仍即时写恢复缓存；编辑窗口草稿需先点击其应用／保存设计。切到后台不立即写正式文件，关闭时的原保存保护保留。
 

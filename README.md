@@ -6,6 +6,8 @@
 
 Codex 建模插件：[Furnish × Blender](plugins/furnish-blender/README.md) 将 DSH 的独立建模引擎适配为本机 MCP，提供参考图测量、GUI／后台 Blender 操作和 Furnish 单配置生产整链路验证。安装与验收见 [Codex Blender 工作流](docs/CODEX-BLENDER-PLUGIN.md)。
 
+Mac mini / Apple Silicon：已准备原生 `.app` 打包、双击启动和环境预检，首次安装及实机验收见 [macOS 迁移与验证](docs/MACOS.md)。macOS 实机结果待验证，不以 Windows 回归代替。
+
 ## 本 fork 的升级：DXF 优先，图片描图辅助
 
 ### 图纸朝向与自动尺寸（2026-10-14）
