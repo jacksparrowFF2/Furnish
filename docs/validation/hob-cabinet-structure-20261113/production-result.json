@@ -1,0 +1,126 @@
+{
+  "passed": true,
+  "configurations": 12,
+  "reports": [
+    {
+      "rot": 0,
+      "flip": false,
+      "mountHeight": 0,
+      "bearingArea": 6120,
+      "bodyBottom": 770,
+      "separatorTop": 748,
+      "trayTop": 720,
+      "movingBoards": 20
+    },
+    {
+      "rot": 0,
+      "flip": false,
+      "mountHeight": 120,
+      "bearingArea": 6120,
+      "bodyBottom": 890,
+      "separatorTop": 868,
+      "trayTop": 840,
+      "movingBoards": 20
+    },
+    {
+      "rot": 0,
+      "flip": true,
+      "mountHeight": 0,
+      "bearingArea": 6120,
+      "bodyBottom": 770,
+      "separatorTop": 748,
+      "trayTop": 720,
+      "movingBoards": 20
+    },
+    {
+      "rot": 0,
+      "flip": true,
+      "mountHeight": 120,
+      "bearingArea": 6120,
+      "bodyBottom": 890,
+      "separatorTop": 868,
+      "trayTop": 840,
+      "movingBoards": 20
+    },
+    {
+      "rot": 37,
+      "flip": false,
+      "mountHeight": 0,
+      "bearingArea": 6120,
+      "bodyBottom": 770,
+      "separatorTop": 748,
+      "trayTop": 720,
+      "movingBoards": 20
+    },
+    {
+      "rot": 37,
+      "flip": false,
+      "mountHeight": 120,
+      "bearingArea": 6120,
+      "bodyBottom": 890,
+      "separatorTop": 868,
+      "trayTop": 840,
+      "movingBoards": 20
+    },
+    {
+      "rot": 37,
+      "flip": true,
+      "mountHeight": 0,
+      "bearingArea": 6120,
+      "bodyBottom": 770,
+      "separatorTop": 748,
+      "trayTop": 720,
+      "movingBoards": 20
+    },
+    {
+      "rot": 37,
+      "flip": true,
+      "mountHeight": 120,
+      "bearingArea": 6120,
+      "bodyBottom": 890,
+      "separatorTop": 868,
+      "trayTop": 840,
+      "movingBoards": 20
+    },
+    {
+      "rot": 180,
+      "flip": false,
+      "mountHeight": 0,
+      "bearingArea": 6120,
+      "bodyBottom": 770,
+      "separatorTop": 748,
+      "trayTop": 720,
+      "movingBoards": 20
+    },
+    {
+      "rot": 180,
+      "flip": false,
+      "mountHeight": 120,
+      "bearingArea": 6120,
+      "bodyBottom": 890,
+      "separatorTop": 868,
+      "trayTop": 840,
+      "movingBoards": 20
+    },
+    {
+      "rot": 180,
+      "flip": true,
+      "mountHeight": 0,
+      "bearingArea": 6120,
+      "bodyBottom": 770,
+      "separatorTop": 748,
+      "trayTop": 720,
+      "movingBoards": 20
+    },
+    {
+      "rot": 180,
+      "flip": true,
+      "mountHeight": 120,
+      "bearingArea": 6120,
+      "bodyBottom": 890,
+      "separatorTop": 868,
+      "trayTop": 840,
+      "movingBoards": 20
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+[
+  {
+    "mode": "http",
+    "passed": true,
+    "checks": [
+      "support strip edits real width and center: counter-support-left-B",
+      "support strip edits real width and center: counter-support-right-B",
+      "strip edit has one undo",
+      "redo restores bearing width",
+      "saved host retains both bearing strips",
+      "application undo restores original design",
+      "save/reload and application redo preserve the structure",
+      "actual application geometry has two 18×340 bearing faces",
+      "actual stove body remains at original height",
+      "formal GLB includes the complete host",
+      "formal GLB readback verifies bearing faces and actual body clearance",
+      "no runtime errors: "
+    ]
+  },
+  {
+    "mode": "file",
+    "passed": true,
+    "checks": [
+      "support strip edits real width and center: counter-support-left-B",
+      "support strip edits real width and center: counter-support-right-B",
+      "strip edit has one undo",
+      "redo restores bearing width",
+      "saved host retains both bearing strips",
+      "application undo restores original design",
+      "save/reload and application redo preserve the structure",
+      "actual application geometry has two 18×340 bearing faces",
+      "actual stove body remains at original height",
+      "formal GLB includes the complete host",
+      "formal GLB readback verifies bearing faces and actual body clearance",
+      "no runtime errors: "
+    ]
+  },
+  {
+    "mode": "desktop",
+    "passed": true,
+    "checks": [
+      "support strip edits real width and center: counter-support-left-B",
+      "support strip edits real width and center: counter-support-right-B",
+      "strip edit has one undo",
+      "redo restores bearing width",
+      "saved host retains both bearing strips",
+      "application undo restores original design",
+      "save/reload and application redo preserve the structure",
+      "actual application geometry has two 18×340 bearing faces",
+      "actual stove body remains at original height",
+      "formal GLB includes the complete host",
+      "formal GLB readback verifies bearing faces and actual body clearance",
+      "no runtime errors: "
+    ]
+  }
+]

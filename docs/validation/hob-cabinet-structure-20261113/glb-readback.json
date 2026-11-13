@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "reports": [
+    {
+      "file": "hob-structure-desktop.glb",
+      "hostParts": 114,
+      "bearingArea": [
+        6119.999695999548,
+        6119.999695999548
+      ],
+      "separatorClearance": 22.000001281499863
+    },
+    {
+      "file": "hob-structure-file.glb",
+      "hostParts": 114,
+      "bearingArea": [
+        6119.9996960014105,
+        6119.999695999548
+      ],
+      "separatorClearance": 22.00000128149975
+    },
+    {
+      "file": "hob-structure-http.glb",
+      "hostParts": 114,
+      "bearingArea": [
+        6119.9996960014105,
+        6119.999695999548
+      ],
+      "separatorClearance": 22.00000128149975
+    }
+  ]
+}
