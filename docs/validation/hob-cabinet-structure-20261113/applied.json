@@ -1,0 +1,42 @@
+{
+  "applied": true,
+  "persisted": true,
+  "verified": true,
+  "planId": "custom_mv37igji",
+  "activeDesign": {
+    "id": "dmwd80ij0",
+    "name": "1601厨房 · 大号拉斯克与可拆检修收纳"
+  },
+  "revision": "2af97548e5cc8e568444f16cd2c849ac8b3745bca688c14b09c41cc05049c1cf",
+  "save": {
+    "mode": "saved",
+    "message": "设计已保存到本地正式文件\n保存位置：D:\\1601装修\\Furnish项目\\workspace.furnish.json\n最后成功保存：2026/11/13 22:19:29",
+    "pending": false
+  },
+  "undo": {
+    "available": 1,
+    "redoAvailable": 0
+  },
+  "changes": [
+    {
+      "path": "furniture.29.kitchen.modules.2.structure.cabinet.boxes.0.components.3.w",
+      "before": 80,
+      "after": 98
+    },
+    {
+      "path": "furniture.29.kitchen.modules.2.structure.cabinet.boxes.0.components.3.x",
+      "before": -432,
+      "after": -441
+    },
+    {
+      "path": "furniture.29.kitchen.modules.2.structure.cabinet.boxes.0.components.4.w",
+      "before": 80,
+      "after": 98
+    },
+    {
+      "path": "furniture.29.kitchen.modules.2.structure.cabinet.boxes.0.components.4.x",
+      "before": 432,
+      "after": 441
+    }
+  ]
+}
