@@ -25,7 +25,8 @@ function snapshot(T,{groups,camera,sun,material=o=>o.material,includeCeilings=fa
   const role=Object.entries({...o.userData,...architectureRoles}).filter(([k,v])=>v!==null&&(/Part$|Accessory$|Hinge$/.test(k)||k==='furnishPartKey'||partFields.has(k)||Object.hasOwn(architectureRoles,k))&&['string','number','boolean','object'].includes(typeof v)).sort(([a],[b])=>a.localeCompare(b)).map(([k,v])=>k+':'+(typeof v==='object'?JSON.stringify(identityValue(v)):v)).join('|');
   if(role&&roles.at(-1)!==role)roles=[...roles,role];
   if(o.userData.furnishPartSource&&sources.at(-1)!==o.userData.furnishPartSource)sources=[...sources,o.userData.furnishPartSource];
-  const key=o.userData.layerObject||layer;
+  // Stable panel names repeat across ceiling regions; each region owns its scope.
+  const key=o.userData.layerObject||(o.userData.ceiling?.id?'ceiling:'+o.userData.ceiling.id:layer);
   if(!includeCeilings&&(key.startsWith('roomCeiling:')||o.userData.ceiling)){if(!includeHidden)return;shown=false;}
   if(o.isMesh&&!o.material?.wireframe){
    const m=material(o),geometry=o.geometry.clone(),mats=Array.isArray(m)?m.map(clean):clean(m),prefix=owner?'furniture:'+owner+':'+part:'architecture:'+key;geometries.add(geometry);

@@ -1,0 +1,99 @@
+{
+  "date": "2026-11-14",
+  "sourceDesign": {
+    "id": "dmwf2m9mc",
+    "name": "1601 · 简洁吊顶与暖白照明 · 方案A"
+  },
+  "sourceUnchanged": true,
+  "sourceHash": "1fef2df07b29b3fa8052c1bde02db95b4bd48d1407aa245dde6eb338de139f9a",
+  "glb": {
+    "sha256": "449440a34eab86171854cf9af70e842ab0c305dce8e4f29f32cbeadf834a5ce5",
+    "bytes": 107085804,
+    "productionMeshCount": 3687,
+    "fullCeilings": true
+  },
+  "camera": {
+    "positionMm": {
+      "x": 8410,
+      "y": 6270,
+      "z": 1660.0000000000002
+    },
+    "targetMm": {
+      "x": 8410,
+      "y": 3400,
+      "z": 1880
+    },
+    "expectedHorizontalFov": 70,
+    "cyclesHorizontalFov": 70.00591743511647,
+    "verticalFov": 42.94205421578586,
+    "cyclesVerticalFov": 42.94205487376436,
+    "transformMaxErrorM": 7.550474534490093e-8,
+    "horizontalFovErrorDeg": 0.005917435116472802,
+    "roundingNote": "1200×674 is rounded from source aspect 1620/910, producing less than 0.006 degree horizontal FOV difference"
+  },
+  "gpu": {
+    "cycles": {
+      "requested": "gpu",
+      "type": "GPU",
+      "backend": "OPTIX",
+      "devices": [
+        "NVIDIA GeForce RTX 4070 Ti SUPER"
+      ],
+      "fallback": null
+    },
+    "webgpu": {
+      "vendor": "nvidia",
+      "architecture": "lovelace",
+      "device": "",
+      "description": "",
+      "isFallbackAdapter": false
+    }
+  },
+  "renderings": {
+    "current": {
+      "engine": "Three.js r160 WebGL",
+      "exposure": 1.25,
+      "policy": "unchanged production raster, saved light budget and virtual fill approximations"
+    },
+    "progressive": {
+      "engine": "Three.js r187 + three-gpu-pathtracer 0.0.28",
+      "samples": 1024,
+      "seconds": 48.12188499999046,
+      "setupSeconds": 2.910030000030994,
+      "denoiser": {
+        "type": "OIDN WebGPU HDR albedo/normal small",
+        "weights": "rt_hdr_alb_nrm_small.tza"
+      }
+    },
+    "preview": {
+      "samples": 128,
+      "seconds": 7.608785000026226,
+      "setupSeconds": 2.9081099999547004
+    },
+    "cycles": {
+      "engine": "Cycles 5.2.3 LTS",
+      "samples": 512,
+      "seconds": 56.954591512680054,
+      "setupSeconds": 14.283021926879883,
+      "denoised": true
+    }
+  },
+  "commonPhysicalInput": {
+    "rectangles": 22,
+    "spots": 9,
+    "maxBounces": 8,
+    "exposure": 10,
+    "referenceExposure": 1.25,
+    "display": "same Three.js ACES + sRGB, x8/+3EV versus default retained in separate images",
+    "canonicalHash": "a7674a9827d621db8bf980926068160c288b4b98413822c05c082965932bd401",
+    "weightsHash": "980ea307e7825cae23ed8b1addf8de62ece84b61094795a5631ebf1c91b2e1a7",
+    "photometricConvention": "cd / 683 -> common radiometric RGB basis; material emissive remains as glTF; the 683 constant is not actual LED electrical efficiency"
+  },
+  "limitations": [
+    "Current baseline and new renderers use different lighting representations; do not attribute all differences to GI",
+    "Generic lamp intensity is still a planning assumption, not measured lumens or verified IES",
+    "No Windows performance inference for Mac/Metal, integrated GPUs or mobile",
+    "No new renderer integrated into production Furnish; only existing complete-ceiling export identity bug repaired",
+    "No beauty relighting or material replacement; complete walls and ceilings retained"
+  ]
+}
