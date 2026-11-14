@@ -1,0 +1,7 @@
+{
+  "assets/models/desk-lamp-mijia-pro/v1-final/desk-lamp-mijia-pro-v1.blend": "86ca9e806ebcdd9f4759c1cbae7f8117282130b32c4d0ce769f2c92e207bebcb",
+  "assets/models/desk-lamp-mijia-pro/v1-final/desk-lamp-mijia-pro-v1.glb": "7b4ee8d149b462af9324b32673ac9be93d2fcbf50441cf7610d58f8187ef8407",
+  "src/data/desk-lamp-mijia-pro-blender-asset.js": "4ebe12300f9f1dc29efda8ac56946f0c1ee3eb7d1e52175846e5924da0f8b9db",
+  "scripts/blender-model-desk-lamp-mijia-pro.py": "cb6d2c0a0df3679e0b5552f8c4e1b4cbdce49280e0ce4db97243a349e60822e4",
+  "scripts/render-desk-lamp-review.py": "6c304c0f98e818f1f68fc28f0dbd0a8537a7a6a30cdcdf8a058a4238cc9b0d3f"
+}

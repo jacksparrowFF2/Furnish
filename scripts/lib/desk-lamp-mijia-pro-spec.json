@@ -1,0 +1,9 @@
+{
+  "type":"desk_lamp_mijia_pro",
+  "global":"FurnishMijiaDeskLampAsset",
+  "size":[520,470,420],
+  "parts":["base-shell","base-seam","base-sole","foot-left-front","foot-right-front","foot-left-back","foot-right-back","post","post-socket","rear-hinge","rear-hinge-cap-left","rear-hinge-cap-right","reach-arm","arm-seam","front-joint","head-center","head-left","head-right","diffuser-left","diffuser-right","control-rim","control-face","control-mark-power","control-mark-auto","control-mark-seat","control-mark-time","hinge-cable"],
+  "sourceUrl":"https://item.jd.com/100118995289.html",
+  "notes":"520 mm head, 470 mm shown overall height, 344 mm hinge-to-hinge arm and 213×159 mm base are labelled reference dimensions. 420 mm complete posed depth, thicknesses, pivots and fine details are authoring estimates; 344 mm must not be used as total depth. Static horizontal reference pose; no mechanical articulation validation.",
+  "emittingFaces":[{"part":"diffuser-left","center":[-143,435.7,167],"width":226,"depth":44},{"part":"diffuser-right","center":[143,435.7,167],"width":226,"depth":44}]
+}

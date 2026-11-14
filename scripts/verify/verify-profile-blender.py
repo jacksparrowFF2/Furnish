@@ -1,6 +1,7 @@
 """Read back every production part. --render reopens the API-downloaded BLEND."""
 import bpy
 import json
+import math
 import pathlib
 import sys
 
@@ -17,7 +18,15 @@ for case in cases:
         assert scene.camera and scene.render.engine == 'CYCLES'
         assert scene.render.resolution_x == scene.render.resolution_y == 512
         assert scene.view_settings.view_transform == 'AgX'
-        assert abs(scene.view_settings.exposure) < 1e-7
+        raw=(run/'studio'/case['id']/'scene.glb').read_bytes()
+        doc=json.loads(raw[20:20+int.from_bytes(raw[12:16],'little')])
+        lighting=doc.get('scenes',[{}])[doc.get('scene',0)].get('extras',{}).get('furnish',{}).get('lighting')
+        expected_exposure=math.log2(lighting['exposure']) if lighting else 0
+        assert abs(scene.view_settings.exposure-expected_exposure) < 1e-6, ('exposure contract',scene.view_settings.exposure,expected_exposure)
+        if lighting:
+            background=scene.world.node_tree.nodes['Background']
+            assert all(abs(background.inputs['Color'].default_value[i]-lighting['world'][i])<1e-6 for i in range(3))
+            assert abs(background.inputs['Strength'].default_value-1)<1e-7
     else:
         bpy.ops.wm.read_factory_settings(use_empty=True)
         bpy.ops.import_scene.gltf(filepath=str(run/'browser'/case['file']))

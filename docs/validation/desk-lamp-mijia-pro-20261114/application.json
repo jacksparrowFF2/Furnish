@@ -1,0 +1,48 @@
+{
+  "date": "2026-11-14T02:46:34.096Z",
+  "file": "D:\\1601装修\\Furnish项目\\workspace.furnish.json",
+  "originalDesign": {
+    "id": "dmwf2m9mc",
+    "name": "1601 · 简洁吊顶与暖白照明 · 方案A",
+    "count": 182,
+    "sha256": "b4c600dd528ff41289c14681f35cabd14bc277791deb009e96c8e530c37aeefc"
+  },
+  "currentDesign": {
+    "id": "dmwfrs5ki",
+    "name": "1601 · 照明方案B · 米家书桌阅读灯",
+    "count": 183,
+    "added": [
+      {
+        "brand": "小米/米家",
+        "color": "#f5f5f2",
+        "cx": 3419.5,
+        "cy": 9220,
+        "d": 420,
+        "frontClearance": 0,
+        "h": 470,
+        "id": "fmwfs0huy1",
+        "model": "桌面学习灯 Pro · MJTD07YL · 白色",
+        "mountHeight": 745,
+        "name": "主卧书桌阅读灯 · 米家桌面学习灯 Pro MJTD07YL",
+        "rot": 90,
+        "sourceUrl": "https://item.jd.com/100118995289.html",
+        "type": "desk_lamp_mijia_pro",
+        "w": 520
+      }
+    ],
+    "changes": [
+      {
+        "id": "fmv5c10yi4",
+        "changedKeys": [
+          "deskLampVisible"
+        ]
+      }
+    ]
+  },
+  "saved": true,
+  "spaceCheck": {
+    "focusId": "fmwfs0huy1",
+    "issues": [],
+    "algorithmBoundary": "Current solids only; no manufacturer installation clearance or photometric certification."
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "parts": 27,
+  "faces": [
+    {
+      "name": "diffuser-left",
+      "owner": "fmwfskimd1",
+      "layer": null,
+      "position": [
+        -2.1975,
+        1.2405,
+        3.677
+      ],
+      "u": [
+        2.220446049250313e-16,
+        0,
+        1
+      ],
+      "v": [
+        1,
+        0,
+        -2.220446049250313e-16
+      ],
+      "normal": [
+        0,
+        -1,
+        0
+      ],
+      "width": 0.226,
+      "height": 0.044,
+      "radiance": 8.83424483108335,
+      "color": [
+        1,
+        0.8796223968851662,
+        0.7156935005005721
+      ]
+    },
+    {
+      "name": "diffuser-right",
+      "owner": "fmwfskimd1",
+      "layer": null,
+      "position": [
+        -2.1975,
+        1.2405,
+        3.963
+      ],
+      "u": [
+        2.220446049250313e-16,
+        0,
+        1
+      ],
+      "v": [
+        1,
+        0,
+        -2.220446049250313e-16
+      ],
+      "normal": [
+        0,
+        -1,
+        0
+      ],
+      "width": 0.226,
+      "height": 0.044,
+      "radiance": 8.83424483108335,
+      "color": [
+        1,
+        0.8796223968851662,
+        0.7156935005005721
+      ]
+    }
+  ],
+  "lamp": {
+    "id": "fmwfskimd1",
+    "type": "desk_lamp_mijia_pro",
+    "name": "米家桌面学习灯 Pro · MJTD07YL",
+    "cx": 3419.5,
+    "cy": 9320,
+    "w": 520,
+    "d": 420,
+    "rot": 90,
+    "color": "#f5f5f2",
+    "h": 470,
+    "mountHeight": 745,
+    "frontClearance": 0,
+    "brand": "小米/米家",
+    "model": "桌面学习灯 Pro · MJTD07YL · 白色",
+    "sourceUrl": "https://item.jd.com/100118995289.html"
+  }
+}

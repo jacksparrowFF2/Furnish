@@ -1,0 +1,21 @@
+{
+  "blender": "5.2.3 LTS",
+  "device": {
+    "requested": "gpu",
+    "type": "GPU",
+    "backend": "OPTIX",
+    "devices": [
+      "NVIDIA GeForce RTX 4070 Ti SUPER"
+    ],
+    "fallback": null
+  },
+  "stages": [
+    "silhouette",
+    "structure",
+    "materials"
+  ],
+  "camera": "70mm perspective hero (-.85,-1.35,.36), target (0,0,.24); orthographic .27m detail; approximate reference with unknown photo lens",
+  "samples": 48,
+  "exposure": 0,
+  "transform": "AgX"
+}

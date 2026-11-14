@@ -1,3 +1,5 @@
+2026-11-14（米家桌面学习灯）：MJTD07YL采用Blender静态源／独立发布资产，desk-lamp生产构造同时供显示、实体与两块向下面光源；沿统一光学单位和GLB快照。deskLampVisible仅为原书桌装饰台灯提供可选开关，旧缺失保留、显式参数最低v90，共享恢复、缓存与核对链路，无新保存通道。见[型号契约](DESK-LAMP-MIJIA-PRO.md)。
+
 2026-11-14（灯光高清预览）：lighting-core统一运行时单位／曝光、主照明预算与生产发光面；View3D公有快照沿原GLB，独立iframe使用离线r187/WebGPU，r160只负责快速编辑。短修订＋相机签名取消过期预览，关闭释放GPU；无新项目字段／保存通道或构建工具。基础Cycles使用新元数据与SPEC，精修参数保持；详见[契约](LIGHTING-PREVIEW.md)与[增量验收](validation/lighting-preview-20261114/README.md)。
 
 2026-11-14（客厅光照对照／完整吊顶导出）：独立试验目录使用同一生产GLB与相机对照WebGPU路径追踪和Cycles，尚未接入生产渲染器。导出缺省建筑scope补用ceiling.id，修复两片铝扣板稳定部件同名冲突，区域内重复仍拒绝；无新持久字段。实际结果、光照单位／曝光边界及增量验收见[对照](validation/living-lighting-comparison-20261114/README.md)。

@@ -6,7 +6,7 @@
 
 更新：`node scripts/index-model-assets.cjs --write`；核对：`node scripts/index-model-assets.cjs --check`。
 
-73份产品／设计档案，318张参考图，12张历史原图待补；46组Blender模型。参数化验证配置89组，全部家具库177条目／149种类型。
+74份产品／设计档案，325张参考图，12张历史原图待补；47组Blender模型。参数化验证配置90组，全部家具库179条目／151种类型。
 
 | 产品／设计资料 | 参考图 | 输出／构造 | 待补原图 |
 |---|---|---|---|
@@ -30,6 +30,7 @@
 | [源氏木语-Y00Y06-0.45米转角书柜](corner-bookcase/README.md) | 1 | [BLEND](corner-bookcase/v1/corner-bookcase-v1.blend) · [GLB](corner-bookcase/v1/corner-bookcase-v1.glb) | 0 |
 | [源氏木语-Y00Y06058-0.58米转角书柜](corner-bookcase-580/README.md) | 1 | [BLEND](corner-bookcase-580/v1/corner-bookcase-580-v1.blend) · [GLB](corner-bookcase-580/v1/corner-bookcase-580-v1.glb) | 0 |
 | [窗帘与窗饰](curtain-references/README.md) | 1 | 参考资料 | 0 |
+| [米家桌面学习灯 Pro · MJTD07YL](desk-lamp-mijia-pro/README.md) | 7 | [BLEND](desk-lamp-mijia-pro/v1-final/desk-lamp-mijia-pro-v1.blend) · [GLB](desk-lamp-mijia-pro/v1-final/desk-lamp-mijia-pro-v1.glb) | 0 |
 | [米家-台式5套洗碗机](dishwasher/README.md) | 0 | [BLEND](dishwasher/dishwasher-v1.blend) · [GLB](dishwasher/dishwasher-v1.glb) | 3 |
 | [飞利浦-DL269-筒灯](downlight-dl269/README.md) | 8 | 参数化 | 0 |
 | [定制玄关置物台柜](entry-console/README.md) | 1 | 参考资料 | 0 |

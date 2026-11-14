@@ -1,0 +1,81 @@
+{
+  "format": 1,
+  "id": "desk-lamp-mijia-pro",
+  "name": "米家桌面学习灯 Pro · MJTD07YL",
+  "types": [
+    "desk_lamp_mijia_pro"
+  ],
+  "route": "blender",
+  "document": "docs/DESK-LAMP-MIJIA-PRO.md",
+  "sourceLinks": [
+    "https://item.jd.com/100118995289.html",
+    "https://www.ithome.com/0/795/480.htm",
+    "https://finance.sina.com.cn/tech/digi/2024-09-13/doc-incnxsxy7327115.shtml"
+  ],
+  "references": [
+    {
+      "path": "references/product-page/mi-product-1.png",
+      "kind": "product-page",
+      "url": "https://img.ithome.com/newsuploadfiles/2024/9/b6c37739-4563-4413-99a2-9f0338d07797.png",
+      "sha256": "c9df2497a6bda004aa70ddeed331db463d317683f047005ebac7399a03482792",
+      "bytes": 688028,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/mi-product-2.png",
+      "kind": "product-page",
+      "url": "https://img.ithome.com/newsuploadfiles/2024/9/380188f8-9b02-453a-abe1-5e2cb70a7236.png",
+      "sha256": "a338a8c36a40902db8cc1d08a410f6fe2ec174d556d4b59d1751ea8d8985803a",
+      "bytes": 484682,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/mi-product-3.png",
+      "kind": "product-page",
+      "url": "https://img.ithome.com/newsuploadfiles/2024/9/1cd61453-a092-4706-8520-0ac1257ae3f6.png",
+      "sha256": "8169aebc80669a87d04d8c69204ff3f9438c583964708cba41116b386177eff8",
+      "bytes": 426147,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/mi-product-4.png",
+      "kind": "product-page",
+      "url": "https://img.ithome.com/newsuploadfiles/2024/9/24c24ec1-38df-4071-8301-d5533a7156da.png",
+      "sha256": "f33547cb4279865aba1535d8a0798922ad99ef85be34b4648923d83869b4e35c",
+      "bytes": 568096,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/mi-product-5.png",
+      "kind": "product-page",
+      "url": "https://img.ithome.com/newsuploadfiles/2024/9/936a7366-7c70-4873-a04b-61d64c36f79f.png",
+      "sha256": "2f31c2c5721f2468ddd6c3089a3f1061b0adbf56bbcaa31de4ace536c377179d",
+      "bytes": 660553,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/mi-product-6.png",
+      "kind": "product-page",
+      "url": "https://img.ithome.com/newsuploadfiles/2024/9/276ee2c2-6bab-4829-a527-9de16e06cabc.png",
+      "sha256": "4694413d2981581829d0e9518e727dda0ebe6ca2fc15abb164f5e03edc3b4068",
+      "bytes": 511706,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/mi-product-specs-reproduced.jpg",
+      "kind": "product-page",
+      "url": "https://n.sinaimg.cn/spider20240913/8/w750h2458/20240913/e99e-7e40bfc954679fe33f7f39dff41173d1.jpg",
+      "sha256": "7283cee3385a72f895569a9fc1bd054ec0aae560e0d1270e82733c851962f4da",
+      "bytes": 146203,
+      "legacyPaths": []
+    }
+  ],
+  "missingReferences": [],
+  "validation": [
+    "docs/validation/desk-lamp-mijia-pro-20261114/README.md"
+  ],
+  "notes": [
+    "京东自营核对型号MJTD07YL；归档同型号营销尺寸图，不是用户实拍。520mm灯头、470mm标注整高、344mm灯臂及213×159mm底座；420mm整灯占深与各厚度/细节为静态姿态估算。",
+    "静态参考姿态，未实现机械调臂、雷达人感或真实米家联动；4000K固定白光，未知光通量仅作规划亮度。"
+  ]
+}

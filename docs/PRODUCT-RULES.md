@@ -1,3 +1,5 @@
+2026-11-14（书桌台灯）：desk_lamp_mijia_pro集中470mm默认高、底部mountHeight新建0、4000K两块面光和规划120cd；未知流明不采用京东0lm。普通desk可选deskLampVisible，缺省仅读true、不物化；显式布尔值最低v90，同型保留／跨型清理，生产／实体缓存及确认覆盖实际参数。见[契约与依据](DESK-LAMP-MIJIA-PRO.md)。
+
 2026-11-13（抽面与浅柜）：cabinetBuilder.drawerAppearance声明drawers／drawerModule／slidingTop的可选六位color、solid／wood饰面及最低v89；drawers显式handle同版。缺失沿原外观，覆盖仅抽面，恢复删除字段，配色不清空间确认。boxDimensions集中标准柜150mm与保留物理框架50mm最小深度。deviceOpenings.version=2仅用于适用厨房派生空间规则，不物化到kitchen字段；见[验证及边界](validation/cabinet-editor-audit-20261113/README.md)。
 
 2026-11-12（踢脚配色）：cabinetBuilder.plinthAppearance.formatVersion=88；v2踢脚和由生产元数据cabinetSection=plinth识别的原形状板件可保存可选color（#RRGGBB），其它board不开放此字段。新旧缺失保持原生产材质，恢复默认删除覆盖，不改几何／空间语义；支脚与卡扣排除。显式配色沿原组件复用、当前／命名／库／项目／仓库与缓存恢复；完整配置进入三维缓存，空间签名仍剔除颜色。见[验收](validation/cabinet-editor-experience-20261112/README.md)。

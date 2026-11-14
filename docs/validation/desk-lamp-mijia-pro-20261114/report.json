@@ -1,0 +1,428 @@
+{
+  "passed": true,
+  "profile": "desk-lamp-mijia-pro",
+  "route": "blender",
+  "fixture": {
+    "id": "model-pilot",
+    "cx": 0,
+    "cy": 0,
+    "rot": 0,
+    "flip": false,
+    "type": "desk_lamp_mijia_pro",
+    "name": "米家桌面学习灯 Pro · MJTD07YL",
+    "w": 520,
+    "d": 420,
+    "color": "#f5f5f2",
+    "mountHeight": 0,
+    "frontClearance": 0,
+    "brand": "小米/米家",
+    "model": "桌面学习灯 Pro · MJTD07YL · 白色",
+    "sourceUrl": "https://item.jd.com/100118995289.html",
+    "h": 470
+  },
+  "alternateKind": "back",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "started": "2026-11-14T02:20:23.514Z",
+  "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-Nt5n1K\\desk-lamp-mijia-pro-jp8lCh",
+  "stages": [
+    {
+      "name": "author-preflight",
+      "passed": true,
+      "started": "2026-11-14T02:20:23.515Z",
+      "result": {
+        "command": "author-desk-lamp-mijia-pro",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-Nt5n1K\\desk-lamp-mijia-pro-jp8lCh\\authored",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-Nt5n1K\\desk-lamp-mijia-pro-jp8lCh\\authored",
+        "passed": true,
+        "parts": 27,
+        "blender": "5.2.3 LTS",
+        "pose": "static horizontal; overall depth 420mm is a model estimate",
+        "preflight": {
+          "passed": true,
+          "profile": "desk-lamp-mijia-pro",
+          "parts": 27,
+          "motions": 0
+        }
+      },
+      "finished": "2026-11-14T02:20:24.708Z"
+    },
+    {
+      "name": "preflight-negative",
+      "passed": true,
+      "started": "2026-11-14T02:20:24.708Z",
+      "result": {
+        "passed": true,
+        "profile": "desk-lamp-mijia-pro",
+        "blender": "5.2.3 LTS",
+        "rejected": [
+          "empty-material-slot",
+          "wrong-face-index",
+          "wrong-stable-identity",
+          "wrong-units",
+          "nonfinite-vertex",
+          "unexpected-part"
+        ],
+        "motionApplicable": false
+      },
+      "finished": "2026-11-14T02:20:25.549Z"
+    },
+    {
+      "name": "publish",
+      "passed": true,
+      "started": "2026-11-14T02:20:25.550Z",
+      "result": {
+        "command": "publish-desk-lamp-mijia-pro",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-Nt5n1K\\desk-lamp-mijia-pro-jp8lCh\\authored\\desk-lamp-mijia-pro-v1.glb",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-Nt5n1K\\workspace\\src\\data\\desk-lamp-mijia-pro-blender-asset.js",
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "glbSha256": "736eaf883daa75131f79b3fa5c97b4076784508364c793b0a781b7850668554b",
+        "runtimeSha256": "5be5dd83d685300f03674dc06fc2f54ed72462877e65891b15996c6b7d2e1246"
+      },
+      "finished": "2026-11-14T02:20:26.707Z"
+    },
+    {
+      "name": "geometry-state",
+      "passed": true,
+      "started": "2026-11-14T02:20:26.708Z",
+      "result": {
+        "passed": true,
+        "tests": [
+          {
+            "name": "desk-lamp",
+            "profile": "desk-lamp-mijia-pro",
+            "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-Nt5n1K\\desk-lamp-mijia-pro-jp8lCh\\desk-lamp.log",
+            "reused": false
+          }
+        ],
+        "spatial": {
+          "passed": true,
+          "results": [
+            {
+              "id": "desk-lamp-mijia-pro",
+              "passed": true,
+              "cases": [
+                {
+                  "state": "nominal",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 27,
+                  "bottom": 0,
+                  "top": 470,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "nominal",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 27,
+                  "bottom": 0,
+                  "top": 470,
+                  "externalDistance": 0,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 27,
+                  "bottom": 0,
+                  "top": 470,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 27,
+                  "bottom": 0,
+                  "top": 470,
+                  "externalDistance": 0,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "finished": "2026-11-14T02:20:31.114Z"
+    },
+    {
+      "name": "http-file-production",
+      "passed": true,
+      "started": "2026-11-14T02:20:31.115Z",
+      "result": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "http",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": false
+          },
+          {
+            "mode": "file",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": true
+          }
+        ],
+        "exports": [
+          {
+            "mode": "http",
+            "state": "nominal",
+            "parts": 27,
+            "bounds": [
+              [
+                -0.25999999046325684,
+                0,
+                -0.20999999344348907
+              ],
+              [
+                0.25999999046325684,
+                0.4699999988079071,
+                0.20999999344348907
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "resized",
+            "parts": 27,
+            "bounds": [
+              [
+                -0.29120001196861267,
+                0,
+                -0.22679999470710754
+              ],
+              [
+                0.29120001196861267,
+                0.5076000094413757,
+                0.22679999470710754
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "nominal",
+            "parts": 27,
+            "bounds": [
+              [
+                -0.25999999046325684,
+                0,
+                -0.20999999344348907
+              ],
+              [
+                0.25999999046325684,
+                0.4699999988079071,
+                0.20999999344348907
+              ]
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-14T02:20:55.595Z"
+    },
+    {
+      "name": "blender-production-readback",
+      "passed": true,
+      "started": "2026-11-14T02:20:55.596Z",
+      "result": {
+        "passed": true,
+        "profile": "desk-lamp-mijia-pro",
+        "blender": "5.2.3 LTS",
+        "source": "production-glb",
+        "results": [
+          {
+            "case": "http-nominal",
+            "parts": 27,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-resized",
+            "parts": 27,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-nominal",
+            "parts": 27,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-14T02:20:56.886Z"
+    },
+    {
+      "name": "studio-production-export",
+      "passed": true,
+      "started": "2026-11-14T02:20:56.887Z",
+      "result": {
+        "passed": true,
+        "preset": "model-studio-v2",
+        "views": [
+          {
+            "id": "front",
+            "state": "nominal",
+            "parts": 27,
+            "position": [
+              0,
+              0.23499999940395355,
+              1.5204640577791604
+            ],
+            "target": [
+              0,
+              0.23499999940395355,
+              0
+            ]
+          },
+          {
+            "id": "oblique",
+            "state": "nominal",
+            "parts": 27,
+            "position": [
+              0.8417844485242333,
+              0.697981446092282,
+              1.1784982279339264
+            ],
+            "target": [
+              0,
+              0.23499999940395355,
+              0
+            ]
+          },
+          {
+            "id": "back",
+            "state": "nominal",
+            "parts": 27,
+            "position": [
+              -0.8607932669328225,
+              0.5793173061770827,
+              -1.2051105737059513
+            ],
+            "target": [
+              0,
+              0.23499999940395355,
+              0
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-14T02:21:15.632Z"
+    },
+    {
+      "name": "render-front",
+      "passed": true,
+      "started": "2026-11-14T02:21:15.632Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-14T02:21:18.848Z"
+    },
+    {
+      "name": "render-oblique",
+      "passed": true,
+      "started": "2026-11-14T02:21:18.849Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-14T02:21:21.998Z"
+    },
+    {
+      "name": "render-back",
+      "passed": true,
+      "started": "2026-11-14T02:21:21.999Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-14T02:21:25.110Z"
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "passed": true,
+      "started": "2026-11-14T02:21:25.110Z",
+      "result": {
+        "passed": true,
+        "profile": "desk-lamp-mijia-pro",
+        "blender": "5.2.3 LTS",
+        "source": "downloaded-render-blend",
+        "results": [
+          {
+            "case": "front",
+            "parts": 27,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "oblique",
+            "parts": 27,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "back",
+            "parts": 27,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-14T02:21:25.904Z"
+    }
+  ],
+  "finished": "2026-11-14T02:21:25.904Z"
+}

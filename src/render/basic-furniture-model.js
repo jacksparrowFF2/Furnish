@@ -81,9 +81,11 @@ switch(f.type){
       g.add(syncIdentity.produce("basic-furniture-model:site-49",()=>rbox(.22, .012, .16, bm, 0, my, mz, .004)), syncIdentity.produce("basic-furniture-model:site-50",()=>rod([0, my, mz - .02], [0, my + .2, mz - .03], .012, bm)));
       g.add(syncIdentity.produce("basic-furniture-model:site-51",()=>rbox(.62, .37, .02, '#1d1d1f', 0, my + .12, mz - .04, .006)), syncIdentity.produce("basic-furniture-model:site-52",()=>box(.6, .33, .002, screenMat('#27405c'), 0, my + .15, mz - .029)));
       g.add(syncIdentity.produce("basic-furniture-model:site-53",()=>rbox(.42, .015, .13, '#e8e8ea', 0, my, .06, .004)), syncIdentity.produce("basic-furniture-model:site-54",()=>rbox(.4, .004, .11, '#d2d2d6', 0, my + .014, .06, .002)), syncIdentity.produce("basic-furniture-model:site-55",()=>blob(.03, .015, .05, '#e8e8ea', .3, my + .012, .07, 16)));
+      if(f.deskLampVisible!==false){
       const lx = -w/2 + .15, lz = bz + .12;
       g.add(syncIdentity.produce("basic-furniture-model:site-56",()=>cyl(.07, .075, .02, bm, lx, my, lz, 28)), syncIdentity.produce("basic-furniture-model:site-57",()=>tube([[lx, my + .02, lz], [lx, my + .3, lz + .03], [lx + .12, my + .42, lz + .1]], .008, bm)));
       const hd = syncIdentity.produce("basic-furniture-model:site-58",()=>cyl(.02, .06, .1, bm, lx + .14, my + .34, lz + .12, 24)); hd.rotation.x = .5; g.add(hd);
+      }
       g.add(syncIdentity.produce("basic-furniture-model:site-59",()=>cyl(.04, .038, .09, ceramic({roughness:.3}), w/2 - .15, my, .05, 20)), syncIdentity.produce("basic-furniture-model:site-60",()=>rbox(.2, .015, .28, '#3b5566', -w/2 + .3, my, .1, .004)));
       break;
     }

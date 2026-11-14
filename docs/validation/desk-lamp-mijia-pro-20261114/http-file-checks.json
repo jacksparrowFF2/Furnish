@@ -1,0 +1,16 @@
+[
+  {
+    "mode": "http",
+    "passed": true,
+    "checks": [
+      "actual MJTD07YL catalog constructor, editable bottom elevation, undo/redo, private cache/file reload, real 27-part production export and two uncapped area emitters"
+    ]
+  },
+  {
+    "mode": "file",
+    "passed": true,
+    "checks": [
+      "actual MJTD07YL catalog constructor, editable bottom elevation, undo/redo, private cache/file reload, real 27-part production export and two uncapped area emitters"
+    ]
+  }
+]
