@@ -9,7 +9,9 @@
 - node语法：app、workflow-tools、project-ui、project-core及变更测试。
 - test-project、test-project-validation、test-project-recovery：原格式往返、完整性、旧方案及恢复合并。
 - test-file-menu：HTTP和file://；可见菜单真实下载再导入，2份方案／1份历史及名称保留；误选工作区不改变store；旧方案兼容；保存错误重试、恢复撤销、刷新、键盘退出及1440/932/390宽度边界。所有HTTP文件接口拦截，无正式文件写入。截图：output/playwright/file-menu/。
-- test-project-transfer-desktop：同一打包EXE、独立源码／缓存／端口，复制正式1601项目后实际原生下载，再经菜单导入，预览20份方案／16份历史，方案下拉含全部20项，正式保存并刷新保留，390px窗口菜单在视口内。原正式项目SHA256前后相同。运行：output/desktop-verification/project-transfer-oduaro/，含result.json及三张截图；实际看图检查菜单与导入预览。
+- test-project-transfer-desktop：同一打包EXE、独立源码／缓存／端口，复制正式1601项目后实际原生下载，再经菜单导入，预览20份方案／16份历史，方案下拉含全部20项，正式保存并刷新保留，390px窗口菜单在视口内。原正式项目SHA256前后相同。运行：output/desktop-verification/project-transfer-oduaro/；最终复验output/desktop-verification/project-transfer-FnExdX/，含result.json及三张截图；实际看图检查菜单与导入预览。
+
+复验中的project-transfer-1qENos在缩窄最大化窗口时超时，导入／保存刷新已通过；测试补充先退出最大化后，FnExdX整轮通过。该调整只影响测试窗口，不修改应用窗口策略。
 
 ## 范围和限制
 
