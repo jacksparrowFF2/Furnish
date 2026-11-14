@@ -10,6 +10,18 @@ function environment(night,hour=12){
   {exposure:1.05,ambient:1.1,reflection:1,sun:1.4+daylight*1.6,background:'#f5f2ea',world:[.35,.38,.44]};
 }
 const isPreviewLight=o=>!!(o.userData.downlightLight||o.userData.ceilingPanelLight||o.userData.pathLight||o.userData.ceilingStripLight);
+const contourColors=new WeakMap();
+// Unlit construction lines need the ambient attenuation that lit boards receive.
+// Apply only to the main scene; editor previews keep their original structure lines.
+function cabinetContours(group,lighting){
+ const scale=Math.min(1,Math.max(0,lighting.ambient/environment(false).ambient));
+ group.traverse(o=>{
+  if(!o.userData.cabinetOutline)return;
+  const m=o.material;if(!m?.color)return;
+  if(!contourColors.has(m))contourColors.set(m,m.color.clone());
+  m.color.copy(contourColors.get(m)).multiplyScalar(scale);
+ });
+}
 const isFill=o=>!!(o.userData.ceilingPanelBounce||o.userData.ceilingStripLight==='bounce');
 function requested(o){if(o.userData.previewLightEnabled===false)return false;for(let p=o.parent;p;p=p.parent)if(!p.visible)return false;return true;}
 // One primary sample per fixture, then its remaining direct samples, then virtual fill.
@@ -40,6 +52,6 @@ function collect(T,groups){
  });}
  return {version:VERSION,unit:'RGB radiometric equivalent; photometric / 683',rects,spots};
 }
-const api={VERSION,PHOTOMETRIC,radiometric,photometric,panel,environment,isPreviewLight,isFill,requested,prioritize,collect};
+const api={VERSION,PHOTOMETRIC,radiometric,photometric,panel,environment,cabinetContours,isPreviewLight,isFill,requested,prioritize,collect};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishLighting=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

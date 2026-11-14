@@ -1425,6 +1425,7 @@ function buildFurn(work=state){
   furnG.children.slice().forEach(o => { if (!keep.has(o.userData.fid)){ clearGroup(o); furnG.remove(o); } });
   furnG.visible = opt.furn&&!globalThis.FurnishTilePresetUI?.inspecting(); selKey = null; applyGrow();
   FurnishDownlightModel.setLights(furnG,opt.lamps,{night:opt.night});
+  FurnishLighting.cabinetContours(furnG,FurnishLighting.environment(opt.night,opt.hour));
   syncModelErrors();
 }
 
@@ -1516,6 +1517,7 @@ function applyGrow(){
 /* ======================= 日照 / 夜景 ======================= */
 function applyLight(){
   const lighting=FurnishLighting.environment(opt.night,opt.hour);sun.userData.radiometricLight=true;
+  FurnishLighting.cabinetContours(furnG,lighting);
   FurnishDownlightModel.setLights(furnG,opt.lamps,{night:opt.night});
   const t = (opt.hour - 6) / 12, az = Math.PI * (.15 + t*.7), el = Math.sin(Math.PI*t) * 1.05 + .15, warm = 1 - Math.sin(Math.PI*t);
   const horizontal=globalThis.FurnishDrawing?FurnishDrawing.sun([Math.cos(az)*18,-Math.sin(az)*10+8],state.drawing):[Math.cos(az)*18,-Math.sin(az)*10+8];
