@@ -1,0 +1,66 @@
+name: Windows desktop
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: windows-desktop-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  package:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: node node_modules/electron/install.js
+      - name: Desktop regression
+        run: |
+          node tests/test-desktop.cjs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          node tests/test-desktop-executable.cjs
+      - name: Package clean portable folder
+        run: node scripts/package-desktop.cjs --portable --out output/release/Furnish-windows-x64
+      - name: Archive and checksum
+        shell: pwsh
+        run: |
+          $folder = 'output/release/Furnish-windows-x64'
+          foreach ($name in @('projects', '.local', 'furnish-desktop.json')) {
+            if (Test-Path -LiteralPath "$folder/$name") { throw "Unexpected personal or machine configuration: $name" }
+          }
+          if (!(Test-Path -LiteralPath "$folder/Furnish.exe")) { throw 'Missing executable' }
+          Compress-Archive -LiteralPath $folder -DestinationPath output/release/Furnish-windows-x64.zip
+          $hash = (Get-FileHash output/release/Furnish-windows-x64.zip -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$hash  Furnish-windows-x64.zip" | Set-Content output/release/SHA256SUMS.txt -Encoding ascii
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Furnish-windows-x64
+          path: |
+            output/release/Furnish-windows-x64.zip
+            output/release/SHA256SUMS.txt
+          if-no-files-found: error
+          retention-days: 14
+      - name: Publish tagged version
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        shell: pwsh
+        run: |
+          gh release view "$env:RELEASE_TAG" --repo "$env:GITHUB_REPOSITORY" *> $null
+          if ($LASTEXITCODE -eq 0) { throw 'Release already exists; refusing to overwrite assets.' }
+          gh release create "$env:RELEASE_TAG" output/release/Furnish-windows-x64.zip output/release/SHA256SUMS.txt --repo "$env:GITHUB_REPOSITORY" --verify-tag --title "Furnish $env:RELEASE_TAG (Windows x64)" --generate-notes --notes "Windows x64 portable folder. Extract the entire ZIP before running Furnish.exe. Personal projects, local settings and Blender are not included. This package is unsigned. macOS is pending hardware validation."
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
