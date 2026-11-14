@@ -27,10 +27,28 @@ const {pathToFileURL}=require('node:url'),V=require('../scripts/lib/browser-veri
    await page.locator('#storage-settings').click();await page.locator('#storage-retry').click();assert(await page.evaluate(()=>window.testRetried));await page.locator('#dlgClose').click();
    await page.evaluate(()=>{repositoryClient=window.testClient;delete window.testClient;syncSaved();});
   }else{assert.equal(await page.locator('#storage-directory').count(),0);assert.equal(requests,0);}
-  await page.locator('#fileMenu>summary').click();assert.equal((await page.locator('#fileMenu>summary').innerText()).trim(),'导出');
+  await page.locator('#fileMenu>summary').click();assert.equal((await page.locator('#fileMenu>summary').innerText()).trim(),'导入／导出');
   assert.equal(await page.locator('#fileMenu #importJson').count(),0);
-  for(const id of ['file-backup','file-deliver','file-dxf','purchaseList','exportPng','exportCsv','printPlan'])assert(await page.locator('#'+id).isVisible(),id);
+  for(const id of ['file-backup','file-import','file-deliver','file-dxf','purchaseList','exportPng','exportCsv','printPlan'])assert(await page.locator('#'+id).isVisible(),id);
   const download=page.waitForEvent('download');await page.locator('#exportCsv').click();await download;assert.equal(await page.locator('#fileMenu').getAttribute('open'),null);
+  // Move a real full-project download through the visible import entry, including named designs.
+  await page.evaluate(()=>{store.designs=store.designs.filter(d=>d.planId!==PLAN.id);for(const [id,name,editable] of [['transfer-a','迁移方案 A',true],['transfer-b','迁移方案 B',true],['transfer-history','迁移前历史',false]])store.designs.push({id,name,planId:PLAN.id,editable,ts:Date.now(),work:JSON.parse(snap())});renderDesigns();});
+  await page.locator('#fileMenu>summary').click();await page.waitForFunction(()=>document.querySelector('#file-project-scope').textContent.includes('2 个设计方案'));
+  const projectDownload=page.waitForEvent('download');await page.locator('#file-backup').click();const projectFile=await projectDownload;
+  const projectPath=await projectFile.path(),packed=JSON.parse(fs.readFileSync(projectPath,'utf8'));assert.equal(packed.format,'furnish-project');assert.equal(packed.payload.designs.length,3);
+  const choose=async file=>{await page.locator('#fileMenu>summary').click();const chooser=page.waitForEvent('filechooser');await page.locator('#file-import').click();await (await chooser).setFiles(file);};
+  await page.evaluate(()=>{store.designs=[];delete store.activeDesigns?.[PLAN.id];renderDesigns();});await choose(projectPath);
+  assert((await page.locator('#project-import-preview').innerText()).includes('2 份设计方案 · 1 份历史记录'));
+  await page.locator('#import-design-list>summary').click();assert((await page.locator('#import-design-list').innerText()).includes('迁移方案 B'));
+  await page.getByRole('button',{name:'导入并打开',exact:true}).click();
+  assert.deepEqual(await page.evaluate(()=>store.designs.filter(d=>d.planId===PLAN.id&&d.editable).map(d=>d.name)),['迁移方案 A','迁移方案 B']);
+  assert.equal(await page.locator('#design-select option').count(),3);
+  const beforeRejected=await page.evaluate(()=>JSON.stringify(store));
+  await choose({name:'workspace.furnish.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify({format:'furnish-workspace'}))});
+  await page.getByText('未能导入项目',{exact:true}).waitFor();assert((await page.locator('#dlg').innerText()).includes('这是自动保存的整个工作区文件'));assert.equal(await page.evaluate(()=>JSON.stringify(store)),beforeRejected);await page.locator('#dlgClose').click();
+  // Legacy layout files remain accepted and explicitly disclose that no named designs are included.
+  await choose({name:'old-layout.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify({...packed.payload.current,plan:packed.payload.planId}))});
+  await page.locator('#project-import-preview').waitFor();assert((await page.locator('#project-import-preview').innerText()).includes('仅包含当前布置'));await page.locator('#dlgClose').click();
   await page.locator('#moreMenu>summary').click();assert(await page.locator('#moreMenu #recoveryPoints').isVisible());assert(await page.locator('#moreMenu #importJson').isVisible());
   assert.equal(await page.locator('#moreMenu #repository-recovery').count(),protocol==='http'?1:0);
   await page.locator('#recoveryPoints').click();assert(await page.locator('#recovery-create').isVisible());await page.locator('#dlgClose').click();

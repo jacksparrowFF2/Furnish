@@ -195,10 +195,11 @@
         <div id="file-storage-actions" class="file-actions"></div>
       </div></div>
     </details>
-    <details class="menu" id="fileMenu"><summary class="btn"><svg class="i"><use href="#i-file"/></svg><span data-en="Export">导出</span></summary>
+    <details class="menu" id="fileMenu"><summary class="btn"><svg class="i"><use href="#i-file"/></svg><span data-en="Import / export">导入／导出</span></summary>
       <div class="menu-pop file-pop"><div class="file-content">
-        <div class="menu-cap" data-en="Editable project">可编辑项目</div>
+        <div class="menu-cap" data-en="Move to another computer / editable backup">换电脑／可编辑备份</div>
         <div id="file-backup-actions" class="file-actions"></div>
+        <p id="file-project-scope" class="file-note"></p>
         <div class="menu-cap" data-en="Deliver & share">成果与分享</div>
         <div id="file-delivery-actions" class="file-actions"></div>
         <div class="file-actions file-export-grid">
@@ -207,8 +208,10 @@
           <button class="btn" id="exportCsv" data-en="Export quote (CSV)">导出报价清单 CSV</button>
           <button class="btn" id="printPlan" data-en="Print">打印</button>
         </div>
-        <div class="menu-cap" data-en="Raw data">原始数据</div>
-        <button class="btn" id="exportJson" data-en="Export plan JSON">导出方案 JSON</button>
+        <details class="file-fold"><summary data-en="Advanced: current layout only">高级：仅当前布置</summary>
+        <p class="project-note" data-en="Does not include other named designs or history. Use Export full project to move to another computer.">不含其他命名方案和历史记录。换电脑请用“导出完整项目”。</p>
+        <button class="btn" id="exportJson" data-en="Export current layout JSON">仅导出当前布置 JSON</button>
+        </details>
       </div></div>
     </details>
     <div id="more-actions" hidden>
@@ -218,7 +221,7 @@
       </section>
       <section class="file-recovery-region" aria-labelledby="more-project-heading">
         <h3 id="more-project-heading" data-en="Projects and floor plans">项目与户型</h3>
-        <button class="btn" id="importJson" data-en="Import plan JSON">导入方案 JSON</button>
+        <button class="btn" id="importJson" data-en="Import project / legacy layout">导入项目／旧方案</button>
       </section>
       <details class="file-fold file-maintenance"><summary data-en="Reset & clear">重置与清理</summary>
         <button class="btn" id="resetMenu" data-en="Reset…">重置…</button>

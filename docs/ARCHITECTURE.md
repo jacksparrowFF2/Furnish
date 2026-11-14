@@ -1,3 +1,5 @@
+2026-11-14（项目迁移入口）：workflow-tools在同一菜单提供完整项目导入／导出与动态范围说明，project-ui沿原pack/unpack和restore增加名称预览与文件类型说明；原单布置JSON保留高级入口，无新保存通道／格式。见[桌面迁移](DESKTOP.md#重新打包与迁移)及[增量验收](validation/project-transfer-20261114/README.md)。
+
 2026-11-14（风尊三代Pro挂机）：独立acwall_midea_mxc3p沿Blender静态资产与acwall-midea生产构造供显示／数值实体，mountHeight和h沿product-rules及原mutate／保存／缓存链；无新格式或状态机制。新增两段离线经典脚本，发布器拒绝退化零法线，保留旧通用acwall。见[型号契约](ACWALL-MIDEA-MXC3P.md)。
 
 2026-11-14（床头灯带）：新增定制cove-light参数化生产构造与实际向上发光面，数值实体与GLB复用；lightPreviewLevel／lightKelvin沿v91原保存恢复链，亮度与色温不清空间确认。新灯槽通过显式标记独立于顶灯开关，隐藏仍关闭；旧光源语义不变。通用面灯和米家台灯可选预览亮度，旧缺失100%。见[契约](COVE-LIGHT.md)。

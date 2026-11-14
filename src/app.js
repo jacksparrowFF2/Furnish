@@ -808,7 +808,7 @@ const bedsOf = p => p.customDraft?p.rooms.filter(r=>FurnishDesign.inferUse(r,(p.
 const bathsOf = p => p.customDraft?p.rooms.filter(r=>FurnishDesign.inferUse(r,(p.id===PLAN.id?state:store.work[p.id])?.rooms?.[r.id])==='bathroom').length:CN_NUM[(p.name.match(/([一两二三])卫/)||[])[1]]??1;
 const netOf = p => p.rooms.filter(r => r.counted !== false).reduce((a, r) => a + area(r.poly), 0);
 let galleryF = 'all';
-function openPlans(){ openDialog({title:tr('户型库', 'Floor Plans'), wide:true, body:'<div class="actions" style="margin:0 0 14px"><button class="btn primary" id="gallery-new">导入 DXF／图片 · 新建户型</button><button class="btn" id="gallery-import">加载户型／项目文件</button></div><p>导出文件可发送给其他用户；在此加载后继续编辑。自定义户型可删除，内置示例保留。</p><div id="gallery"></div>', onOpen:()=>{renderGallery();$('#gallery-new').onclick=()=>{closeDialog();window.FurnishEditor.open(true);};$('#gallery-import').onclick=()=>window.FurnishWorkspace.importProject();}}); }
+function openPlans(){ openDialog({title:tr('户型库', 'Floor Plans'), wide:true, body:'<div class="actions" style="margin:0 0 14px"><button class="btn primary" id="gallery-new">导入 DXF／图片 · 新建户型</button><button class="btn" id="gallery-import">导入项目（含全部方案）</button></div><p>导出文件可发送给其他用户；在此加载后继续编辑。自定义户型可删除，内置示例保留。</p><div id="gallery"></div>', onOpen:()=>{renderGallery();$('#gallery-new').onclick=()=>{closeDialog();window.FurnishEditor.open(true);};$('#gallery-import').onclick=()=>window.FurnishWorkspace.importProject();}}); }
 function renderGallery(){
   const el = $('#gallery'); if (!el) return;
   const F = [['all', '全部', 'All'], ['1', '开间 · 一居', 'Studio · 1BR'], ['2', '两居', '2BR'], ['3', '三居', '3BR'], ['4', '四居及以上', '4BR+']];
@@ -1023,7 +1023,7 @@ drawer(null);                                  // 恢复上次的面板收起状
 $('#exportPng').onclick = exportPNG;
 $('#exportJson').onclick = () => download(tr('户型装修方案', 'floor-plan-design') + '-' + PLAN.id + '.json',
   new Blob([JSON.stringify({plan:PLAN.id, name:PLAN.name, ...state}, null, 2)], {type:'application/json'}));
-$('#importJson').onclick = () => $('#fileIn').click();
+$('#importJson').onclick = () => FurnishWorkspace.importProject();
 $('#fileIn').onchange = e => {
   const file = e.target.files[0]; if (!file) return;
   file.text().then(txt => {
