@@ -1062,3 +1062,9 @@ button.replacement-product:focus-visible{outline:2px solid var(--accent);outline
 .scene-measure-panel output,.scene-measure-panel small{display:block;margin:8px 0;line-height:1.5}
 .scene-measure-panel small{color:#58665f;font-size:12px}
 .scene-measure-panel .actions{display:flex;gap:6px;flex-wrap:wrap}
+
+/* Progressive observation is an input-transparent image over the production editor. */
+#progressive-frame{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none;z-index:1}#progressive-frame[hidden]{display:none}
+.scene-label-layer{z-index:2}#progressive-controls{position:absolute;top:12px;left:12px;z-index:5;display:flex;align-items:center;gap:8px;max-width:calc(100% - 24px);padding:6px 9px;border-radius:10px;background:var(--panel);color:var(--ink);border:1px solid var(--line);font-size:12px;pointer-events:auto}#progressive-controls select{padding:4px;max-width:175px}#progressive-controls [hidden]{display:none!important}#progressive-status{max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#progressive-retry{padding:3px 7px;font-size:12px}#progressive-controls[data-state="fallback"] #progressive-status{max-width:180px}@media(max-width:600px){#progressive-controls{gap:5px;flex-wrap:wrap}#progressive-status{max-width:160px}}
+
+@media(max-width:1100px){main.drawer-panel #progressive-controls{visibility:hidden}}

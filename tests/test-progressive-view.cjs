@@ -1,0 +1,12 @@
+'use strict';
+const assert=require('node:assert/strict'),P=require('../src/core/progressive-view-core.js');
+const a={matrixWorld:Array(16).fill(1),projectionMatrix:Array(16).fill(2)},b=structuredClone(a);
+b.matrixWorld[4]+=1e-11;assert.equal(P.cameraKey(a),P.cameraKey(b),'orbit floating point noise does not restart sampling');
+b.matrixWorld[4]+=.001;assert.notEqual(P.cameraKey(a),P.cameraKey(b));
+assert.deepEqual(P.size(2),{width:1200,height:600});assert.deepEqual(P.size(.5,640),{width:320,height:640});assert.throws(()=>P.size(NaN));assert.throws(()=>P.size(0));
+let p=P.performancePolicy();assert.equal(p.sample({now:0,samples:0}).action,'keep');assert.equal(p.sample({now:90000,samples:0}).action,'keep','even a long first compilation is not a slow-GPU sample');assert.equal(p.sample({now:100000,samples:1}).action,'keep');assert.equal(p.sample({now:111999,samples:1}).action,'keep');assert.equal(p.sample({now:112000,samples:1}).action,'reduce');
+p.reset();assert.equal(p.sample({now:113000,samples:1}).edge,640,'camera updates preserve reduced resolution');assert.equal(p.sample({now:125000,samples:2}).action,'fallback');
+p=P.performancePolicy();p.sample({now:0,samples:1});assert.equal(p.sample({now:15000,samples:256,frameTime:300}).action,'keep','a complete image is not a slow renderer');
+p=P.performancePolicy();p.sample({now:0,samples:1});assert.equal(p.sample({now:20000,samples:25,frameTime:20}).action,'keep');
+p=P.performancePolicy();p.sample({now:0,samples:1});for(const now of [3000,6000,9000])assert.equal(p.sample({now,samples:now/1000,frameTime:120}).action,'keep');assert.equal(p.sample({now:12000,samples:12,frameTime:120}).action,'reduce','sustained GPU frame time matters independently of samples/sec');
+console.log('PASS stable camera keys, viewport aspect, post-compile measurement, two-stage slow-GPU fallback, no oscillation and healthy/complete negatives');

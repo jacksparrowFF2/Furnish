@@ -1,3 +1,5 @@
+2026-11-14（默认渐进观察）：progressive-view-core集中相机稳定键／视口与性能分级，progressive-view UI沿公有生产快照把独立r187光追叠加到主画布；相机更新复用BVH，场景变更重建，交互辅助与性能回退仍由r160负责。高清下载与Cycles沿原入口；仅本机画质偏好，无新项目字段／保存通道。见[契约](LIGHTING-PREVIEW.md)及[验收](validation/progressive-view-20261114/README.md)。
+
 2026-11-14（项目迁移入口）：workflow-tools在同一菜单提供完整项目导入／导出与动态范围说明，project-ui沿原pack/unpack和restore增加名称预览与文件类型说明；原单布置JSON保留高级入口，无新保存通道／格式。见[桌面迁移](DESKTOP.md#重新打包与迁移)及[增量验收](validation/project-transfer-20261114/README.md)。
 
 2026-11-14（风尊三代Pro挂机）：独立acwall_midea_mxc3p沿Blender静态资产与acwall-midea生产构造供显示／数值实体，mountHeight和h沿product-rules及原mutate／保存／缓存链；无新格式或状态机制。新增两段离线经典脚本，发布器拒绝退化零法线，保留旧通用acwall。见[型号契约](ACWALL-MIDEA-MXC3P.md)。
