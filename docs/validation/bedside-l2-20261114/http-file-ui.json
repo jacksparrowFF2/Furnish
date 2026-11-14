@@ -1,0 +1,16 @@
+[
+  {
+    "mode": "http",
+    "passed": true,
+    "checks": [
+      "real cove catalog/geometry/upward emitters, preview controls/undo/redo/save/reload and actual production sources"
+    ]
+  },
+  {
+    "mode": "file",
+    "passed": true,
+    "checks": [
+      "real cove catalog/geometry/upward emitters, preview controls/undo/redo/save/reload and actual production sources"
+    ]
+  }
+]

@@ -26,7 +26,8 @@ function build(T,f){
  const P=products(),spec=P.definition(f).ceilingPanel||{rim:3},g=new T.Group(),base=P.value(f,'mountHeight')/1000,w=f.w/1000,d=f.d/1000,h=P.height(f)/1000,rim=Math.min(spec.rim/1000,h);
  const white=new T.MeshStandardMaterial({color:f.color||'#f5f5f0',roughness:.48}),dark=new T.MeshStandardMaterial({color:'#454a4c',roughness:.8}),metal=new T.MeshStandardMaterial({color:'#a7acae',metalness:.4,roughness:.65});
  function box(name,width,height,depth,x,y,z,material){const m=new T.Mesh(new T.BoxGeometry(width,height,depth),material);m.position.set(x,base+y,z);m.name=name;m.userData.furnishPartSource='bath-heater:'+name;m.userData.furnishStablePart='bath-heater:'+name;m.userData.ceilingOwnMaterial=true;m.castShadow=m.receiveShadow=true;g.add(m);}
- const light=P.definition(f).panelLight,energy=light?.referenceArea?Math.max(.15,Math.min(2,f.w*f.d/light.referenceArea)):1;
+ const level=P.supports(f,'lightPreviewLevel')?P.value(f,'lightPreviewLevel')/100:1;
+ const light=P.definition(f).panelLight,energy=level*(light?.referenceArea?Math.max(.15,Math.min(2,f.w*f.d/light.referenceArea)):1);
  if(light){
   const edge=Math.min(light.frame/1000,w/4,d/4),glow=new T.MeshStandardMaterial({color:'#fafbf8',emissive:light.color,emissiveIntensity:1.5,roughness:.65});
   (glow.userData||={}).ceilingPanelEmitter=true;

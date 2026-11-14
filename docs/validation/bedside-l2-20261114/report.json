@@ -1,0 +1,389 @@
+{
+  "passed": true,
+  "profile": "cove_light",
+  "route": "parametric",
+  "fixture": {
+    "id": "model-pilot",
+    "cx": 0,
+    "cy": 0,
+    "rot": 0,
+    "flip": false,
+    "type": "cove_light",
+    "name": "床头反射灯槽 · L2灯带方案占位",
+    "w": 2000,
+    "d": 45,
+    "color": "#f0f0eb",
+    "mountHeight": 1250,
+    "lightPreviewLevel": 30,
+    "lightKelvin": 3000,
+    "frontClearance": 0,
+    "h": 35
+  },
+  "alternateKind": "back",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "started": "2026-11-14T04:50:06.777Z",
+  "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-KorC23\\cove_light-IyDNXM",
+  "stages": [
+    {
+      "name": "author-preflight",
+      "passed": null,
+      "status": "not-applicable",
+      "reason": "Retain the existing Furnish parametric constructor; no Blender re-authoring."
+    },
+    {
+      "name": "preflight-negative",
+      "passed": null,
+      "status": "not-applicable",
+      "reason": "No imported author asset; validate production geometry and its structural suites."
+    },
+    {
+      "name": "publish",
+      "passed": null,
+      "status": "not-applicable",
+      "reason": "Parametric model has no offline asset publication stage."
+    },
+    {
+      "name": "geometry-state",
+      "passed": true,
+      "started": "2026-11-14T04:50:06.780Z",
+      "result": {
+        "passed": true,
+        "tests": [
+          {
+            "name": "cove-light",
+            "profile": "cove_light",
+            "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-KorC23\\cove_light-IyDNXM\\cove-light.log",
+            "reused": false
+          }
+        ],
+        "spatial": {
+          "passed": true,
+          "results": [
+            {
+              "id": "cove_light",
+              "passed": true,
+              "cases": [
+                {
+                  "state": "nominal",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 7,
+                  "bottom": 1250,
+                  "top": 1285.0000000000002,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "nominal",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 7,
+                  "bottom": 1250,
+                  "top": 1285.0000000000002,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 7,
+                  "bottom": 1250,
+                  "top": 1285.0000000000002,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 7,
+                  "bottom": 1250,
+                  "top": 1285.0000000000002,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "finished": "2026-11-14T04:50:09.910Z"
+    },
+    {
+      "name": "http-file-production",
+      "passed": true,
+      "started": "2026-11-14T04:50:09.910Z",
+      "result": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "http",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": false
+          },
+          {
+            "mode": "file",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": true
+          }
+        ],
+        "exports": [
+          {
+            "mode": "http",
+            "state": "nominal",
+            "parts": 8,
+            "bounds": [
+              [
+                -1.0000000000065192,
+                1.2499999999934808,
+                -0.02250000089406967
+              ],
+              [
+                1.0000000000065192,
+                1.2850000004172326,
+                0.02250000089406967
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "resized",
+            "parts": 8,
+            "bounds": [
+              [
+                -1.1200000047683716,
+                1.2499999999934808,
+                -0.02430000000651926
+              ],
+              [
+                1.1200000047683716,
+                1.2877999999016525,
+                0.02430000000651926
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "nominal",
+            "parts": 8,
+            "bounds": [
+              [
+                -1.0000000000065192,
+                1.2499999999934808,
+                -0.02250000089406967
+              ],
+              [
+                1.0000000000065192,
+                1.2850000004172326,
+                0.02250000089406967
+              ]
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-14T04:50:21.176Z"
+    },
+    {
+      "name": "blender-production-readback",
+      "passed": true,
+      "started": "2026-11-14T04:50:21.177Z",
+      "result": {
+        "passed": true,
+        "profile": "cove_light",
+        "blender": "5.2.3 LTS",
+        "source": "production-glb",
+        "results": [
+          {
+            "case": "http-nominal",
+            "parts": 8,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-resized",
+            "parts": 8,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-nominal",
+            "parts": 8,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-14T04:50:22.223Z"
+    },
+    {
+      "name": "studio-production-export",
+      "passed": true,
+      "started": "2026-11-14T04:50:22.223Z",
+      "result": {
+        "passed": true,
+        "preset": "model-studio-v2",
+        "views": [
+          {
+            "id": "front",
+            "state": "nominal",
+            "parts": 8,
+            "position": [
+              0,
+              1.2675000002053567,
+              3.7229897177759326
+            ],
+            "target": [
+              0,
+              1.2675000002053567,
+              0
+            ]
+          },
+          {
+            "id": "oblique",
+            "state": "nominal",
+            "parts": 8,
+            "position": [
+              2.061183117354948,
+              2.401150714750578,
+              2.8856563642969277
+            ],
+            "target": [
+              0,
+              1.2675000002053567,
+              0
+            ]
+          },
+          {
+            "id": "back",
+            "state": "nominal",
+            "parts": 8,
+            "position": [
+              -2.107727877897079,
+              2.1105911513641886,
+              -2.9508190290559106
+            ],
+            "target": [
+              0,
+              1.2675000002053567,
+              0
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-14T04:50:26.880Z"
+    },
+    {
+      "name": "render-front",
+      "passed": true,
+      "started": "2026-11-14T04:50:26.880Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-14T04:50:30.081Z"
+    },
+    {
+      "name": "render-oblique",
+      "passed": true,
+      "started": "2026-11-14T04:50:30.082Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-14T04:50:33.181Z"
+    },
+    {
+      "name": "render-back",
+      "passed": true,
+      "started": "2026-11-14T04:50:33.181Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-14T04:50:36.308Z"
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "passed": true,
+      "started": "2026-11-14T04:50:36.309Z",
+      "result": {
+        "passed": true,
+        "profile": "cove_light",
+        "blender": "5.2.3 LTS",
+        "source": "downloaded-render-blend",
+        "results": [
+          {
+            "case": "front",
+            "parts": 8,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "oblique",
+            "parts": 8,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "back",
+            "parts": 8,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-14T04:50:37.112Z"
+    }
+  ],
+  "finished": "2026-11-14T04:50:37.113Z"
+}

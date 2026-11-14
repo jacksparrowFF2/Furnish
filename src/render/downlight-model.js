@@ -31,7 +31,7 @@ function build(T,f){
  lamp.position.y=-.001;target.position.y=-1;lamp.target=target;lamp.userData.downlightLight=true;lamp.castShadow=true;lamp.shadow.mapSize.set(512,512);lamp.shadow.bias=-.0001;lightGroup.add(lamp,target);result.add(lightGroup);
  return result;
 }
-function setLights(group,on,{night=false}={}){group?.traverse(o=>{if(o.userData.downlightLight||o.userData.ceilingPanelLight)o.visible=o.userData.previewLightEnabled=on;if(o.userData.pathLight)o.visible=o.userData.previewLightEnabled=night;if(o.material?.userData?.downlightEmitter||o.material?.userData?.ceilingPanelEmitter)o.material.emissiveIntensity=on?(o.material.userData.emissionOn??1.5):0;if(o.material?.userData?.pathLightEmitter)o.material.emissiveIntensity=night?.8:0;});}
+function setLights(group,on,{night=false}={}){group?.traverse(o=>{if(o.userData.downlightLight||o.userData.ceilingPanelLight)o.visible=o.userData.previewLightEnabled=o.userData.independentLight||on;if(o.userData.pathLight)o.visible=o.userData.previewLightEnabled=night;if(o.material?.userData?.downlightEmitter||o.material?.userData?.ceilingPanelEmitter)o.material.emissiveIntensity=(o.material.userData.independentEmitter||on)?(o.material.userData.emissionOn??1.5):0;if(o.material?.userData?.pathLightEmitter)o.material.emissiveIntensity=night?.8:0;});}
 // WebGL forward lighting compiles every enabled light into each material. Keep
 // a bounded local preview; emissive faces and all production geometry remain.
 function limitLights(scene,camera,{lights=24,shadows=6,maxFragmentUniforms=1024,maxTextures=16}={}){

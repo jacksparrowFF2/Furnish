@@ -1,0 +1,9 @@
+[
+  {
+    "mode": "desktop",
+    "passed": true,
+    "checks": [
+      "real cove catalog/geometry/upward emitters, preview controls/undo/redo/save/reload and actual production sources, two actual 1920px/1024spp WebGPU bedroom images"
+    ]
+  }
+]

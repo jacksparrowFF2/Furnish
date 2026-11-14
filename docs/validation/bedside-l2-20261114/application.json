@@ -1,0 +1,73 @@
+{
+  "original": {
+    "id": "dmwfrs5ki",
+    "name": "1601 · 照明方案B · 米家书桌阅读灯",
+    "count": 183,
+    "hash": "f197cc2d288e7e57631e44d21be6459a8ce175ef13b0b69e3ea4b9dfb7966c60"
+  },
+  "current": {
+    "id": "dmwfx5us0",
+    "name": "1601 · 方案C · L2床头柔光灯带",
+    "count": 182,
+    "added": [
+      {
+        "color": "#f0f0eb",
+        "cx": 862,
+        "cy": 3837,
+        "d": 45,
+        "frontClearance": 0,
+        "h": 35,
+        "id": "fmwfxghgb1",
+        "lightKelvin": 3000,
+        "lightPreviewLevel": 30,
+        "mountHeight": 1250,
+        "name": "主卧床头柔光 · L2灯带方案 · 定制反射铝槽",
+        "rot": 270,
+        "type": "cove_light",
+        "w": 2000
+      },
+      {
+        "color": "#f0f0eb",
+        "cx": 3961.5,
+        "cy": 3352.625,
+        "d": 45,
+        "frontClearance": 0,
+        "h": 35,
+        "id": "fmwfxgofe2",
+        "lightKelvin": 3000,
+        "lightPreviewLevel": 30,
+        "mountHeight": 1250,
+        "name": "老人房床头柔光 · L2灯带方案 · 定制反射铝槽",
+        "rot": 270,
+        "type": "cove_light",
+        "w": 1400
+      }
+    ],
+    "removed": [
+      {
+        "id": "fmwf2mkf111",
+        "name": "主卧床头阅读灯① · 规划占位"
+      },
+      {
+        "id": "fmwf2mkf112",
+        "name": "主卧床头阅读灯② · 规划占位"
+      },
+      {
+        "id": "fmwf2mkf113",
+        "name": "老人房床头阅读灯 · 规划占位"
+      }
+    ],
+    "changedExisting": [],
+    "scene": {
+      "clearances": false,
+      "cut": 2.8,
+      "furn": true,
+      "hour": 11.75,
+      "labels": false,
+      "lamps": false,
+      "night": true,
+      "wallNumbers": false
+    }
+  },
+  "file": "D:\\1601装修\\Furnish项目\\workspace.furnish.json"
+}

@@ -23,6 +23,8 @@
 
 占位主灯、浴霸与夜灯的未测光通量、灯带亮度仍是规划估值，沿[原规划说明](LIGHTING-PLANNING.md)。这些效果不能替代照度、眩光、IES、红外覆盖或施工验证。快速画面的间接光近似也不能当作最终灯光判断。
 
+2026-11-14床头灯带补充：定制`cove_light`的向上发光面通过显式标记独立于顶灯总开关，自身`lightPreviewLevel=0`或隐藏时关闭；光度为规划估值。通用面灯／米家台灯可选预览亮度，缺失仍100%，保持原顶灯开关。见[床头灯槽契约](COVE-LIGHT.md)。
+
 ## 模块边界与离线依赖
 
 主编辑器继续使用现有嵌入的Three.js r160。`src/ui/lighting-preview.js`创建独立iframe，`src/render/lighting-preview.js`在其中使用r187和WebGPU路径追踪，避免混用两套Three对象。公有`View3D.highQualityScene/highQualitySignature`沿生产GLB快照提供相机、材质和光源；短修订号加相机矩阵用于临时失效，不把完整项目反复发送给面板。

@@ -1,0 +1,25 @@
+module.exports=async(p,V)=>{
+ const assert=require('node:assert/strict'),fs=require('node:fs'),errors=[];p.on('dialog',d=>d.accept());p.on('pageerror',e=>errors.push(e.message));p.on('console',m=>{if(m.type()==='error'&&/shader|WebGL|GPUValidation/i.test(m.text()))errors.push(m.text().slice(0,300));});
+ if(V.mode!=='desktop'){
+  const s=require('../../scripts/workspace-files.cjs').create(require('node:path').resolve(__dirname,'../..')).read().workspace;s.work={[s.planId]:s.work[s.planId]};s.designs=s.designs.filter(d=>d.id===s.activeDesigns[s.planId]);s.customPlans=s.customPlans.filter(d=>d.id===s.planId);
+  await p.evaluate(async s=>{s.updatedAt=Date.now()+1000;delete s._repository;localStorage.setItem('huxing-design-v'+s.v,JSON.stringify(s));await FurnishStorage.write(s);},s);await p.reload({waitUntil:'domcontentloaded',timeout:120000});await p.waitForFunction(()=>!repositoryBooting);
+ }
+ console.log('Cove '+V.mode+': loaded');
+ const lamps=await p.evaluate(()=>state.furniture.filter(f=>f.type==='cove_light'));assert.equal(lamps.length,2);const id=lamps.find(f=>f.w===2000).id;
+ await p.evaluate(id=>select({kind:'furn',id}),id);await p.locator('#fLightPreviewLevel').fill('45');await p.locator('#fLightPreviewLevel').dispatchEvent('change');assert.equal(await p.evaluate(id=>getF(id).lightPreviewLevel,id),45);await p.evaluate(()=>undo());assert.equal(await p.evaluate(id=>getF(id).lightPreviewLevel,id),30);await p.evaluate(()=>redo());assert.equal(await p.evaluate(id=>getF(id).lightPreviewLevel,id),45);await p.evaluate(()=>undo());
+ await p.locator('#fLightKelvin').selectOption('4000');assert.equal(await p.evaluate(id=>getF(id).lightKelvin,id),4000);await p.evaluate(()=>undo());
+ await p.evaluate(async()=>{save();await FurnishStorage.write(store);if(window.FurnishRepository&&repositoryClient?.status.mode!=='error')await FurnishRepository.flush();});if(V.mode==='desktop')await p.waitForFunction(()=>!repositoryClient?.pending);await p.reload({waitUntil:'domcontentloaded',timeout:120000});await p.waitForFunction(()=>!repositoryBooting);assert.equal(await p.evaluate(id=>getF(id).lightPreviewLevel,id),30);assert.equal(await p.evaluate(id=>getF(id).lightKelvin,id),3000);
+ console.log('Cove '+V.mode+': UI, undo/redo and save/reload checked');
+ await p.setViewportSize({width:1640,height:1060});for(const key of ['#tgLib','#tgPanel'])if(await p.locator(key).getAttribute('class').then(c=>c.includes('on')))await p.locator(key).click();
+ for(const shot of (V.mode==='desktop'?['main','elder']:['main'])){
+  await p.evaluate(async shot=>{await setView('3d');await View3D.automationCamera({view:'3d',mode:'orbit',horizontalFov:68,position:shot==='main'?{x:3350,y:3900,z:1450}:{x:6300,y:3650,z:1450},target:shot==='main'?{x:950,y:3837,z:1050}:{x:4050,y:3352.625,z:1050}});await View3D.automationReady();},shot);
+  await p.evaluate(async()=>{let previous=null,stable=0;const samples=[];for(let i=0;i<60;i++){const key=View3D.highQualitySignature();samples.push(key);stable=key&&key===previous?stable+1:0;if(stable>=4)return;previous=key;await new Promise(r=>setTimeout(r,50));}throw Error('Camera did not settle: '+JSON.stringify(samples.slice(-3)));});
+  const snapshot=await p.evaluate(async()=>{const d=await View3D.highQualityScene(),v=new DataView(d.buffer),j=JSON.parse(new TextDecoder().decode(new Uint8Array(d.buffer,20,v.getUint32(12,true))));return {lighting:d.lighting,coves:state.furniture.filter(f=>f.type==='cove_light'),parts:j.nodes.filter(n=>n.extras?.furnishId&&state.furniture.some(f=>f.type==='cove_light'&&f.id===n.extras.furnishId)&&n.mesh!==undefined).length,scene:state.scene3d};});assert.equal(snapshot.parts,16);for(const f of lamps){const r=snapshot.lighting.rects.filter(r=>r.owner===f.id);assert.equal(r.length,1);assert(r[0].normal[1]>.999);}fs.writeFileSync(V.artifact(V.mode+'-'+shot+'-sources.json'),JSON.stringify(snapshot,null,2));
+  if(V.mode==='desktop'){
+   await p.locator('#vLightingPreview').click();if(process.env.FURNISH_COVE_FINE==='1'){await p.locator('#lighting-quality').selectOption('fine');await p.locator('#lighting-start').click();}
+   await p.waitForFunction(()=>/已完成|未完成/.test(document.querySelector('#lighting-status')?.textContent||''),null,{timeout:300000});const status=await p.locator('#lighting-status').textContent();assert.match(status,/已完成/);console.log(shot+': '+status);await V.screenshot(shot+'-preview');
+   const data=await p.locator('#lighting-image img').evaluate(async img=>{const b=await(await fetch(img.src)).blob();return new Promise(resolve=>{const r=new FileReader();r.onload=()=>resolve(r.result.split(',')[1]);r.readAsDataURL(b);});});fs.writeFileSync(V.artifact(shot+'-bedside.png'),Buffer.from(data,'base64'));await p.locator('#lighting-close').click();
+  }
+ }
+ assert.deepEqual(errors,[]);return ['real cove catalog/geometry/upward emitters, preview controls/undo/redo/save/reload and actual production sources'+(V.mode==='desktop'?', two actual '+(process.env.FURNISH_COVE_FINE==='1'?'1920px/1024spp':'1200px/128spp')+' WebGPU bedroom images':'')];
+};

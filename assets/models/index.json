@@ -3,10 +3,10 @@
   "description": "Generated repository index; paths relative to repository root. This is metadata, not the application loading manifest.",
   "counts": {
     "blenderModels": 47,
-    "parametricVerificationConfigurations": 90,
-    "verificationConfigurations": 137,
-    "catalogEntries": 179,
-    "catalogTypes": 151,
+    "parametricVerificationConfigurations": 91,
+    "verificationConfigurations": 138,
+    "catalogEntries": 180,
+    "catalogTypes": 152,
     "productDossiers": 74,
     "referenceImages": 325,
     "missingReferences": 12
@@ -9744,6 +9744,12 @@
       "module": "index-inline"
     },
     {
+      "id": "cove_light",
+      "type": "cove_light",
+      "name": "床头反射灯槽 · L2灯带方案占位",
+      "module": "cove-light"
+    },
+    {
       "id": "surface_light",
       "type": "surface_light",
       "name": "柔光吸顶灯 · 通用规划占位",
@@ -11046,6 +11052,15 @@
       "w": 1600,
       "d": 750,
       "module": "legacy-furniture"
+    },
+    {
+      "category": "灯具",
+      "type": "cove_light",
+      "name": "床头反射灯槽 · L2灯带方案占位",
+      "w": 2000,
+      "d": 45,
+      "h": 35,
+      "module": "cove-light"
     },
     {
       "category": "灯具",

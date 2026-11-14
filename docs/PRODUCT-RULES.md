@@ -1,3 +1,5 @@
+2026-11-14（反射灯槽）：coveLight集中截面估算／最低100×25×20mm、底高1250mm及每米100cd规划假设；lightPreviewLevel为0–100，灯槽初始30，lightKelvin为2700／3000／4000，初始3000。surface_light／MJTD07YL亮度缺失仅读100，不自动补字段；v91显式保存／旧版恢复、替换清理和缓存沿原核心，光色不清空间确认。见[床头灯槽](COVE-LIGHT.md)。
+
 2026-11-14（书桌台灯）：desk_lamp_mijia_pro集中470mm默认高、底部mountHeight新建0、4000K两块面光和规划120cd；未知流明不采用京东0lm。普通desk可选deskLampVisible，缺省仅读true、不物化；显式布尔值最低v90，同型保留／跨型清理，生产／实体缓存及确认覆盖实际参数。见[契约与依据](DESK-LAMP-MIJIA-PRO.md)。
 
 2026-11-13（抽面与浅柜）：cabinetBuilder.drawerAppearance声明drawers／drawerModule／slidingTop的可选六位color、solid／wood饰面及最低v89；drawers显式handle同版。缺失沿原外观，覆盖仅抽面，恢复删除字段，配色不清空间确认。boxDimensions集中标准柜150mm与保留物理框架50mm最小深度。deviceOpenings.version=2仅用于适用厨房派生空间规则，不物化到kitchen字段；见[验证及边界](validation/cabinet-editor-audit-20261113/README.md)。

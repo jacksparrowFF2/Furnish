@@ -1,0 +1,59 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "id": "cove_light",
+      "passed": true,
+      "cases": [
+        {
+          "state": "nominal",
+          "rot": 0,
+          "flip": false,
+          "parts": 7,
+          "bottom": 1250,
+          "top": 1285.0000000000002,
+          "externalDistance": 100,
+          "penetration": true,
+          "heightSeparation": true,
+          "projectRoundtrip": true
+        },
+        {
+          "state": "nominal",
+          "rot": 37,
+          "flip": true,
+          "parts": 7,
+          "bottom": 1250,
+          "top": 1285.0000000000002,
+          "externalDistance": 100,
+          "penetration": true,
+          "heightSeparation": true,
+          "projectRoundtrip": true
+        },
+        {
+          "state": "alternate",
+          "rot": 0,
+          "flip": false,
+          "parts": 7,
+          "bottom": 1250,
+          "top": 1285.0000000000002,
+          "externalDistance": 100,
+          "penetration": true,
+          "heightSeparation": true,
+          "projectRoundtrip": true
+        },
+        {
+          "state": "alternate",
+          "rot": 37,
+          "flip": true,
+          "parts": 7,
+          "bottom": 1250,
+          "top": 1285.0000000000002,
+          "externalDistance": 100,
+          "penetration": true,
+          "heightSeparation": true,
+          "projectRoundtrip": true
+        }
+      ]
+    }
+  ]
+}

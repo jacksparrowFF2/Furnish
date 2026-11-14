@@ -1,0 +1,9 @@
+{
+  "src/render/cove-light-model.js": "9701f4c28c788740f98c855940231ab99bb07ca388ddc8571238e4a49cc0bd81",
+  "src/render/downlight-model.js": "3dd416f77782e239dd4ad6fb33a5e49ddb1a2da7028e483b10df3170ff51917a",
+  "src/render/bath-heater-model.js": "69cf0cce1c973472b7f27d4123ab21f6c7e222239b0e8ca48fb626fbc91b08bf",
+  "src/render/desk-lamp-model.js": "59925ce1d401fd7f890cb7bf4cd941ba584928cab4b4e5b7db9bb5b6d2dba17b",
+  "src/core/product-rules.js": "9053731defa9e39cfe294de44568d48fb1a06548c666199af807eed8fcab0346",
+  "src/ui/property-panel.js": "55ef5565bd6a79f878ae3c3d66551706c5bcb571dfe58d31ec30f30df7827101",
+  "tests/test-cove-light.cjs": "493b46931c0bbec091b6f678e712b1791a4777c714b0c3b9303ba09fd8127807"
+}
