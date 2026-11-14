@@ -1,0 +1,8 @@
+{
+  "type":"acwall_midea_mxc3p",
+  "global":"FurnishMXC3PAsset",
+  "size":[870,295,199],
+  "parts":["rear-shell","front-panel","left-cheek","right-cheek","outlet-back","outlet-floor","outlet-roof","chrome-upper","chrome-lower","chrome-left","chrome-right","upper-vane","lower-vane","outlet-louvers","top-intake-frame","top-intake-bars","brand-mark"],
+  "sourceUrl":"https://item.jd.com/100328209650.html",
+  "notes":"870×295×199 mm from this SKU's annotated indoor-unit image. Static nearly closed reference pose, with independent curved double vanes and real recessed outlet. Internal details, seam/trim widths and radii are visual estimates; no verified motion, pipe routes or installation clearances. Default bottom elevation 2200 mm is a layout starting value only."
+}

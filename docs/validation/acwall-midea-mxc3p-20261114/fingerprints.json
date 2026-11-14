@@ -1,0 +1,10 @@
+{
+  "assets/models/acwall-midea-mxc3p/v2/acwall-midea-mxc3p-v1.blend": "acba92d97f951df5bbe198086a17502154000fb931f8bebcba9be9417ada04ee",
+  "assets/models/acwall-midea-mxc3p/v2/acwall-midea-mxc3p-v1.glb": "884d330c0af5c71986549dab7f033382e6425ce696026091b034d5b7f6dad9f2",
+  "src/data/acwall-midea-mxc3p-blender-asset.js": "b39502914b46ded973f9b7c27d6da4e80ba0cef053bdad6b42682f420c061138",
+  "scripts/blender-model-acwall-midea-mxc3p.py": "6801a71c4294df7b57e2c5405ad8964e6e64d912940e180217bd61f0895a02f7",
+  "scripts/render-acwall-midea-review.py": "31cc7396cd2e2ea543405761a31f1f9c422a9ed42edb3661b4b4418a9d715f39",
+  "src/core/product-rules.js": "8c35b9a87205f828da352992d901f11c3135b46ff4a4bd133c656b5a4df556d7",
+  "src/core/project-core.js": "c0800bfc0123fea56fa34f56e8b7ae5dacd32a7d97a5ce6524defe92bd3ec7a5",
+  "tests/test-acwall-midea.cjs": "b807110f7cb6af88b52bf19a9ba759d1e32b3ba359a2bb447088ef6ff3ad150c"
+}

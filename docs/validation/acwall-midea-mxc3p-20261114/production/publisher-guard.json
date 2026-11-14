@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "realOldSourceRejected": true,
+  "negativeError": "Degenerate/zero corner normal: chrome-left",
+  "previousTargetPreserved": true,
+  "existingSE2Accepted": true,
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe"
+}

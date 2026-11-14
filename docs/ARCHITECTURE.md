@@ -1,3 +1,5 @@
+2026-11-14（风尊三代Pro挂机）：独立acwall_midea_mxc3p沿Blender静态资产与acwall-midea生产构造供显示／数值实体，mountHeight和h沿product-rules及原mutate／保存／缓存链；无新格式或状态机制。新增两段离线经典脚本，发布器拒绝退化零法线，保留旧通用acwall。见[型号契约](ACWALL-MIDEA-MXC3P.md)。
+
 2026-11-14（床头灯带）：新增定制cove-light参数化生产构造与实际向上发光面，数值实体与GLB复用；lightPreviewLevel／lightKelvin沿v91原保存恢复链，亮度与色温不清空间确认。新灯槽通过显式标记独立于顶灯开关，隐藏仍关闭；旧光源语义不变。通用面灯和米家台灯可选预览亮度，旧缺失100%。见[契约](COVE-LIGHT.md)。
 
 2026-11-14（米家桌面学习灯）：MJTD07YL采用Blender静态源／独立发布资产，desk-lamp生产构造同时供显示、实体与两块向下面光源；沿统一光学单位和GLB快照。deskLampVisible仅为原书桌装饰台灯提供可选开关，旧缺失保留、显式参数最低v90，共享恢复、缓存与核对链路，无新保存通道。见[型号契约](DESK-LAMP-MIJIA-PRO.md)。

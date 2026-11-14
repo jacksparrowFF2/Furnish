@@ -14,7 +14,7 @@ import sys
 
 def publish(source, target, profile='se2', spec=None):
     supply=json.loads((pathlib.Path(__file__).parent/'lib/storage-supply-specs.json').read_text(encoding='utf-8')).get(profile)
-    if profile=='desk-lamp-mijia-pro':supply=json.loads((pathlib.Path(__file__).parent/'lib/desk-lamp-mijia-pro-spec.json').read_text(encoding='utf-8'))
+    if profile in ('desk-lamp-mijia-pro','acwall-midea-mxc3p'):supply=json.loads((pathlib.Path(__file__).parent/('lib/'+profile+'-spec.json')).read_text(encoding='utf-8'))
     if not supply and profile not in ('pet-bowl','litter-bag','se2', 'y52y09', 'fridge', 'dishwasher', 'hood', 'washer', 'washer-tg10k60w', 'side-table', 'armchair', 'armchair-berlin', 'cat-tower', 'fan-x231', 'chair-s05118', 'stack-stool', 'corner-bookcase', 'corner-bookcase-580', 'sofa-bed'):
         raise ValueError('Unknown asset profile')
     prefix = profile+'-v1:' if supply else {'pet-bowl':'pet-bowl-v1:','litter-bag':'litter-bag-v1:','cat-tower':'cat-tower-v1:','fan-x231':'fan-x231-v1:','chair-s05118':'chair-s05118-v1:','sofa-bed':'sofa-bed-v1:','se2':'bath-heater-se2:','y52y09':'y52y09:','fridge':'fridge-v1:','dishwasher':'dishwasher-v1:','hood':'hood-v1:','washer':'washer-v1:','washer-tg10k60w':'washer-tg10k60w-v1:','side-table':'side-table-v1:','armchair':'armchair-v1:','armchair-berlin':'armchair-berlin-v1:','corner-bookcase-580':'corner-bookcase-580-v1:','corner-bookcase':'corner-bookcase-v1:','stack-stool':'stack-stool-v1:'}[profile]
@@ -100,7 +100,10 @@ def publish(source, target, profile='se2', spec=None):
         for tri in mesh.loop_triangles:
             for loop in (tri.loops if obj.matrix_world.determinant() > 0 else reversed(tri.loops)):
                 positions.extend(xyz(obj.matrix_world @ mesh.vertices[mesh.loops[loop].vertex_index].co))
-                normals.extend(xyz((normal_matrix @ mesh.corner_normals[loop].vector).normalized()))
+                normal = normal_matrix @ mesh.corner_normals[loop].vector
+                if normal.length_squared < 1e-14:
+                    raise ValueError('Degenerate/zero corner normal: '+obj.name)
+                normals.extend(xyz(normal.normalized()))
         if not positions:
             raise ValueError('Empty mesh')
         if profile=='cat-tower':

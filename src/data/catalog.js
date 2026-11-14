@@ -47,6 +47,7 @@ const LIB = [
     ["aircon","柜机空调",500,380,"#f6f7f8",6500],
     ["aircon_midea_ultra_2hp","美的酷省电 Ultra 立式空调 · 2匹室内机",395,436,"#e5e7e8",0,products.height({type:"aircon_midea_ultra_2hp"})],
     ["acwall","挂机空调",900,250,"#f6f7f8",3200],
+    ["acwall_midea_mxc3p","美的风尊三代 Pro 挂机 · 大1.5匹",870,199,"#f4f4f1",undefined,295],
     ["dishwasher","洗碗机",600,600,"#c9ced3",4500],
     ["dishwasher_mijia_countertop","米家台面洗碗机 · 5套",550,350,"#f4f3ef",0,products.height({type:"dishwasher_mijia_countertop"})],
     ["dryer","烘干机",600,600,"#e6ebee",3800,products.height({type:"dryer"})],
@@ -278,7 +279,7 @@ const navigationGroups=[
 const navigationTypeGroups={
  'appliances/cooking':['stove','stove_fotile_th36b','rangehood_fotile_jcd10ta','fridge','fridge_french_drawer','dishwasher','dishwasher_mijia_countertop','water_purifier_mijia_1200g'],
  'appliances/laundry':['washer','washer_littleswan_tg10k60w','dryer'],
- 'appliances/climate':['fan_airmate_fa18_x231','aircon','aircon_midea_ultra_2hp','acwall','waterheater','waterheater_flat','bath_heater_aopu_se2','bath_heater_300x600'],
+ 'appliances/climate':['fan_airmate_fa18_x231','aircon','aircon_midea_ultra_2hp','acwall','acwall_midea_mxc3p','waterheater','waterheater_flat','bath_heater_aopu_se2','bath_heater_300x600'],
  'appliances/services':['heating_manifold','electrical_box_strong','electrical_box_weak'],
  'decor/lighting':['cove_light','surface_light','desk_lamp_mijia_pro','floorlamp','pendant','panel_light_300x600','downlight_philips_dl269']
 };
@@ -300,8 +301,8 @@ function navigation(library=browseLibrary()){
 }
 const uses=[['living','客厅','Living'],['bedroom','卧室','Bedroom'],['dining','餐厅','Dining'],['study','书房','Study'],['kitchen','厨房','Kitchen'],['laundry','洗衣家政','Laundry'],['bathroom','卫浴','Bathroom'],['entry','玄关','Entry'],['pet','宠物','Pets']];
 const useTypes={
- living:['art_glass_partition','quartz_sill','window_surround','sofa_bed_yeswood_y107h03','armchair_yeswood_berlin','armchair_yeswood_y09hs','sofa','sofa_yeswood_cherry','cornersofa','armchair','beanbag','coffeetable','coffeetable_yeswood_cherry','roundtable','sidetable','sidetable_tmall_635382906309','tea_table_800','tea_bar_mijia_pro','tv','tvstand','aircon','aircon_midea_ultra_2hp','acwall','purifier','plant','rug','floorlamp'],
- bedroom:['quartz_sill','window_surround','bed','crib','nightstand','wardrobe','chest','dresser','curtain','curtain_sheer','blind_venetian','blind_honeycomb','blind_zebra','blind_bamboo','blind_roller','mirror','acwall'],
+ living:['art_glass_partition','quartz_sill','window_surround','sofa_bed_yeswood_y107h03','armchair_yeswood_berlin','armchair_yeswood_y09hs','sofa','sofa_yeswood_cherry','cornersofa','armchair','beanbag','coffeetable','coffeetable_yeswood_cherry','roundtable','sidetable','sidetable_tmall_635382906309','tea_table_800','tea_bar_mijia_pro','tv','tvstand','aircon','aircon_midea_ultra_2hp','acwall','acwall_midea_mxc3p','purifier','plant','rug','floorlamp'],
+ bedroom:['quartz_sill','window_surround','bed','crib','nightstand','wardrobe','chest','dresser','curtain','curtain_sheer','blind_venetian','blind_honeycomb','blind_zebra','blind_bamboo','blind_roller','mirror','acwall','acwall_midea_mxc3p'],
  dining:['chair_ikea_vihals','table','table_folding_1100','table_folding_1200','table_folding_1300','roundtable','chair','barstool','island','cabinet','pendant'],
  study:['chair_ikea_vihals','quartz_sill','window_surround','chair_yeswood_s05118','stool_citylong_370','desk','chair','officechair','bookshelf','bookshelf_yeswood_y52y09','bookshelf_yeswood_y00y06','bookshelf_yeswood_y00y06058','armchair','floorlamp'],
  kitchen:['panel_light_300x600','stove','stove_fotile_th36b','rangehood_fotile_jcd10ta','fridge','fridge_french_drawer','dishwasher','dishwasher_mijia_countertop','water_purifier_mijia_1200g','ksink','sink_arrow_680','sink_arrow_750','ovencol','kitchenwall','island'],

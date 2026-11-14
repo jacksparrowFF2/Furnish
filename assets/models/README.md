@@ -6,10 +6,11 @@
 
 更新：`node scripts/index-model-assets.cjs --write`；核对：`node scripts/index-model-assets.cjs --check`。
 
-74份产品／设计档案，325张参考图，12张历史原图待补；47组Blender模型。参数化验证配置91组，全部家具库180条目／152种类型。
+75份产品／设计档案，336张参考图，12张历史原图待补；48组Blender模型。参数化验证配置91组，全部家具库181条目／153种类型。
 
 | 产品／设计资料 | 参考图 | 输出／构造 | 待补原图 |
 |---|---|---|---|
+| [美的风尊三代 Pro 挂机 · KFR-35GW/MXC3P](acwall-midea-mxc3p/README.md) | 11 | [BLEND](acwall-midea-mxc3p/v2/acwall-midea-mxc3p-v1.blend) · [GLB](acwall-midea-mxc3p/v2/acwall-midea-mxc3p-v1.glb) | 0 |
 | [嵌入式铝型材灯槽](aluminum-light-channel/README.md) | 4 | 参考资料 | 0 |
 | [米家-智能鱼缸2Pro](aquarium-mijia-2pro/README.md) | 0 | 参数化 | 2 |
 | [源氏木语-Y09HS-亚麻色单人沙发椅](armchair/README.md) | 9 | [BLEND](armchair/v4/armchair-v1.blend) · [GLB](armchair/v4/armchair-v1.glb) | 0 |

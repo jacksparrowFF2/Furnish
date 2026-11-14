@@ -1,0 +1,61 @@
+{
+  "blender": "5.2.3 LTS",
+  "device": {
+    "requested": "gpu",
+    "type": "GPU",
+    "backend": "OPTIX",
+    "devices": [
+      "NVIDIA GeForce RTX 4070 Ti SUPER"
+    ],
+    "fallback": null
+  },
+  "views": [
+    [
+      "overall",
+      [
+        -0.6,
+        -1.8,
+        0.46
+      ],
+      [
+        0,
+        0,
+        0.145
+      ],
+      1.02
+    ],
+    [
+      "front",
+      [
+        0,
+        -2,
+        0.18
+      ],
+      [
+        0,
+        0,
+        0.148
+      ],
+      1.02
+    ],
+    [
+      "detail",
+      [
+        -0.18,
+        -0.8,
+        0.1
+      ],
+      [
+        -0.22,
+        -0.075,
+        0.047
+      ],
+      0.44
+    ]
+  ],
+  "stage": "silhouette",
+  "samples": 40,
+  "exposure": 0,
+  "world": 0.3,
+  "cameraMatch": "approximately matches annotated oblique product image; unknown marketing lens, no exact photographic registration"
+}

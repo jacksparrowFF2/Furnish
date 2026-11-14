@@ -253,6 +253,7 @@ if(t==='pocketdoor_double'||t==='pocketdoor_triple'){
     case 'tv': return rc(-w*.3,y,w*.6,d*.6,'#333','data-tv-part="rear"') + rc(x,y+d*.6,w,d*.4,c,'rx="4" data-tv-part="panel"');
     case 'aircon_midea_ultra_2hp': {const P=root.FurnishProducts||(typeof require==='function'?require('../core/product-rules.js'):null),unit={type:t,w,d},pts=P.planBodyOutline(unit,64),outline=P.planOutline(unit);return pa('M'+outline.map(p=>p.join(',')).join('L')+'Z',c)+pa('M'+pts.slice(23,42).map(p=>[p[0]*.96,p[1]*.96].join(',')).join('L'),'none')+rc(-w*.23,d*.45,w*.46,d*.027,'#11191e',`rx="${w*.025}"`);}
     case 'aircon': return rc(x,y,w,d,c,'rx="30"') + ln(x+40,y+d*.72,x+w-40,y+d*.72) + ln(x+40,y+d*.86,x+w-40,y+d*.86);
+    case 'acwall_midea_mxc3p': return rc(x,y,w,d,c,`rx="${Math.min(22,d*.1)}" ${DASH}`)+ln(x+w*.03,y+d*.89,x+w*.97,y+d*.89)+ln(x+w*.04,y+d*.96,x+w*.96,y+d*.96);
     case 'acwall': {
       let s = rc(x,y,w,d,c,`rx="30" ${DASH}`);
       [.25,.5,.75].forEach(k => s += ln(x+w*k,y+d,x+w*k,y+d+200,`${DASH} opacity=".6"`));

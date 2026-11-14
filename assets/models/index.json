@@ -2,13 +2,13 @@
   "format": 2,
   "description": "Generated repository index; paths relative to repository root. This is metadata, not the application loading manifest.",
   "counts": {
-    "blenderModels": 47,
+    "blenderModels": 48,
     "parametricVerificationConfigurations": 91,
-    "verificationConfigurations": 138,
-    "catalogEntries": 180,
-    "catalogTypes": 152,
-    "productDossiers": 74,
-    "referenceImages": 325,
+    "verificationConfigurations": 139,
+    "catalogEntries": 181,
+    "catalogTypes": 153,
+    "productDossiers": 75,
+    "referenceImages": 336,
     "missingReferences": 12
   },
   "models": [
@@ -1102,6 +1102,83 @@
         "assets/models/desk-lamp-mijia-pro/references/product-page/mi-product-5.png",
         "assets/models/desk-lamp-mijia-pro/references/product-page/mi-product-6.png",
         "assets/models/desk-lamp-mijia-pro/references/product-page/mi-product-specs-reproduced.jpg"
+      ]
+    },
+    {
+      "profile": "acwall-midea-mxc3p",
+      "type": "acwall_midea_mxc3p",
+      "name": "美的风尊三代 Pro 挂机 · 大1.5匹",
+      "sizeMm": [
+        870,
+        199,
+        295
+      ],
+      "parts": 17,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/acwall-midea-mxc3p-blender-asset.js",
+        "sha256": "15458d439d3769814a01c7b6f3b266d8a15209aa887719a79c6992dd265b30fa",
+        "normalization": "utf8-lf"
+      },
+      "sourceSha256": "884d330c0af5c71986549dab7f033382e6425ce696026091b034d5b7f6dad9f2",
+      "current": {
+        "blend": "assets/models/acwall-midea-mxc3p/v2/acwall-midea-mxc3p-v1.blend",
+        "glb": "assets/models/acwall-midea-mxc3p/v2/acwall-midea-mxc3p-v1.glb"
+      },
+      "document": "docs/ACWALL-MIDEA-MXC3P.md",
+      "constructor": "src/render/acwall-midea-model.js",
+      "author": "scripts/blender-model-acwall-midea-mxc3p.py",
+      "files": [
+        {
+          "path": "assets/models/acwall-midea-mxc3p/v1-final/acwall-midea-mxc3p-v1.blend",
+          "role": "retained-other",
+          "sha256": "ad8d22e8a9e3fac0361429e251c8cc086f848fb6d01393aef0783bf170f39afa",
+          "bytes": 725225
+        },
+        {
+          "path": "assets/models/acwall-midea-mxc3p/v1-final/acwall-midea-mxc3p-v1.glb",
+          "role": "retained-other",
+          "sha256": "5803e397e6f2255c1bc5b884ec472967c0c3d8f8b99e2ebbbeff631bc6153bb7",
+          "bytes": 1379504
+        },
+        {
+          "path": "assets/models/acwall-midea-mxc3p/v1-initial/acwall-midea-mxc3p-v1.blend",
+          "role": "retained-other",
+          "sha256": "d02114ee01c78ff67a83513e132947c0c3c5373b54993b7be9e666c66fc1606f",
+          "bytes": 719847
+        },
+        {
+          "path": "assets/models/acwall-midea-mxc3p/v1-initial/acwall-midea-mxc3p-v1.glb",
+          "role": "retained-other",
+          "sha256": "831e27f741cbd89e71d267d08367ffba618e50227f251103e89c600a2c1b57cc",
+          "bytes": 3600944
+        },
+        {
+          "path": "assets/models/acwall-midea-mxc3p/v2/acwall-midea-mxc3p-v1.blend",
+          "role": "published-source",
+          "sha256": "acba92d97f951df5bbe198086a17502154000fb931f8bebcba9be9417ada04ee",
+          "bytes": 724923
+        },
+        {
+          "path": "assets/models/acwall-midea-mxc3p/v2/acwall-midea-mxc3p-v1.glb",
+          "role": "published-source",
+          "sha256": "884d330c0af5c71986549dab7f033382e6425ce696026091b034d5b7f6dad9f2",
+          "bytes": 1379504
+        }
+      ],
+      "dossier": "assets/models/acwall-midea-mxc3p/asset.json",
+      "references": [
+        "assets/models/acwall-midea-mxc3p/references/hero.png",
+        "assets/models/acwall-midea-mxc3p/references/feature-2.png",
+        "assets/models/acwall-midea-mxc3p/references/feature.jpg",
+        "assets/models/acwall-midea-mxc3p/references/carousel-4.jpg",
+        "assets/models/acwall-midea-mxc3p/references/carousel-5.jpg",
+        "assets/models/acwall-midea-mxc3p/references/carousel-6.jpg",
+        "assets/models/acwall-midea-mxc3p/references/carousel-7.jpg",
+        "assets/models/acwall-midea-mxc3p/references/carousel-8.jpg",
+        "assets/models/acwall-midea-mxc3p/references/carousel-9.jpg",
+        "assets/models/acwall-midea-mxc3p/references/carousel-10.jpg",
+        "assets/models/acwall-midea-mxc3p/references/carousel-11.jpg"
       ]
     },
     {
@@ -4847,6 +4924,123 @@
     }
   ],
   "products": [
+    {
+      "format": 1,
+      "id": "acwall-midea-mxc3p",
+      "name": "美的风尊三代 Pro 挂机 · KFR-35GW/MXC3P",
+      "types": [
+        "acwall_midea_mxc3p"
+      ],
+      "route": "blender",
+      "document": "docs/ACWALL-MIDEA-MXC3P.md",
+      "sourceLinks": [
+        "https://3.cn/3c4-E4Xa?jkl=@F7EltCy2xD@",
+        "https://item.jd.com/100328209650.html",
+        "https://item.jd.com/product/zW0esFsQV6LOuNCDu0lwGw.html"
+      ],
+      "references": [
+        {
+          "path": "references/hero.png",
+          "kind": "product-page",
+          "url": "https://img10.360buyimg.com/imgzone/jfs/t1/557701/35/11283/199554/6af6dec5F99806a6a/0083320320890cd6.png",
+          "sha256": "af58290ee9206422856adde78f59b235875ed30d4e7417f1698acca8962b32df",
+          "bytes": 658009,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/feature-2.png",
+          "kind": "product-page",
+          "url": "https://img10.360buyimg.com/imgzone/jfs/t1/500698/10/4547/88134/6a7d61feF47331390/00833203205b3603.png",
+          "sha256": "cbf72eac5bf34e09e63547858f8dd6031666ab24da8a94e7195d036f002f853b",
+          "bytes": 316595,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/feature.jpg",
+          "kind": "product-page",
+          "url": "https://img10.360buyimg.com/imgzone/jfs/t1/529512/33/7581/82469/6ab4e156Fbfba8a97/0083320320b8a52c.jpg",
+          "sha256": "059ea4c085b5f016a13d6881e01167effb4cdb722e1cd081959f267bd6cea3fc",
+          "bytes": 130084,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/carousel-4.jpg",
+          "kind": "product-page",
+          "url": "https://img10.360buyimg.com/imgzone/jfs/t1/536778/21/304/54709/6ab4e156F97b3e77b/008332032000983f.jpg",
+          "sha256": "3ae03dfe39b109837a62e903512490b1eaeb1c367bf375b3f20e9a4b576b78f2",
+          "bytes": 99830,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/carousel-5.jpg",
+          "kind": "product-page",
+          "url": "https://img10.360buyimg.com/imgzone/jfs/t1/532066/21/4302/116821/6ab4e156Fc6b0aeca/0083320320c0e641.jpg",
+          "sha256": "0c5a1698a750c1aefd0f12f0824048efb7fc342f3a56a98ec5f51fb1b7150458",
+          "bytes": 156424,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/carousel-6.jpg",
+          "kind": "product-page",
+          "url": "https://img10.360buyimg.com/imgzone/jfs/t1/529065/35/7947/69650/6ab4e155F8566bcca/0083320320f4a92a.jpg",
+          "sha256": "61a4cdb56e654b48e7e34f1a0b960ec57dfcaf501574d09bf77a267423d8b734",
+          "bytes": 123198,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/carousel-7.jpg",
+          "kind": "product-page",
+          "url": "https://img10.360buyimg.com/imgzone/jfs/t1/556141/10/12582/59214/6af423baF96b6e272/008332032031a378.jpg",
+          "sha256": "31203bcd3157f3bb0e20e992902193a54200be3387602c507793cd9a207889f4",
+          "bytes": 105358,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/carousel-8.jpg",
+          "kind": "product-page",
+          "url": "https://img10.360buyimg.com/imgzone/jfs/t1/521835/20/12009/63081/6ab4e154Fc504d6f0/0083320320cfad3a.jpg",
+          "sha256": "c34d9b5cb53e3ea6e701daba44b8e762d721446a67470d72a5918cb770bd9bb5",
+          "bytes": 114451,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/carousel-9.jpg",
+          "kind": "product-page",
+          "url": "https://img10.360buyimg.com/imgzone/jfs/t1/525378/6/10087/63996/6ab4e154F3c0d70cb/0083320320025a5a.jpg",
+          "sha256": "68d3f81ef7421c93cbc5e874d934e7800bbc9b5102bf9b190b286d2e1bab8076",
+          "bytes": 104254,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/carousel-10.jpg",
+          "kind": "product-page",
+          "url": "https://img10.360buyimg.com/imgzone/jfs/t1/530430/31/6262/79079/6ab4e153F60d3ac87/0083320320f2c741.jpg",
+          "sha256": "617dd59eae0d4eaf4fda0a9bedded9fb8eab15a84abdeb8fbd788bf6bc15ed18",
+          "bytes": 138990,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/carousel-11.jpg",
+          "kind": "product-page",
+          "url": "https://img10.360buyimg.com/imgzone/jfs/t1/570901/11/4220/3228228/6aeebd0aFba3fe867/00a90000005fa0d3.jpg",
+          "sha256": "72e34531c35a6a1fb89126e999b70d2240afcdc12235f73d358f4169cda2ea52",
+          "bytes": 3228228,
+          "legacyPaths": []
+        }
+      ],
+      "missingReferences": [],
+      "validation": [
+        "docs/validation/acwall-midea-mxc3p-20261114/README.md"
+      ],
+      "notes": [
+        "SKU参数与同商品carousel-10尺寸图均为宽870×高295×深199mm。",
+        "carousel-11为商品评价中的实物近照，标签可见风尊III PRO；用作外观交叉参考，用户未逐张确认版本。",
+        "静态近闭合姿态，双导风板/顶部格栅真实分层；不模拟360度扫风、隐藏维修机构、接管及外机。",
+        "v1-initial与v1-final保留为过程源，后者的chrome-left/right零法线是发布拒绝真实负例；当前仅v2发布。"
+      ],
+      "manifest": "assets/models/acwall-midea-mxc3p/asset.json",
+      "readme": "assets/models/acwall-midea-mxc3p/README.md"
+    },
     {
       "format": 1,
       "id": "aluminum-light-channel",
@@ -10348,6 +10542,15 @@
       "w": 900,
       "d": 250,
       "module": "index-inline"
+    },
+    {
+      "category": "电器",
+      "type": "acwall_midea_mxc3p",
+      "name": "美的风尊三代 Pro 挂机 · 大1.5匹",
+      "w": 870,
+      "d": 199,
+      "h": 295,
+      "module": "acwall-midea"
     },
     {
       "category": "电器",

@@ -1,0 +1,428 @@
+{
+  "passed": true,
+  "profile": "acwall-midea-mxc3p",
+  "route": "blender",
+  "fixture": {
+    "id": "model-pilot",
+    "cx": 0,
+    "cy": 0,
+    "rot": 0,
+    "flip": false,
+    "type": "acwall_midea_mxc3p",
+    "name": "美的风尊三代 Pro 挂机 · 大1.5匹",
+    "w": 870,
+    "d": 199,
+    "color": "#f4f4f1",
+    "mountHeight": 2200,
+    "frontClearance": 0,
+    "brand": "美的/Midea",
+    "model": "风尊三代 Pro · 大1.5匹 · KFR-35GW/MXC3P",
+    "sourceUrl": "https://item.jd.com/100328209650.html",
+    "h": 295
+  },
+  "alternateKind": "back",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "started": "2026-11-14T07:19:03.460Z",
+  "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-2gXs94\\acwall-midea-mxc3p-zLt9N9",
+  "stages": [
+    {
+      "name": "author-preflight",
+      "passed": true,
+      "started": "2026-11-14T07:19:03.461Z",
+      "result": {
+        "command": "author-acwall-midea-mxc3p",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-2gXs94\\acwall-midea-mxc3p-zLt9N9\\authored",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-2gXs94\\acwall-midea-mxc3p-zLt9N9\\authored",
+        "passed": true,
+        "parts": 17,
+        "blender": "5.2.3 LTS",
+        "pose": "static nearly closed reference",
+        "preflight": {
+          "passed": true,
+          "profile": "acwall-midea-mxc3p",
+          "parts": 17,
+          "motions": 0
+        }
+      },
+      "finished": "2026-11-14T07:19:04.910Z"
+    },
+    {
+      "name": "preflight-negative",
+      "passed": true,
+      "started": "2026-11-14T07:19:04.911Z",
+      "result": {
+        "passed": true,
+        "profile": "acwall-midea-mxc3p",
+        "blender": "5.2.3 LTS",
+        "rejected": [
+          "empty-material-slot",
+          "wrong-face-index",
+          "wrong-stable-identity",
+          "wrong-units",
+          "nonfinite-vertex",
+          "unexpected-part"
+        ],
+        "motionApplicable": false
+      },
+      "finished": "2026-11-14T07:19:06.036Z"
+    },
+    {
+      "name": "publish",
+      "passed": true,
+      "started": "2026-11-14T07:19:06.036Z",
+      "result": {
+        "command": "publish-acwall-midea-mxc3p",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-2gXs94\\acwall-midea-mxc3p-zLt9N9\\authored\\acwall-midea-mxc3p-v1.glb",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-2gXs94\\workspace\\src\\data\\acwall-midea-mxc3p-blender-asset.js",
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "glbSha256": "b9dab533f5dcd038d2776eac0e41679cb4c6bc5ce61f10750a80b3a18a91d106",
+        "runtimeSha256": "47a1ec932351c13510bc2297c9ee697346ff5f8e0aab8bcd90b57b8fe6b67153"
+      },
+      "finished": "2026-11-14T07:19:08.026Z"
+    },
+    {
+      "name": "geometry-state",
+      "passed": true,
+      "started": "2026-11-14T07:19:08.026Z",
+      "result": {
+        "passed": true,
+        "tests": [
+          {
+            "name": "acwall-midea",
+            "profile": "acwall-midea-mxc3p",
+            "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-2gXs94\\acwall-midea-mxc3p-zLt9N9\\acwall-midea.log",
+            "reused": false
+          }
+        ],
+        "spatial": {
+          "passed": true,
+          "results": [
+            {
+              "id": "acwall-midea-mxc3p",
+              "passed": true,
+              "cases": [
+                {
+                  "state": "nominal",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 17,
+                  "bottom": 2200,
+                  "top": 2495,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "nominal",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 17,
+                  "bottom": 2200,
+                  "top": 2495,
+                  "externalDistance": 94.37033637691707,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 17,
+                  "bottom": 2200,
+                  "top": 2495,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 17,
+                  "bottom": 2200,
+                  "top": 2495,
+                  "externalDistance": 94.37033637691707,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "finished": "2026-11-14T07:19:14.145Z"
+    },
+    {
+      "name": "http-file-production",
+      "passed": true,
+      "started": "2026-11-14T07:19:14.146Z",
+      "result": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "http",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": false
+          },
+          {
+            "mode": "file",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": true
+          }
+        ],
+        "exports": [
+          {
+            "mode": "http",
+            "state": "nominal",
+            "parts": 17,
+            "bounds": [
+              [
+                -0.4350000023841858,
+                2.2,
+                -0.09950000047683716
+              ],
+              [
+                0.4350000023841858,
+                2.4949999868869783,
+                0.09950000047683716
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "resized",
+            "parts": 17,
+            "bounds": [
+              [
+                -0.487199991941452,
+                2.2,
+                -0.10745999962091446
+              ],
+              [
+                0.487199991941452,
+                2.5185999989509584,
+                0.10745999962091446
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "nominal",
+            "parts": 17,
+            "bounds": [
+              [
+                -0.4350000023841858,
+                2.2,
+                -0.09950000047683716
+              ],
+              [
+                0.4350000023841858,
+                2.4949999868869783,
+                0.09950000047683716
+              ]
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-14T07:19:53.192Z"
+    },
+    {
+      "name": "blender-production-readback",
+      "passed": true,
+      "started": "2026-11-14T07:19:53.192Z",
+      "result": {
+        "passed": true,
+        "profile": "acwall-midea-mxc3p",
+        "blender": "5.2.3 LTS",
+        "source": "production-glb",
+        "results": [
+          {
+            "case": "http-nominal",
+            "parts": 17,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-resized",
+            "parts": 17,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-nominal",
+            "parts": 17,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-14T07:19:55.284Z"
+    },
+    {
+      "name": "studio-production-export",
+      "passed": true,
+      "started": "2026-11-14T07:19:55.284Z",
+      "result": {
+        "passed": true,
+        "preset": "model-studio-v2",
+        "views": [
+          {
+            "id": "front",
+            "state": "nominal",
+            "parts": 17,
+            "position": [
+              0,
+              2.3474999934434893,
+              1.7490214993776756
+            ],
+            "target": [
+              0,
+              2.3474999934434893,
+              0
+            ]
+          },
+          {
+            "id": "oblique",
+            "state": "nominal",
+            "parts": 17,
+            "position": [
+              0.9683221979355122,
+              2.880077202308021,
+              1.355651077109717
+            ],
+            "target": [
+              0,
+              2.3474999934434893,
+              0
+            ]
+          },
+          {
+            "id": "back",
+            "state": "nominal",
+            "parts": 17,
+            "position": [
+              -0.9901884379852443,
+              2.743575368637587,
+              -1.3862638131793419
+            ],
+            "target": [
+              0,
+              2.3474999934434893,
+              0
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-14T07:20:28.684Z"
+    },
+    {
+      "name": "render-front",
+      "passed": true,
+      "started": "2026-11-14T07:20:28.685Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-14T07:20:31.855Z"
+    },
+    {
+      "name": "render-oblique",
+      "passed": true,
+      "started": "2026-11-14T07:20:31.855Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-14T07:20:34.972Z"
+    },
+    {
+      "name": "render-back",
+      "passed": true,
+      "started": "2026-11-14T07:20:34.972Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-14T07:20:38.138Z"
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "passed": true,
+      "started": "2026-11-14T07:20:38.139Z",
+      "result": {
+        "passed": true,
+        "profile": "acwall-midea-mxc3p",
+        "blender": "5.2.3 LTS",
+        "source": "downloaded-render-blend",
+        "results": [
+          {
+            "case": "front",
+            "parts": 17,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "oblique",
+            "parts": 17,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "back",
+            "parts": 17,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-14T07:20:39.414Z"
+    }
+  ],
+  "finished": "2026-11-14T07:20:39.415Z"
+}
