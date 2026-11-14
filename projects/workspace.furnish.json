@@ -1,6 +1,6 @@
 {
   "format": "furnish-workspace",
-  "version": 35,
+  "version": 38,
   "workspace": {
     "custom": [],
     "customPlans": [
@@ -148729,7 +148729,7 @@
       }
     ],
     "planId": "custom_mv37igji",
-    "v": 35,
+    "v": 38,
     "work": {
       "custom_mv37igji": {
         "architecture": {
@@ -154134,7 +154134,7 @@
             "d": 80,
             "id": "fmv3w5qkv5",
             "name": "55 寸电视",
-            "rot": 270,
+            "rot": 90,
             "type": "tv",
             "w": 1230
           },
@@ -154145,7 +154145,7 @@
             "d": 80,
             "id": "fmv3w7rrw6",
             "name": "65 寸电视",
-            "rot": 270,
+            "rot": 90,
             "type": "tv",
             "w": 1450
           },
@@ -154169,7 +154169,7 @@
             "h": 450,
             "id": "fmv3wd35z9",
             "name": "石头 P20 Max 水箱版套装",
-            "rot": 270,
+            "rot": 90,
             "type": "robot_p20max_tank",
             "w": 450
           },
@@ -154207,7 +154207,7 @@
           {
             "color": "#d8cdbb",
             "cx": 4939,
-            "cy": 3537,
+            "cy": 3352.625,
             "d": 2000,
             "id": "fmv3wyijp13",
             "name": "单人床",
@@ -154217,46 +154217,22 @@
           },
           {
             "cabinet": {
-              "columns": [
-                {
-                  "door": "none",
-                  "doorOpen": false,
-                  "drawers": [
-                    {
-                      "height": 67,
-                      "open": false
-                    },
-                    {
-                      "height": 67,
-                      "open": false
-                    }
-                  ],
-                  "shelves": []
-                }
-              ],
-              "plinth": 60,
-              "template": "chest",
-              "thickness": 18,
-              "version": 1
-            },
-            "color": "#c1a17c",
-            "cx": 4114,
-            "cy": 2737,
-            "d": 350,
-            "id": "fmv3wz0sb14",
-            "name": "床头柜",
-            "purchaseStatus": "planned",
-            "rot": 270,
-            "type": "nightstand",
-            "w": 400
-          },
-          {
-            "cabinet": {
               "boxConstruction": "independent",
               "columns": [
                 {
                   "door": "double",
+                  "doorAngle": 90,
                   "doorOpen": false,
+                  "doorSections": {
+                    "lower": {
+                      "angle": 90,
+                      "open": false
+                    },
+                    "upper": {
+                      "angle": 90,
+                      "open": false
+                    }
+                  },
                   "drawerColumns": 1,
                   "drawers": [
                     {
@@ -154265,6 +154241,12 @@
                     },
                     {
                       "height": 227,
+                      "lanes": [
+                        {
+                          "extension": 1,
+                          "open": false
+                        }
+                      ],
                       "open": false
                     }
                   ],
@@ -154276,7 +154258,27 @@
                 },
                 {
                   "door": "double",
+                  "doorAngle": 90,
+                  "doorLimits": {
+                    "lower": {
+                      "0": 150,
+                      "1": 90
+                    },
+                    "upper": {
+                      "0": 150
+                    }
+                  },
                   "doorOpen": false,
+                  "doorSections": {
+                    "lower": {
+                      "angle": 150,
+                      "open": false
+                    },
+                    "upper": {
+                      "angle": 150,
+                      "open": false
+                    }
+                  },
                   "drawerColumns": 1,
                   "drawers": [],
                   "handle": "bar",
@@ -154671,6 +154673,12 @@
                 {
                   "door": "left",
                   "doorAngle": 90,
+                  "doorLeaves": [
+                    {
+                      "angle": 90,
+                      "open": true
+                    }
+                  ],
                   "doorOpen": false,
                   "drawerColumns": 2,
                   "drawers": [],
@@ -154736,7 +154744,7 @@
           {
             "color": "#eee9df",
             "cx": 7176,
-            "cy": 3940,
+            "cy": 4067,
             "d": 892,
             "h": 895,
             "id": "fmv5bzynf3",
@@ -154789,12 +154797,12 @@
           },
           {
             "color": "#1d1d1f",
-            "cx": 6453,
-            "cy": 3522,
+            "cx": 6460,
+            "cy": 3367.625,
             "d": 80,
             "id": "fmv61w1091",
             "name": "55 寸电视",
-            "rot": 270,
+            "rot": 90,
             "type": "tv",
             "w": 1230
           },
@@ -154802,6 +154810,7 @@
             "cabinet": {
               "columns": [
                 {
+                  "displayOpen": false,
                   "door": "double",
                   "doorAngle": 90,
                   "doorOpen": false,
@@ -154817,7 +154826,7 @@
                   "displayOpen": false,
                   "door": "double",
                   "doorAngle": 90,
-                  "doorOpen": true,
+                  "doorOpen": false,
                   "doorSections": {
                     "lower": {
                       "angle": 90,
@@ -154825,7 +154834,7 @@
                     },
                     "upper": {
                       "angle": 90,
-                      "open": true
+                      "open": false
                     }
                   },
                   "drawerColumns": 2,
@@ -154885,50 +154894,26 @@
           },
           {
             "color": "#b2a58f",
-            "cx": 8020,
-            "cy": 5415,
+            "cx": 7955.000000000001,
+            "cy": 7036,
             "d": 480,
-            "groupId": "fmvqr3sif1",
+            "groupId": "fmvtnyg1k1",
             "id": "fmv6wfmo91",
             "name": "餐椅",
-            "rot": 0,
+            "rot": 270,
             "type": "chair",
             "w": 450
           },
           {
             "color": "#b2a58f",
-            "cx": 8620,
-            "cy": 5415,
+            "cx": 8485,
+            "cy": 7035.999999999999,
             "d": 480,
-            "groupId": "fmvqr3sif1",
-            "id": "fmv6wfocm2",
-            "name": "餐椅",
-            "rot": 0,
-            "type": "chair",
-            "w": 450
-          },
-          {
-            "color": "#b2a58f",
-            "cx": 8020,
-            "cy": 6485,
-            "d": 480,
-            "groupId": "fmvqr3sif1",
-            "id": "fmv6wfol63",
-            "name": "餐椅",
-            "rot": 180,
-            "type": "chair",
-            "w": 450
-          },
-          {
-            "color": "#b2a58f",
-            "cx": 8620,
-            "cy": 6485,
-            "d": 480,
-            "groupId": "fmvqr3sif1",
+            "groupId": "fmvtnyg1k1",
             "id": "fmv6wg88q4",
             "name": "餐椅",
             "purchaseStatus": "planned",
-            "rot": 180,
+            "rot": 90,
             "type": "chair",
             "w": 450
           },
@@ -155175,7 +155160,7 @@
             "cx": 6869.999999999999,
             "cy": 955,
             "d": 220,
-            "h": 720,
+            "h": 700,
             "id": "fmvdtz5aj1",
             "mountHeight": 890,
             "name": "管道包覆柜",
@@ -155220,13 +155205,13 @@
           {
             "brand": "米家/Mijia",
             "color": "#191c20",
-            "cx": 9930,
-            "cy": 5874,
+            "cx": 9960,
+            "cy": 5167.5,
             "d": 292,
             "h": 334,
             "id": "fmvffgmj31",
             "model": "智能鱼缸 2 Pro",
-            "mountHeight": 950,
+            "mountHeight": 350,
             "name": "米家智能鱼缸 2 Pro",
             "rot": 90,
             "sourceUrl": "https://item.jd.com/100317574693.html",
@@ -155235,27 +155220,27 @@
           },
           {
             "color": "#75a533",
-            "cx": 8500,
-            "cy": 1370,
+            "cx": 6980,
+            "cy": 2737,
             "d": 500,
             "h": 1430,
             "id": "fmvffi29w2",
             "name": "阳台猫爬架 · 采光活动区",
-            "rot": 0,
+            "rot": 270,
             "type": "cat_tree",
             "w": 500
           },
           {
             "brand": "米家/Mijia",
             "color": "#efeee8",
-            "cx": 7940,
-            "cy": 1740,
+            "cx": 6892,
+            "cy": 5257,
             "d": 324,
             "h": 370,
             "id": "fmvffj8v03",
             "model": "智能宠物喂食器 2",
             "name": "阳台喂食区",
-            "rot": 0,
+            "rot": 270,
             "type": "pet_feeder_mijia_2",
             "w": 220
           },
@@ -155272,24 +155257,26 @@
             "w": 440
           },
           {
-            "brand": "",
-            "color": "#c1a17c",
-            "cx": 8320,
-            "cy": 5950,
-            "d": 750,
-            "frontClearance": 0,
-            "groupId": "fmvqr3sif1",
-            "h": 750,
+            "brand": "源氏木语/YESWOOD",
+            "color": "#bd925f",
+            "cx": 8245,
+            "cy": 7036,
+            "d": 740,
+            "foldingTablePose": "capsule",
+            "frontClearance": 600,
+            "groupId": "fmvtnyg1k1",
+            "h": 760,
             "id": "fmvg0p9tc1",
-            "model": "",
-            "name": "餐桌 · 1.2m四人长桌",
+            "model": "白蜡木原木色 · 象牙白岩板折叠餐桌",
+            "name": "源氏木语折叠餐桌 · 1100款",
             "priceDate": "",
             "purchaseNote": "",
             "purchaseStatus": "planned",
-            "rot": 0,
-            "sourceUrl": "",
-            "type": "table",
-            "w": 1200
+            "referencePrice": 0,
+            "rot": 270,
+            "sourceUrl": "https://item.jd.com/10195288580856.html",
+            "type": "table_folding_1100",
+            "w": 1100
           },
           {
             "brand": "",
@@ -155331,7 +155318,7 @@
           },
           {
             "color": "#f4f1e8",
-            "curtainOpen": 0,
+            "curtainOpen": 1,
             "curtainStyle": "double",
             "cx": 8418,
             "cy": 2384,
@@ -155346,23 +155333,24 @@
             "w": 3376
           },
           {
-            "brand": "",
-            "color": "#c1a17c",
-            "cx": 8210,
-            "cy": 4140,
-            "d": 500,
+            "brand": "源氏木语/YESWOOD",
+            "color": "#bd7846",
+            "cx": 8237.5,
+            "cy": 4168,
+            "d": 650,
             "frontClearance": 600,
             "h": 450,
             "id": "fmvglvcws1",
-            "model": "",
-            "name": "客厅轻巧茶几 · 90cm",
+            "model": "樱桃木茶几 · 1.2米白色岩板面",
+            "name": "源氏木语 樱桃木茶几 · 1.2m（白色岩板）",
             "priceDate": "",
             "purchaseNote": "",
             "purchaseStatus": "planned",
+            "referencePrice": 0,
             "rot": 270,
             "sourceUrl": "",
-            "type": "coffeetable",
-            "w": 900
+            "type": "coffeetable_yeswood_cherry",
+            "w": 1200
           },
           {
             "brand": "米家/Mijia",
@@ -155378,48 +155366,6 @@
             "rot": 270,
             "type": "water_purifier_mijia_1200g",
             "w": 163
-          },
-          {
-            "cabinet": {
-              "columns": [
-                {
-                  "door": "double",
-                  "doorAngle": 90,
-                  "doorLeaves": [
-                    {
-                      "angle": 90,
-                      "open": false
-                    },
-                    {
-                      "angle": 0,
-                      "open": false
-                    }
-                  ],
-                  "doorOpen": false,
-                  "drawerColumns": 2,
-                  "drawers": [],
-                  "shelves": [
-                    276,
-                    571
-                  ],
-                  "width": 709
-                }
-              ],
-              "plinth": 50,
-              "template": "storage",
-              "thickness": 18,
-              "version": 1
-            },
-            "color": "#f3f1ec",
-            "cx": 9931,
-            "cy": 5792.5,
-            "d": 350,
-            "h": 950,
-            "id": "fmvgnhl7h3",
-            "name": "收纳柜",
-            "rot": 90,
-            "type": "cabinet",
-            "w": 745
           },
           {
             "brand": "源氏木语/YESWOOD",
@@ -155572,14 +155518,14 @@
                   "doorLeaves": [
                     {
                       "angle": 90,
-                      "open": false
+                      "open": true
                     },
                     {
                       "angle": 90,
-                      "open": false
+                      "open": true
                     }
                   ],
-                  "doorOpen": false,
+                  "doorOpen": true,
                   "role": "sink",
                   "run": 0,
                   "width": 564
@@ -155600,19 +155546,27 @@
             "w": 1204
           },
           {
-            "color": "#f3f4f1",
+            "brand": "小天鹅/LittleSwan",
+            "color": "#f1f0ed",
             "cx": 7060,
             "cy": 1745,
             "d": 600,
             "flip": true,
+            "frontClearance": 600,
             "h": 850,
             "id": "fmvgvzise3",
             "laundryHostId": "fmvgvzisd1",
+            "model": "TG10K60W",
             "mountHeight": 0,
-            "name": "洗衣机",
+            "name": "小天鹅洗衣机 TG10K60W · 10kg",
+            "priceDate": "",
+            "purchaseNote": "",
+            "purchaseStatus": "planned",
             "rot": 270,
-            "type": "washer",
-            "w": 600
+            "sourceUrl": "",
+            "type": "washer_littleswan_tg10k60w",
+            "w": 600,
+            "washerDoorAngle": 0
           },
           {
             "color": "#c6a258",
@@ -155849,7 +155803,7 @@
           },
           {
             "color": "#e7dcc9",
-            "curtainOpen": 0,
+            "curtainOpen": 1,
             "cx": 2275.0000000000005,
             "cy": 9513.5,
             "d": 75,
@@ -155863,6 +155817,42 @@
             "shadeMode": "day",
             "type": "blind_zebra",
             "w": 1554
+          },
+          {
+            "color": "#bd8e5d",
+            "cx": 4279,
+            "cy": 4102.625,
+            "d": 300,
+            "frontClearance": 0,
+            "h": 612,
+            "id": "fmvto48971",
+            "model": "双抽岩板边几 · 680×300×612",
+            "name": "双抽岩板边几 · 68cm",
+            "rot": 0,
+            "sideTableLowerOpen": false,
+            "sideTableUpperOpen": false,
+            "sourceUrl": "https://detail.tmall.com/item.htm?abbucket=0&id=635382906309&mi_id=0000n64ioooJG8d3oTuI_3sSR6yl6NubVt7Jui-6QXW-OA4&rn=1d72a6e371179b1c55984da266deb1b9&skuId=5776584417656&spm=a1z10.3-b-s.w4011-14781637738.244.629a5884FD6Y30",
+            "type": "sidetable_tmall_635382906309",
+            "w": 680
+          },
+          {
+            "brand": "源氏木语/YESWOOD",
+            "color": "#bd915f",
+            "cx": 8237.5,
+            "cy": 2787,
+            "d": 850,
+            "frontClearance": 600,
+            "h": 845,
+            "id": "fmvtowrz41",
+            "model": "柏林休闲沙发椅 · 米色 · 710×850×845",
+            "name": "源氏木语 柏林单人沙发椅（含腰枕）",
+            "priceDate": "",
+            "purchaseNote": "",
+            "purchaseStatus": "planned",
+            "rot": 0,
+            "sourceUrl": "",
+            "type": "armchair_yeswood_berlin",
+            "w": 710
           }
         ],
         "furnitureDatum": "finished-floor",
@@ -155890,7 +155880,6 @@
             "furniture:fmv3wt92611": "layer_fmvgcuwe97",
             "furniture:fmv3wtxgq12": "layer_fmvgcuwe97",
             "furniture:fmv3wyijp13": "layer_fmvgcvt7d9",
-            "furniture:fmv3wz0sb14": "layer_fmvgcvt7d9",
             "furniture:fmv3wzkb515": "layer_fmvgcvt7d9",
             "furniture:fmv3xgqxc1": "layer_fmvgcvt7d9",
             "furniture:fmv3xgqxc2": "layer_fmvgcvt7d9",
@@ -155909,8 +155898,6 @@
             "furniture:fmv61w1091": "layer_fmvgcvt7d9",
             "furniture:fmv62bwbp1": "layer_fmvgcabp92",
             "furniture:fmv6wfmo91": "layer_fmvgcabp92",
-            "furniture:fmv6wfocm2": "layer_fmvgcabp92",
-            "furniture:fmv6wfol63": "layer_fmvgcabp92",
             "furniture:fmv6wg88q4": "layer_fmvgcabp92",
             "furniture:fmv9dos7j1": "layer_fmvg9iz545",
             "furniture:fmv9mqxz91": "layer_fmvg9jp8o6",
@@ -156074,6 +156061,25 @@
               "o": [
                 0,
                 1
+              ]
+            },
+            "3": {
+              "c": [
+                0,
+                1
+              ],
+              "doorType": "double",
+              "h": [
+                3703,
+                5420
+              ],
+              "hingeAngles": [
+                180,
+                180
+              ],
+              "o": [
+                -1,
+                0
               ]
             }
           },
