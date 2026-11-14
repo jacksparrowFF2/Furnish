@@ -65,6 +65,12 @@ Chrome／Edge 的缓存不由桌面版直接读取。如果尚有仅存在浏览
 
 ## 重新打包与迁移
 
+### Windows 自动下载包与 Release（2026-11-14）
+
+`.github/workflows/windows-release.yml` 在 `main` 更新或 Actions 手动运行时，用 Windows runner 和锁定依赖生成独立便携 ZIP 及 SHA256SUMS，保留为 14 天的 Actions artifact。推送 `v*` 标签时，检查和打包成功后自动创建 GitHub Release 并附上同一 ZIP／校验文件；已存在的 Release 拒绝覆盖。发布版本前确认标签指向已验证的提交，例如 `git tag v2026.11.14.1` 后 `git push origin v2026.11.14.1`。
+
+下载后须完整解压再运行 Furnish.exe，不能只取 EXE。便携包不含 projects、.local、本机源码路径或 Blender；继续原方案请先从旧应用导出完整项目再导入。包仍未签名，不含安装器或应用内自动升级。macOS 暂不发布，等待实机验证。自动流程运行桌面后台及程序路径回归，不代表全量或每个型号的视觉验收。
+
 首次准备开发依赖需要联网，已有完整依赖后打包仅复制本机文件，不改写网页源码，不引入网页构建过程：
 
 ```powershell
