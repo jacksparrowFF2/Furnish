@@ -44,14 +44,14 @@ assert.equal(R.initial({type:f.type}).mountHeight,2500);assert.equal(R.vertical(
 (async()=>{
  const html=fs.readFileSync(require.resolve('../index.html'),'utf8'),imports=JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(imports.three);
  for(const downlightWatts of [5,7])for(const downlightKelvin of [3000,4000,6500]){
-  const item={...f,downlightWatts,downlightKelvin},m=Model.build(T,item),spec=R.downlightSpec(item),light=m.getObjectByProperty('isSpotLight',true);const nearFlux=light.intensity*2*Math.PI*(1-Math.cos(light.angle));assert(Math.abs(nearFlux-spec.lumens)<1e-6);assert.equal(light.color.getHexString(),new T.Color(spec.color).getHexString());
+  const item={...f,downlightWatts,downlightKelvin},m=Model.build(T,item),spec=R.downlightSpec(item),light=m.getObjectByProperty('isSpotLight',true);const nearFlux=light.intensity*683*2*Math.PI*(1-Math.cos(light.angle));assert(Math.abs(nearFlux-spec.lumens)<1e-6);assert.equal(light.color.getHexString(),new T.Color(spec.color).getHexString());
  }
  const o=Model.build(T,{...f,mountHeight:0}),b=new T.Box3().setFromObject(o),size=b.getSize(new T.Vector3());
  const near=(a,b)=>assert(Math.abs(a-b)<2e-7,`${a} != ${b}`);near(size.x,.085);near(size.z,.085);near(size.y,.045);near(b.min.y,0);
  o.traverse(v=>{if(v.isMesh)for(const k of ['position','normal'])assert(v.geometry.attributes[k].array.every(Number.isFinite));});
- const lamp=o.getObjectByProperty('isSpotLight',true);assert(lamp);near(lamp.angle,50*Math.PI/180);near(lamp.intensity*2*Math.PI*(1-Math.cos(lamp.angle)),380);assert(lamp.target.position.y<lamp.position.y);
+ const lamp=o.getObjectByProperty('isSpotLight',true);assert(lamp);near(lamp.angle,50*Math.PI/180);near(lamp.intensity*683*2*Math.PI*(1-Math.cos(lamp.angle)),380);assert(lamp.target.position.y<lamp.position.y);
  Model.setLights(o,false);assert.equal(lamp.visible,false);Model.setLights(o,true);assert.equal(lamp.visible,true);
- const E=require('../src/io/blender-export.js');o.position.set(1,2,3);o.rotation.y=.7;o.updateMatrixWorld(true);const snapshot=E.snapshot(T,{groups:[o],camera:new T.PerspectiveCamera(45,1,.1,20)});const exported=snapshot.scene.getObjectByProperty('isSpotLight',true);assert(exported,'actual spotlight exported');exported.updateWorldMatrix(true,true);const lightAt=exported.getWorldPosition(new T.Vector3()),targetAt=exported.target.getWorldPosition(new T.Vector3());assert(targetAt.y<lightAt.y-.9);near(exported.intensity,lamp.intensity);snapshot.dispose();
+ const E=require('../src/io/blender-export.js');o.position.set(1,2,3);o.rotation.y=.7;o.updateMatrixWorld(true);const snapshot=E.snapshot(T,{groups:[o],camera:new T.PerspectiveCamera(45,1,.1,20)});const exported=snapshot.scene.getObjectByProperty('isSpotLight',true);assert(exported,'actual spotlight exported');exported.updateWorldMatrix(true,true);const lightAt=exported.getWorldPosition(new T.Vector3()),targetAt=exported.target.getWorldPosition(new T.Vector3());assert(targetAt.y<lightAt.y-.9);near(exported.intensity,lamp.intensity*683);snapshot.dispose();
  const ceiling=Ceiling.build(T,plan.ceilings,{bodies:[body(f)]});ceiling.updateMatrixWorld(true);
  const ray=(x,z)=>new T.Raycaster(new T.Vector3(x,2.4,z),new T.Vector3(0,1,0)).intersectObject(ceiling,true);
  assert.equal(ray(.5,.5).length,0,'actual production hole');assert(ray(.55,.5).length,'board outside hole');

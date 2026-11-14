@@ -1,0 +1,62 @@
+import { StorageBufferAttribute } from '../../../../../three/build/three.webgpu.js';
+import { ComputeKernel } from '../ComputeKernel.js';
+import { storage, globalId } from '../../../../../three/build/three.tsl.js';
+import { contextProxy, wgslTagFn } from '../../../../../three-mesh-bvh/src/webgpu/index.js';
+import { rngInit } from '../../nodes/random.wgsl.js';
+import { traceQueuedRayStruct, shadowTraceResultStruct, SHADOW_RAY_QUEUE_LENGTH } from './structs.js';
+
+// Pure BVH traversal over the queued shadow rays. Uses an any-hit traversal without face culling that
+// passes partially transparent surfaces, accumulating the light they block.
+export class TraceShadowRayKernel extends ComputeKernel {
+
+	constructor( ) {
+
+		const params = {
+
+			shadowRayQueue: storage( new StorageBufferAttribute( 1, 1 ), traceQueuedRayStruct ),
+			queueCounters: storage( new StorageBufferAttribute( 1, 1 ), 'uint' ),
+			shadowRayIntersectionsStorage: storage( new StorageBufferAttribute( 1, 1 ), shadowTraceResultStruct ),
+
+			globalId: globalId,
+		};
+
+		const raycastOutput = contextProxy( 'bvhData.fns.raycastFirstHit.outputType' );
+		const raycastShadowFn = contextProxy( 'bvhData.fns.raycastShadow' );
+
+		const fn = wgslTagFn /* wgsl */`
+
+			fn compute( globalId: vec3u ) -> void {
+
+				let shadowRayQueue = &${ params.shadowRayQueue };
+				let queueCounters = &${ params.queueCounters };
+				let shadowRayIntersectionsStorage = &${ params.shadowRayIntersectionsStorage };
+
+				let index = globalId.x;
+				if ( index >= queueCounters[ ${ SHADOW_RAY_QUEUE_LENGTH }u ] ) {
+
+					return;
+
+				}
+
+				// whole structs are read from the buffer, not the pointer alias, which Safari fails to compile
+				let queuedRay = ${ params.shadowRayQueue }[ index ];
+				let indexUV = vec2u( queuedRay.pixelIndex >> 16, queuedRay.pixelIndex & 0xFFFF );
+				${ rngInit }( indexUV, queuedRay.seed, queuedRay.rngIndex );
+
+				let ray = Ray( queuedRay.origin, queuedRay.direction, queuedRay.maxDist );
+				var hitResult: ${ raycastOutput };
+				let occluded = ${ raycastShadowFn }( ray, &hitResult );
+				shadowRayIntersectionsStorage[ index ].objectIndex = select( - 1, i32( hitResult.objectIndex ), occluded );
+				shadowRayIntersectionsStorage[ index ].skippedOcclusion = hitResult.skippedOcclusion;
+				shadowRayIntersectionsStorage[ index ].occlusion = hitResult.occlusion;
+
+			}
+		`;
+
+		super( fn( params ) );
+
+		this.defineUniformAccessors( params );
+
+	}
+
+}

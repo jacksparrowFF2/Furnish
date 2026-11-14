@@ -1,3 +1,5 @@
+2026-11-14（灯光修正与高清预览）：修复虚拟补光挤掉主灯、统一cd／辐射量与曝光，生产发光面独立于光栅预算供渐进光追。底部新增高清预览，快速编辑与Cycles保留，无旧现有效果模式；本地依赖、异步BVH、失效取消、降噪和PNG下载贯通。真实1601同机位、HTTP／断网file／隔离EXE、修改灯光／位置／方案及实际Cycles OptiX出图通过；其他显卡／Mac与长期压力未验，规划强度仍非实测。见[实现及边界](LIGHTING-PREVIEW.md)、[验收](validation/lighting-preview-20261114/README.md)。
+
 2026-11-14（1601客厅光照对照）：完成现有WebGL、独立WebGPU渐进光追及Cycles同机位实际出图，提供交互比较和原曝光版本；两种新渲染共用生产几何、发光面和显示变换。RTX4070TiSUPER实测128采样光追降噪约7.6秒、1024采样约48.1秒，Cycles512采样约57秒；新引擎未接入。提取时修复完整吊顶跨区域部件身份冲突，相关增量回归通过；同时定位现有预算会裁掉主灯、保留虚拟补光，暂在隔离副本诊断，正式数据未改。完整条件和未执行项见[验收](validation/living-lighting-comparison-20261114/README.md)。
 
 2026-11-13（Mac mini运行准备）：补齐macOS arm64/x64原生.app打包、双击入口、应用外工作区、Cmd编辑菜单和Dock／二次启动重开，以及Mac Blender／Homebrew程序发现；保留项目格式、原保存与撤销链、Windows入口及安全隔离。新增只读环境预检与原桌面隔离验收的环境／内存记录，8项相关回归和Windows实际12组流程通过。macOS原生签名、实际交互／图形、24GB长时稳定性及Blender GUI／Metal仍待11月14日实测，未提供公证或安装器。迁移须导出最新完整项目，不复制Windows本机路径配置；见[迁移与清单](MACOS.md)及[验收边界](validation/macos-preparation-20261113/README.md)。

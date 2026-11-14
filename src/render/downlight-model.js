@@ -2,6 +2,7 @@
 (function(root){
 'use strict';
 const products=()=>root.FurnishProducts||require('../core/product-rules.js');
+const lighting=()=>root.FurnishLighting||require('../core/lighting-core.js');
 const supported=f=>!!products().definition(f)?.downlight&&!f.obj;
 function build(T,f){
  const result=new T.Group(),body=new T.Group();result.add(body);
@@ -24,12 +25,13 @@ function build(T,f){
  body.scale.set(f.w/85/1000,products().height(f)/45/1000,f.d/85/1000);
  // Photometric approximation: uniform cone, variant flux over the documented 100° beam.
  const angle=spec.beam*Math.PI/360,intensity=spec.lumens/(2*Math.PI*(1-Math.cos(angle)));
- const lamp=new T.SpotLight(spec.color,intensity,12,angle,.3,2),target=new T.Object3D();
+ const lamp=new T.SpotLight(spec.color,lighting().radiometric(intensity),12,angle,.3,2),target=new T.Object3D();
+ lamp.userData.radiometricLight=true;
  const lightGroup=new T.Group();lightGroup.position.y=products().value(f,'mountHeight')/1000;
  lamp.position.y=-.001;target.position.y=-1;lamp.target=target;lamp.userData.downlightLight=true;lamp.castShadow=true;lamp.shadow.mapSize.set(512,512);lamp.shadow.bias=-.0001;lightGroup.add(lamp,target);result.add(lightGroup);
  return result;
 }
-function setLights(group,on,{night=false}={}){group?.traverse(o=>{if(o.userData.downlightLight||o.userData.ceilingPanelLight)o.visible=o.userData.previewLightEnabled=on;if(o.userData.pathLight)o.visible=o.userData.previewLightEnabled=night;if(o.material?.userData?.downlightEmitter||o.material?.userData?.ceilingPanelEmitter)o.material.emissiveIntensity=on?1.5:0;if(o.material?.userData?.pathLightEmitter)o.material.emissiveIntensity=night?.8:0;});}
+function setLights(group,on,{night=false}={}){group?.traverse(o=>{if(o.userData.downlightLight||o.userData.ceilingPanelLight)o.visible=o.userData.previewLightEnabled=on;if(o.userData.pathLight)o.visible=o.userData.previewLightEnabled=night;if(o.material?.userData?.downlightEmitter||o.material?.userData?.ceilingPanelEmitter)o.material.emissiveIntensity=on?(o.material.userData.emissionOn??1.5):0;if(o.material?.userData?.pathLightEmitter)o.material.emissiveIntensity=night?.8:0;});}
 // WebGL forward lighting compiles every enabled light into each material. Keep
 // a bounded local preview; emissive faces and all production geometry remain.
 function limitLights(scene,camera,{lights=24,shadows=6,maxFragmentUniforms=1024,maxTextures=16}={}){
@@ -40,10 +42,8 @@ function limitLights(scene,camera,{lights=24,shadows=6,maxFragmentUniforms=1024,
   for(let p=o.parent;p;p=p.parent){if(!p.visible)visible=false;if(p.userData.fid||p.userData.ceiling)owner=p;}
   o.visible=false;o.castShadow=false;if(visible)candidates.push({o,owner,distance:o.getWorldPosition(eye.clone()).distanceToSquared(eye)});
  });
- candidates.sort((a,b)=>a.distance-b.distance);const owners=new Map();for(const c of candidates){const list=owners.get(c.owner)||[];list.push(c);owners.set(c.owner,list);}
- // One sample per fixture before extra diffuser/bounce samples from that fixture.
- let remaining=lights,shadowCount=0;for(let sample=0;remaining&&sample<candidates.length;sample++)for(const list of owners.values()){
-  const c=list[sample];if(!c||!remaining)continue;c.o.visible=true;c.o.castShadow=!!c.o.userData.previewShadowRequested&&shadowCount<shadows;if(c.o.castShadow)shadowCount++;remaining--;
+ let remaining=lights,shadowCount=0;for(const c of lighting().prioritize(candidates).slice(0,lights)){
+  c.o.visible=true;c.o.castShadow=!!c.o.userData.previewShadowRequested&&shadowCount<shadows;if(c.o.castShadow)shadowCount++;remaining--;
  }
  return {candidates:candidates.length,lights:lights-remaining,shadows:shadowCount};
 }

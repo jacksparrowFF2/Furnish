@@ -1,5 +1,7 @@
 # Blender 导出与一键渲染
 
+2026-11-14：独立[灯光高清预览](LIGHTING-PREVIEW.md)已接入，原Cycles入口保留。新基础GLB使用统一光度／辐射量约定、请求开启状态和环境／曝光元数据，剔除重复面灯近似与虚拟反射补光，基础任务显式SPEC导入；精修工程仍沿已保存的世界、布光、曝光和材质。基础Cycles保留AgX，高清预览为ACES，不能把两张图当作同显示变换A/B。实际OptiX出图／工程回读及增量范围见[验收](validation/lighting-preview-20261114/README.md)。
+
 2026-11-05：本机当前精修工作工程归入仓库`.local/blender-projects/1601/`，通过既有登记入口切换绑定；D盘旧工程作为历史设计存档保留，不再作为当前工作入口。本机导航`.local/workspace-index.html`关联工程、材质库和辅助工具；正式方案保存位置仍在D盘。下文各日期中的旧绑定是当时记录，当前以`.local/blender-project.json`为准。见[归位验证](validation/local-workspace-relocation-20261105/README.md)。
 
 2026-10-21 后续全量回归已通过273组Node套件、12套内置方案、31个生产预览与全部163个规范浏览器场景。实际OptiX验证基础渲染、精修工程活动／Furnish机位及持续同步；本轮修复剪切变换导入误差、侧栏顶面选项重开丢失、二维透明三维层截获点击和损坏柜体启动恢复。数据与精修源工程未改写，详见 [完整记录与边界](validation/full-regression-blender-20261021/summary.json)。下文早期增量验收记录保留其原检查范围。

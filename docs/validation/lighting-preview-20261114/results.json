@@ -1,0 +1,52 @@
+{
+  "date": "2026-11-14",
+  "source": {
+    "file": "D:\\1601装修\\Furnish项目\\workspace.furnish.json",
+    "sha256": "1fef2df07b29b3fa8052c1bde02db95b4bd48d1407aa245dde6eb338de139f9a",
+    "policy": "Read-only source; each acceptance run uses an isolated copy and checks the source hash before/after."
+  },
+  "quick": "已完成 · 1200 × 674 · 128 采样 · 11.3 秒",
+  "fine": "已完成 · 1920 × 1079 · 1024 采样 · 120.0 秒",
+  "meshes": 3687,
+  "areaLights": 23,
+  "spots": 6,
+  "cycles": {
+    "token": "lighting-preview-validation",
+    "pid": 10952,
+    "state": "done",
+    "message": "渲染完成 · OPTIX",
+    "renderDevice": {
+      "requested": "gpu",
+      "type": "GPU",
+      "backend": "OPTIX",
+      "devices": [
+        "NVIDIA GeForce RTX 4070 Ti SUPER"
+      ],
+      "fallback": null
+    },
+    "renderInfo": null
+  },
+  "files": [
+    {
+      "name": "客厅-快速预览.png",
+      "sha256": "202a32758a3d387ca4fb9a37a618c4ab5d641ba92ce946c01587f306247e6685"
+    },
+    {
+      "name": "客厅-高清预览.png",
+      "sha256": "1208b3a8e7f6c794d0390c5500155d261eb8fe592c08e2b83bd061275132a1ab"
+    },
+    {
+      "name": "Furnish-高清预览面板.png",
+      "sha256": "867d90d8c24dcb52df79ba7a50b939ed51e41da40b5775c55781ab0f3d5d7081"
+    },
+    {
+      "name": "Furnish-窄屏预览.png",
+      "sha256": "2ea684d231046cbb02636ba4d30e8b627bc6442262963f87fc901987c4c268ea"
+    },
+    {
+      "name": "cycles-basic.png",
+      "sha256": "e8f6143d38ef05673ee93971ea03757f9b5826acd00ff702ebafe6f71ec1fbaa"
+    }
+  ],
+  "note": "Actual renderer outputs. Preview uses ACES; basic Cycles retains AgX. These are not a strict display-matched A/B."
+}

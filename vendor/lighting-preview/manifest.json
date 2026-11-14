@@ -1,0 +1,827 @@
+{
+  "schema": 1,
+  "packages": {
+    "three": "0.187.0",
+    "three-gpu-pathtracer": "0.0.28",
+    "three-mesh-bvh": "0.9.17",
+    "oidn-webgpu": "0.6.0"
+  },
+  "policy": "Pinned local ESM graph; import paths rewritten to local relative paths, including module workers. No runtime CDN.",
+  "weightsSource": "https://raw.githubusercontent.com/pissang/oidn-webgpu/main/weights/rt_hdr_alb_nrm_small.tza",
+  "files": [
+    {
+      "path": "three/build/three.webgpu.js",
+      "sha256": "eafead3154ec06093f3108bddceab360f048a6fcebd7c085d5aae0ab5404bd25",
+      "sourceSha256": "eafead3154ec06093f3108bddceab360f048a6fcebd7c085d5aae0ab5404bd25"
+    },
+    {
+      "path": "three/examples/jsm/loaders/GLTFLoader.js",
+      "sha256": "814caf6e75fe6f60c23007f6cf9d2023a3072c470871c88b7ae6849defd9a8d7",
+      "sourceSha256": "532ac726e120039acbcd6cf54328c57acbf7b438176afaa6951257126d11bff1"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/index.js",
+      "sha256": "2f3aa66fe26b9afbfedb01fdca4c18545c43d59b59ab22a81663d89e89d29a25",
+      "sourceSha256": "2f3aa66fe26b9afbfedb01fdca4c18545c43d59b59ab22a81663d89e89d29a25"
+    },
+    {
+      "path": "three-mesh-bvh/src/workers/GenerateMeshBVHWorker.js",
+      "sha256": "42a1324b999083bf1058e6cf4d5ee70775e3e72b6c41523821d1091b1afb05e8",
+      "sourceSha256": "a6d7bc465c4123b4d350e87049797d5fd474ac7081dd51703fe12ffd5eb64237"
+    },
+    {
+      "path": "oidn-webgpu/dist/oidn.js",
+      "sha256": "693e68d3ccbd633bb7f5e4f866f4a70a318a5261e10096d7c003969419edd7b7",
+      "sourceSha256": "693e68d3ccbd633bb7f5e4f866f4a70a318a5261e10096d7c003969419edd7b7"
+    },
+    {
+      "path": "three/build/three.core.js",
+      "sha256": "613e370f76638fdef83926642bf256dc9615684922de1ce1f63a8583e5d78578",
+      "sourceSha256": "613e370f76638fdef83926642bf256dc9615684922de1ce1f63a8583e5d78578"
+    },
+    {
+      "path": "three/build/three.tsl.js",
+      "sha256": "d8f3cdb8b85b799a5631bd9a8d77e185d88ce1eb1bb051f48b332728a5423e3f",
+      "sourceSha256": "d8f3cdb8b85b799a5631bd9a8d77e185d88ce1eb1bb051f48b332728a5423e3f"
+    },
+    {
+      "path": "three/examples/jsm/utils/BufferGeometryUtils.js",
+      "sha256": "21fac5abcb8583bdfa5d9eb16329d58ed6f5a472b9f6cdd8d87aa76822e09fe8",
+      "sourceSha256": "7bda2a8ba836b2bcf67cb938d4b9e1bb5d1b1bc616817103ed858c0b58296ce7"
+    },
+    {
+      "path": "three/examples/jsm/utils/SkeletonUtils.js",
+      "sha256": "bff9d0a0355df3ece7f61d674d4df9d7688885966b1f6b96fda7dc756b305cb7",
+      "sourceSha256": "b1632a703206c3d830de9fcbe515696770d04b71a15ee6b50afa6d2c3298c86f"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/WebGPUPathTracer.js",
+      "sha256": "1b90a77ac70231018436401ab7ae6e7dfb5333c2e80c5f1a6f90f29030cacc0a",
+      "sourceSha256": "4bfd91d32d73032510bb582c68b9bbcb748dad6120c924f66e90740bd6fbed3d"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/BlurredEnvMapGenerator.js",
+      "sha256": "d47d655c7587289dfac531039cdc69f2934ac7d7a5c54d1eba3fdeca81946393",
+      "sourceSha256": "0e302c0b2525293d7606b9db8d9c42ddd6b71de00163735bbbe5dcddcdf7839d"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/constants.js",
+      "sha256": "344107c940db69d93a91ecb03a9ea018be094307e5221ca1550f4e5742f1e693",
+      "sourceSha256": "344107c940db69d93a91ecb03a9ea018be094307e5221ca1550f4e5742f1e693"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/materials/RenderToScreenMaterial.js",
+      "sha256": "daacec79f156b44d75b2645ebc08c666d6824fe2e6b999b7cd0ad09a6ebb7e4f",
+      "sourceSha256": "94923ee8039a2450fb063e76463e30816a4cb918db82e3b7fb24973cc8d5359f"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/denoise/OIDNDenoiser.js",
+      "sha256": "83a3a09f5a825cb07df91453f67793d89e7bed4ab08c1a09785ca2ff627a43da",
+      "sourceSha256": "03631445b58b9252a0b742bc6bfacaf97ae66ab53ec68becf1796248a76591ac"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/upscale/FSRUpscaler.js",
+      "sha256": "12d1402de70f976fb9535a2b95d12dc591568725a42a460ad1a2202cfd979382",
+      "sourceSha256": "bdc163395f9cd65a9d6ba3c55c7e75a2512a77bd20d586e97a953657599a8c31"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/shims/EquirectCameraShim.js",
+      "sha256": "e6215a3a08c05dbf6f114bea364cb7ea432621982f4dfe498b47807dbbd44430",
+      "sourceSha256": "457e0c4c8f4e0ceddd7b1d7ad76a9ca45d625990f281f53864944985acd387b0"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/shims/PhysicalCameraShim.js",
+      "sha256": "56aa408740b3c39545675b670805b8375aa5dfb7a2b662f0fa114578fe318909",
+      "sourceSha256": "c966e6eec674fe242ef0f83c640b1daccd2e2d4ce68a2e2641b5903045542d99"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/shims/ArrayCameraShim.js",
+      "sha256": "df9d45b70ab3342894a77421d79e61df1ccc41e11a59ff2dc66d3f70b67945c9",
+      "sourceSha256": "505e21ade39beee3bb22a7da06fc9bac90cbc2e19879562620a6f529bd390e68"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/MeshBVH.js",
+      "sha256": "1de3018d9d850de8c013b288b5b7ecb28ab49e7e9f1fc41d507fffed6ab2dabb",
+      "sourceSha256": "fd1f0e3413bb9d76eead54e58d74e3a87ae12e6e293c2e52ceef1be013469e80"
+    },
+    {
+      "path": "three-mesh-bvh/src/workers/utils/WorkerBase.js",
+      "sha256": "a4f70a0ce40aaa02b39007a0e5992060115596c324cd72e2394acb5951ddb937",
+      "sourceSha256": "a4f70a0ce40aaa02b39007a0e5992060115596c324cd72e2394acb5951ddb937"
+    },
+    {
+      "path": "three-mesh-bvh/src/workers/generateMeshBVH.worker.js",
+      "sha256": "2ba74aa135c19d5a13e931b2fb04dc29404590965100993275f042d10c39a390",
+      "sourceSha256": "a5e7ae49e878a55d9321afc68c9c457c3cd4b1802a8cf384703d00ce606f3124"
+    },
+    {
+      "path": "three-mesh-bvh/src/index.js",
+      "sha256": "6ca769fd9657673f4a3e1a006af5e34450bd5764bc58c1d641ad227ff3630090",
+      "sourceSha256": "6ca769fd9657673f4a3e1a006af5e34450bd5764bc58c1d641ad227ff3630090"
+    },
+    {
+      "path": "three-mesh-bvh/src/webgpu/index.js",
+      "sha256": "ff6ec281736189ed06b6a87303b4a8077e762fc2d6a08617724294f4716c03de",
+      "sourceSha256": "ff6ec281736189ed06b6a87303b4a8077e762fc2d6a08617724294f4716c03de"
+    },
+    {
+      "path": "three/examples/jsm/postprocessing/Pass.js",
+      "sha256": "336bb605d100e986502652841445ccea618c8bbe2c8bd7675885d353f070f866",
+      "sourceSha256": "444b409c235ead986893c472e720da1b779a56985c7d10b279c7944b52bd61c5"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/nodes/debugBounds.wgsl.js",
+      "sha256": "d46e5ad3c739f04b6b40764483df75708cc6e55a4f1259eaa4d887a758173ca5",
+      "sourceSha256": "e3fe400246bd6ca056ff0606eb9ba1e2514cbded9a4d6962004e5d0d90512387"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/MegaKernelPathTracer.js",
+      "sha256": "bea9ddea9abe4058bbceb69635ca5d15542fdb7ffb60f3c640f13a66ceeeb37e",
+      "sourceSha256": "2fafa064073c4ab2768a5a6eb5fb3466c7bfcc9103b7ce7c10d10f50c6100705"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/WaveFrontPathTracer.js",
+      "sha256": "00fcddce80cc66c3542490f66ffb40bcaea98df40635d4de08a1f771b5979bd3",
+      "sourceSha256": "d759a30e197aad830f2691f3401d047ae34ebb876d12b98e1d1c95ea180a6007"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/utils/CubeToEquirectGenerator.js",
+      "sha256": "3e9dd460d411978115f4149a8859ecf9bd7c7976f3ac12c9d3295991017c1d6d",
+      "sourceSha256": "b28ebbbb7c384e026e3694f911e3f0fcf999a963785b99cb2d5b06b0c110c71d"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/nodes/PathtracerBVHComputeData.js",
+      "sha256": "bb024ff8320542fee895fe4de6dd8e5136b542a9b17833b63dcf9bc9e7c52dc8",
+      "sourceSha256": "eacabb5282cced97f4316178e419e2c3a9a1dd66f53c555f7954e2cf93f8bea7"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/materials/debug/AtlasDebugMaterial.js",
+      "sha256": "4dbd3f2837ecb4600bd6c18f2a2f12c8994e9cc4156f1b2185ca79fce3eeec80",
+      "sourceSha256": "ed17698ae8d8ad6eb324a1debab95469a6fbfacc858090417983f01bf9c4d69b"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/materials/debug/SampleDensityMaterial.js",
+      "sha256": "0085b7c9fd29660b33d89259b79f418ca105bf2a154c52f4927d969890a51480",
+      "sourceSha256": "2ccd5f163fb1728000bfce40897ea9f5c174165e0764eb338f4aa2e1d50d486f"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/materials/debug/AuxDebugMaterial.js",
+      "sha256": "1d4623a50ea71d5dab36950e8338e1b17192a6610918b3968f0d7f02cddb994c",
+      "sourceSha256": "a82f47dee6e81aa7039459a3f7cd9247a8085f8ce03feea33951eff8aee31a3c"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/core/utils/GeometryPreparationUtils.js",
+      "sha256": "c070e211ad2a071e955c52acac15917cfd1e8f49fc9569f9170ae12de1b04ca6",
+      "sourceSha256": "157bf759942eb6f262f13c595c59787add3f7400f136f26197708c43a899dff6"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/core/utils/sceneUpdateUtils.js",
+      "sha256": "8519eed8471038607cfee9a448761cc94681cb1ecbd3e0845bcbe5649434dfd2",
+      "sourceSha256": "8519eed8471038607cfee9a448761cc94681cb1ecbd3e0845bcbe5649434dfd2"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/materials/GltfCompliantMaterial.js",
+      "sha256": "72377067a481c2e4ead1370a7daef63366eddd08f08c7d29961117921a92f561",
+      "sourceSha256": "7d7205f1387f9af0da5674c3ae46db915283639f92d7096fb624800f6e9aebd4"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/nodes/rand/pcg.wgsl.js",
+      "sha256": "c631bca9d69f2d8a58b9031aee417d778d85a3068e2a54a5d524d1acdfd53b12",
+      "sourceSha256": "8f60eeb8dbc0ed745fa9c7e9c39f061f3f8d388b90af78f40ff1e43501465ca4"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/nodes/rand/sobol.wgsl.js",
+      "sha256": "b5e29748fd885fdd29724924e1420b690b60e2991bc8694417e9723862720de8",
+      "sourceSha256": "bc54a3b006bc84f0ea9114ff31ca76d1fbea1a8bb5fe849dd244a35f26cdceff"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/nodes/rand/bluedither.wgsl.js",
+      "sha256": "d9a17285ee1183bde21f4e6879a5530a0a0ac289ec26ac511196935187d5f262",
+      "sourceSha256": "3d08f9ebbc0681e656f39e8ed7ebfaf7577a3b139d9e2cbbd45ff0b025a8e724"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/compute/UnpackAuxKernel.js",
+      "sha256": "3e09688f1fa9dfc384cd062e4027a2252eb9f170570731b6c58455039889a6e2",
+      "sourceSha256": "efe94f9bd044f4cc3fda9a99aa76fe7665f3e2aede4a6be08c98fe3a73d596ff"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/compute/targets.js",
+      "sha256": "5d648565f23fbd0a7d0ca2b8e75ca4a18824a361d91da017395a36d9293a6556",
+      "sourceSha256": "62f0635da56e7f1575d2f03c0ce1602cbd538aecad327d744e2a387688632b2f"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/objects/EquirectCamera.js",
+      "sha256": "912b19ea5a476506509faa1a8515c074ce9bb70244c5c18312b10ad0b8f5979c",
+      "sourceSha256": "d2da50c598c36a310297b8c3668c20516c8aa780cfbbed4ceca34375414e4e32"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/nodes/random.wgsl.js",
+      "sha256": "fa9a9d3f788d899d392aa09c2d55e483fab7b73a74d02d9dbe34d32465681c6a",
+      "sourceSha256": "d2a6124ffbf39934f1f67d03e85a996a9548a54364453f5d1a564a8b03b595e6"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/objects/PhysicalCamera.js",
+      "sha256": "4610af38c1385110e1fd11bbe1af4e186cd7d21f8ac747c1bb7c9b1a2b2e8699",
+      "sourceSha256": "b1789705289c0587107f1ffdca2e5da4d797666b0467cc1f81a78587af5020bd"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/Constants.js",
+      "sha256": "d460650d7cfde52d5b976d38b5b3e1c87a7e93d01d0a14b26e1974d13015a6ad",
+      "sourceSha256": "d460650d7cfde52d5b976d38b5b3e1c87a7e93d01d0a14b26e1974d13015a6ad"
+    },
+    {
+      "path": "three-mesh-bvh/src/math/OrientedBox.js",
+      "sha256": "280d31413070029de138bc47ab22d9d96e00429bb7d02d4d705e116eb1945510",
+      "sourceSha256": "023cb8751d0b14541904f831b85c2935e01f6c311077a8d93b03c3d15db1504d"
+    },
+    {
+      "path": "three-mesh-bvh/src/utils/ExtendedTrianglePool.js",
+      "sha256": "b6bf7e421537d4cb7be66f6d7a60a87eb8a96b45b41e51e89e344f81f4295a37",
+      "sourceSha256": "b6bf7e421537d4cb7be66f6d7a60a87eb8a96b45b41e51e89e344f81f4295a37"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/cast/closestPointToPoint.js",
+      "sha256": "b2fb66fdb8126a0748faa0f6a85b1caba1d3fbc5c72fc1b1d569a1329faa2dc9",
+      "sourceSha256": "296711939d33aab99c7b887fedd97dae5a53a35ff6bb2ad9f9ecb181a5badcd4"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/utils/nodeBufferUtils.js",
+      "sha256": "8632a4444c086c1984a471bc75f0902964cbcd52013aba06c73df4403401b0b2",
+      "sourceSha256": "8632a4444c086c1984a471bc75f0902964cbcd52013aba06c73df4403401b0b2"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/utils/iterationUtils.generated.js",
+      "sha256": "900ed65be866c9f5e39adc523f68c0ecb1c7235d03cff965b7b72378bfd4f58e",
+      "sourceSha256": "900ed65be866c9f5e39adc523f68c0ecb1c7235d03cff965b7b72378bfd4f58e"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/cast/refit.generated.js",
+      "sha256": "7dfe122498f14ac79cd4e74bd77872a4401ee6b6bf4a93ad97f80790f189af35",
+      "sourceSha256": "7dfe122498f14ac79cd4e74bd77872a4401ee6b6bf4a93ad97f80790f189af35"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/cast/raycast.generated.js",
+      "sha256": "1c407d03e79ad3acd2a809f2394465a8198b6eca8b7ae2131997bf0733180b04",
+      "sourceSha256": "1c407d03e79ad3acd2a809f2394465a8198b6eca8b7ae2131997bf0733180b04"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/cast/raycastFirst.generated.js",
+      "sha256": "8906575ba7a4e69a89816ae8744139640bc8976d4ed28de4cb2f4bd99225d873",
+      "sourceSha256": "8906575ba7a4e69a89816ae8744139640bc8976d4ed28de4cb2f4bd99225d873"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/cast/intersectsGeometry.generated.js",
+      "sha256": "178443ade9054d35995e605980b9225b92714eef6349d604bb7225c1c5cc59e7",
+      "sourceSha256": "c618a6af5c7e0649240b54bae66f57de0c33cda9f5eef9b35d775fc5891ba2ad"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/cast/closestPointToGeometry.generated.js",
+      "sha256": "3db23fd12ca62706fc2e0a9de01b543615d2481a9c0316aad522002cbea4992a",
+      "sourceSha256": "0f981858f3971a6e1a86f4597fe02c0028e9c826ec213cc3b0cb0ffe2c040913"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/utils/iterationUtils_indirect.generated.js",
+      "sha256": "36ca2be43e2776b3de3d32f45a47f53ac7b1aa241396e8199556cdb64b5ade5c",
+      "sourceSha256": "36ca2be43e2776b3de3d32f45a47f53ac7b1aa241396e8199556cdb64b5ade5c"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/cast/refit_indirect.generated.js",
+      "sha256": "97fa130b81de7f568abfba9eb0e2186512f9b3d027fa88c6521aca909e981c5f",
+      "sourceSha256": "97fa130b81de7f568abfba9eb0e2186512f9b3d027fa88c6521aca909e981c5f"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/cast/raycast_indirect.generated.js",
+      "sha256": "f79f555746239cb40e44725a0aeb984b2e75dff52dd80240262ba67277c2256a",
+      "sourceSha256": "f79f555746239cb40e44725a0aeb984b2e75dff52dd80240262ba67277c2256a"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/cast/raycastFirst_indirect.generated.js",
+      "sha256": "8efaf7e0d0e263717fc5c3d935c77f636e4e2148600006f6c839ce8796639393",
+      "sourceSha256": "8efaf7e0d0e263717fc5c3d935c77f636e4e2148600006f6c839ce8796639393"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/cast/intersectsGeometry_indirect.generated.js",
+      "sha256": "292562242201dc93d95456784f9f84ba96d547a82c7ae410878621aba851e15f",
+      "sourceSha256": "cba4c920f9cadb170de37db74655a980c9e34b90ec14e0656969adfbfb79929e"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/cast/closestPointToGeometry_indirect.generated.js",
+      "sha256": "26e0cc8f3f6479968c3d516efdac9dde60ef59a2487adb7a17a80cd75b3988cd",
+      "sourceSha256": "b233234d031601808be957a1f2eb37a8d4d7389f3522861b904d35ccfaa6d9d7"
+    },
+    {
+      "path": "three-mesh-bvh/src/utils/TriangleUtilities.js",
+      "sha256": "cc8b0bfc6618e3e1f6a1e29cbec2a0d915626db72787aa1db773fa8ed78d1462",
+      "sourceSha256": "1b6118e427f613160570f22da94b1016420d1b692610aaade00d74a83736b8ce"
+    },
+    {
+      "path": "three-mesh-bvh/src/utils/GeometryRayIntersectUtilities.js",
+      "sha256": "cbb52046616cc9e0c9c5d20e309b8ce5d0b1c7695937a5cf1db8baebdc5b5a34",
+      "sourceSha256": "cbb52046616cc9e0c9c5d20e309b8ce5d0b1c7695937a5cf1db8baebdc5b5a34"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/GeometryBVH.js",
+      "sha256": "ae3f365a97d4b145a76948ca688fa8d3fd44966f1432d0275b9ef5634b3905d3",
+      "sourceSha256": "1ce7464e1f77be01e69029ffbb3d76b182b38f6a10947763e46891696888bf7f"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/BVH.js",
+      "sha256": "d2da02bf38b4ab43b71e17468b01a6491c935897806d8867e5e4a1d5fc9db69e",
+      "sourceSha256": "2a0813bf437c245e14937bb929776b7106f48d94bc98cf96cc106f54356b8a34"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/LineBVH.js",
+      "sha256": "fcaca9d1b161bae20e04bd7465504029e5cec71a784a3e44b552e586ce3815ae",
+      "sourceSha256": "5e494eeab88a8f473081ef206c854d5c72a6139e50866e047ff06ab9fbdb67f3"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/PointsBVH.js",
+      "sha256": "02568dba68b813a5d82a41505f9942b72d1388b5f1d0bd65c727658ed99f3ee1",
+      "sourceSha256": "8abcd7a85bbb9621b13837ef9ef2e431de21548f582b97a87dcbea7022e73d0e"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/ObjectBVH.js",
+      "sha256": "eedbc641af9607588c491a0c8078893ea9adae2fcf34079a48277c637ab90b3f",
+      "sourceSha256": "01b3cac6e88d72bbea2c1dd04f9f10393a5364049d2d2496448752a488f3aea3"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/SkinnedMeshBVH.js",
+      "sha256": "617ca8ff840067dc3d2d0d9ff4fe2c6ab52d034fa3be862850439ef577374670",
+      "sourceSha256": "8305377bc8fb72d597418b0e708754a2e452f00ddeec405356f0926542c837d0"
+    },
+    {
+      "path": "three-mesh-bvh/src/objects/BVHHelper.js",
+      "sha256": "86983c53b2473470a90df93a6f7c771a0f4e08b1db583cf12502c92dceb9dce3",
+      "sourceSha256": "d5ad7b77f5c0fcc9bc5fd4f9dfef2d93a6e97dff6f81ad5f701db860d0c29d8e"
+    },
+    {
+      "path": "three-mesh-bvh/src/debug/Debug.js",
+      "sha256": "4f28afd6e93b81544235630f200f1cc5a23e658295f4e80e744cdb294e815cd1",
+      "sourceSha256": "89e23aed54b12ad28e92b32aa3a6fad8388946d1eb621e1036b44352a0c789de"
+    },
+    {
+      "path": "three-mesh-bvh/src/utils/ExtensionUtilities.js",
+      "sha256": "20ed66156194748f860bc6cfe111348d62556bd20ab3d5d6f69c06bc0e2340da",
+      "sourceSha256": "bfd3997c8350432e4388e799e93c4dff8b84fa26094558f2f083272ae1f9859b"
+    },
+    {
+      "path": "three-mesh-bvh/src/math/ExtendedTriangle.js",
+      "sha256": "d52b7a5030cc018975982e40f922fd3a4580d241112a306f35f8d9d2286619ba",
+      "sourceSha256": "20e6af81044d9c5d095da0e838ea7d9f1c1ecb129f1280bc7ddd71ff43c8f6c5"
+    },
+    {
+      "path": "three-mesh-bvh/src/webgl/MeshBVHUniformStruct.js",
+      "sha256": "1b3b815661b1e61f1fe60a3066edc3b9816506896a9e89aa5774e08e2363952c",
+      "sourceSha256": "44ecf9812b1cf6855863dcef9075edac426ea7697a5f1e723ccd8ba395c71970"
+    },
+    {
+      "path": "three-mesh-bvh/src/webgl/VertexAttributeTexture.js",
+      "sha256": "7990d6e86782423bda9811562f1eeba1ae0770871e4ed11cadc03d94ca1e9f7f",
+      "sourceSha256": "92faf674385c53a00b53d04f07418caf74dcd7d9c355b68556e2b1d85472c68e"
+    },
+    {
+      "path": "three-mesh-bvh/src/utils/StaticGeometryGenerator.js",
+      "sha256": "8c68391bad11bc3e8bc8babc7d2ac14bf6693796c402c20bb66d5cbf068caecd",
+      "sourceSha256": "1449a338f92c7c0fe90a41917b991782091b469ccbd94ce052c9a3a157ab0fd2"
+    },
+    {
+      "path": "three-mesh-bvh/src/webgl/BVHShaderGLSL.js",
+      "sha256": "1680ce1b28a7eee5db9f339378c90b2eaffe64b3aa66badad3ab401e8fd4cf1c",
+      "sourceSha256": "1680ce1b28a7eee5db9f339378c90b2eaffe64b3aa66badad3ab401e8fd4cf1c"
+    },
+    {
+      "path": "three-mesh-bvh/src/webgpu/bvh_ray_functions.wgsl.js",
+      "sha256": "c984b965c80690ed55cbb525b583694ed74814b59bb21c5fb91dd807f258c062",
+      "sourceSha256": "501634c1847499e8b14f89546f4afe653e6b640624969d627a4c62d198b17966"
+    },
+    {
+      "path": "three-mesh-bvh/src/webgpu/common_functions.wgsl.js",
+      "sha256": "5d90c096c95f99036b140044c63f9918136487b4e21a20d274f0af4bfb10b181",
+      "sourceSha256": "2fdb79f67a5cadbc588026a4945f385b79d36e9382fc7286a5bd4d6564834ad3"
+    },
+    {
+      "path": "three-mesh-bvh/src/webgpu/distance_functions.wgsl.js",
+      "sha256": "3892c0439e2e91669eba55e2ad3a38ee1238997a2529c45fefceb30842c60c3e",
+      "sourceSha256": "ebe8e8b260d1abcc59b074bd0355c6a4b29fc6d8b31844bbd5314aaa74c4e286"
+    },
+    {
+      "path": "three-mesh-bvh/src/webgpu/BVHComputeData.js",
+      "sha256": "cd6cd1275964ba04fca53c8cefb86207e91cc4881d19475114eb872d7d9ae257",
+      "sourceSha256": "52c82b54eedcb54c57f625fa397cc0b45a60210e9e5eb24c5bb86a824abde460"
+    },
+    {
+      "path": "three-mesh-bvh/src/webgpu/tsl/structs.js",
+      "sha256": "36c0a45a50f1a5fc0b9e3de859992c24f40a408187f46479758c3b11a9304beb",
+      "sourceSha256": "700b6f4e0fafe55364b5f2257d00252718c605b430179cfd4ea1a5c775c6f6e4"
+    },
+    {
+      "path": "three-mesh-bvh/src/webgpu/tsl/fns.js",
+      "sha256": "ddd53d39cca6b095df625448c17e43826087614fab2a56f308cf4c21cb2b7b66",
+      "sourceSha256": "ddd53d39cca6b095df625448c17e43826087614fab2a56f308cf4c21cb2b7b66"
+    },
+    {
+      "path": "three-mesh-bvh/src/webgpu/tsl/constants.js",
+      "sha256": "3c72c7a8c752b141dbc858ee08f40c60915c10db16079cc2f0e389e8ca587ddb",
+      "sourceSha256": "b2acd9dca84c121ea97c0841fef13ed5a0644081846071970bac8ac4d4927a71"
+    },
+    {
+      "path": "three-mesh-bvh/src/webgpu/nodes/NodeProxy.js",
+      "sha256": "443578df55b3cabfd234979d76bf45319094c7dd2555a7ef58f43cfcc0ea2753",
+      "sourceSha256": "e968309da42cc23716d1c886ebb70a082b9ca9cee571e7baa541a57ce6b7692a"
+    },
+    {
+      "path": "three-mesh-bvh/src/webgpu/nodes/WGSLTagFnNode.js",
+      "sha256": "68925114fd623bdab96b65acc5e02dfa7226d6d6a26443be06ddd64bced7e206",
+      "sourceSha256": "b4eb3db59e0ceaff2a3119b2a6210850276c4a4d50732c2f79ec4c405bc76891"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/compute/PathTracerMegaKernel.js",
+      "sha256": "e57883ba6fcdd1fa538c41e17221b7a5589a46276a225532cef2a35c003bc61a",
+      "sourceSha256": "02553c38153dbc2620458d427c65b8f9fbd89514e9e808768b29a537169e1add"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/EquirectHdrInfoNode.js",
+      "sha256": "3cb3ac3ab2401072401c96c7b982a8cf35d3ed7a0dd7464726d7ec784e8d07cb",
+      "sourceSha256": "de04df057550df8d56b7e6920207e9a11eff8acecc6d83b003073e61d899a71b"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/EquirectBackgroundInfo.js",
+      "sha256": "019181c4948176c0192bfa27c6c703c6242bc2e2d7777343af822b56f3c76441",
+      "sourceSha256": "7bc16b1f6fecb64d34b1e3aa1575200aed9e14f513d7ea9e2ec6571719e430b1"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/LightsInfoNode.js",
+      "sha256": "2f8737ffbc59c6b2f3714c13555d9e23238a08481c39a7f628e26e061114625b",
+      "sourceSha256": "13be3ef2d081732831dd7ee7bd076e8a7b36433dab8cd6650883726d3bbeb365"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/nodes/material.wgsl.js",
+      "sha256": "bd9e7ba9eaf3f2427b1929e63e4a77df482a704c008d4f417e96e776c5457690",
+      "sourceSha256": "5ced2b626f63bd8e883e22d377284642673bc04673595db0d00b36cfd8af1dfd"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/PathTracerBackend.js",
+      "sha256": "ab95e33d8e63550201f655865104e1d1d93d3552a5e3b737c34663fd5901d634",
+      "sourceSha256": "fc8906a844ac922ec6c0606a081c0beb5e83a8b73c4a231cecae44398422bacb"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/compute/wavefront/PopulatePixelIndicesKernel.js",
+      "sha256": "1b23ac96f936cc1987e1a0fe15404dabff068670d0347c80c45d45667d7330d7",
+      "sourceSha256": "17ad753eb2f529b5e6c5ecec22f29728bbd468acecc653708453977ac1190263"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/compute/wavefront/LogicKernel.js",
+      "sha256": "bb87eaaaca84ac1537389db33bdf65afb0a80b72ca6fa3fb2cb87f7406825c9d",
+      "sourceSha256": "b38d458f63d96dfea9ba67ddf97315b5bd29c46a6bb239ab938efd1634e9727a"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/compute/wavefront/MaterialKernel.js",
+      "sha256": "011daf1e05476f78c3624ae058d0b06fd433b9292f5ef44ad0e3b91d452f26af",
+      "sourceSha256": "793dec9514254c217e6d2f467a9432b6e813c41a5f0ccc13539d43f036efc63c"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/compute/wavefront/TraceRayKernel.js",
+      "sha256": "8de6f0ba7dc6a79079147442e1fc5794cb53937b3c3af96f589187f454b9ca47",
+      "sourceSha256": "3f716324be13e3d45f7431cd786c8746f9b4d10e79cf1d76a6265f3962388ea1"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/compute/wavefront/TraceShadowRayKernel.js",
+      "sha256": "a69ec6aee72a882444287d8afd0ebc53bc3e0ea797e6ded6be73c41b745d9087",
+      "sourceSha256": "6b4023f24baf6c115213b5cca58041c91dacef63382409ace010504e32282a06"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/compute/wavefront/MediumKernel.js",
+      "sha256": "49abb9645e8713c2fb8ba4227a8de7f40dfbf458df60a4fc10eee037763961a7",
+      "sourceSha256": "b43d8565e8c6af3e577196bdeaff4130879ac1c3b5e3be2f4a5faee6cdb86978"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/compute/wavefront/QueueMediumWalksKernel.js",
+      "sha256": "4eed372e97f26987ad9df2d85ba3de19d6b83debd119c06ea475e9958b32fb1b",
+      "sourceSha256": "ee2b0b620006b48572a206b73fbe8950e5bad4f40d00b3af803fb4ffb44ee2da"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/compute/wavefront/QueueLengthToDispatchKernel.js",
+      "sha256": "be5773b012b1de4995a9073569311d4cf7935df01cd9e97d102912ad45a401e2",
+      "sourceSha256": "e912e581118865fb89e3afda9c859b34cc5a86a6e8520b772bc0fdd67b475415"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/compute/wavefront/ResetSlotsKernel.js",
+      "sha256": "f8f645eabd7b625d2f66290bd6999d90d38ab4e50779ea011151612b61c52e89",
+      "sourceSha256": "488bba52ad22db9f23750c0a335aa08d37f60172cb97268d1cf8773a7828dd30"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/compute/ZeroOutBufferKernel.js",
+      "sha256": "546d4ba218d2b376fa9303d30242028513bda21f57eb57e1dd11b48ce2c4c54b",
+      "sourceSha256": "a72c24102af83504b802e831cdcdc371afe2a44abd5f487bd7c4a1200935aeb4"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/compute/CopyBufferKernel.js",
+      "sha256": "ee291f92a646f33a68c0868dfee18c09289c66745018d56c673f89d063e26043",
+      "sourceSha256": "f74837066bd5059b6b47f5c9cbb08153b5207df0dd458e9c731aaa294e6573c7"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/compute/wavefront/structs.js",
+      "sha256": "08f69994850d75d99f6fb0fe046fa24d3d5530b89701f4f64429869cfe211953",
+      "sourceSha256": "f166122733f5570c417f15bfb7392f76e63cbed1952e3a7488dd469e1a3489a2"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/compute/TallySampleCountsKernel.js",
+      "sha256": "5d967baa2e4ce3d7cc1f8ae44e9b791278f86dd7cb1e64a0902af76d156216a2",
+      "sourceSha256": "822f0ca47e955393633f599a865b5874c426fe544d7977642f848a1ef3a77f71"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/shader/common/index.js",
+      "sha256": "761aa4c54e7652315b36c59cf20bd6e6c1d1818cdddd9528677dcee86af4041d",
+      "sourceSha256": "761aa4c54e7652315b36c59cf20bd6e6c1d1818cdddd9528677dcee86af4041d"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/nodes/structs.wgsl.js",
+      "sha256": "37731cce7d77e1809e2f06a07e8ac6e3fd2b7cea0256006513a383bcb35b924c",
+      "sourceSha256": "f91230f16a27c57e1667334166914bd308ab97ad4150e5936e5b87a72531d8b3"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/nodes/utils.wgsl.js",
+      "sha256": "4197020408148c0f9f8cfd4069b06a1cf72f29dd488ea6f1dc6b06d9cf52a55b",
+      "sourceSha256": "40103500ff72830707444bc85a43f8db24abf8b972221f403d9034dcb5d19497"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/AtlasTexture.js",
+      "sha256": "97a2bb8c9c7c45808b146ab02206a539af2388a31ec704a1d82fa5269cd785a2",
+      "sourceSha256": "8db8e48b662166ea887f44720970ec1d47b3651a4d91b830e2232c2486ad0db8"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/nodes/furnish-aux.wgsl.js",
+      "sha256": "14695845a2387af8def4edb3326028d5887b87ebdc9f16afdb22c5fc7b5024c2",
+      "sourceSha256": "370ed5e3d213319ffa771e0bd4c15cc39441a2972cd276bd937b6d0c34640ceb"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/materials/PathtracingMaterial.js",
+      "sha256": "93005b144be6718d719e18a2a3dc211bbb10db77ec4a8a77a00de7a80c422a19",
+      "sourceSha256": "c92d1c39e31fdbf3361cf4cd1f289aced1b8e35178802760b4735c3e79ff416f"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/nodes/eon.wgsl.js",
+      "sha256": "9e69c805455f00f6c9670a28dc79eedc48fce83ffbe1b161e4a927e02f29738a",
+      "sourceSha256": "5ba539a3e576d51483bfca78ed22fe08ef40db5dc84927c9de71ec18294e0066"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/nodes/sheen.wgsl.js",
+      "sha256": "9b9a5c71f3c0d889b9f89c756ca59db6583911b4e4da44671a6e4c7c10b3db2d",
+      "sourceSha256": "3b6d36aaf8eb50887963dd3f229a90e8b7874e674b9bebe564f25a37f2a12702"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/nodes/sampling.wgsl.js",
+      "sha256": "0530aba571dc6601bff6d7ac2533002fb392ea2bc7ac086292dac97a1aaf40ef",
+      "sourceSha256": "7e975e3d53a33185c9de6a402e5165fe392fa9cfa4883b34b8f8201d74376b50"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/nodes/ggx.wgsl.js",
+      "sha256": "fea7155c370668f6aaf4fd2f9ec28d099cfaedde697fe25703fcd329072860b2",
+      "sourceSha256": "050646f8533a243c74de6855bea1958d1da42b080db5f1b8216877de7a90e049"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/TurquinTexture.js",
+      "sha256": "cb1e5d7c7d2122d4b559ad03a77730afde2e9e18b1199e1db9e326d5d5a3c452",
+      "sourceSha256": "00302b2e8018a00f3d052b3d2c3cb154271edbce2a76069bce5568641c30a6fd"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/textures/BlueNoiseTexture.js",
+      "sha256": "1f2bc55b268600d9443525c727ab7daa2dc147a35dd1f394667cffc6f8dc7b31",
+      "sourceSha256": "390450c1ba8276b6da6649344fa8f93ee2792d35030ae13176fb76ac377ac2f9"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/compute/ComputeKernel.js",
+      "sha256": "813bcc3fe0d2a9543503b9705cc5317eb706dc01b7cd7aa46121171540785aba",
+      "sourceSha256": "813bcc3fe0d2a9543503b9705cc5317eb706dc01b7cd7aa46121171540785aba"
+    },
+    {
+      "path": "three-mesh-bvh/src/math/SeparatingAxisBounds.js",
+      "sha256": "5db57220cc48d575ebcd2693499f13b3cf9d070890250ed6b7a25d3a8def0184",
+      "sourceSha256": "3e608a7bb5acc71d1f09af9a3b169518ea4de7cc436f11f7d868f5823ac09434"
+    },
+    {
+      "path": "three-mesh-bvh/src/math/MathUtilities.js",
+      "sha256": "e8c16d484e53fb874e18fee352f2a2c9bc3e9be6ef4e9b86ba9507d18a4b1ec8",
+      "sourceSha256": "9b1f8facd181b29506c32dda303097c3c2515b95c19ac1f5121e8d8a9946154b"
+    },
+    {
+      "path": "three-mesh-bvh/src/utils/PrimitivePool.js",
+      "sha256": "91c2510b6414084634479cacb9af1dee2f56114025108d68ab0ae01814ba329a",
+      "sourceSha256": "91c2510b6414084634479cacb9af1dee2f56114025108d68ab0ae01814ba329a"
+    },
+    {
+      "path": "three-mesh-bvh/src/utils/ThreeRayIntersectUtilities.js",
+      "sha256": "0f62244f68006d8eac76ab29e14d37c0616ba1ea9ae6a0184d68b0a9202039fd",
+      "sourceSha256": "157bed8831521365f325ed5c4c1827f6d7b7afa0a6cf2b0cbc2ec34df0043240"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/utils/intersectUtils.js",
+      "sha256": "b98f82110a9c6c45a3b29a9e79583a4f35f0f1f4bd7d126c8fc072112546540c",
+      "sourceSha256": "b98f82110a9c6c45a3b29a9e79583a4f35f0f1f4bd7d126c8fc072112546540c"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/utils/BufferStack.js",
+      "sha256": "c94b20fde61b58d10596ff4c969667eb19ac19f09c7397f3f4fc06449abc0375",
+      "sourceSha256": "c94b20fde61b58d10596ff4c969667eb19ac19f09c7397f3f4fc06449abc0375"
+    },
+    {
+      "path": "three-mesh-bvh/src/utils/ArrayBoxUtilities.js",
+      "sha256": "56c502a363c0ad7890f341c18ffb39339ab2a4df29a263427944c790349bca33",
+      "sourceSha256": "56c502a363c0ad7890f341c18ffb39339ab2a4df29a263427944c790349bca33"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/build/geometryUtils.js",
+      "sha256": "098436f3c054bf3727b355456cd7bfaf7cc6af5ecb8338cc360a0b047b95d896",
+      "sourceSha256": "ae71dfbadf9e6a3a8963b0784aaf4d3f1b12a7ee8a8f3bccc9b251c838360e3e"
+    },
+    {
+      "path": "three-mesh-bvh/src/utils/BufferUtils.js",
+      "sha256": "b83540dd60363892ce18082c5910a8e2cc87f37d6e811768830a0f34863b5658",
+      "sourceSha256": "b83540dd60363892ce18082c5910a8e2cc87f37d6e811768830a0f34863b5658"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/build/buildTree.js",
+      "sha256": "c312a7fea22f54b7bf86190b62a95404eca925eed6d4c0b4b58c8f745f0a8fa2",
+      "sourceSha256": "c312a7fea22f54b7bf86190b62a95404eca925eed6d4c0b4b58c8f745f0a8fa2"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/cast/shapecast.js",
+      "sha256": "86c790ff01cb3629b06121d0e0a44e12ecf177860552a2a9635132545b5b934d",
+      "sourceSha256": "9fa4aed17f4e2895c2b1a34cb0f072c37acc8ded99868066d4f07fa0e2f570a2"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/cast/bvhcast.js",
+      "sha256": "2ff8443fe6f8be1898aec05acf47b79d585376ba4146c26fe540300382cf7c7b",
+      "sourceSha256": "be889ce017e3fb0d2758a40082969fbbc3db6d0a1bdb098a88e4f404e5e20ddd"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/BVHTraversalHelper.js",
+      "sha256": "68959d21d75001e2fdb345b4890821991c2044c9d9fd938132fc926b3035f2db",
+      "sourceSha256": "68959d21d75001e2fdb345b4890821991c2044c9d9fd938132fc926b3035f2db"
+    },
+    {
+      "path": "three-mesh-bvh/src/webgl/glsl/common_functions.glsl.js",
+      "sha256": "19ee249214138a0d9aba7712121cccd06780640e53a3f0edb7f80c61780e0bae",
+      "sourceSha256": "19ee249214138a0d9aba7712121cccd06780640e53a3f0edb7f80c61780e0bae"
+    },
+    {
+      "path": "three-mesh-bvh/src/webgl/glsl/bvh_distance_functions.glsl.js",
+      "sha256": "e8b716d9cf0740a9c0a898d9f6498ba7bc33bc09add5e4fb7f0279092f86e855",
+      "sourceSha256": "e8b716d9cf0740a9c0a898d9f6498ba7bc33bc09add5e4fb7f0279092f86e855"
+    },
+    {
+      "path": "three-mesh-bvh/src/webgl/glsl/bvh_ray_functions.glsl.js",
+      "sha256": "1da5da042843d879e1170086a7f479b70ba89b600603ae3eaceeeafd648475a5",
+      "sourceSha256": "1da5da042843d879e1170086a7f479b70ba89b600603ae3eaceeeafd648475a5"
+    },
+    {
+      "path": "three-mesh-bvh/src/webgl/glsl/bvh_struct_definitions.glsl.js",
+      "sha256": "e196322216da3954a5bace7c091cd19308b78c0988650ef71a790a5d8c88c97c",
+      "sourceSha256": "e196322216da3954a5bace7c091cd19308b78c0988650ef71a790a5d8c88c97c"
+    },
+    {
+      "path": "three-mesh-bvh/src/webgpu/utils/packBVHBufferUtils.js",
+      "sha256": "67b53bfb001a243a15d1b6c9f01092d0be242428f45b9b11da4137ab43cca967",
+      "sourceSha256": "ecc6392886b4e1e03e52427bd5ad000e92059f50ddf39779bf7535a49fba97a8"
+    },
+    {
+      "path": "three-mesh-bvh/src/webgpu/shapecastFns/getShapecastFn.js",
+      "sha256": "70361a075b96064b53286be0a06fd3ab8603857b50cf78b06e415e70cade63cb",
+      "sourceSha256": "70361a075b96064b53286be0a06fd3ab8603857b50cf78b06e415e70cade63cb"
+    },
+    {
+      "path": "three-mesh-bvh/src/webgpu/shapecastFns/getRaycastFirstHitFn.js",
+      "sha256": "6238c128a8da2307d464e50c4bce0838a8058336a31d19c0860dc49b994c3f01",
+      "sourceSha256": "a49fe84202253b498d92c2c580f959bd3a82c9a17fa94dc2bea6786d75ee0960"
+    },
+    {
+      "path": "three-mesh-bvh/src/webgpu/shapecastFns/getSampleTrianglePointFn.js",
+      "sha256": "e046a48f93416e176b841348b709f5a1bcdc2fc541902fe20137ca861b470043",
+      "sourceSha256": "e046a48f93416e176b841348b709f5a1bcdc2fc541902fe20137ca861b470043"
+    },
+    {
+      "path": "three-mesh-bvh/src/webgpu/shapecastFns/getClosestPointToPointFn.js",
+      "sha256": "102acb785cc915bed2040f71de6a4a3324d28e7e7f82fdebc462d27994ac6f25",
+      "sourceSha256": "454862f69c49cf10195d7bc600d61b712be7418f021328abd6eaae6e15a6e5ef"
+    },
+    {
+      "path": "three-mesh-bvh/src/webgpu/ClusteredBVH.js",
+      "sha256": "5cb0da2ea5fd6768eccc5a3bfec490d4de088a7a5921a22aaf849311c5fa9cf7",
+      "sourceSha256": "a9295bdee87d335eb1d708a7bec8090726f424c095492e2b69beb56ce2dd7b26"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/nodes/medium.wgsl.js",
+      "sha256": "c35ab2ebfe7d9c762889c42be76ef4f39def9888bc7c40c84a3c16ce48d396a2",
+      "sourceSha256": "9bbb279b4f163e207c2d9213689487f22cd0b979becd4511eb47c114531776bc"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/nodes/lights.wgsl.js",
+      "sha256": "cdfa9b4b4ea17dc623a75bda7d3086c65ae89e6368b313473daed0f29bb5aea5",
+      "sourceSha256": "bb922d863e506ea3a7bd48425176794f83c438397805bf424596bb2621262cc2"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/uniforms/EquirectHdrInfoUniform.js",
+      "sha256": "b773ea316cc8998bb59827de29d439a27b815e22d584c6fa6371e9fa170f89cd",
+      "sourceSha256": "f9c9863be62cf5aae90b9b32d94306b7490a5680a2c7d0f58cfc91d16996b64c"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/uniforms/LightsInfoUniformStruct.js",
+      "sha256": "7803da3574b21b5aa6eae687e58dfcc3f29c7522c7f659924b28c3df6861d81f",
+      "sourceSha256": "087cade2c691330f1c72622e1fb28f5aa9db2fdfa793b4fb089abf904cc5a484"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/webgpu/compute/ZeroOutKernel.js",
+      "sha256": "b3f6ff72b21d42efe524d87e5b86444ce521a3e7e2b131782bdecb88f9432a74",
+      "sourceSha256": "3a701caded9a2a864b9c744c7cad9e7ef3d5a26b87e40d6bdef6ef007f73627d"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/shader/common/fresnel_functions.glsl.js",
+      "sha256": "53cfefc4c71029cd8315c85e1e887e23e6161cbadf5ca71983c5fa69e23b9d2e",
+      "sourceSha256": "53cfefc4c71029cd8315c85e1e887e23e6161cbadf5ca71983c5fa69e23b9d2e"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/shader/common/math_functions.glsl.js",
+      "sha256": "cd5044ba3e23f03fd97ee66a821777d7a7b06f2cdc24110a6948dd0837d6e37a",
+      "sourceSha256": "cd5044ba3e23f03fd97ee66a821777d7a7b06f2cdc24110a6948dd0837d6e37a"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/shader/common/shape_intersection_functions.glsl.js",
+      "sha256": "82712be5ebe74e151815581ca054e3ddccc941437c197410c9d4e812be0bb5a8",
+      "sourceSha256": "82712be5ebe74e151815581ca054e3ddccc941437c197410c9d4e812be0bb5a8"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/shader/common/texture_sample_functions.glsl.js",
+      "sha256": "a21d29106e8f71db7b2d71767678fd67f59207fcb6ec0b86a293f483b4abcaf7",
+      "sourceSha256": "a21d29106e8f71db7b2d71767678fd67f59207fcb6ec0b86a293f483b4abcaf7"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/shader/common/util_functions.glsl.js",
+      "sha256": "66c6c7693c3c692e6fa75f9291e2c7ff4803f148a513629528f78f90661f75b9",
+      "sourceSha256": "66c6c7693c3c692e6fa75f9291e2c7ff4803f148a513629528f78f90661f75b9"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/textures/blueNoise/BlueNoiseGenerator.js",
+      "sha256": "294a24077d3201e3c12607b01953c50120a29d75667da2a58d0cdabf1a0934a8",
+      "sourceSha256": "294a24077d3201e3c12607b01953c50120a29d75667da2a58d0cdabf1a0934a8"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/build/computeBoundsUtils.js",
+      "sha256": "b0596bd329f99f9dcc5f33c3af909ca853726c07d7d7ced42ca974319a46b3e4",
+      "sourceSha256": "b0596bd329f99f9dcc5f33c3af909ca853726c07d7d7ced42ca974319a46b3e4"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/build/splitUtils.js",
+      "sha256": "b15849b6a8cfcd729b458e47b124c23907c3a5d88f694fdf59f9c0c2ca7eb93d",
+      "sourceSha256": "b15849b6a8cfcd729b458e47b124c23907c3a5d88f694fdf59f9c0c2ca7eb93d"
+    },
+    {
+      "path": "three-mesh-bvh/src/core/build/sortUtils.js",
+      "sha256": "54923f99e4d5e779943b0c211b12a2c65b3a9f5579da6e1d589b1088128a3add",
+      "sourceSha256": "54923f99e4d5e779943b0c211b12a2c65b3a9f5579da6e1d589b1088128a3add"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/utils/TextureUtils.js",
+      "sha256": "cc28c1b3901070f17f47ac1ead8042c49e17dd09fe9500fea9c4341ac74503b9",
+      "sourceSha256": "78a6c0d3ed64cd8afa7666d6cff34cb4e1246a3039d574485668186716d7b852"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/utils/bufferToHash.js",
+      "sha256": "62248407ba0873b19c11ce5dee31b2eb30822ab52d0d11ff6393fb50f00bf70f",
+      "sourceSha256": "62248407ba0873b19c11ce5dee31b2eb30822ab52d0d11ff6393fb50f00bf70f"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/textures/blueNoise/utils.js",
+      "sha256": "d8bb06299274b450b911da96df5861b42b51aea3cfb521eb0e60a3c0b2e76d8a",
+      "sourceSha256": "d8bb06299274b450b911da96df5861b42b51aea3cfb521eb0e60a3c0b2e76d8a"
+    },
+    {
+      "path": "three-gpu-pathtracer/src/textures/blueNoise/BlueNoiseSamples.js",
+      "sha256": "4d3a3207c739f464207d91cd582d096a9d500c2646bed35851686a02382ac729",
+      "sourceSha256": "4d3a3207c739f464207d91cd582d096a9d500c2646bed35851686a02382ac729"
+    },
+    {
+      "path": "three/LICENSE",
+      "sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc"
+    },
+    {
+      "path": "three-gpu-pathtracer/LICENSE",
+      "sha256": "2df239f3787d174fbd6ead7bc4c748bee526564aa2e67315afcae47e15552e00"
+    },
+    {
+      "path": "three-mesh-bvh/LICENSE",
+      "sha256": "b106ef6198a9862ed2b5b873e944ecf3583c631a84a7462d400ecc1910ce7fee"
+    },
+    {
+      "path": "oidn-webgpu/LICENSE",
+      "sha256": "796fc206ee19a2765298a5ab41e43f3edd1479c9e3a76efd79a99f719ce87498"
+    },
+    {
+      "path": "rt_hdr_alb_nrm_small.tza",
+      "sha256": "980ea307e7825cae23ed8b1addf8de62ece84b61094795a5631ebf1c91b2e1a7"
+    },
+    {
+      "path": "OIDN-WEIGHTS-LICENSE.txt",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    }
+  ]
+}

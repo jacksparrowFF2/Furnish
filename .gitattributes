@@ -7,3 +7,8 @@
 # Keep textual diffs, but require a whole-workspace choice on divergent Git merges.
 /projects/workspace.furnish.json -merge
 /tests/fixtures/browser/1601-source.dxf binary
+
+# Frozen offline renderer hashes must survive Windows checkouts.
+# Preserve upstream whitespace as well as import-rewrite/source hashes.
+/vendor/lighting-preview/** text eol=lf -whitespace
+/vendor/lighting-preview/*.tza binary

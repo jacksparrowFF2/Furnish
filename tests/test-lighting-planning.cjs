@@ -6,7 +6,7 @@ const lamp={id:'soft',type:'surface_light',name:'通用规划占位',cx:1000,cy:
 (async()=>{
  const T=await import(JSON.parse(require('node:fs').readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports.three);
  assert(require('../src/data/catalog.js').library.flatMap(c=>c.items).some(i=>i[0]===lamp.type));P.validate(lamp);assert.equal(P.initial(lamp).mountHeight,2500);assert(!P.definition(lamp).ceilingPanel,'surface light never opens an aluminum panel');
- const small=B.build(T,{...lamp,w:240,d:160}),smallLight=small.children.find(o=>o.isLight&&!o.userData.ceilingPanelBounce);near(smallLight.intensity,16);
+ const small=B.build(T,{...lamp,w:240,d:160}),smallLight=small.children.find(o=>o.isLight&&!o.userData.ceilingPanelBounce);near(smallLight.intensity*683,16);
  const before=copy(lamp),g=B.build(T,lamp),box=new T.Box3().setFromObject(g);near(box.min.y*1000,2500);near(box.max.y*1000,2550);near((box.max.x-box.min.x)*1000,800);assert.deepEqual(lamp,before);
  const floor={rooms:[{id:'r',poly:[[0,0],[3000,0],[3000,3000],[0,3000]],ceilingHeight:2700}],floorFinish:{areas:{r:{finishedZ:60}}},furnitureDatum:'finished-floor'},f={...lamp,mountHeight:2590},vertical=D.furnitureVerticalBounds(f,floor,[f]);near(vertical.bottom,2650);near(vertical.top,2700);
  for(const rot of [0,90,31])for(const flip of [false,true]){const item={...lamp,rot,flip},parts=G.bodyParts(item);assert(parts.length);near(Math.min(...parts.map(p=>p.vertical.bottom)),2500);near(Math.max(...parts.map(p=>p.vertical.top)),2550);}

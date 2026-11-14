@@ -138,6 +138,7 @@ function initialize(){
  [...$('#tools').children].slice(3).forEach(b=>{b.classList.add('only2d');toolPop.append(b);});
  const cameraButton=$('#vCamera'),measureButton=$('#vMeasure');cameraButton.classList.add('only3d');measureButton.classList.add('only3d');toolPop.append(extra,finishes,$('#vIso').parentElement);rail.append($('#modes3d'),measureButton,cameraButton,toolMenu);
  document.body.append(toolPop);
+ const lightingButton=$('#vLightingPreview');lightingButton.classList.add('only3d');rail.insertBefore(lightingButton,toolMenu);
  const placeTools=()=>{toolPop.hidden=!toolMenu.open;toolMenu.firstElementChild.setAttribute('aria-expanded',String(toolMenu.open));if(!toolMenu.open){if(toolPop.contains(document.activeElement))toolMenu.firstElementChild.focus({preventScroll:true});return;}const r=toolMenu.firstElementChild.getBoundingClientRect();Object.assign(toolPop.style,{left:Math.max(12,Math.min(r.right-300,innerWidth-312))+'px',bottom:Math.max(12,innerHeight-r.top+8)+'px',maxHeight:Math.max(100,r.top-20)+'px'});[...toolPop.querySelectorAll('button')].find(b=>b.getClientRects().length&&!b.disabled)?.focus({preventScroll:true});};
  toolMenu.addEventListener('toggle',placeTools);addEventListener('resize',()=>{toolMenu.open=false;});
  toolPop.addEventListener('click',e=>{if(e.target.closest('button'))toolMenu.open=false;});

@@ -1,3 +1,5 @@
+2026-11-14（灯光高清预览）：lighting-core统一运行时单位／曝光、主照明预算与生产发光面；View3D公有快照沿原GLB，独立iframe使用离线r187/WebGPU，r160只负责快速编辑。短修订＋相机签名取消过期预览，关闭释放GPU；无新项目字段／保存通道或构建工具。基础Cycles使用新元数据与SPEC，精修参数保持；详见[契约](LIGHTING-PREVIEW.md)与[增量验收](validation/lighting-preview-20261114/README.md)。
+
 2026-11-14（客厅光照对照／完整吊顶导出）：独立试验目录使用同一生产GLB与相机对照WebGPU路径追踪和Cycles，尚未接入生产渲染器。导出缺省建筑scope补用ceiling.id，修复两片铝扣板稳定部件同名冲突，区域内重复仍拒绝；无新持久字段。实际结果、光照单位／曝光边界及增量验收见[对照](validation/living-lighting-comparison-20261114/README.md)。
 
 2026-11-13（macOS准备）：desktop/policy共用.app外工作目录，main增加Mac菜单编辑路由与关窗重开；原mutate、后台归属和持久链不变。package-desktop复用离线复制，新增原生Mach-O架构门禁、Helper标识及本机签名校验；.command保持LF／可执行位，Blender与CLI补Mac路径。doctor-macos只读预检，原隔离verify-desktop记录环境／内存与3D首开耗时；无新前端脚本或构建工具。Mac实机待验，见[迁移](MACOS.md)与[准备验收](validation/macos-preparation-20261113/README.md)。

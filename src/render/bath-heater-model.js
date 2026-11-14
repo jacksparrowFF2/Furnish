@@ -2,11 +2,18 @@
 (function(root){
 'use strict';
 const products=()=>root.FurnishProducts||require('../core/product-rules.js');
+const lighting=()=>root.FurnishLighting||require('../core/lighting-core.js');
+function area(g,{position,width,height,candela,color,material}){
+ const radiance=lighting().panel(candela,width,height);
+ if(material){material.emissiveIntensity=radiance;material.userData.emissionOn=radiance;}
+ (g.userData.lightingRects||=[]).push({position,width,height,u:[1,0,0],v:[0,0,-1],normal:[0,-1,0],radiance,color,material});
+}
+function direct(lamp){lamp.userData.radiometricLight=true;lamp.userData.areaSurrogate=true;lamp.castShadow=true;lamp.shadow.mapSize.set(512,512);lamp.shadow.camera.near=.02;lamp.shadow.bias=-.0001;lamp.shadow.normalBias=.01;}
 const supported=f=>!!(products().definition(f)?.ceilingPanel||products().definition(f)?.panelLight)&&!f.obj;
 function heaterLight(T,g,f){
  const P=products(),light=P.definition(f)?.heaterLight;if(!light)return g;
- g.traverse(o=>{if(o.name===light.part&&o.material?.emissive){o.material.emissive.set(light.color);o.material.emissiveIntensity=1.5;(o.material.userData||={}).ceilingPanelEmitter=true;}});
- if(T.SpotLight&&T.Object3D)for(const z of [-.25,0,.25]){const lamp=new T.SpotLight(light.color,light.previewCandela/3,0,Math.PI/2,1,2),target=new T.Object3D(),y=P.value(f,'mountHeight')/1000;lamp.position.set(f.w*.1375/1000,y-.002,f.d*z/1000);target.position.copy(lamp.position);target.position.y-=1;lamp.target=target;lamp.userData.ceilingPanelLight=true;g.add(lamp,target);}
+ g.traverse(o=>{if(o.name===light.part&&o.material?.emissive){o.material.emissive.set(light.color);(o.material.userData||={}).ceilingPanelEmitter=true;area(g,{position:[f.w*.1375/1000,P.value(f,'mountHeight')/1000-.002,0],width:f.w*.675/1000,height:f.d*.95/1000,candela:light.previewCandela,color:light.color,material:o.material});}});
+ if(T.SpotLight&&T.Object3D)for(const z of [-.25,0,.25]){const lamp=new T.SpotLight(light.color,lighting().radiometric(light.previewCandela/3),0,Math.PI/2,1,2),target=new T.Object3D(),y=P.value(f,'mountHeight')/1000;lamp.position.set(f.w*.1375/1000,y-.002,f.d*z/1000);target.position.copy(lamp.position);target.position.y-=1;lamp.target=target;lamp.userData.ceilingPanelLight=true;direct(lamp);g.add(lamp,target);}
  return g;
 }
 function build(T,f){
@@ -23,6 +30,7 @@ function build(T,f){
  if(light){
   const edge=Math.min(light.frame/1000,w/4,d/4),glow=new T.MeshStandardMaterial({color:'#fafbf8',emissive:light.color,emissiveIntensity:1.5,roughness:.65});
   (glow.userData||={}).ceilingPanelEmitter=true;
+  area(g,{position:[0,base-.001,0],width:w-2*edge,height:d-2*edge,candela:light.previewCandela*energy,color:light.color,material:glow});
   for(const side of [-1,1]){
    box('light-frame-x-'+side,edge,rim,d,side*(w-edge)/2,rim/2,0,white);
    box('light-frame-z-'+side,w-2*edge,rim,edge,0,rim/2,side*(d-edge)/2,white);
@@ -33,14 +41,15 @@ function build(T,f){
   if(T.SpotLight&&T.Object3D)for(let row=0;row<light.rows;row++)for(let col=0;col<light.columns;col++){
    // Integrate samples over the diffuser. A fully feathered downward hemisphere
    // avoids the cone edge of a spotlight on nearby walls; no finite range cutoff.
-   const lamp=new T.SpotLight(light.color,light.previewCandela*energy/(light.rows*light.columns),0,Math.PI/2,1,2),target=new T.Object3D();
+   const lamp=new T.SpotLight(light.color,lighting().radiometric(light.previewCandela*energy/(light.rows*light.columns)),0,Math.PI/2,1,2),target=new T.Object3D();
    const x=((col+.5)/light.columns-.5)*(w-2*edge),z=((row+.5)/light.rows-.5)*(d-2*edge);
    lamp.position.set(x,base-.001,z);target.position.set(x,base-1,z);lamp.target=target;
-   lamp.name='Panel diffuser '+row+':'+col;lamp.userData.ceilingPanelLight=true;g.add(lamp,target);
+   lamp.name='Panel diffuser '+row+':'+col;lamp.userData.ceilingPanelLight=true;direct(lamp);g.add(lamp,target);
   }
   // Raster-only returned light from lower room surfaces; shadowed to stay local.
   if(T.SpotLight&&T.Object3D)for(const side of [-1,1]){
-   const lamp=new T.SpotLight(light.color,light.bounceCandela*energy/2,light.bounceReach/1000,Math.PI*.45,1,2),target=new T.Object3D();
+   const lamp=new T.SpotLight(light.color,lighting().radiometric(light.bounceCandela*energy/2),light.bounceReach/1000,Math.PI*.45,1,2),target=new T.Object3D();
+   lamp.userData.radiometricLight=true;
    const y=base-light.bounceDrop/1000,z=side*d/4;
    lamp.position.set(0,y,z);target.position.set(0,y+1,z);lamp.target=target;
    lamp.name='Panel reflected light '+side;lamp.userData.ceilingPanelLight=true;lamp.userData.ceilingPanelBounce=true;

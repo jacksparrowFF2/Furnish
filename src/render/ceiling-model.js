@@ -46,6 +46,15 @@ function build(THREE,data,{wx=v=>v/1000,wz=v=>v/1000,top=Infinity,lamps=true,bod
   if(!m||!lamps||!THREE.SpotLight||!THREE.Object3D)return;
   const p=C.lightPolygon(c.section.light),face=ring=>new THREE.Vector3(wx((ring[2][0]+ring[3][0])/2),(c.height-(p[2][1]+p[3][1])/2)/1000,wz((ring[2][1]+ring[3][1])/2)),normal=ring=>new THREE.Vector3(wx(ring[2][0])-wx(ring[1][0]),-(p[2][1]-p[1][1])/1000,wz(ring[2][1])-wz(ring[1][1])).normalize(),points=rings.map(face),lengths=points.slice(1).map((v,i)=>v.distanceTo(points[i])),total=lengths.reduce((a,b)=>a+b,0);
   if(total<1e-6)return;
+  // The same saved emitting face drives the independent path tracer. No camera
+  // budget or raster bounce sample is part of this physical source descriptor.
+  m.userData.lightingRects=points.slice(1).flatMap((b,i)=>{
+   const a=points[i],width=a.distanceTo(b);if(width<1e-6)return [];
+   const u=b.clone().sub(a).normalize(),n=normal(rings[i]).add(normal(rings[i+1])).normalize();n.addScaledVector(u,-n.dot(u)).normalize();
+   const v=new THREE.Vector3().crossVectors(n.clone().negate(),u).normalize(),r=rings[i];
+   const height=Math.hypot((r[3][0]-r[2][0])/1000,(p[3][1]-p[2][1])/1000,(r[3][1]-r[2][1])/1000);
+   return [{position:a.clone().lerp(b,.5).addScaledVector(n,.0002).toArray(),u:u.toArray(),v:v.toArray(),normal:n.toArray(),width,height,color:'#ffde9e',radiance:1.8,material:m.material}];
+  });
   // Keep the continuous emitting edge for the ceiling wash shader. Point
   // samples alone make scallops when the ceiling is close to a long strip.
   m.userData.ceilingWash=points.slice(1).flatMap((b,i)=>normal(rings[i]).y>.5?Array.from({length:5},(_,sample)=>{const t=(sample+.5)/5,edge=ring=>[wx(ring[2][0]*t+ring[3][0]*(1-t)),(c.height-p[2][1]*t-p[3][1]*(1-t))/1000,wz(ring[2][1]*t+ring[3][1]*(1-t))];return [edge(rings[i]),edge(rings[i+1]),sample];}):[]);
@@ -53,7 +62,7 @@ function build(THREE,data,{wx=v=>v/1000,wz=v=>v/1000,top=Infinity,lamps=true,bod
   for(let i=0;i<count;i++){
    let along=(i+.5)*weight,k=0;while(k<lengths.length-1&&along>lengths[k])along-=lengths[k++];
    const t=lengths[k]>0?along/lengths[k]:0,position=points[k].clone().lerp(points[k+1],t),direction=normal(rings[k]).lerp(normal(rings[k+1]),t).normalize();
-   function spot(origin,dir,intensity,range,part){const lamp=new THREE.SpotLight('#ffde9e',intensity*weight,range,Math.PI*.46,1,2),target=new THREE.Object3D();lamp.position.copy(origin);target.position.copy(origin).add(dir);lamp.target=target;lamp.userData.ceilingStripLight=part;lamp.castShadow=true;lamp.shadow.mapSize.set(512,512);lamp.shadow.camera.near=.02;lamp.shadow.bias=-.0001;lamp.shadow.normalBias=.025;m.add(lamp,target);}
+   function spot(origin,dir,intensity,range,part){const lamp=new THREE.SpotLight('#ffde9e',(root.FurnishLighting||require('../core/lighting-core.js')).radiometric(intensity*weight),range,Math.PI*.46,1,2),target=new THREE.Object3D();lamp.position.copy(origin);target.position.copy(origin).add(dir);lamp.target=target;lamp.userData.ceilingStripLight=part;lamp.userData.areaSurrogate=true;lamp.userData.radiometricLight=true;lamp.castShadow=true;lamp.shadow.mapSize.set(512,512);lamp.shadow.camera.near=.02;lamp.shadow.bias=-.0001;lamp.shadow.normalBias=.025;m.add(lamp,target);}
    if(direction.y<=.5)spot(position.clone().addScaledVector(direction,.003),direction,12,5,'direct');
   }
  }
@@ -133,7 +142,7 @@ function applyWash(T,group){
    shader.fragmentShader=varying+'uniform sampler2D furnishWashMask;uniform vec4 furnishWashBounds;uniform vec3 furnishWashColor;\n'+shader.fragmentShader.replace('#include <emissivemap_fragment>',`#include <emissivemap_fragment>
     vec2 washUV=(vFurnishWashPosition.xz-furnishWashBounds.xy)/furnishWashBounds.zw;
     float wash=texture2D(furnishWashMask,washUV).r*max(0.0,-vFurnishWashNormal.y*(gl_FrontFacing?1.0:-1.0));
-    totalEmissiveRadiance+=furnishWashColor*wash*1.3;
+    totalEmissiveRadiance+=furnishWashColor*wash*0.1625;
    `);
   };
   // A virtual diffuse ceiling bounce is created only after direct light has
@@ -142,7 +151,7 @@ function applyWash(T,group){
   for(let i=0;i<count;i++){
    const world=center.clone();world[axis]=bounds.min[axis]+size[axis]*(i+.5)/count;world.y=height-.015;
    ray.set(world,up);ray.near=0;ray.far=.03;if(!ray.intersectObject(o,false).length)continue;
-   const lamp=new T.SpotLight('#ffde9e',energy*12/count,7,Math.PI*.45,1,2),target=new T.Object3D();lamp.position.copy(o.worldToLocal(world.clone()));target.position.copy(o.worldToLocal(world.clone().add(new T.Vector3(0,-1,0))));lamp.target=target;lamp.userData.ceilingStripLight='bounce';lamp.castShadow=true;lamp.shadow.mapSize.set(512,512);lamp.shadow.camera.near=.02;lamp.shadow.bias=-.0001;lamp.shadow.normalBias=.025;o.add(lamp,target);
+   const lamp=new T.SpotLight('#ffde9e',(root.FurnishLighting||require('../core/lighting-core.js')).radiometric(energy*12/count),7,Math.PI*.45,1,2),target=new T.Object3D();lamp.position.copy(o.worldToLocal(world.clone()));target.position.copy(o.worldToLocal(world.clone().add(new T.Vector3(0,-1,0))));lamp.target=target;lamp.userData.ceilingStripLight='bounce';lamp.castShadow=true;lamp.shadow.mapSize.set(512,512);lamp.shadow.camera.near=.02;lamp.shadow.bias=-.0001;lamp.shadow.normalBias=.025;o.add(lamp,target);
   }
  });
 }

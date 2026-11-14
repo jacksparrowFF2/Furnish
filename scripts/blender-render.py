@@ -5,6 +5,7 @@ Progress files also work with the Microsoft Store launcher, which hides stdout.
 """
 import argparse
 import json
+import math
 import os
 from pathlib import Path
 import sys
@@ -77,7 +78,7 @@ def main():
             if scene.render.engine!='CYCLES':raise ValueError('当前精修入口需要Cycles工程')
         else:
             bpy.ops.wm.read_factory_settings(use_empty=True)
-            bpy.ops.import_scene.gltf(filepath=str(Path(args.input).resolve()))
+            bpy.ops.import_scene.gltf(filepath=str(Path(args.input).resolve()), export_import_convert_lighting_mode='SPEC')
             scene = bpy.context.scene
             cameras = [o for o in scene.objects if o.type == 'CAMERA']
             if not cameras:raise RuntimeError('导出场景缺少相机')
@@ -96,7 +97,19 @@ def main():
         if not args.template:
             scene.render.film_transparent = False
             scene.world = bpy.data.worlds.new('Furnish World');scene.world.use_nodes = True
-            background = scene.world.node_tree.nodes.get('Background');background.inputs['Color'].default_value = (0.75, 0.82, 1.0, 1.0);background.inputs['Strength'].default_value = 0.35
+            # New exports carry the same physical light/exposure contract as the
+            # HD preview. Old exports retain their historical world defaults.
+            raw = Path(args.input).read_bytes()
+            document = json.loads(raw[20:20 + int.from_bytes(raw[12:16], 'little')])
+            lighting = document.get('scenes', [{}])[document.get('scene', 0)].get('extras', {}).get('furnish', {}).get('lighting')
+            background = scene.world.node_tree.nodes.get('Background')
+            if lighting:
+                background.inputs['Color'].default_value = (*lighting['world'], 1.0)
+                background.inputs['Strength'].default_value = 1
+                scene.view_settings.exposure = math.log2(lighting['exposure'])
+            else:
+                background.inputs['Color'].default_value = (0.75, 0.82, 1.0, 1.0)
+                background.inputs['Strength'].default_value = 0.35
             scene.view_settings.view_transform = 'AgX'
         if render_info:render_info.update(samples=scene.cycles.samples,exposure=scene.view_settings.exposure,viewTransform=scene.view_settings.view_transform,resolution=[args.width,args.height])
         bpy.ops.file.pack_all()
