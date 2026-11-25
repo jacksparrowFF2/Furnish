@@ -40,13 +40,15 @@ function build(T,f){
    const closed=fabric?fabric.closed/1000:-w/2+w/l.count*(panel+.5);
    const opened=fabric?fabric.opened/1000:(panel===0?-1:1)*(w/2-width*.16/2);
    const folds=Math.max(4,Math.round(width/.12)),cols=folds*12,rows=12,positions=[],indices=[];
-   const amplitude=Math.min(d*.4,.065),scale=1-.84*l.open;
+   const open=fabric?.open??l.open;
+   const amplitude=Math.min(d*.4,.065),scale=1-.84*open;
    for(let j=0;j<=rows;j++)for(let i=0;i<=cols;i++){const t=i/cols,v=j/rows;positions.push(-width/2+width*t,.02+(h-.06)*v,Math.cos(t*folds*Math.PI*2)*amplitude*(.85+.15*(1-v)));}
    for(let j=0;j<rows;j++)for(let i=0;i<cols;i++){const a=j*(cols+1)+i,b=a+cols+1;indices.push(a,b,a+1,b,b+1,a+1);}
    const geo=new T.BufferGeometry();geo.setAttribute('position',new T.Float32BufferAttribute(positions,3));geo.setIndex(indices);geo.computeVertexNormals();
    const role=l.motor?'fabric-panel':'sheer-panel';
    const translucent=l.kind==='sheer',node=add(mesh(geo,translucent?sheer:cloth),role,role+'-'+panel);
-   node.position.x=closed+(opened-closed)*l.open;node.scale.x=scale;if(translucent)node.castShadow=false;
+   if(fabric)node.userData.door={kind:'covering',open:open>0,coveringField:fabric.field};
+   node.position.x=closed+(opened-closed)*open;node.scale.x=scale;if(translucent)node.castShadow=false;
   }
  }else{
   l.parts.forEach((part,i)=>{

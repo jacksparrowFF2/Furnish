@@ -147,6 +147,8 @@ const fields={
  showerHandAngle:numeric(0,35,'手持花洒角度须为 0–35°'),
  curtainStyle:{values:['single','double'],message:'窗帘样式须为单开或双开'},
  curtainOpen:numeric(0,1,'窗帘收起比例须为 0–1'),
+ curtainLeftOpen:numeric(0,1,'左帘收起比例须为 0–1'),
+ curtainRightOpen:numeric(0,1,'右帘收起比例须为 0–1'),
  blindAngle:numeric(0,85,'百叶角度须为 0–85°'),
  shadeMode:{values:['day','night'],message:'柔纱帘调光须为日间或夜间'},
  slidingStackSide:{values:['left','right'],message:'收门方向须为左侧或右侧'},
@@ -168,9 +170,11 @@ const foldingTable={solidModel:{global:'FurnishFoldingTableModel',module:'foldin
 const electricalBox={family:'electrical-box',wallRecess:true,height:400,anchor:'bottom',defaults:{mountHeight:1200},fields:['mountHeight'],create:['mountHeight']};
 // Generic made-to-measure covering assumptions, not a manufacturer's installation specification.
 const covering={defaultFrontClearance:0,family:'window-covering',height:1800,anchor:'bottom',defaults:{mountHeight:900,curtainOpen:0},fields:['mountHeight','curtainOpen'],create:['mountHeight','curtainOpen'],solidModel:{global:'FurnishWindowCoveringModel',module:'window-covering',base:'mountHeight'}};
+const curtainOpening=Object.freeze({formatVersion:111,sideFields:Object.freeze(['curtainLeftOpen','curtainRightOpen'])});
 function mijiaCurtain(kind,fabric){
  return {
   ...covering,kind,height:2400,defaults:{mountHeight:0,curtainOpen:0},
+  fields:[...covering.fields,...curtainOpening.sideFields],
   footprintMin:{w:300,d:59},clearanceReview:'missing',
   solidModel:{...covering.solidModel,geometryVersion:1},
   covering:{kind:fabric,soft:true,motor:{size:[111,93,59],minHeight:150,trackDepth:32,trackHeight:27}},
@@ -498,6 +502,18 @@ function planOutline(f,segments,context){
  return [...half(sorted),...half([...sorted].reverse())];
 }
 
+function editCurtainOpening(f,changes){
+ const keys=['curtainOpen',...curtainOpening.sideFields].filter(key=>Object.hasOwn(changes,key));
+ for(const key of keys){
+  if(!supports(f,key))throw Error('不支持的产品参数：'+key);
+  if(changes[key]!==null)validateField(f,key,changes[key]);
+ }
+ if(keys.includes('curtainOpen'))for(const key of curtainOpening.sideFields)delete f[key];
+ for(const key of keys){
+  if(changes[key]===null)delete f[key];
+  else f[key]=changes[key];
+ }
+}
 function coveringLayout(f){
  const spec=definition(f)?.covering;if(!spec||f.obj)return null;
  const h=height(f),open=value(f,'curtainOpen'),parts=[],add=(role,w,d,h,x,bottom,z=0,angle=0)=>parts.push({role,w,d,h,x,bottom,z,angle});
@@ -506,7 +522,8 @@ function coveringLayout(f){
   const left=-f.w/2+w+2,right=f.w/2;
   const fabric=[[left,-3],[3,right]].map(([start,end],index)=>{
    const width=end-start,packed=width*.16;
-   return {width,closed:(start+end)/2,opened:index===0?start+packed/2:end-packed/2};
+   const field=curtainOpening.sideFields[index];
+   return {width,closed:(start+end)/2,opened:index===0?start+packed/2:end-packed/2,field,open:value(f,field)};
   });
   return {...spec,open,h,count:2,parts,trackHeight,trackDepth,fabric,motor:{w,h:height,d,x:(w-f.w)/2,bottom:h-trackHeight-height+15}};
  }
@@ -538,7 +555,12 @@ function coveringLayout(f){
 }
 const supports=(f,key)=>key==='paperArray'?!!definition(f)?.paperArray&&!f.obj:key==='pose3D'?!!definition(f)?.freeRotation&&!f.obj:key==='groupId'||key==='mountHeight'&&bottomMode(f)==='offset'||definition(f)?.fields?.includes(key)||false;
 const family=(f,name)=>definition(f)?.family===name;
-const value=(f,key)=>f[key]??(key==='mountHeight'&&bottomMode(f)==='offset'?legacyBottom(f):definition(f)?.defaults?.[key]);
+function value(f,key){
+ if(f[key]!=null)return f[key];
+ if(key==='mountHeight'&&bottomMode(f)==='offset')return legacyBottom(f);
+ if(curtainOpening.sideFields.includes(key)&&supports(f,key))return value(f,'curtainOpen');
+ return definition(f)?.defaults?.[key];
+}
 // UI quantities share one contract; layers are derived, never a second saved count.
 function arrayQuantityEdit(count,config,key,input,limits){
  const capacity=config.rows*config.columns,layers=Math.ceil(count/capacity),max=key==='layers'||key==='count'?limits.maxCount:limits.maxAxis;
@@ -983,7 +1005,13 @@ function replacement(previous,next,candidate){
  if(supports(next,'curtainStyle'))next.curtainStyle=candidate.curtainStyle??value({type:next.type},'curtainStyle');
  if(family(next,'window-covering'))next.frontClearance=candidate.frontClearance??definition(next).defaultFrontClearance;
  if(family(next,'window-lining')||family(next,'art-glass'))next.frontClearance=candidate.frontClearance??definition(next).defaultFrontClearance;
- if(family(next,'window-covering'))for(const key of definition(next).fields)if(candidate[key]!==undefined||next[key]===undefined)next[key]=candidate[key]??value({type:next.type},key);
+ if(family(next,'window-covering'))for(const key of definition(next).fields){
+  if(curtainOpening.sideFields.includes(key)){
+   if(candidate[key]!==undefined)next[key]=candidate[key];
+  }else if(key==='curtainOpen'&&previous.type===next.type&&curtainOpening.sideFields.some(k=>next[k]!==undefined)){
+   next[key]=value(previous,key);
+  }else if(candidate[key]!==undefined||next[key]===undefined)next[key]=candidate[key]??value({type:next.type},key);
+ }
  if(next.type==='ksink'){customSinkCandidate(next,candidate);validate(next);}
  if(family(next,'arrow-shower')){delete next.mountHeight;next.showerMixerHeight=previous.type===next.type?showerInstallation(previous).mixer:value({type:next.type},'showerMixerHeight');for(const [key,v] of Object.entries(definition(next).identity))next[key]=candidate[key]||v;}
  if(next.type==='tripleslidingwindow')next.mountHeight=previous.type===next.type?value(previous,'mountHeight'):value({type:next.type},'mountHeight');
@@ -1086,6 +1114,6 @@ function coveLightLayout(f){
  const w=f.w,d=f.d,h=height(f),t=P.wall;if(![w,d,h].every(Number.isFinite)||w<100||d<25||h<P.minHeight)throw Error('反射灯槽至少100×25×20mm');
  return {w,d,h,t,base:value(f,'mountHeight'),innerWidth:w-2*t,stripWidth:P.stripWidth,emitterHeight:P.emitterHeight,emitterZ:0,level:value(f,'lightPreviewLevel')/100,color:P.colors[value(f,'lightKelvin')],candela:w/1000*P.previewCandelaPerM*value(f,'lightPreviewLevel')/100};
 }
-const api={coveringRetrofit,softCoveringOnly,dryingRackLayout,editDryingRackDrop,styleAppearance,styleRole,cabinetAppearance,coveLightLayout,panelVariants,panelOptions,xiaomiPanelVariants,panelSpec,panelSpatialKey,editPanelVariant,cabinetService,cabinetBuilder,inventoryArrayDefaults,inventoryArrayConfig,inventoryArraySpacing,arrayQuantityEdit,clearPaperArray,paperArrayConfig,paperArrayLayout,editPaperArray,cabinetDetail,cabinetTiers,cabinetDrawerBox,cabinetBackPanel,cabinetEntry,bottomMode,bottomHeight,editBottomHeight,elevationOriginal,elevationSource,elevationDelta,elevatedRange,elevatedParts,elevatedZones,circulatorLayout,catalogMinimum,artGlass,artGlassPatterns,gardenLayout,windowLining,stoolStack,cabinetDoorLimits,kind,kinds,matchesSearch,supportsAction,upgradeIdentity,wardrobeHanging,coveringLayout,coverSpecs,pocketLayout,cabinetSideClosure,cabinetTopClosure,cabinetConstruction,slidingGlass,slidingResizeFrame,resizeSliding,slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,planFurnitureInput,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
+const api={curtainOpening,editCurtainOpening,coveringRetrofit,softCoveringOnly,dryingRackLayout,editDryingRackDrop,styleAppearance,styleRole,cabinetAppearance,coveLightLayout,panelVariants,panelOptions,xiaomiPanelVariants,panelSpec,panelSpatialKey,editPanelVariant,cabinetService,cabinetBuilder,inventoryArrayDefaults,inventoryArrayConfig,inventoryArraySpacing,arrayQuantityEdit,clearPaperArray,paperArrayConfig,paperArrayLayout,editPaperArray,cabinetDetail,cabinetTiers,cabinetDrawerBox,cabinetBackPanel,cabinetEntry,bottomMode,bottomHeight,editBottomHeight,elevationOriginal,elevationSource,elevationDelta,elevatedRange,elevatedParts,elevatedZones,circulatorLayout,catalogMinimum,artGlass,artGlassPatterns,gardenLayout,windowLining,stoolStack,cabinetDoorLimits,kind,kinds,matchesSearch,supportsAction,upgradeIdentity,wardrobeHanging,coveringLayout,coverSpecs,pocketLayout,cabinetSideClosure,cabinetTopClosure,cabinetConstruction,slidingGlass,slidingResizeFrame,resizeSliding,slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,planFurnitureInput,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishProducts=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
