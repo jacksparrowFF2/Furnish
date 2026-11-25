@@ -85,8 +85,10 @@ function build(THREE,f,RoundedBoxGeometry,materials={}){
  const seam=new THREE.MeshStandardMaterial({color:f.color||'#eee9df',roughness:1});
  function add(geo,material,x,y,z){const mesh=syncIdentity.produce("yeswood-sofa-model:site-1",()=>new THREE.Mesh(geo,material));mesh.position.set(x,y,z);mesh.castShadow=mesh.receiveShadow=true;g.add(mesh);return mesh;}
  function block(w,h,d,material,x,y,z,r=.012){return syncIdentity.produce("yeswood-sofa-model:site-2",()=>add(new RoundedBoxGeometry(w,h,d,4,Math.min(r,w/2,h/2,d/2)*.99),material,x,y+h/2,z));}
- function cushion(w,h,d,x,y,z,angle=0){
-  const geo=new RoundedBoxGeometry(w,h,d,7,Math.min(.065,h*.28,d*.28));
+ function cushion(w,h,d,x,y,z,angle=0,role='arm'){
+  // Broader curved shoulders keep the visible valleys between separate cushions.
+  const radius=role==='back'?Math.min(.061,d*.34):role==='seat'?Math.min(.058,h*.31):Math.min(.065,h*.28,d*.28);
+  const geo=new RoundedBoxGeometry(w,h,d,7,radius);
   // Broad soft bulges and restrained edge gathers; deterministic, no random state.
   const p=geo.attributes.position,n=geo.attributes.normal;
   for(let i=0;i<p.count;i++){
@@ -103,7 +105,10 @@ function build(THREE,f,RoundedBoxGeometry,materials={}){
     uv.setXY(i,uv.getX(i)*(face<2?d:w)/corduroyTileMetres,uv.getY(i)*(face===2||face===3?d:h)/corduroyTileMetres);
    }
   }else geo.computeVertexNormals();
-  const mesh=syncIdentity.produce("yeswood-sofa-model:site-3",()=>add(geo,cloth,x,y+h/2,z));mesh.rotation.x=angle;return mesh;
+  const mesh=syncIdentity.produce("yeswood-sofa-model:site-3",()=>add(geo,cloth,x,y+h/2,z));
+  mesh.rotation.x=angle;
+  mesh.userData.yeswoodUpholstery=role;
+  return mesh;
  }
  // Lower frame is open underneath; six feet including two middle supports.
  syncIdentity.produce("yeswood-sofa-model.js:generator-call-1",()=>block(2.06,.075,.83,wood,0,.155,0,.016));
@@ -124,8 +129,8 @@ function build(THREE,f,RoundedBoxGeometry,materials={}){
  syncIdentity.produce("yeswood-sofa-model.js:generator-call-7",()=>block(2.04,.115,.042,wood,0,.520,-.425,.012));
  for(const x of syncIdentity.items("yeswood-sofa-model.js:generator-4",[["item-a",-.975],["item-b",0],["item-c",.975]]))syncIdentity.produce("yeswood-sofa-model.js:generator-call-8",()=>block(.035,.430,.035,wood,x,.245,-.418,.009));
  for(const side of syncIdentity.items("yeswood-sofa-model.js:generator-5",[["item-a",-1],["item-b",1]])){
-  syncIdentity.produce("yeswood-sofa-model.js:generator-call-9",()=>cushion(.846,.190,.722,side*.432,.265,.046));
-  const back=syncIdentity.produce("yeswood-sofa-model.js:generator-call-10",()=>cushion(.846,.470,.180,side*.432,.430,-.302,-.125));
+  syncIdentity.produce("yeswood-sofa-model.js:generator-call-9",()=>cushion(.846,.190,.722,side*.432,.265,.046,0,'seat'));
+  const back=syncIdentity.produce("yeswood-sofa-model.js:generator-call-10",()=>cushion(.846,.470,.180,side*.432,.430,-.302,-.125,'back'));
   // Fine perimeter piping on the visible cushion face, in its local coordinates.
   const path=new THREE.Shape(),hw=.846/2-.024,hh=.470/2-.024,r=.035;
   path.moveTo(-hw+r,-hh);path.lineTo(hw-r,-hh);path.quadraticCurveTo(hw,-hh,hw,-hh+r);

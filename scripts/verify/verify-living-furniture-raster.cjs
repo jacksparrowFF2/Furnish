@@ -196,12 +196,12 @@ async function run(){
      assert.notEqual(code,buffer.toString(),'Could not isolate the sheen parameter');
     }
     if(file==='index.html'){
-     const render='function renderScene(){';
-     assert.equal(code.split(render).length,2,'Production render hook changed');
-     code=code.replace(render,`function renderScene(){const started=performance.now();
+     const render=/function renderScene\((?:onlySun=false)?\)\{/g;
+     assert.equal([...code.matchAll(render)].length,1,'Production render hook changed');
+     code=code.replace(render,`function renderScene(onlySun=false){const started=performance.now();
       const diagnostics=${diagnose}?{shadowPending:renderer.shadowMap.needsUpdate,programs:renderer.info.programs.length}:null;
       if(${traceRotation||traceDrag}&&window.furnitureBench.samples)performance.mark('furnish-draw-start');
-      drawBenchmarkScene();
+      drawBenchmarkScene(onlySun);
       if(${traceRotation||traceDrag}&&window.furnitureBench.samples)performance.mark('furnish-draw-end');
       const metrics=window.furnitureBench;
       if(${kitchenRound||ceilingAreaRound}&&!metrics.kitchenState)metrics.kitchenState=()=>{
@@ -354,7 +354,7 @@ async function run(){
         reader.readAsDataURL(new Blob([buffer]));
        });
       };
-     }function drawBenchmarkScene(){`);
+     }function drawBenchmarkScene(onlySun=false){`);
     }
     if(file==='index.html'&&kitchenProbes&&variant==='before')code=code.replace(
      'if(budget.coveShadowAdded)renderer.shadowMap.needsUpdate=true;',

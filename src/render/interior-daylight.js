@@ -24,6 +24,9 @@ const apertures=[
 ];
 const contactTypes=/^(sofa|armchair|chair|coffeetable|table|roundtable|bed|nightstand|desk|cabinet|bookshelf|cat_tree|cat_tower|plant_clivia|plant_spider|aircon_floor)/;
 const cabinetContactTolerance=.005;
+const sideboardId='fmv62bwbp1';
+const counterApplianceId='fmwvo7jc21';
+const throwPillowIds=['softdecor_70635989','softdecor_00281137'];
 const resolution=192;
 const maxApertures=apertures.length+1; // slot zero is always unlit
 // Tile lengths in metres and micro-height in metres. Painted boards and
@@ -89,7 +92,13 @@ function create(T,scene,{wx,wz,inside}){
   furnishWindowZone:{value:new T.Vector4()},
   furnishFinishLights:{value:[new T.Vector4(),new T.Vector4()]},
   furnishSofaPose:{value:new T.Vector4()},furnishSofaSize:{value:new T.Vector4()},
-  furnishSofaVisible:{value:0}
+  furnishSofaVisible:{value:0},
+  furnishPillowContacts:{value:throwPillowIds.map(()=>new T.Vector4())},
+  furnishNicheInverse:{value:new T.Matrix4()},
+  furnishNicheBounds:{value:new T.Vector4()},
+  furnishNicheHeight:{value:new T.Vector2()},
+  furnishCounterContact:{value:new T.Vector4()},
+  furnishCounterContactGain:{value:0}
  };
  const decorated=new Map(),variants=new Map(),supports=new Map();
  const inverse=new T.Matrix4(),matrix=new T.Matrix4(),box=new T.Box3();
@@ -99,7 +108,7 @@ function create(T,scene,{wx,wz,inside}){
  const overlay=new T.Group();
  scene.add(overlay);
  let patch,sky,field,finishField,finishTexture,wallsGroup,floors=[],bounds=null,lastPose='',daylight=0,openingsKey='';
- let roomById=new Map(),sofa=null;
+ let roomById=new Map(),sofa=null,niche=null,pillows=[],lastNichePose=null,lastPillowPose=null;
  let nightRooms=[],nightSources=[],nightField,upperField,nightKey='',nightEnabled=false;
  let nightSky=false,windowSource;
 
@@ -268,12 +277,13 @@ function create(T,scene,{wx,wz,inside}){
   }
   shader.fragmentShader=shader.fragmentShader.replace('#include <lights_fragment_begin>',lighting);
  }
- function appearance(source,profile,seam,upperReceiver,kitchenReceiver,sunReceiver){
+ function appearance(source,profile,edgeBox,upperReceiver,kitchenReceiver,sunReceiver,nicheReceiver,seatReceiver){
   if(!source?.isMeshStandardMaterial||source.transparent)return source;
   if(!finishField||source.flatShading||(profile==='wall'&&(source.map||source.roughness<.8)))profile='';
   const pool=variants.get(source)||new Map();
-  const fineEdge=profile==='cabinet'&&!!seam;
-  const variantKey=(fineEdge?profile+':'+seam.toArray().join(','):profile)+'|'+upperReceiver+'|'+kitchenReceiver+'|'+sunReceiver;
+  const easedEdge=!!edgeBox;
+  const variantKey=[profile,edgeBox?.min.toArray().join(','),edgeBox?.max.toArray().join(','),upperReceiver,
+   kitchenReceiver,sunReceiver,nicheReceiver,seatReceiver].join('|');
   if(pool.has(variantKey))return pool.get(variantKey);
   const material=source.clone();
   const floorKind=source.userData.tileFinish?.floorKind;
@@ -291,6 +301,8 @@ function create(T,scene,{wx,wz,inside}){
   const replacePaintColor=ceiling||paintDetail&&source.color.getHex()===0x37332b;
   const veneer=profile==='veneer';
   const wood=profile==='wood'||veneer;
+  const grainAxis=veneer&&root.FurnishProducts?.cabinetAppearance?.veneer(source.userData.cabinetSurface)?.grainAxis;
+  const pillow=profile==='pillow'&&!!finishTexture;
   const finishKind=veneer?'veneer':stone?'stone':profile==='matte'?'matte':'';
   const finishSurface=finishSurfaces[finishKind];
   const localFinish=finishSurface&&!veneer;
@@ -301,14 +313,17 @@ function create(T,scene,{wx,wz,inside}){
   // Keep source PBR values and pre-existing shaders. Export strips these
   // raster hooks and keeps the source values.
   const cacheKey=source.customProgramCacheKey();
-  material.customProgramCacheKey=()=>cacheKey+'|room-daylight-v16|'+smoothReflection+'|'+satinTile+'|'+(floorSheen!==undefined)+'|'+profile+'|'+fineEdge+'|'+replacePaintColor+'|'+upperReceiver+'|'+kitchenReceiver+'|'+finishKind+'|'+sunReceiver;
+  material.customProgramCacheKey=()=>cacheKey+'|room-daylight-v18|'+smoothReflection+'|'+satinTile+'|'+(floorSheen!==undefined)+'|'+profile+'|'+easedEdge+'|'+replacePaintColor+'|'+upperReceiver+'|'+kitchenReceiver+'|'+finishKind+'|'+grainAxis+'|'+sunReceiver+'|'+nicheReceiver+'|'+seatReceiver;
   material.onBeforeCompile=function(shader,renderer){
    source.onBeforeCompile.call(this,shader,renderer);
    Object.assign(shader.uniforms,uniforms);
    if(tileDetail)shader.uniforms.furnishFinishJoint={value:groutHalfWidth};
    if(floorSheen!==undefined)shader.uniforms.furnishFloorSheen={value:floorSheen};
-   if(fineEdge)shader.uniforms.furnishDoorHeights={value:seam};
-   shader.vertexShader='varying vec3 furnishInteriorPosition;\n'+(localFinish?'varying vec3 furnishFinishPosition;\n':'')+(cabinetDetail?'varying vec2 furnishBoardPosition;\n':'')+(fineEdge?'varying float furnishIsDoorFace;\n':'')+shader.vertexShader.replace('#include <project_vertex>',`
+   if(easedEdge){
+    shader.uniforms.furnishEdgeMin={value:edgeBox.min};
+    shader.uniforms.furnishEdgeMax={value:edgeBox.max};
+   }
+   shader.vertexShader='varying vec3 furnishInteriorPosition;\n'+(localFinish?'varying vec3 furnishFinishPosition;\n':'')+(cabinetDetail?'varying vec2 furnishBoardPosition;\n':'')+(easedEdge?'varying vec3 furnishEdgePoint; varying vec3 furnishEdgeNormal;\n':'')+shader.vertexShader.replace('#include <project_vertex>',`
     #include <project_vertex>
     vec4 furnishInteriorVertex=vec4(transformed,1.0);
     #ifdef USE_INSTANCING
@@ -317,11 +332,18 @@ function create(T,scene,{wx,wz,inside}){
     furnishInteriorPosition=(modelMatrix*furnishInteriorVertex).xyz;
     ${localFinish?'furnishFinishPosition=position;':''}
     ${cabinetDetail?'furnishBoardPosition=position.xy;':''}
-    ${fineEdge?'furnishIsDoorFace=abs(normal.z);':''}
+    ${easedEdge?'furnishEdgePoint=position; furnishEdgeNormal=abs(normal);':''}
    `);
    shader.fragmentShader=`
     varying vec3 furnishInteriorPosition;
     ${localFinish?'varying vec3 furnishFinishPosition;':''}
+    ${nicheReceiver?`
+     uniform mat4 furnishNicheInverse;
+     uniform vec4 furnishNicheBounds;
+     uniform vec2 furnishNicheHeight;
+     uniform vec4 furnishCounterContact;
+     uniform float furnishCounterContactGain;
+    `:''}
     uniform sampler2D furnishDaylightMap;
     uniform vec4 furnishDaylightBounds;
     uniform vec4 furnishDaylightSources[${maxApertures}];
@@ -355,7 +377,16 @@ function create(T,scene,{wx,wz,inside}){
     ${tileDetail?'uniform float furnishFinishJoint;':''}
     ${floorSheen!==undefined?'uniform float furnishFloorSheen;':''}
     ${cabinetDetail?'varying vec2 furnishBoardPosition;':''}
-    ${fineEdge?'varying float furnishIsDoorFace; uniform vec2 furnishDoorHeights;':''}
+    ${easedEdge?`
+     varying vec3 furnishEdgePoint;
+     varying vec3 furnishEdgeNormal;
+     uniform vec3 furnishEdgeMin;
+     uniform vec3 furnishEdgeMax;
+    `:''}
+    ${seatReceiver?`
+     uniform vec4 furnishSofaPose;
+     uniform vec4 furnishPillowContacts[${throwPillowIds.length}];
+    `:''}
     ${apertureReceiver?`
     float furnishApertureSun(int id){
      if(id==0||furnishDaylightSources[id].w==0.0)return 0.0;
@@ -374,7 +405,8 @@ function create(T,scene,{wx,wz,inside}){
     }
     `:''}
     void furnishWindowLight(int sourceIndex,float energy,vec3 normal,vec3 view,vec3 diffuse,
-                            float metalness,float roughness,inout vec3 indirectDiffuse,inout vec3 indirectSpecular){
+                            float metalness,float roughness,${veneer?'vec3 grainTangent,':''}
+                            inout vec3 indirectDiffuse,inout vec3 indirectSpecular){
      if(sourceIndex==0||energy<=0.0)return;
      vec4 emitter=furnishDaylightSources[sourceIndex];
      vec3 source=emitter.xyz;
@@ -404,6 +436,12 @@ function create(T,scene,{wx,wz,inside}){
       // mirror ray just misses the physical opening.
       indirectSpecular+=tint*(0.22*emitter.w*facing)
        *pow(max(dot(normal,halfVector),0.0),4.5);
+     `:veneer?`
+      float across=dot(halfVector,cross(normal,grainTangent));
+      float along=dot(halfVector,grainTangent);
+      float grainLobe=exp(-5.0*across*across-1.8*along*along);
+      indirectSpecular+=mix(vec3(1.0),diffuse,0.27)*tint*(0.115*emitter.w*facing)
+       *grainLobe*max(0.0,dot(normal,halfVector));
      `:wood?`
       indirectSpecular+=diffuse*tint*(0.16*emitter.w*facing)*pow(max(dot(normal,halfVector),0.0),4.0);
      `:''}
@@ -411,8 +449,8 @@ function create(T,scene,{wx,wz,inside}){
       // Broad satin response from the same window aperture; transparent
       // glazing and hardware retain their existing rendering path.
       float lacquerAngle=1.0-clamp(dot(normal,view),0.0,1.0);
-      indirectSpecular+=tint*(emitter.w*facing)*(0.057+0.040*lacquerAngle)
-       *pow(max(dot(normal,halfVector),0.0),5.0);
+      indirectSpecular+=tint*(emitter.w*facing)*(0.075+0.052*lacquerAngle)
+       *pow(max(dot(normal,halfVector),0.0),4.0);
      `:''}
      ${smoothReflection||satinTile?`
       // Project the reflection against this specific aperture plane.
@@ -506,20 +544,8 @@ function create(T,scene,{wx,wz,inside}){
     `:''}
     ${cabinetDetail?`
      vec2 lacquer=texture2D(furnishFinishTexture,furnishBoardPosition*vec2(2.1,1.3)).rg;
-     diffuseColor.rgb*=0.985+0.093*(lacquer.r-.5)+0.042*(lacquer.g-.5);
-     roughnessFactor=min(roughnessFactor,0.43+0.14*(lacquer.r-.5));
-    `:''}
-    ${fineEdge?`
-     // Prefilter the upper and lower door lip finish, around one
-     // screen pixel wide at room distance. Geometry still resolves the gap.
-     float toDoorEdge=min(furnishBoardPosition.y-furnishDoorHeights.x,
-                          furnishDoorHeights.y-furnishBoardPosition.y);
-     vec2 footprint=fwidth(furnishBoardPosition);
-     float fade=1.0-smoothstep(0.0,clamp(footprint.y*1.28,0.0008,0.0055),toDoorEdge);
-     float edge=fade*smoothstep(0.0008,0.0024,max(footprint.x,footprint.y))
-      *smoothstep(0.82,0.98,furnishIsDoorFace);
-     diffuseColor.rgb*=1.0-0.23*edge;
-     roughnessFactor=mix(roughnessFactor,0.68,0.7*edge);
+     diffuseColor.rgb*=0.995+0.043*(lacquer.r-.5)+0.019*(lacquer.g-.5);
+     roughnessFactor=mix(roughnessFactor,0.64+0.12*(lacquer.r-.5),0.78);
     `:''}
     ${stone?`
      diffuseColor.rgb*=0.91;
@@ -544,6 +570,25 @@ function create(T,scene,{wx,wz,inside}){
      normal=normalize(normal*max(abs(paintArea),1e-10)
       -sign(paintArea)*(paintGradient.x*paintU+paintGradient.y*paintV));
     `:''}
+    ${easedEdge||pillow?`
+     ${easedEdge?`
+      vec3 toEdge=min(furnishEdgePoint-furnishEdgeMin,furnishEdgeMax-furnishEdgePoint)
+       +step(vec3(0.5),furnishEdgeNormal);
+      float edgeDistance=min(min(toEdge.x,toEdge.y),toEdge.z);
+      float edgeRadius=${nicheReceiver==='counter'?'0.0022':'0.00125'};
+      float ramp=max(edgeRadius,fwidth(edgeDistance)*0.8);
+      float edgeHeight=-edgeRadius*pow(1.0-clamp(edgeDistance/ramp,0.0,1.0),2.0);
+     `:`
+      vec3 clothNormal=abs((vec4(nonPerturbedNormal,0.0)*viewMatrix).xyz);
+      vec2 weaveUV=clothNormal.x>clothNormal.z?furnishInteriorPosition.zy:furnishInteriorPosition.xy;
+      float edgeHeight=texture2D(furnishFinishTexture,weaveUV*67.0).b*0.00016;
+     `}
+     vec3 edgeDx=dFdx(-vViewPosition),edgeDy=dFdy(-vViewPosition);
+     vec3 edgeU=cross(edgeDy,normal),edgeV=cross(normal,edgeDx);
+     float edgeArea=dot(edgeDx,edgeU);
+     normal=normalize(normal*max(abs(edgeArea),1e-10)
+      -sign(edgeArea)*(dFdx(edgeHeight)*edgeU+dFdy(edgeHeight)*edgeV));
+    `:''}
     ${localFinish?`
      vec3 finishDx=dFdx(-vViewPosition),finishDy=dFdy(-vViewPosition);
      vec3 finishU=cross(finishDy,normal),finishV=cross(normal,finishDx);
@@ -553,6 +598,18 @@ function create(T,scene,{wx,wz,inside}){
       -sign(finishArea)*(finishGradient.x*finishU+finishGradient.y*finishV));
     `:''}
    `).replace('#include <aomap_fragment>',`
+    ${veneer?`
+     // Follow the production UV projection, including per-face grain direction.
+     vec3 grainTangent=vec3(0.0);
+     #ifdef USE_MAP
+      vec2 grainDx=dFdx(vMapUv),grainDy=dFdy(vMapUv);
+      vec3 grainVector=${grainAxis==='u'?
+       'dFdx(-vViewPosition)*grainDy.y-dFdy(-vViewPosition)*grainDx.y':
+       'dFdy(-vViewPosition)*grainDx.x-dFdx(-vViewPosition)*grainDy.x'};
+      grainVector-=normal*dot(grainVector,normal);
+      grainTangent=grainVector*inversesqrt(max(1e-20,dot(grainVector,grainVector)));
+     #endif
+    `:''}
     ${upperReceiver==='ceiling'||ceiling?'':`
     if(furnishDaylightStrength>0.0){
      vec2 uv=(furnishInteriorPosition.xz-furnishDaylightBounds.xy)*furnishDaylightBounds.zw;
@@ -568,9 +625,9 @@ function create(T,scene,{wx,wz,inside}){
        reflectedLight.indirectDiffuse*=1.0-ambientShare*localFill;
       }
       vec3 view=normalize(vViewPosition);
-      furnishWindowLight(ids.x,energy.x,normal,view,diffuseColor.rgb,metalnessFactor,roughnessFactor,
+      furnishWindowLight(ids.x,energy.x,normal,view,diffuseColor.rgb,metalnessFactor,roughnessFactor,${veneer?'grainTangent,':''}
                          reflectedLight.indirectDiffuse,reflectedLight.indirectSpecular);
-      furnishWindowLight(ids.y,energy.y,normal,view,diffuseColor.rgb,metalnessFactor,roughnessFactor,
+      furnishWindowLight(ids.y,energy.y,normal,view,diffuseColor.rgb,metalnessFactor,roughnessFactor,${veneer?'grainTangent,':''}
                          reflectedLight.indirectDiffuse,reflectedLight.indirectSpecular);
      }
     }
@@ -625,6 +682,7 @@ function create(T,scene,{wx,wz,inside}){
     `:''}
     ${paintDetail?`
      if(hasPaint>0.0){
+      reflectedLight.indirectSpecular*=1.0-0.58*hasPaint;
       float localCorner=paintAndCorner.y;
       float nearFloor=1.0-smoothstep(0.23,1.48,furnishInteriorPosition.y);
       vec2 toSofa=furnishInteriorPosition.xz-furnishSofaPose.xy;
@@ -647,6 +705,47 @@ function create(T,scene,{wx,wz,inside}){
      // A broad room return provides light on the far side of the window beam.
      reflectedLight.indirectDiffuse+=diffuseColor.rgb*(1.0-metalnessFactor)
       *vec3(1.0,0.96,0.90)*furnishRoomDaylight;
+    `:''}
+    ${nicheReceiver?`
+     // Approximate the smaller visible sky angle deeper inside the opening.
+     vec3 nichePoint=(furnishNicheInverse*vec4(furnishInteriorPosition,1.0)).xyz;
+     vec3 nicheNormal=normalize(mat3(furnishNicheInverse)*(vec4(geometryNormal,0.0)*viewMatrix).xyz);
+     vec2 fromSide=vec2(nichePoint.x-furnishNicheBounds.x,furnishNicheBounds.y-nichePoint.x);
+     float depth=max(0.0,furnishNicheBounds.w-nichePoint.z);
+     float reach=max(0.06,furnishNicheBounds.w-furnishNicheBounds.z);
+     float heightGuard=step(furnishNicheHeight.x-0.001,nichePoint.y)
+      *step(nichePoint.y,furnishNicheHeight.y+0.001);
+     float widthGuard=step(-0.002,min(fromSide.x,fromSide.y));
+     float facing=${nicheReceiver==='back'?'max(0.0,nicheNormal.z)':nicheReceiver==='counter'?'max(0.0,nicheNormal.y)':nicheReceiver==='top'?'max(0.0,-nicheNormal.y)':'max(0.0,nicheNormal.x*sign(fromSide.y-fromSide.x))'};
+     float insideNiche=heightGuard*widthGuard*facing*step(furnishNicheBounds.z-0.002,nichePoint.z);
+     float sideClearance=smoothstep(0.0,0.26,min(fromSide.x,fromSide.y));
+     float recess=smoothstep(0.0,reach,depth)*insideNiche;
+     float ambientOcclusion=mix(0.31,0.23,sideClearance)
+      *mix(0.48,1.0,smoothstep(0.0,0.32,furnishDaylightStrength));
+     reflectedLight.indirectDiffuse*=1.0-recess*ambientOcclusion;
+     reflectedLight.indirectSpecular*=1.0-0.35*recess;
+     ${nicheReceiver==='counter'?`
+      vec2 gap=abs(nichePoint.xz-furnishCounterContact.xy)-furnishCounterContact.zw;
+      float shadow=(1.0-smoothstep(-0.009,0.038,max(gap.x,gap.y)))*furnishCounterContactGain*facing;
+      reflectedLight.indirectDiffuse*=1.0-0.60*shadow;
+      reflectedLight.directDiffuse*=1.0-0.45*shadow;
+      reflectedLight.indirectSpecular*=1.0-0.62*shadow;
+     `:''}
+    `:''}
+    ${seatReceiver?`
+     vec2 seatOffset=furnishInteriorPosition.xz-furnishSofaPose.xy;
+     vec2 seatPoint=vec2(dot(seatOffset,vec2(furnishSofaPose.z,-furnishSofaPose.w)),
+                         dot(seatOffset,vec2(furnishSofaPose.w,furnishSofaPose.z)));
+     float cushionShade=0.0;
+     for(int i=0;i<${throwPillowIds.length};i++){
+      vec4 support=furnishPillowContacts[i];
+      vec2 offset=(seatPoint-support.xy)/vec2(0.15,0.075);
+      cushionShade=max(cushionShade,(1.0-smoothstep(0.15,1.0,length(offset)))*support.w
+       *(1.0-smoothstep(0.008,0.070,abs(furnishInteriorPosition.y-support.z))));
+     }
+     float up=max(0.0,dot(geometryNormal,viewMatrix[1].xyz));
+     reflectedLight.indirectDiffuse*=1.0-0.38*cushionShade*up;
+     reflectedLight.directDiffuse*=1.0-0.20*cushionShade*up;
     `:''}
     ${nightReceiver||finishResponse?`
      if(furnishNightActive>0.0){
@@ -688,18 +787,18 @@ function create(T,scene,{wx,wz,inside}){
   pool.set(variantKey,material);variants.set(source,pool);
   return material;
  }
- function paint(mesh,profile='',seam,upperReceiver='',kitchenReceiver=false,sunReceiver=''){
+ function paint(mesh,profile='',edgeBox,upperReceiver='',kitchenReceiver=false,sunReceiver='',nicheReceiver='',seatReceiver=false){
   const previous=decorated.get(mesh);
-  if(previous?.sunReceiver===sunReceiver||!bounds||!mesh.isMesh||!box.setFromObject(mesh).intersectsBox(bounds))return;
+  if((previous?.sunReceiver===sunReceiver&&previous.nicheReceiver===nicheReceiver&&previous.seatReceiver===seatReceiver)||!bounds||!mesh.isMesh||!box.setFromObject(mesh).intersectsBox(bounds))return;
   const source=previous?.source??mesh.material;
-  const variant=m=>appearance(m,profile,seam,upperReceiver,kitchenReceiver,sunReceiver);
+  const variant=m=>appearance(m,profile,edgeBox,upperReceiver,kitchenReceiver,sunReceiver,nicheReceiver,seatReceiver);
   const next=Array.isArray(source)?source.map(variant):variant(source);
   if(previous&&(Array.isArray(next)?next.every((m,i)=>m===previous.next[i]):next===previous.next))return;
   if(Array.isArray(source)?source.every((m,i)=>m===next[i]):source===next)return;
-  decorated.set(mesh,{source,next,sunReceiver});
+  decorated.set(mesh,{source,next,sunReceiver,nicheReceiver,seatReceiver});
   mesh.material=next;
  }
- function findSupports(model,cabinet){
+ function findSupports(model,cabinet,padding=.19){
   model.updateWorldMatrix(true,true);
   inverse.copy(model.matrixWorld).invert();
   const parts=[],footprints=[];
@@ -732,7 +831,7 @@ function create(T,scene,{wx,wz,inside}){
    if(Math.abs(box.min.y)>tolerance)return;
    box.getCenter(center);box.getSize(length);
    if(length.x<=.012||length.z<=.012)return;
-   parts.push([center.x,center.z,length.x+.19,length.z+.19]);
+   parts.push([center.x,center.z,length.x+padding,length.z+padding]);
   });
   for(const [i,footprint] of footprints.entries()){
    // A larger support already covers nested contacts. Keep one copy of equal footprints.
@@ -882,6 +981,83 @@ function create(T,scene,{wx,wz,inside}){
   upperField.minFilter=upperField.magFilter=T.LinearFilter;upperField.needsUpdate=true;
   uniforms.furnishUpperReturn.value=upperField;
  }
+ function findNiche(model,appliance){
+  const boards={};
+  model.traverse(mesh=>{
+   const section=mesh.userData.cabinetSection;
+   if(mesh.isMesh&&['counter','operationBack','displayBottom'].includes(section))boards[section]=mesh;
+  });
+  if(!boards.counter||!boards.operationBack||!boards.displayBottom)return null;
+  inverse.copy(model.matrixWorld).invert();
+  const boardBounds=mesh=>{
+   if(!mesh.geometry.boundingBox)mesh.geometry.computeBoundingBox();
+   matrix.multiplyMatrices(inverse,mesh.matrixWorld);
+   return mesh.geometry.boundingBox.clone().applyMatrix4(matrix);
+  };
+  const counter=boardBounds(boards.counter),back=boardBounds(boards.operationBack),top=boardBounds(boards.displayBottom);
+  uniforms.furnishNicheBounds.value.set(back.min.x,back.max.x,back.max.z,top.max.z);
+  uniforms.furnishNicheHeight.value.set(counter.max.y,top.min.y);
+  return {model,appliance,counter};
+ }
+ function updateNiche(){
+  const gain=uniforms.furnishCounterContactGain;
+  gain.value=0;
+  if(!niche)return;
+  const {model,appliance,counter}=niche;
+  model.updateWorldMatrix(true,false);
+  const space=uniforms.furnishNicheInverse.value.copy(model.matrixWorld).invert();
+  if(!appliance?.visible)return;
+  appliance.updateWorldMatrix(true,true);
+  box.makeEmpty();
+  appliance.traverse(mesh=>{
+   if(!mesh.isMesh||!mesh.visible)return;
+   if(!mesh.geometry.boundingBox)mesh.geometry.computeBoundingBox();
+   matrix.multiplyMatrices(space,mesh.matrixWorld);
+   box.union(mesh.geometry.boundingBox.clone().applyMatrix4(matrix));
+  });
+  const gap=box.min.y-counter.max.y;
+  if(box.isEmpty()||gap<-.012||gap>.025||box.min.x<counter.min.x-.012||box.max.x>counter.max.x+.012||
+     box.min.z<counter.min.z-.012||box.max.z>counter.max.z+.012)return;
+  box.getCenter(center);box.getSize(length);
+  uniforms.furnishCounterContact.value.set(center.x,center.z,length.x/2,length.z/2);
+  gain.value=1-Math.max(0,gap)/.025;
+ }
+ function updatePillowContacts(showSofa){
+  const contacts=uniforms.furnishPillowContacts.value;
+  for(const contact of contacts)contact.w=0;
+  if(!showSofa||!pillows.some(pillow=>pillow?.visible))return;
+  const model=sofa.model;
+  model.updateWorldMatrix(true,false);
+  inverse.copy(model.matrixWorld).invert();
+  const seatBounds=sofa.seats.filter(seat=>seat.visible).map(seat=>{
+   seat.updateWorldMatrix(true,false);
+   if(!seat.geometry.boundingBox)seat.geometry.computeBoundingBox();
+   return seat.geometry.boundingBox.clone().applyMatrix4(matrix.multiplyMatrices(inverse,seat.matrixWorld));
+  });
+  for(const [index,pillow] of pillows.entries()){
+   if(!pillow?.visible)continue;
+   pillow.updateWorldMatrix(true,true);
+   const footprint=new T.Box3();
+   pillow.traverse(mesh=>{
+    if(!mesh.isMesh||!mesh.visible)return;
+    if(!mesh.geometry.boundingBox)mesh.geometry.computeBoundingBox();
+    const min=mesh.geometry.boundingBox.min.y;
+    const low=mesh.geometry.getAttribute('position');
+    matrix.multiplyMatrices(inverse,mesh.matrixWorld);
+    for(let i=0;i<low.count;i++){
+     if((low.getY(i)-min)*mesh.scale.y>.040)continue;
+     footprint.expandByPoint(local.fromBufferAttribute(low,i).applyMatrix4(matrix));
+    }
+   });
+   if(footprint.isEmpty())continue;
+   footprint.getCenter(center);
+   const seat=seatBounds.find(seat=>center.x>=seat.min.x&&center.x<=seat.max.x&&
+    center.z>=seat.min.z&&center.z<=seat.max.z&&Math.abs(footprint.min.y-seat.max.y)<.076);
+   if(!seat)continue;
+   contacts[index].set(center.x*Math.sign(model.scale.x),center.z,model.position.y+seat.max.y,
+    1-Math.max(0,footprint.min.y-seat.max.y)/.076);
+  }
+ }
  function contacts(){
   updateNight();
   if(!patch)return;
@@ -890,12 +1066,17 @@ function create(T,scene,{wx,wz,inside}){
   const group=entries[0]?.[0].parent;
   if(!group?.visible||group.scale.y<.99){
    uniforms.furnishSofaVisible.value=0;
-   patch.count=0;lastPose='';return;
+   patch.count=0;lastPose='';lastPillowPose=null;
+   for(const contact of uniforms.furnishPillowContacts.value)contact.w=0;
+   return;
   }
+  const poseKey=model=>[model.visible,...model.position.toArray(),...model.rotation.toArray(),...model.scale.toArray()].join(',');
+  const nichePose=niche?[poseKey(niche.model),niche.appliance&&poseKey(niche.appliance)].join('|'):'';
+  if(nichePose!==lastNichePose){updateNiche();lastNichePose=nichePose;}
+  const pillowPose=sofa?[poseKey(sofa.model),...pillows.filter(Boolean).map(poseKey)].join('|'):'';
   const key=entries.map(([model])=>[model.visible,model.position.x,model.position.y,model.position.z,model.rotation.y,model.scale.x].join(',')).join('|')
    +floors.map(floor=>floor.visible?'1':'0').join('');
-  if(key===lastPose)return;
-  lastPose=key;
+  if(key===lastPose&&pillowPose===lastPillowPose)return;
   const model=sofa?.model;
   const showSofa=model?.visible&&Math.abs(model.position.y-sofa.floor)<.026;
   uniforms.furnishSofaVisible.value=showSofa?1:0;
@@ -904,6 +1085,9 @@ function create(T,scene,{wx,wz,inside}){
    uniforms.furnishSofaPose.value.set(model.position.x,model.position.z,Math.cos(yaw),Math.sin(yaw));
    uniforms.furnishSofaSize.value.set(sofa.width/2,sofa.depth/2,sofa.floor,sofa.floor+sofa.height);
   }
+  if(pillowPose!==lastPillowPose){updatePillowContacts(showSofa);lastPillowPose=pillowPose;}
+  if(key===lastPose)return;
+  lastPose=key;
   let count=0;
   for(const [model,{parts,cabinet}] of entries){
    if(!model.visible||!model.parent?.visible)continue;
@@ -1007,15 +1191,20 @@ function create(T,scene,{wx,wz,inside}){
   const cabinetRules=root.FurnishCabinet||require('../core/cabinet-core.js');
   furnG.updateWorldMatrix(true,true);
   configureNight(furnG,archUp);
-  supports.clear();sofa=null;
+  supports.clear();sofa=null;niche=null;
+  const appliance=furnG.children.find(model=>model.userData.fid===counterApplianceId);
+  pillows=throwPillowIds.map(id=>byId.get(id)?.obj?
+   furnG.children.find(model=>model.userData.fid===id):null);
   for(const model of furnG.children){
    const f=byId.get(model.userData.fid);
    if(!f||!roomById.has(model.userData.floorBase?.roomId))continue;
    const base=model.userData.floorBase;
    const scopedCabinet=f.type==='cabinet'&&finishRooms.has(base.roomId);
    const sunReceiver=receiver(base.roomId);
+   const sideboard=scopedCabinet&&f.id===sideboardId&&f.cabinet?.sideboard?findNiche(model,appliance):null;
+   if(sideboard)niche=sideboard;
    if(!sofa&&f.type==='sofa_yeswood_cherry'&&finishRooms.has(base.roomId)&&base.known&&!f.pose3D){
-    sofa={model,floor:base.z/1000,width:(f.w??2160)/1000,depth:(f.d??892)/1000,height:(f.h??895)/1000};
+    sofa={model,floor:base.z/1000,width:(f.w??2160)/1000,depth:(f.d??892)/1000,height:(f.h??895)/1000,seats:[]};
    }
    model.traverse(mesh=>{
     if(!mesh.isMesh)return;
@@ -1031,19 +1220,23 @@ function create(T,scene,{wx,wz,inside}){
      !mesh.material?.map&&mesh.material?.metalness===0;
     const veneer=scopedCabinet&&mesh.material?.map&&part.cabinetSurface&&
      (part.cabinetSurface!=='solid'||part.cabinetSection==='operationBack');
-    const finish=pile?'pile':coffeePart==='white-stone'?'stone':
+    const finish=pillows.includes(model)?'pillow':pile?'pile':coffeePart==='white-stone'?'stone':
      coffeePart&&mesh.material?.map?'wood':satin?'cabinet':veneer?'veneer':matte?'matte':'';
-    let seam;
-    if(f.id==='fmv62bwbp1'&&finish==='cabinet'&&part.cabinetDoorSize){
+    const seatReceiver=model===sofa?.model&&!!part.yeswoodUpholstery;
+    if(seatReceiver&&part.yeswoodUpholstery==='seat')sofa.seats.push(mesh);
+    let edgeBox;
+    if(f.id===sideboardId&&(finish==='cabinet'||part.cabinetSection==='counter')){
      if(!mesh.geometry.boundingBox)mesh.geometry.computeBoundingBox();
-     const {min,max}=mesh.geometry.boundingBox;
-     seam=new T.Vector2(min.y,max.y);
+     edgeBox=mesh.geometry.boundingBox;
     }
-    accepted.add(mesh);paint(mesh,finish,seam,'',!!kitchenReceiver,sunReceiver);
+    const nicheReceiver=sideboard?(part.cabinetSection==='counter'?'counter':
+     part.cabinetSection==='operationBack'?'back':part.cabinetSection==='displayBottom'?'top':
+     part.cabinetSide?'side':''):'';
+    accepted.add(mesh);paint(mesh,finish,edgeBox,'',!!kitchenReceiver,sunReceiver,nicheReceiver,seatReceiver);
    });
    if(contactTypes.test(f.type)&&!f.pose3D&&model.userData.floorBase.known&&Math.abs(model.position.y-model.userData.floorBase.z/1000)<.025){
     const cabinet=cabinetRules.supported(f);
-    supports.set(model,{parts:findSupports(model,cabinet),cabinet});
+    supports.set(model,{parts:findSupports(model,cabinet,model===sofa?.model? .10 : .19),cabinet});
    }
   }
   for(const [mesh,{source}] of decorated){
@@ -1058,7 +1251,7 @@ function create(T,scene,{wx,wz,inside}){
    }
    if(!pool.size)variants.delete(source);
   }
-  lastPose='';
+  lastPose='';lastNichePose=null;lastPillowPose=null;
   setLight(daylight);
  }
  // Keep the production pane material identity for picking and export.
@@ -1163,6 +1356,7 @@ function create(T,scene,{wx,wz,inside}){
   upperField?.dispose();upperField=null;uniforms.furnishUpperReturn.value=null;
   uniforms.furnishNightMap.value=null;uniforms.furnishNightActive.value=0;
   uniforms.furnishWindowRaster.value=0;updateWindowEmitter();
+  niche=null;pillows=[];uniforms.furnishCounterContactGain.value=0;
   finishField?.dispose();finishTexture?.dispose();
   uniforms.furnishFinishField.value=uniforms.furnishFinishTexture.value=null;
   patch=sky=field=finishField=finishTexture=wallsGroup=bounds=null;roomById.clear();floors=[];sofa=null;uniforms.furnishSofaVisible.value=0;lastPose='';openingsKey='';

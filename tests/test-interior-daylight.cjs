@@ -155,11 +155,11 @@ require('../src/render/interior-daylight.js');
  assert.equal(patch.count,3);
  patch.getMatrixAt(0,transform);
  assert.ok(Math.abs(transform.elements[14]-3.2)<1e-6,'An unlabelled fixed board uses its physical edge');
- const cabinetShader={uniforms:{},vertexShader:'#include <project_vertex>',fragmentShader:'#include <roughnessmap_fragment>\n#include <aomap_fragment>'};
+ const cabinetShader={uniforms:{},vertexShader:'#include <project_vertex>',fragmentShader:'#include <roughnessmap_fragment>\n#include <normal_fragment_maps>\n#include <aomap_fragment>'};
  door.material.onBeforeCompile(cabinetShader);
  assert.match(cabinetShader.fragmentShader,/lacquer/);
- assert.match(cabinetShader.fragmentShader,/fwidth\(furnishBoardPosition\)/);
- assert.ok(Math.abs(cabinetShader.uniforms.furnishDoorHeights.value.y-.32)<1e-6);
+ assert.match(cabinetShader.fragmentShader,/fwidth\(edgeDistance\)/);
+ assert.ok(Math.abs(cabinetShader.uniforms.furnishEdgeMax.value.y-.32)<1e-6);
  assert.equal(door.geometry.parameters.width,.82,'The finish treatment preserves production face dimensions');
  const boardShaders=backboards.map(board=>{
   const s={uniforms:{},vertexShader:'#include <project_vertex>',fragmentShader:'#include <aomap_fragment>'};
@@ -473,5 +473,32 @@ require('../src/render/interior-daylight.js');
  assert.equal(openingLight(3830,6700),0,'A wall gap blocks the dining path even with another open edge at the entry');
  begin({...joinedPlan,rooms:[...joinedPlan.rooms.slice(0,-1),{...diningZone,parentRoom:'separate'}]});
  assert.equal(openingLight(3830,6700),0,'A boundary between separate physical rooms never contributes daylight');
+ // The open bay uses its boards and a nearby appliance, with no contact
+ // left behind when the appliance is lifted, hidden or moved off the counter.
+ const board=(section,size,y,z)=>{
+  const mesh=new T.Mesh(new T.BoxGeometry(...size),material);
+  mesh.position.set(0,y,z);mesh.userData.cabinetSection=section;cabinet.add(mesh);
+  return mesh;
+ };
+ cabinet.position.set(2,.06,3);cabinet.userData.floorBase.roomId=id;
+ const counter=board('counter',[.90,.02,.44],.78,0);
+ board('operationBack',[.90,.42,.02],1,-.21);
+ board('displayBottom',[.90,.02,.36],1.22,-.04);
+ const oven=new T.Group(),ovenId='fmwvo7jc21';
+ oven.userData={fid:ovenId,floorBase:{roomId:id,known:true,z:60}};
+ const ovenBody=new T.Mesh(new T.BoxGeometry(.35,.22,.30),material);
+ ovenBody.position.y=.11;oven.add(ovenBody);oven.position.set(2,.85,3);oven.rotation.y=cabinet.rotation.y;furnG.add(oven);
+ pilot.begin(plan,archFloor,archUp,furnG,[{id:sideboardId,type:'cabinet',cabinet:{sideboard:{}}},{id:ovenId,type:'oven_toshiba_d232'}]);
+ const counterShader={uniforms:{},vertexShader:'#include <project_vertex>',fragmentShader:'#include <aomap_fragment>'};
+ counter.material.onBeforeCompile(counterShader);pilot.contacts();
+ assert.match(counterShader.fragmentShader,/depth=max\(0.0,furnishNicheBounds.w-nichePoint.z\)/);
+ const gain=counterShader.uniforms.furnishCounterContactGain,footprint=counterShader.uniforms.furnishCounterContact.value;
+ assert.ok(gain.value>.99);
+ assert.ok(Math.abs(footprint.z-.175)<1e-6&&Math.abs(footprint.w-.15)<1e-6);
+ oven.position.y+=.051;pilot.contacts();assert.equal(gain.value,0);
+ oven.position.y-=.051;oven.visible=false;pilot.contacts();assert.equal(gain.value,0);
+ oven.visible=true;oven.position.x+=.8;pilot.contacts();assert.equal(gain.value,0);
+ oven.position.x-=.8;pilot.contacts();assert.ok(gain.value>.99);
+ pilot.reset();assert.equal(gain.value,0);assert.equal(counter.material,material);
  console.log('PASS scoped windows, open-entry daylight falloff, night return, surface materials, contacts, visibility and cleanup');
 })().catch(error=>{console.error(error);process.exitCode=1;});

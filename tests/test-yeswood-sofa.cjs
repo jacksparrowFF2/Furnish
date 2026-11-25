@@ -7,9 +7,11 @@ const model=require('../src/render/yeswood-sofa-model.js'),catalog=require('../s
  const near=(a,b)=>assert.ok(Math.abs(a-b)<2e-6,`${a} != ${b}`);
  const ctx=require("./helpers/layer-context.cjs").createContext(Object.assign({FurnishDownlightModel:require("../src/render/downlight-model.js"),FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{THREE,RoundedBoxGeometry,FurnishYeswoodSofaModel:model,FurnishCabinet:require('../src/core/cabinet-core.js'),M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,rng:()=>()=>.5,mat:(color,o)=>new THREE.MeshStandardMaterial({color,...o})}));
  Object.assign(ctx,{FurnishSlidingOpeningModel:require('../src/render/sliding-opening-model.js'),FurnishManifoldModel:require('../src/render/manifold-model.js'),FurnishBasicFurnitureModel:require('../src/render/basic-furniture-model.js'),FurnishModelPrimitives:require('../src/render/model-primitives.js'),FurnishApplianceModel:require('../src/render/appliance-model.js')});
+ ctx.FurnishDrawerContents=require('../src/core/drawer-contents.js');
  ctx.FurnishArmchairModel=require('../src/render/armchair-model.js');
  vm.runInContext(html.slice(html.indexOf('const primitives ='),html.indexOf('/* ======================= 建筑')),ctx);
  Object.assign(ctx,{FurnishProject:{effectivePlan:()=>({})},PLAN:{},FurnishProducts:require('../src/core/product-rules.js')});
+ vm.runInContext(html.slice(html.indexOf('const renderedObjPositions='),html.indexOf('function buildFurn(')),ctx);
  require('./helpers/production-source.cjs').loadSceneFurniture(html,ctx);
  const item=catalog.library.flatMap(c=>c.items).find(i=>i[0]===model.type);assert.deepEqual([item[2],item[3],item[6]],model.spec);assert.equal(item[5],0);
  const f={id:'yeswood',type:model.type,name:item[1],w:item[2],d:item[3],h:item[6],color:item[4],cx:700,cy:900,rot:0};
@@ -43,8 +45,8 @@ const model=require('../src/render/yeswood-sofa-model.js'),catalog=require('../s
   near(size.x,(rot===90?dims[1]:dims[0])/1000);near(size.z,(rot===90?dims[0]:dims[1])/1000);near(size.y,dims[2]/1000);near(bounds.min.y,0);
   object.traverse(o=>{if(o.isMesh)for(const key of ['position','normal'])assert.ok(o.geometry.attributes[key].array.every(Number.isFinite));});
  }
- ctx.state={furniture:[f]};ctx.furnG=new THREE.Group();ctx.clearGroup=g=>g.clear();ctx.opt={furn:true};ctx.applyGrow=()=>{};ctx.furnitureError=require('../src/core/product-rules.js').modelError;ctx.furnitureRenderErrors=new Map();ctx.syncModelErrors=()=>{};
- vm.runInContext('buildFurn()',ctx);const first=ctx.furnG.children[0];vm.runInContext('buildFurn()',ctx);assert.equal(ctx.furnG.children[0],first);
+ ctx.state={furniture:[f]};ctx.furnG=new THREE.Group();ctx.clearGroup=g=>g.clear();ctx.opt={furn:true,hour:10,night:false};ctx.materialLighting=null;ctx.materialLook=false;ctx.continuousCove=false;ctx.applyGrow=()=>{};ctx.furnitureError=require('../src/core/product-rules.js').modelError;ctx.furnitureRenderErrors=new Map();ctx.syncModelErrors=()=>{};
+ vm.runInContext('buildFurn()',ctx);assert.deepEqual([...ctx.furnitureRenderErrors],[]);const first=ctx.furnG.children[0];vm.runInContext('buildFurn()',ctx);assert.equal(ctx.furnG.children[0],first);
  ctx.state.furniture[0]={...f,h:1000};vm.runInContext('buildFurn()',ctx);assert.notEqual(ctx.furnG.children[0],first);near(new THREE.Box3().setFromObject(ctx.furnG.children[0]).getSize(new THREE.Vector3()).y,1);
  const replaced=D.replaceFurniture({...f,type:'sofa'},{type:model.type,name:item[1],w:2160,d:892,h:895,color:item[4],price:0});assert.equal(replaced.type,model.type);assert.equal(replaced.h,895);
  console.log('PASS YESWOOD production dimensions, resize/rotate/mirror, finite geometry, project round trip, replacement and cache invalidation');

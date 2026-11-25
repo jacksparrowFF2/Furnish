@@ -24,7 +24,7 @@ assert(html.includes('renderer.shadowMap.autoUpdate=false;renderer.shadowMap.nee
  const surface={addEventListener:(name,handler)=>{listeners[name]=handler;}};
  const viewport=vm.createContext({window:surface,cv:surface,devicePixelRatio:2,anim:null,opt:{mode:'orbit'},
   performance:{now:()=>now},PLAN:{id:'custom_mv37igji'},FurnishProgressiveView:{mode:()=>'smooth'},
-  gtaoEnabled:false,bloomEnabled:false,smaaEnabled:false,bloomNight:true,localStorage:{getItem:()=>null},
+  materialLook:false,gtaoEnabled:false,bloomEnabled:false,smaaEnabled:false,bloomNight:true,localStorage:{getItem:()=>null},
   renderer:{getPixelRatio:()=>ratio,setPixelRatio:value=>{ratio=value;},domElement:{toDataURL:()=>String(ratio)}},
   renderScene:()=>{draws++;},invalidate(){}});
  const state=html.slice(html.indexOf('let viewportPointer='),html.indexOf('function updateEffectControls(){'));
