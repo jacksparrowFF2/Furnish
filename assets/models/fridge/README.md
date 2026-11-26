@@ -25,4 +25,4 @@
 
 - [验收资料](../../../docs/validation/appliance-materials-stage2-20261031/README.md)
 - [验收资料](../../../docs/validation/blender-fridge-motion-20261029/README.md)
-- [验收资料](../../../docs/validation/regression-fixes-20261030/README.md)
+- [验收资料](../../../docs/validation/regression-fixes-20261030/results.json)

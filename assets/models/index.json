@@ -5,7 +5,7 @@
     "blenderModels": 68,
     "parametricVerificationConfigurations": 101,
     "verificationConfigurations": 169,
-    "catalogEntries": 212,
+    "catalogEntries": 213,
     "catalogTypes": 182,
     "productDossiers": 95,
     "referenceImages": 381,
@@ -7736,7 +7736,7 @@
         "docs/validation/downlight-20261024/results.json",
         "docs/validation/downlight-20261024/six-variants-settings.json",
         "docs/validation/downlight-20261024/section-geometry.json",
-        "docs/validation/full-regression-main-20261025/README.md"
+        "docs/validation/full-regression-main-20261025/browser-final.json"
       ],
       "manifest": "assets/models/downlight-dl269/asset.json",
       "readme": "assets/models/downlight-dl269/README.md"
@@ -8205,7 +8205,7 @@
       "validation": [
         "docs/validation/appliance-materials-stage2-20261031/README.md",
         "docs/validation/blender-fridge-motion-20261029/README.md",
-        "docs/validation/regression-fixes-20261030/README.md"
+        "docs/validation/regression-fixes-20261030/results.json"
       ],
       "manifest": "assets/models/fridge/asset.json",
       "readme": "assets/models/fridge/README.md"
@@ -12855,6 +12855,15 @@
       "w": 1840,
       "d": 2150,
       "h": 917,
+      "module": "bed-yeswood-y83b33"
+    },
+    {
+      "category": "床",
+      "type": "bed_yeswood_y17b02",
+      "name": "源氏木语 Y17B02 半夏床品组合 · 1.2米",
+      "w": 1340,
+      "d": 2120,
+      "h": 1000,
       "module": "bed-yeswood-y83b33"
     },
     {

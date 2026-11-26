@@ -77,4 +77,4 @@ mountHeight 是最低点距当前家具基准地面的高度；新建默认2500 
 
 灯壳／反射杯、后盖、柔光面、左右卡扣与弹簧七个网格使用固定运行时部件身份，发布与当前 partIdentity=3／protocol 3 一致，不写入装修方案。结构重排及尺寸调整仍保留相同逻辑名称，已加入生产身份回归与实际 ZIP 接收验证。产品能力统一设置安装预留资料缺失待核对，不把已知开孔尺寸推断为驱动器、散热或装拆净空已通过。
 
-独立预览生成器遵守 FURNISH_VERIFY_ROOT；文档中的 output 路径仅表示本地生成产物，长期证据保存在 validation。完整验收与边界见 [本轮记录](validation/full-regression-main-20261025/README.md)。
+独立预览生成器遵守 FURNISH_VERIFY_ROOT；文档中的 output 路径仅表示本地生成产物，长期证据保存在 validation。完整验收与边界见 [本轮记录](validation/regression-history.md#2026-10-25-主线及方案快照)。

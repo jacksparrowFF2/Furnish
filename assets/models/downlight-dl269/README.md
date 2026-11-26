@@ -27,4 +27,4 @@
 - [验收资料](../../../docs/validation/downlight-20261024/results.json)
 - [验收资料](../../../docs/validation/downlight-20261024/six-variants-settings.json)
 - [验收资料](../../../docs/validation/downlight-20261024/section-geometry.json)
-- [验收资料](../../../docs/validation/full-regression-main-20261025/README.md)
+- [验收资料](../../../docs/validation/full-regression-main-20261025/browser-final.json)

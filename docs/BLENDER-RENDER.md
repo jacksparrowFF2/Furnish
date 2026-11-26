@@ -109,4 +109,4 @@ node scripts/verify/verify-blender-live.cjs
 
 同步按稳定部件身份保留 Blender 原对象，但更新后的 furnishObjectId 导出路径可能变化。精修 worker 在同一次合并前后以对象身份和完整材质绑定比较，避免路径重排被误报为材质丢失。existingManagedMeshes 是合并前数量，matchedManagedMeshes 是仍存在的原对象数，removedManagedMeshes 单列已删除对象；existingMaterialBindingsPreserved 只计仍存在且完整绑定不变的原对象。验证不能把正常删除当成材质损失，也不能因文案或路径相同就认为材质保留。对象指针仅用于当前 Blender 进程内的统计，不作为持久身份。
 
-实际当前方案的原机位与自由视角、保存副本再次渲染及失败回滚结果见 [2026-10-27 验收](validation/full-regression-main-20261027/README.md)。原精修工程保留，本机登记切换到通过验证的独立副本；登记与大工程不进入 Git。
+实际当前方案的原机位与自由视角、保存副本再次渲染及失败回滚结果见 [2026-10-27 验收](validation/regression-history.md#2026-10-27-主线及方案回归)。原精修工程保留，本机登记切换到通过验证的独立副本；登记与大工程不进入 Git。

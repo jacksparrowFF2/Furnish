@@ -2,7 +2,7 @@
 
 ## 2026-10-16 补充
 
-固定版本 Playwright 配套 Chromium 已通过统一入口的 `portable-smoke`：生产入口在临时副本的 HTTP 与完全断网 file:// 下冷启动，实际编辑、撤销重做、刷新缓存恢复和首次三维显示均通过，无页面异常或外部请求。目录包含中文、空格和 #。这是桌面 Chromium 自动验收；下列 2026-10-14 的工具限制保留为历史记录，手动触屏等范围仍需另验。配置及结果见 [浏览器验收](BROWSER-VERIFICATION.md)。
+固定版本 Playwright 配套 Chromium 已通过统一入口的 `portable-smoke`：生产入口在临时副本的 HTTP 与完全断网 file:// 下冷启动，实际编辑、撤销重做、刷新缓存恢复和首次三维显示均通过，无页面异常或外部请求。目录包含中文、空格和 #。这是桌面 Chromium 自动验收；下列 2026-10-14 的工具限制保留为历史记录，手动触屏等范围仍需另验。配置及结果见 [浏览器验收](../BROWSER-VERIFICATION.md)。
 
 ## 2026-10-14 已执行结果
 
@@ -10,7 +10,7 @@
 
 通过正常文件输入导入合成项目，在断网上下文实际下载完整项目文件，然后在另一全新浏览器上下文重新导入。逐字段核对当前工作、房间和有效墙／门／窗、预算、两份命名方案、材料单片尺寸／箱数／箱价、原始墙基线与净距修改、家具旋转／镜像／零单价／采购状态、自定义家具库、附件原文、标注与测量线。导入撤销／重做、刷新恢复、重复导入均通过。刷新时恢复回环网络以重新获取 HTTP 入口，所有外部请求仍阻断；刷新后再次断网进行导入和 3D 验收。自定义家具库的本机编号按既有合并契约重新分配，内容保持。
 
-脚本：`scripts/make-reimport-fixture.cjs`、`scripts/verify/verify-workflow-reimport.browser.js`。前者只接受 `custom_workflow_acceptance` 合成项目，可显式传入来源文件；后者现由 `node scripts/verify-browser.cjs workflow-reimport` 运行，使用随仓库维护的固定输入、临时端口和独立上下文，不读取用户现用浏览器数据。输出位于本次验收副本的 `output/playwright/workflow-tools/`。安装与结果路径见 [浏览器验收](BROWSER-VERIFICATION.md)。
+脚本：`scripts/make-reimport-fixture.cjs`、`scripts/verify/verify-workflow-reimport.browser.js`。前者只接受 `custom_workflow_acceptance` 合成项目，可显式传入来源文件；后者现由 `node scripts/verify-browser.cjs workflow-reimport` 运行，使用随仓库维护的固定输入、临时端口和独立上下文，不读取用户现用浏览器数据。输出位于本次验收副本的 `output/playwright/workflow-tools/`。安装与结果路径见 [浏览器验收](../BROWSER-VERIFICATION.md)。
 
 本轮完整检查通过 110 套回归、12 个内置户型、12 页预览。没有发现需要修改生产代码的加载或项目恢复缺陷。
 

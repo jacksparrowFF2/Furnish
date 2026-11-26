@@ -447,7 +447,7 @@ const P13 = {
 
 产品默认高度、安装参数、旧字段迁移与替换清理集中在 `src/core/product-rules.js`，相关目录、规则、属性和 3D 共用。接入步骤与旧项目/离线浏览器验收见 [产品规则说明](docs/PRODUCT-RULES.md)。
 
-持续改进前阅读 [扩展与复用指南](docs/DEVELOPMENT-GUIDE.md)；[2026-10-12 改进总结与审视](docs/REVIEW-2026-10-12.md) 记录当日改进、本轮修复及剩余架构边界。根目录 `AGENTS.md` 保存后续维护约定。
+根目录 `AGENTS.md` 保存后续维护约定。扩展流程见 [扩展与复用指南](docs/DEVELOPMENT-GUIDE.md)，已完成的历史验收与原始证据见 [验收档案](docs/validation/README.md)。
 
 **离线与依赖**
 

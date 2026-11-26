@@ -40,7 +40,7 @@
 
 2026-11-11（86面板）：product-rules集中panelVariants与mountHeight，panel-bull-g12-model选择37款Blender离线网格；静态构造供正式场景和实体，款式进入缓存／空间签名及采购分组。v84沿原mutate／项目／仓库／缓存；只新增两段经典资产／模型脚本，不引入状态或构建机制。见[型号契约](PANEL-BULL-G12.md)。
 
-2026-11-11（旧编辑器入口清理）：删除已停用的模板柜工作区及柜体／厨房编辑器转发API，生产调用直接进入`FurnishCabinetBuilderUI`；仍用于原生厨房／洗衣区的背板和外观表单移至`src/ui/cabinet-form-controls.js`。删除旧浏览器命令别名及88份旧浏览器脚本、3份旧手工编辑器脚本和1份冗余命令包装，现行160专项保留。恢复与生产构造兼容保留；损坏柜体的元数据识别和空间签名不再阻断其它家具修复，不自动补造或删除损坏记录。见[全量检查](validation/full-regression-20261111/README.md)。
+2026-11-11（旧编辑器入口清理）：删除已停用的模板柜工作区及柜体／厨房编辑器转发API，生产调用直接进入`FurnishCabinetBuilderUI`；仍用于原生厨房／洗衣区的背板和外观表单移至`src/ui/cabinet-form-controls.js`。删除旧浏览器命令别名及88份旧浏览器脚本、3份旧手工编辑器脚本和1份冗余命令包装，现行160专项保留。恢复与生产构造兼容保留；损坏柜体的元数据识别和空间签名不再阻断其它家具修复，不自动补造或删除损坏记录。见[全量检查](validation/regression-history.md#2026-11-11-全量检查与缺陷修复)。
 
 2026-11-11（原柜箱独立尺寸）：cabinet-assembly-core统一提交原组件柜尺寸与安装位置；kitchen-core、生产模型／实体与二维直接消费显式独立结构，连续台面保留自身基准。独立板件与台面／附属柜相交进入编辑器和全案核对；新语义v83贯穿原项目／仓库／恢复缓存，无新加载脚本或保存通道。旧缺失保持原规则，见[验收](validation/cabinet-native-independence-20261111/README.md)。
 
@@ -104,7 +104,7 @@
 
 2026-11-07（2kg猫粮袋）：独立storageSupply条目沿既有生产构造／实体／保存链；本型号受限RGBA与UV标签供HTTP及离线file同源使用，独立Blender发布器保留通用无贴图发布范围，无新实例字段。见[模型契约](CAT-FOOD-2KG.md)。
 
-2026-11-07（柜型参数复核）：cabinetFrontAppearance统一门／抽面及厨房模块外观；kitchenModuleConfig把可选模块外观和drawerExtensions传入共享构造，v61贯穿项目／仓库／缓存。净深仍只派生实体；原结构配方保留，见[参数矩阵](CABINET-PARAMETER-PARITY.md)。
+2026-11-07（柜型参数复核）：cabinetFrontAppearance统一门／抽面及厨房模块外观；kitchenModuleConfig把可选模块外观和drawerExtensions传入共享构造，v61贯穿项目／仓库／缓存。净深仍只派生实体；原结构配方保留，见[参数矩阵](validation/cabinet-parameter-parity-20261107.md)。
 
 2026-11-07（柜体组件化）：cabinet-core.carcassFrame提供mm柜箱基准，cabinet-model.createComponents统一生产板件、门扇、抽盒、把手与随动身份；柜型配方保留分段和设备约束。无新字段、脚本或保存通道；定向修复餐边圆钮和上下分柜重复身份，见[共享组件](CABINET-COMPONENTS.md)。
 
@@ -184,7 +184,7 @@ product-rules集中washerDoorSide能力／默认left；washer-motion-core统一�
 
 2026-10-31（飘窗板材）：product-rules.windowLining统一石英石板与三／四面木套的尺寸链、安装和板件；window-lining-model参数化生产构造供主场景／GLB／FurnitureSolids记录器复用，沿CabinetMotion进入实际空洞与净距。属性仍走mutate；两专用字段参与缓存及定向空间确认，含新类型采用v42项目／工作区／缓存。新增一个经典脚本，见[窗台板与包套](WINDOW-LINING.md)。
 
-2026-10-31（全量回归基座）：tests/helpers/production-source按函数名提取当前生产区段并拒绝缺失，旧场景fixture不再绑定空参数签名；layer-context补真实沙发床／单人椅生产模块，归档测试沿产品legacyPaths核对迁移后原图。仅测试维护，无生产加载／模型／保存变更；415套件及浏览器／桌面结果见[全量验收](validation/full-check-20261031/README.md)。
+2026-10-31（全量回归基座）：tests/helpers/production-source按函数名提取当前生产区段并拒绝缺失，旧场景fixture不再绑定空参数签名；layer-context补真实沙发床／单人椅生产模块，归档测试沿产品legacyPaths核对迁移后原图。仅测试维护，无生产加载／模型／保存变更；415套件及浏览器／桌面结果见[全量验收](validation/regression-history.md#2026-10-31-全量检查与测试入口修复)。
 
 2026-10-31（产品资料目录）：参考原图统一到assets/models/<id>/references，asset.json维护来源类别／哈希／历史路径／缺失记录，生成每产品README及可离线搜索总览。model-asset-index校验39份档案并关联15组生产模型及参数化目录；import-model-reference本机导入去重且同名不覆盖。旧资料文档链接更新，历史验收记录保留，模型与运行文件路径／哈希不变；见[资料结构](MODEL-ASSET-STORAGE.md#产品目录输入到输出)。
 
@@ -315,7 +315,7 @@ product-rules集中washerDoorSide能力／默认left；washer-motion-core统一�
 
 2026-10-27（吊顶统一与吸附状态）：独立区域为唯一编辑入口，ceiling-editor只编辑区域部件草稿；移除旧独立构件／平顶表单、固定立面裁切重算及ceiling-core自动升级分支，旧固定字段拒绝。低／宽预设和洗顶材质显式化，当前工作区补齐稳定部件身份且生产items不变。ceiling-design从具名参考和当前边实时派生吸附／贴合提示，不新增存储或保存通道。见[当前吊顶](CEILINGS.md#当前模型与吸附状态2026-10-27取代旧独立构件及升级流程)。
 
-2026-10-27（全量回归）：精修渲染在同一合并事务内按实际保留对象统计材质绑定，不按可变化的导出路径计数；分别返回原有、匹配、删除对象数。同步匹配与材质保护规则不变。旧独立吊顶新建 UI 的 CLI 名称显式映射到当前部件／升级／照明流程，历史脚本保留；连续灯带和端板用已升级的独立灯槽验收。见 [本轮全量记录](validation/full-regression-main-20261027/README.md)。
+2026-10-27（全量回归）：精修渲染在同一合并事务内按实际保留对象统计材质绑定，不按可变化的导出路径计数；分别返回原有、匹配、删除对象数。同步匹配与材质保护规则不变。旧独立吊顶新建 UI 的 CLI 名称显式映射到当前部件／升级／照明流程，历史脚本保留；连续灯带和端板用已升级的独立灯槽验收。见 [本轮全量记录](validation/regression-history.md#2026-10-27-主线及方案回归)。
 
 2026-10-27（可选 Windows 桌面壳）：`desktop/main.cjs` 用沙箱 Electron 窗口加载原本地 HTTP 页面，`backend.cjs` 启动／复用正式 serve、同源保存与 Blender 接口。自启服务通过进程 IPC 关闭，借用的原服务保留；网页加载顺序、持久格式、mutate 和直接 file:// 路径不变。`package-desktop.cjs` 仅复制运行时与原资源，本机包链接源码工作目录，便携包无个人数据且以程序目录保存。详见 [桌面版](DESKTOP.md)。
 
@@ -335,7 +335,7 @@ product-rules集中washerDoorSide能力／默认left；washer-motion-core统一�
 
 2026-10-26（铝扣板吊顶）：ceiling-core复用独立区域及flat构件，aluminumLayout集中裁切300×600排板和周边收边；生产ceiling-model与设计二维共用，面板和缝底使用独立实体及稳定行列身份。可选aluminum参数和新样式使用v21项目／工作区／独立缓存，旧数据不补写，原mutate／恢复链路保持。空间核对保守使用原平板包络，外观参数不清除确认；完整吊顶仍进入三维缓存。见 [铝扣板](CEILINGS.md#300600-mm-铝扣板2026-10-26)。
 
-2026-10-25（最新主线全量复验）：筒灯生产网格使用固定 furnishStablePart，与 v3 同步协议一致，安装资料缺失由产品能力统一进入待核对。开启碰撞仍逐板判断，结果按家具 ID 汇总名称，独立扫掠按位置区分，避免重复板件刷屏或同文案门扇合并；没有新增持久字段。所有预览生成器遵守 FURNISH_VERIFY_ROOT，遗留生产预览模板在模型前加载共享身份模块。验收工具在私有副本中复制当前方案，数值编辑等待浮动窗口忙碌状态结束；真实 Blender 记录阶段、延长大场景验收等待。见 [全量记录](validation/full-regression-main-20261025/README.md)。
+2026-10-25（最新主线全量复验）：筒灯生产网格使用固定 furnishStablePart，与 v3 同步协议一致，安装资料缺失由产品能力统一进入待核对。开启碰撞仍逐板判断，结果按家具 ID 汇总名称，独立扫掠按位置区分，避免重复板件刷屏或同文案门扇合并；没有新增持久字段。所有预览生成器遵守 FURNISH_VERIFY_ROOT，遗留生产预览模板在模型前加载共享身份模块。验收工具在私有副本中复制当前方案，数值编辑等待浮动窗口忙碌状态结束；真实 Blender 记录阶段、延长大场景验收等待。见 [全量记录](validation/regression-history.md#2026-10-25-主线及方案快照)。
 
 2026-10-25（平顶共面与仰视）：生产`ceiling-model`为flat单独分配有负polygonOffset的饰面材质，梁底共面时由平顶饰面赢得深度测试；不改顶点、板底板厚或模型身份。主场景OrbitControls最大极角从0.495π放宽至0.995π，允许观察目标下方，漫游控制与俯视预设保持。`ceiling-design`从有效方案画梁投影，复用beamVertical标注，ResizeObserver仅更新参考图示尺寸并随会话销毁。无新持久字段、加载脚本或空间规则。见 [共面与仰视](CEILINGS.md#平顶共面闪纹与环绕仰视2026-10-25)。
 

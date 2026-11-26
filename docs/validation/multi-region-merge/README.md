@@ -33,7 +33,7 @@ SHA-256：`34641bffa1c645a76acc2997098313b48bb65920d8114c9c53565dedf3e7267b`。�
 
 用户目视确认孔洞预览及保存刷新结果后，通过 `http://127.0.0.1:8765/` 页面实际下载当前项目，再在新标签页上传该文件，创建独立项目副本。两页全部六个区域的 SVG 路径（含内轮廓和填充规则）及面积统计行逐项一致。合并区有两条闭合轮廓，净面积 13.555555553644442 m²；中央岛区独立保留，面积 1.694444446355557 m²；总净面积 70.25202300000001 m²。用户再次目视确认通过。
 
-仓库留存 [合并验证数据](validation/multi-region-merge/merge-validation.json)、[实际下载与重导入验证数据](validation/multi-region-merge/hole-reimport-validation.json) 和 [重导入页面截图](validation/multi-region-merge/hole-reimported.png)。新标签页共享该站点本地存储，此次页面复核通过实际文件上传创建独立副本；前述自动化验证另使用全新浏览器上下文。
+仓库留存 [合并验证数据](merge-validation.json)、[实际下载与重导入验证数据](hole-reimport-validation.json) 和 [重导入页面截图](hole-reimported.png)。新标签页共享该站点本地存储，此次页面复核通过实际文件上传创建独立副本；前述自动化验证另使用全新浏览器上下文。
 
 导出文件保存在 `D:/1601装修/图纸/设计方案/Furnish导入验证/current-hole-export.furnish.json`，供重新加载使用。
 
