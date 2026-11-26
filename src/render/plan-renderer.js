@@ -56,9 +56,16 @@ function furnitureLabelLayout(scale=view.s,selected=selIds()){
  const items=renderableFurniture().filter(f=>!NOLABEL.includes(f.type)).map(f=>({id:f.id,type:f.type,name:nm(globalThis.FurnishElectrical?.displayName(f)??f.name),w:f.w,d:f.d,cx:f.cx,cy:f.cy,rot:f.rot})),rotation=drawingRotation(),key=JSON.stringify([items,rotation,scale,selected]);
  if(furnitureLabelCache?.key!==key)furnitureLabelCache={key,labels:new Map(FurnishDrawing.furnitureLabels(items,{rotation,scale,selected}).map(v=>[v.id,v]))};return furnitureLabelCache.labels;
 }
-function furnitureLabelSVG(f,v,palette=PAL){if(!v?.lines.length)return '';const angle=-f.rot-drawingRotation();return `<g data-furniture-label transform="rotate(${angle}) translate(${v.at[0]} ${v.at[1]})" pointer-events="none"><text font-size="${v.font}" text-anchor="middle" dominant-baseline="central" fill="${palette.text}" opacity=".85">${v.lines.map((line,i)=>`<tspan x="0" y="${(i-(v.lines.length-1)/2)*v.font*1.2}">${esc(line)}</tspan>`).join('')}</text></g>`;}
+function furnitureLabelPaint(font,palette){
+ return `fill="${palette.text}" stroke="${palette.halo}" stroke-width="${font*.24}" stroke-linejoin="round" paint-order="stroke"`;
+}
+function furnitureLabelSVG(f,v,palette=PAL){
+ if(!v?.lines.length)return '';
+ const angle=-f.rot-drawingRotation();
+ return `<g data-furniture-label transform="rotate(${angle}) translate(${v.at[0]} ${v.at[1]})" pointer-events="none"><text font-size="${v.font}" text-anchor="middle" dominant-baseline="central" ${furnitureLabelPaint(v.font,palette)}>${v.lines.map((line,i)=>`<tspan x="0" y="${(i-(v.lines.length-1)/2)*v.font*1.2}">${esc(line)}</tspan>`).join('')}</text></g>`;
+}
 function refreshFurnitureLabels(root=svg,{scale=view.s,selected=selIds(),palette=PAL}={}){
- if(!globalThis.FurnishDrawing)return;const labels=furnitureLabelLayout(scale,selected),previous=appliedFurnitureLabels.get(root);if(previous?.labels===labels&&previous.color===palette.text)return;for(const g of root.querySelectorAll('#gFurn [data-fid]')){const f=getF(g.getAttribute('data-fid')),markup=f&&!furnitureError(f)?furnitureLabelSVG(f,labels.get(f.id),palette):'',node=g.querySelector('[data-furniture-label]');if(appliedFurnitureLabelMarkup.get(g)===markup&&!!node===!!markup)continue;node?.remove();if(markup)g.insertAdjacentHTML('beforeend',markup);appliedFurnitureLabelMarkup.set(g,markup);}appliedFurnitureLabels.set(root,{labels,color:palette.text});
+ if(!globalThis.FurnishDrawing)return;const labels=furnitureLabelLayout(scale,selected),previous=appliedFurnitureLabels.get(root);if(previous?.labels===labels&&previous.palette===palette)return;for(const g of root.querySelectorAll('#gFurn [data-fid]')){const f=getF(g.getAttribute('data-fid')),markup=f&&!furnitureError(f)?furnitureLabelSVG(f,labels.get(f.id),palette):'',node=g.querySelector('[data-furniture-label]');if(appliedFurnitureLabelMarkup.get(g)===markup&&!!node===!!markup)continue;node?.remove();if(markup)g.insertAdjacentHTML('beforeend',markup);appliedFurnitureLabelMarkup.set(g,markup);}appliedFurnitureLabels.set(root,{labels,palette});
 }
 function hobOpeningsSVG({scale=view.s,palette=PAL,dimensions=ui.layers.dims,selected=selIds()}={}){
  const K=globalThis.FurnishKitchen,S=globalThis.FurnishSnapping;if(!K||!S?.surfaceOpening)return '';
@@ -165,7 +172,7 @@ function renderFurn(){
   g.innerHTML = drawOrder().map(f => {
     try{
     const fs = Math.max(80, Math.min(170, Math.min(f.w,f.d)*.2));
-    const label = labels?furnitureLabelSVG(f,labels.get(f.id)):(Math.min(f.w,f.d)>=380&&!NOLABEL.includes(f.type)?`<text transform="rotate(${-f.rot})" font-size="${fs}" text-anchor="middle" dominant-baseline="central" fill="${PAL.text}" opacity=".8" pointer-events="none">${esc(nm(globalThis.FurnishElectrical?.displayName(f)??f.name))}</text>`:'');
+    const label = labels?furnitureLabelSVG(f,labels.get(f.id)):(Math.min(f.w,f.d)>=380&&!NOLABEL.includes(f.type)?`<text transform="rotate(${-f.rot})" font-size="${fs}" text-anchor="middle" dominant-baseline="central" ${furnitureLabelPaint(fs,PAL)} pointer-events="none">${esc(nm(globalThis.FurnishElectrical?.displayName(f)??f.name))}</text>`:'');
     const body = furnSVG(f.type,f.w,f.d,f.color,f,{furniture:state.furniture,plan:canvasEffectivePlan()}), mirrored = f.flip ? `<g transform="scale(-1 1)">${body}</g>` : body;
     const pipes=!furnitureError(f)&&servicePipes.length&&FurnishProducts.serviceCut(f)?servicePipes.filter(p=>FurnishServices.bodyHit(f,p,0)):[];
     // Service cut masks must contain independent cabinets outside the old host rectangle.

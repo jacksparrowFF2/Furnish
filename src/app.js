@@ -346,7 +346,11 @@ function clearLayout(){
 const PANES = 'huxing-panes';
 const panes = (() => { try { return JSON.parse(localStorage.getItem(PANES)) || {}; } catch(e) { return {}; } })();
 function drawer(which, open){
-  const app = $('.app'), els = {lib:$('aside.lib'), panel:$('aside.right')}, n = narrow();
+  const els = {lib:$('aside.lib'), panel:$('aside.right')}, n = narrow();
+  if (!n && which === 'lib' && open !== false && $('.app').classList.contains('layers-shared')){
+    window.FurnishObservationLayers.close();
+    open = true;
+  }
   const panelWasOpen=els.panel.classList.contains('open');
   if (n){
     Object.entries(els).forEach(([k, el]) => el.classList.toggle('open', k === which && (open ?? !el.classList.contains('open'))));
@@ -358,24 +362,29 @@ function drawer(which, open){
       try { localStorage.setItem(PANES, JSON.stringify(panes)); } catch(e) {}
     }
   }
-  app.classList.toggle('hide-lib', !!panes.hideLib); app.classList.toggle('hide-panel', !!panes.hidePanel);
-  flushSelectionPanel();
   syncPaneBtns();
+  flushSelectionPanel();
   if(n&&panelWasOpen!==els.panel.classList.contains('open')){
     const target=els.panel.classList.contains('open')?$('#panel [data-panel-scope][aria-pressed="true"]'):$('#property-peek:not([hidden]) [data-peek-scope]')||$('#tgPanel');
     target?.focus({preventScroll:true});
   }
 }
 function syncPaneBtns(){
-  const els = {lib:$('aside.lib'), panel:$('aside.right')}, n = narrow();
-  const vis = k => n ? els[k].classList.contains('open') : !panes[k === 'lib' ? 'hideLib' : 'hidePanel'];
-  $('#tgLib').classList.toggle('on', vis('lib')); $('#tgPanel').classList.toggle('on', vis('panel'));
-  $('#tgLib').setAttribute('aria-expanded',String(vis('lib'))); $('#tgPanel').setAttribute('aria-expanded',String(vis('panel')));
-  $('#tgLib').title = vis('lib') ? tr('收起家具库 ( [ )', 'Hide library ( [ )') : tr('展开家具库 ( [ )', 'Show library ( [ )');
-  $('#tgPanel').title = vis('panel') ? tr('收起属性面板 ( ] )', 'Hide properties ( ] )') : tr('展开属性面板 ( ] )', 'Show properties ( ] )');
-  $('#stage').classList.toggle('drawer-panel', n && vis('panel'));   // 属性抽屉盖住画面时让出底部工具条
-  $('#stage').classList.toggle('drawer-library',n&&vis('lib'));
-  const expand=$('#property-peek [aria-expanded]');if(expand)expand.setAttribute('aria-expanded',String(vis('panel')));
+  const app = $('.app'), lib = $('aside.lib'), panel = $('aside.right'), n = narrow();
+  const hideLib = !!panes.hideLib || (!n && app.classList.contains('layers-shared'));
+  const libOpen = n ? lib.classList.contains('open') : !hideLib;
+  const panelOpen = n ? panel.classList.contains('open') : !panes.hidePanel;
+  app.classList.toggle('hide-lib', hideLib);
+  app.classList.toggle('hide-panel', !!panes.hidePanel);
+  lib.inert = !libOpen;
+  panel.inert = !panelOpen;
+  $('#tgLib').classList.toggle('on', libOpen); $('#tgPanel').classList.toggle('on', panelOpen);
+  $('#tgLib').setAttribute('aria-expanded',String(libOpen)); $('#tgPanel').setAttribute('aria-expanded',String(panelOpen));
+  $('#tgLib').title = libOpen ? tr('收起家具库 ( [ )', 'Hide library ( [ )') : tr('展开家具库 ( [ )', 'Show library ( [ )');
+  $('#tgPanel').title = panelOpen ? tr('收起属性面板 ( ] )', 'Hide properties ( ] )') : tr('展开属性面板 ( ] )', 'Show properties ( ] )');
+  $('#stage').classList.toggle('drawer-panel', n && panelOpen);
+  $('#stage').classList.toggle('drawer-library', n && libOpen);
+  const expand=$('#property-peek [aria-expanded]');if(expand)expand.setAttribute('aria-expanded',String(panelOpen));
 }
 function closeDrawers(){ if (narrow()) drawer(null); }
 

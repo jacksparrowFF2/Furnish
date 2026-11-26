@@ -4,7 +4,9 @@ let current=null,mode='auto';try{const saved=localStorage.getItem('furnish-obser
 function enter(){if(current)return;const host=document.querySelector('#view3d');if(!host)return;
  const bar=document.createElement('div');bar.id='progressive-controls';bar.innerHTML='<select aria-label="三维观察画质" id="progressive-mode"><option value="auto">自动 · 快速渐进</option><option value="detail">精细渐进</option><option value="smooth">流畅观察</option></select><span id="progressive-status" role="status"></span><button class="btn" id="progressive-retry" hidden>重试高清</button>';host.append(bar);
  const s={bar,host,frame:null,token:0,active:true,blocked:false,held:false,quiet:performance.now(),sceneKey:null,viewKey:null,sentView:null,building:false,ready:false,policy:FurnishProgressivePolicy.performancePolicy(mode),pause:false};current=s;
- const status=t=>bar.querySelector('#progressive-status').textContent=t,post=(type,body={})=>s.frame?.contentWindow.postMessage({channel:'furnish-lighting-preview',token:s.token,type,...body},location.origin);
+ const statusText=bar.querySelector('#progressive-status');
+ const status=text=>{if(statusText.textContent!==text)statusText.textContent=text;};
+ const post=(type,body={})=>s.frame?.contentWindow.postMessage({channel:'furnish-lighting-preview',token:s.token,type,...body},location.origin);
  function hide(){if(s.frame)s.frame.hidden=true;if(s.image)s.image.hidden=true;}
  function cancelSettle(){clearTimeout(s.settleTimer);if(s.pendingImageUrl)URL.revokeObjectURL(s.pendingImageUrl);s.pendingImageUrl=null;}
  function clearImage(){cancelSettle();s.image?.remove();s.image=null;if(s.imageUrl)URL.revokeObjectURL(s.imageUrl);s.imageUrl=null;}
@@ -53,7 +55,7 @@ function enter(){if(current)return;const host=document.querySelector('#view3d');
   }
  }
  window.addEventListener('message',receive);
- function tick(){if(!s.active)return;const light=document.querySelector('.scene-light'),a=bar.getBoundingClientRect(),b=light?.getClientRects().length?light.getBoundingClientRect():null,top=b&&a.left<b.right+8&&a.right>b.left-8?Math.max(12,b.bottom-host.getBoundingClientRect().top+8):12;if(bar.style.top!==top+'px')bar.style.top=top+'px';if(mode==='smooth'){if(s.frame||s.building||s.image)dispose();status('流畅观察');bar.dataset.state='smooth';return;}if(s.blocked)return;
+ function tick(){if(!s.active)return;const light=document.querySelector('.scene-light'),a=bar.getBoundingClientRect(),b=light?.getClientRects().length?light.getBoundingClientRect():null,top=b&&a.left<b.right+8&&a.right>b.left-8?Math.max(12,b.bottom-host.getBoundingClientRect().top+8):12;if(bar.style.top!==top+'px')bar.style.top=top+'px';if(mode==='smooth'){if(s.frame||s.building||s.image)dispose();status('');bar.dataset.state='smooth';return;}if(s.blocked)return;
   if(location.protocol==='file:'){fallback('直接打开文件；桌面可启用高清');return;}if(!navigator.gpu){fallback('设备不支持 WebGPU');return;}
   if(document.hidden||document.querySelector('#lighting-preview')){if(s.frame||s.building||s.image)dispose();status(document.hidden?'已暂停':'独立出图中');s.quiet=performance.now();return;}
   const state=root.View3D.progressiveState();if(!state){hide();s.quiet=performance.now();if(s.frame){s.pause=true;post('pause');}return;}

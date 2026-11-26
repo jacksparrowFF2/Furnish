@@ -82,6 +82,7 @@
   <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 3.5l9.5 16.5h-19z"/><path d="M12 10v4.5M12 17.2h.01"/></symbol>
   <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
   <symbol id="i-box" viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9zM4 7.5l8 4.5 8-4.5M12 12v9"/></symbol>
+  <symbol id="i-walk" viewBox="0 0 24 24"><circle cx="13" cy="4" r="1.5"/><path d="m7 21 4-6m5 6-2-5-3-3 1-5m-6 4 3-3 3-1 3 4h3"/></symbol>
   <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></symbol>
   <symbol id="i-save" viewBox="0 0 24 24"><path d="M5 3h11l3 3v15H5zM8 3v5h7M8 21v-7h8v7"/></symbol>
@@ -100,7 +101,7 @@
       <button class="btn chip" id="tgLib" aria-label="家具库" data-en-aria="Furniture library"><svg class="i"><use href="#i-lib"/></svg><span data-en="Library">家具库</span></button>
       <button class="btn chip" id="tgPanel" aria-label="属性" data-en-aria="Properties"><svg class="i"><use href="#i-panel"/></svg><span data-en="Properties">属性</span></button>
       <button class="btn chip" id="tgLayers" aria-label="图层" data-en-aria="Layers" aria-controls="layer-sidebar" aria-expanded="false" onclick="FurnishObservationLayers.toggle()"><svg class="i"><use href="#i-layers"/></svg><span data-en="Layers">图层</span></button>
-      <button class="btn chip" id="tgSpace" title="空间检查" data-en-title="Space checks" aria-label="空间检查" data-en-aria="Space checks"><svg class="i"><use href="#i-check"/></svg><span data-en="Space checks">空间检查</span></button>
+      <button class="btn chip" id="tgSpace" title="空间核对" data-en-title="Space checks" aria-label="空间核对" data-en-aria="Space checks"><svg class="i"><use href="#i-check"/></svg><span data-en="Space checks">空间核对</span></button>
     </div>
     <button class="btn outline" id="planBtn" title="户型库：浏览并切换户型" data-en-title="Floor plan gallery" aria-label="户型库" data-en-aria="Floor plan gallery"><svg class="i"><use href="#i-grid"/></svg><span data-en="Plans">户型库</span><span class="cnt" id="planCnt"></span></button>
     <div class="brand"><span class="logo" aria-hidden="true"><svg class="i"><use href="#i-home"/></svg></span><div><b data-en="3BR 2LR 2BA · Interior Design">三室两厅两卫 · 装修设计</b><span id="subtitle">原始户型 1:60 · 尺寸单位 mm</span></div></div>
@@ -117,19 +118,19 @@
       <button class="btn" data-tool="note" title="文字标注 (N) · 点击平面图添加说明" data-en-title="Text note (N) · click the plan to add a note"><svg class="i"><use href="#i-note"/></svg><span class="t" data-en="Note">标注</span></button>
     </div>
     <div class="grp only3d" id="modes3d">
-      <button class="btn on" data-mode="orbit" data-en="Orbit">鸟瞰</button>
-      <button class="btn" data-mode="walk" data-en="Walk">漫游</button>
+      <button class="btn on" data-mode="orbit" aria-pressed="true"><svg class="i" aria-hidden="true"><use href="#i-box"/></svg><span data-en="Orbit">鸟瞰</span></button>
+      <button class="btn" data-mode="walk" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-walk"/></svg><span data-en="Walk">漫游</span></button>
     </div>
     <div class="grp only3d">
       <button class="btn" id="vIso" data-en="Iso">斜视</button>
       <button class="btn" id="vTop" data-en="Top">俯视</button>
-      <button class="btn" id="vCamera" aria-controls="cameraPanel" aria-expanded="false" aria-haspopup="dialog" data-en="View settings">视角</button>
+      <button class="btn" id="vCamera" aria-controls="cameraPanel" aria-expanded="false" aria-haspopup="dialog"><svg class="i" aria-hidden="true"><use href="#i-eye"/></svg><span data-en="View settings">视角</span></button>
       <button class="btn" id="vSelection" data-en="Focus selection">定位选中</button>
       <button class="btn" id="vMeasure" aria-pressed="false" title="3D 两点测量 (M)" data-en-title="3D surface measurement (M)"><svg class="i"><use href="#i-ruler"/></svg><span data-en="Measure">测量</span></button>
       <button class="btn" id="vRestoreWalls" hidden data-en="Restore walls">恢复墙体</button>
       <button class="btn" id="vBlender" onclick="FurnishBlenderRender.open()" data-en="Blender render">Blender 渲染</button>
       <button class="btn" id="vMaterials" aria-controls="material-panel" aria-pressed="false"><svg class="i"><use href="#i-palette"/></svg><span data-en="Styles & materials">风格与材质</span></button>
-      <button class="btn" id="vLightingPreview" onclick="FurnishLightingPreview.open()" data-en="HD preview">高清预览</button>
+      <button class="btn" id="vLightingPreview" onclick="FurnishLightingPreview.open()"><svg class="i" aria-hidden="true"><use href="#i-sun"/></svg><span data-en="HD preview">高清预览</span></button>
     </div>
     <div class="grp">
       <button class="btn" id="undo" title="撤销 (Ctrl+Z)" aria-label="撤销" data-en-title="Undo (Ctrl+Z)"><svg class="i"><use href="#i-undo"/></svg></button>
@@ -2861,7 +2862,13 @@ addEventListener('keydown', e => {
 addEventListener('keyup', e => keys[e.code] = false);
 
 /* ======================= 工具栏 ======================= */
-function syncModeBtns(){ document.querySelectorAll('#modes3d .btn').forEach(b => b.classList.toggle('on', b.dataset.mode === opt.mode)); }
+function syncModeBtns(){
+  for(const button of document.querySelectorAll('#modes3d .btn')){
+    const active=button.dataset.mode===opt.mode;
+    button.classList.toggle('on',active);
+    button.setAttribute('aria-pressed',String(active));
+  }
+}
 function syncCutBtns(){ document.querySelectorAll('[data-cut]').forEach(b => b.classList.toggle('on', +b.dataset.cut === opt.cut)); }
 function syncWalkTexts(){
   const t = COARSE

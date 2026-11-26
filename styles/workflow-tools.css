@@ -36,7 +36,8 @@
 .canvas-rail #tools .t{display:inline}
 .canvas-rail .rail-more,.canvas-rail .rail-finishes{border-left:1px solid var(--line);padding-left:6px}
 #stage #fab{bottom:94px}
-.canvas-rail .btn.on{background:var(--accent-soft);color:var(--accent-ink)}
+.canvas-rail .btn:is(.on,[aria-expanded="true"]),.space-filters .btn[aria-pressed="true"],.project-space-filters .btn[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent-ink)}
+.space-filters .btn[aria-pressed="true"],.project-space-filters .btn[aria-pressed="true"]{border-color:var(--accent);box-shadow:none}
 .space-status{position:absolute;left:12px;bottom:14px;z-index:5;max-width:48%;background:var(--panel);box-shadow:var(--shadow-sm);border:1px solid var(--line)}
 #stage .scalebar{bottom:60px}
 #stage #hint3d{top:58px;max-width:calc(100% - 110px);white-space:normal;text-align:center}
@@ -214,8 +215,7 @@ main.drawer-panel #fab-editor{visibility:hidden}
 #design-actions-menu{display:none}
 .plan-display{margin-left:auto;display:flex;flex:none;gap:2px;padding:2px;border:1px solid var(--s-line);border-radius:10px;background:var(--s-panel);animation:none}
 .plan-display .btn{min-height:30px;padding:4px 14px;border-radius:7px}
-.plan-display .btn[aria-pressed="true"]{background:var(--action-bg);color:var(--on-action)}
-.design-bar #electrical-list[aria-expanded="true"]{background:var(--action-bg);color:var(--on-action)}
+.plan-display .btn[aria-pressed="true"],.design-bar #electrical-list[aria-expanded="true"]{background:var(--accent-soft);color:var(--accent-ink);font-weight:650}
 #plan-display-note{margin:8px 0 0;color:var(--muted);font-size:11px}
 #placement-status{animation:none}
 #placement-status:not(:empty){position:absolute;top:10px;left:50%;transform:translateX(-50%);width:max-content;max-width:calc(100% - 24px);padding:6px 10px;border:1px solid var(--s-line);border-radius:8px;background:var(--s-overlay);color:var(--s-ink);font-size:12px;pointer-events:none;z-index:5}
@@ -252,6 +252,7 @@ main.drawer-panel #fab-editor{visibility:hidden}
 .layer-select>span:nth-child(2){flex:1;overflow-wrap:anywhere}
 .layer-branch-head label{display:flex;gap:3px;align-items:center;flex:none;font-size:11px;cursor:pointer}
 .layer-branch-head input{margin:0;min-width:16px;min-height:16px}
+.layer-sidebar input[type=checkbox]{accent-color:var(--action-bg)}
 .layer-branch .layer-object-list{padding:0 8px 0 18px}
 .layer-branch-actions{display:flex;justify-content:flex-end;gap:5px;padding:4px 8px}
 .layer-branch-actions .btn{font-size:11px;min-height:28px}

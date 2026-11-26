@@ -79,8 +79,8 @@ function renderPanelContent(object=true){
   }
   if(window.FurnishWorkflowTools&&['space','style'].includes(ui.tab)){p.innerHTML=ui.tab==='space'?FurnishWorkflowTools.spacePanel():FurnishWorkflowTools.stylePanel();return;}
   const lost = state.furniture.filter(isOutside).length, clashN = collisions().length;
-  const tab = (k, icon, zh, en, n, warn) => `<button class="tab ${ui.tab === k ? 'on' : ''}" data-tab="${k}">${ico(icon)}${tr(zh, en)}${n != null ? `<span class="n ${warn ? 'warn' : ''}">${n}</span>` : ''}</button>`;
-  p.innerHTML = `<div class="tabs" role="tablist">${tab('overview', 'chart', '概览', 'Overview')}${tab('list', 'list', '清单', 'Items', state.furniture.length, lost || clashN)}${tab('quote', 'coin', '报价', 'Quote')}</div>`
+  const tab = (k, icon, zh, en, n, warn) => `<button class="tab ${ui.tab === k ? 'on' : ''}" data-tab="${k}" aria-pressed="${ui.tab===k}">${ico(icon)}${tr(zh, en)}${n != null ? `<span class="n ${warn ? 'warn' : ''}">${n}</span>` : ''}</button>`;
+  p.innerHTML = `<div class="tabs" role="group" aria-label="${tr('整案面板','Whole design panels')}">${tab('overview', 'chart', '概览', 'Overview')}${tab('list', 'list', '清单', 'Items', state.furniture.length, lost || clashN)}${tab('quote', 'coin', '报价', 'Quote')}</div>`
     + (ui.tab === 'list' ? listPanel() : ui.tab === 'quote' ? quotePanel() : overviewPanel());
   if (ui.tab === 'overview') bindOverview();
   window.FurnishWorkflowTools?.afterPanel();

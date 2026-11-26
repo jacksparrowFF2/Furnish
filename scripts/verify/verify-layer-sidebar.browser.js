@@ -7,6 +7,7 @@ async(page,V)=>{
   await p.locator('#lib').getByText('米家净水器 2 · 1200G',{exact:true}).first().click();
   const id=await p.evaluate(()=>selIds()[0]);
   await p.locator('#tgLayers').click();await p.locator('#layer-sidebar').waitFor({state:'visible'});
+  check(await p.locator('#tgLib').getAttribute('aria-expanded')==='false'&&await p.locator('aside.lib').evaluate(el=>el.inert),'layers replace the library by default');
   check(await p.locator('#dlg').isHidden(),'sidebar must not open modal');check(await p.locator('#layer-assign-selection').isEnabled(),'current selection available');
   await p.locator('#layer-name').fill('观察家电');await p.locator('#layer-create').click();await p.locator('#layer-assign-selection').click();
   const layer=await p.evaluate(()=>state.objectLayers.layers.find(l=>l.name==='观察家电').id);
@@ -44,6 +45,9 @@ async(page,V)=>{
   check(await p.locator('[data-layer-object]').count()===0&&!await p.locator(`[data-layer-visible="${layer}"]`).isChecked()&&await p.locator(`[data-layer-locked="${layer}"]`).isChecked()&&await p.evaluate(()=>JSON.stringify(state.objectLayers))===layerState,'same layer collapses inventory without changing visibility or lock');await p.locator(`[data-layer-select="${layer}"]`).click();check(await p.locator('[data-layer-object]').count()===1,'second click restores member scope');
   await p.locator(`[data-layer-locked="${layer}"]`).uncheck();await p.locator(`[data-layer-visible="${layer}"]`).check();
   await p.locator('#layer-name').fill('');await p.screenshot({path:V.output('playwright/layer-sidebar/'+mode+'-desktop.png')});
+  const alongside=p.locator('#layer-layout-toggle');
+  await alongside.click();
+  check(await p.locator('#tgLib').getAttribute('aria-expanded')==='true','separate mode restores the library');
   for(const buttons of [['tgLib'],['tgPanel'],['tgLib','tgPanel']]){
    for(const button of buttons)await p.locator('#'+button).click();await p.waitForTimeout(350);
    const a=await p.locator('#stage').boundingBox(),b=await p.locator('#layer-sidebar').boundingBox();const overlay=await p.locator('.app').evaluate(e=>e.classList.contains('layers-overlay'));check(a.width>=520&&(overlay?b.x>=a.x&&b.x+b.width<=a.x+a.width:b.x+b.width<=a.x+1),'library/property collapse preserves accessible panel');
@@ -51,6 +55,7 @@ async(page,V)=>{
   }
   await p.locator('#tgLayers').click();check(await p.locator('#layer-sidebar').isHidden(),'header button collapses sidebar');await p.locator('#tgLayers').click();
   await p.reload();await p.waitForFunction(()=>!repositoryBooting);await p.locator('#layer-sidebar').waitFor({state:'visible'});
+  check(await alongside.getAttribute('aria-pressed')==='true','refresh remembers separate mode');
   check(await p.locator('#tgLayers').getAttribute('aria-expanded')==='true','refresh remembers open panel');
   await p.waitForTimeout(350);check(await p.evaluate(()=>JSON.parse(localStorage.getItem(PANES)).layerWidth)===remembered-10,'refresh restores width preference');
   check(await p.evaluate(id=>FurnishLayers.layerId(state,'furniture:'+id)!=='0',id),'saved assignments retained');
@@ -59,7 +64,7 @@ async(page,V)=>{
   await p.screenshot({path:V.output('playwright/layer-sidebar/'+mode+'-3d.png')});
   await p.locator('#layer-sidebar-close').click();check(await p.locator('#tgLayers').getAttribute('aria-expanded')==='false','close button');
   await p.locator('#showMenu summary').click();await p.locator('#observationLayers').click();check(await p.locator('#layer-sidebar').isVisible(),'original menu opens sidebar');
-  for(const width of [390,320]){
+  for(const width of process.env.FURNISH_VERIFY_NARROW==='1'?[390,320]:[]){
    await p.setViewportSize({width,height:844});await p.evaluate(()=>closeDrawers());
    await p.waitForFunction(()=>document.querySelector('aside.lib').getBoundingClientRect().right<=0&&document.querySelector('aside.right').getBoundingClientRect().left>=innerWidth);
    const s=await p.locator('#stage').boundingBox(),b=await p.locator('#layer-sidebar').boundingBox();

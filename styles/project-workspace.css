@@ -2,6 +2,10 @@
 .project-grid>*{min-width:0;overflow-wrap:anywhere}
 .project-grid label{display:flex;flex-direction:column;gap:5px}
 .project-grid input,.project-grid select{width:100%;padding:8px;border:1px solid var(--line);border-radius:7px;background:var(--card);color:var(--ink)}
+.workflow-guide>section{padding:12px;border:1px solid var(--line);border-radius:var(--r-md)}
+.workflow-guide h4{margin:0;font-size:13px}
+.workflow-guide p{margin:6px 0 0;color:var(--muted)}
+.workflow-guide .actions{margin-top:8px}
 .project-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
 .project-nav .on{background:var(--action-bg);color:var(--on-action)}
 .project-table{width:100%;border-collapse:collapse}

@@ -72,7 +72,7 @@ function spaceIssueVolumes(plan,furniture,item,passage=800){
  function afterRender(){spaceRevision++;let g=$('#gRenovation');if(!g){g=document.createElementNS('http://www.w3.org/2000/svg','g');g.id='gRenovation';$('#gWalls').after(g);}g.innerHTML='';if(!state.architecture?.baseline)return;const a=state.architecture,c=P.changes(a.baseline,a.draft);g.style.pointerEvents=ui.tool==='demolish'?'all':'none';g.innerHTML+=c.removed.map(w=>{const r=FurnishDraft.wallRect(w,a.baseline.scale);return `<rect data-restore-wall="${esc(w.id)}" x="${r[0]}" y="${r[1]}" width="${r[2]-r[0]}" height="${r[3]-r[1]}" fill="rgba(210,70,50,.12)" stroke="#c64a36" stroke-width="1.5" stroke-dasharray="6 4" vector-effect="non-scaling-stroke"><title>${t('拆除墙体：拆改工具下点击可恢复','Removed wall: click with demolition tool to restore')}</title></rect>`;}).join('')+c.added.map(w=>{const r=FurnishDraft.wallRect(w,a.draft.scale);return `<rect x="${r[0]}" y="${r[1]}" width="${r[2]-r[0]}" height="${r[3]-r[1]}" fill="none" stroke="#17806c" stroke-width="2" vector-effect="non-scaling-stroke" pointer-events="none"/>`;}).join('');}
  function planFor(work){return P.effectivePlan(PLAN,work);}
  function summary(work){const b=P.estimate(planFor(work),work,MATS,priceOf);return {...b,rooms:b.counted.length,paint:b.paintArea,extra:b.renovation};}
- const nav=[['settings','层高设置','Ceiling height'],['structure','原始结构／拆改','Structure / changes'],['compare','方案比较','Compare'],['backup','项目备份','Backup'],['space','使用空间检查','Space checks'],['budget','装修工程预算','Renovation costs'],['products','品牌家具／模型','Products / models']];
+ const nav=[['settings','层高设置','Ceiling height'],['structure','原始结构／拆改','Structure / changes'],['compare','方案比较','Compare'],['backup','项目备份','Backup'],['space','空间核对','Space checks'],['budget','装修工程预算','Renovation costs'],['products','品牌家具／模型','Products / models']];
  function open(tab='structure'){
   $('#fileMenu').open=false;openDialog({title:t('项目工作台','Project workspace'),wide:true,body:`<nav class="project-nav">${nav.map(([id,zh,en])=>`<button class="btn ${id===tab?'on':''}" data-project-tab="${id}">${t(zh,en)}</button>`).join('')}</nav><div id="project-content"></div><p id="project-error" class="project-error" role="alert"></p>`,actions:[{label:t('关闭','Close')}],onOpen:()=>{document.querySelectorAll('[data-project-tab]').forEach(b=>b.onclick=()=>open(b.dataset.projectTab));try{({settings,structure,compare,backup,space,budget:costs,products})[tab]();}catch(e){error(e);}}});
  }
@@ -163,7 +163,7 @@ function spaceIssueVolumes(plan,furniture,item,passage=800){
      issues=step.value;sourceWork=state;checkedRevision=spaceRevision;
      reset(t(`检查完成 · ${issues.length} 项`,`Check complete · ${issues.length} findings`));
      render(restoreFocus);restoreFocus=false;
-    }catch(err){restoreFocus=false;reset(t('空间检查未完成。','Space check did not finish.'));error(err);}
+    }catch(err){restoreFocus=false;reset(t('空间核对未完成。','Space check did not finish.'));error(err);}
    }
    requestAnimationFrame(()=>setTimeout(advance,0));
   };

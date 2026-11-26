@@ -94,7 +94,27 @@ globalThis.FurnishObservationLayers=(()=>{
   const body=host.closest('.layer-sidebar-body');if(body)body.scrollTop=scroll;
   const next=focus&&document.getElementById(focus);if(next&&host.contains(next)){next.focus({preventScroll:true});if(typeof selection==='number'&&next.type==='text')next.setSelectionRange(selection,selection);}
  }
- function syncSidebarButton(){const panel=document.getElementById('layer-sidebar');if(panel){panel.querySelector('.layer-sidebar-head b').textContent=tr('图层管理','Layer manager');panel.querySelector('#layer-sidebar-close').setAttribute('aria-label',tr('收起图层面板','Hide layers'));}const shown=!!document.getElementById('layer-sidebar')&&!document.getElementById('layer-sidebar').hidden,b=document.getElementById('tgLayers');document.querySelector('.app')?.classList.toggle('layers-open',shown);if(b){b.classList.toggle('on',shown);b.setAttribute('aria-expanded',String(shown));b.title=tr(shown?'收起图层面板':'展开图层面板',shown?'Hide layers':'Show layers');}}
+ function syncSidebarButton(){
+  const panel=$('#layer-sidebar'),shown=!!panel&&!panel.hidden,alongside=panes.layersAlongside===true;
+  const app=$('.app'),shared=shown&&!alongside,changed=app.classList.contains('layers-shared')!==shared;
+  app.classList.toggle('layers-open',shown);
+  app.classList.toggle('layers-shared',shared);
+  const trigger=$('#tgLayers');
+  trigger.classList.toggle('on',shown);
+  trigger.setAttribute('aria-expanded',String(shown));
+  trigger.title=shown?tr('收起图层面板','Hide layers'):tr('展开图层面板','Show layers');
+  if(panel){
+   const title=tr('图层管理','Layer manager');
+   panel.setAttribute('aria-label',title);
+   panel.querySelector('.layer-sidebar-head b').textContent=title;
+   $('#layer-sidebar-close').setAttribute('aria-label',tr('收起图层面板','Hide layers'));
+   const layout=$('#layer-layout-toggle');
+   layout.textContent=tr('独立侧栏','Separate pane');
+   layout.title=tr('允许家具库与图层同时打开','Allow the library and layers to open together');
+   layout.setAttribute('aria-pressed',String(alongside));
+  }
+  if(changed)syncPaneBtns();
+ }
  function widthBounds(){
   const app=document.querySelector('.app'),css=getComputedStyle(app);
   const lib=app.classList.contains('hide-lib')?0:parseFloat(css.getPropertyValue('--lib-w'))||0;
@@ -108,7 +128,7 @@ globalThis.FurnishObservationLayers=(()=>{
  }
  function fitSidebar(){
   const app=document.querySelector('.app'),css=getComputedStyle(app),lib=app.classList.contains('hide-lib')?0:parseFloat(css.getPropertyValue('--lib-w'))||0,right=app.classList.contains('hide-panel')?0:parseFloat(css.getPropertyValue('--panel-w'))||0;
-  const overlay=!narrow()&&app.clientWidth-lib-right-sidebarWidth()<520;
+  const overlay=!narrow()&&app.classList.contains('layers-open')&&!app.classList.contains('layers-shared')&&app.clientWidth-lib-right-sidebarWidth()<520;
   if(app.classList.contains('layers-overlay')!==overlay){app.classList.toggle('layers-overlay',overlay);setWidth(parseFloat(css.getPropertyValue('--layer-sidebar-width'))||sidebarWidth());}
  }
  function installResize(panel){
@@ -124,12 +144,39 @@ globalThis.FurnishObservationLayers=(()=>{
  function ensureSidebar(){
   let panel=document.getElementById('layer-sidebar');if(panel)return panel;
   panel=document.createElement('section');panel.id='layer-sidebar';panel.className='layer-sidebar';panel.hidden=true;panel.setAttribute('aria-label',tr('图层管理','Layer manager'));
-  panel.innerHTML=`<div class="layer-sidebar-head"><b>${tr('图层管理','Layer manager')}</b><button class="btn" id="layer-sidebar-close" aria-label="${tr('收起图层面板','Hide layers')}">×</button></div><div class="layer-sidebar-body"><div id="layer-manager"></div></div><div id="layer-resize" role="separator" tabindex="0" aria-orientation="vertical" aria-label="${tr('调整图层侧栏宽度','Resize layer sidebar')}" title="${tr('拖动调整宽度；方向键微调','Drag to resize; arrow keys to adjust')}"></div>`;
-  document.querySelector('.app').insertBefore(panel,document.getElementById('view-workspace'));panel.querySelector('#layer-sidebar-close').onclick=close;installResize(panel);panel.addEventListener('keydown',e=>{if(e.key==='Escape'){e.stopPropagation();close();document.getElementById('tgLayers')?.focus();}});return panel;
+  panel.innerHTML=`<div class="layer-sidebar-head"><b tabindex="-1">${tr('图层管理','Layer manager')}</b><div class="layer-sidebar-actions"><button type="button" class="btn chip" id="layer-layout-toggle" aria-pressed="false"></button><button class="btn" id="layer-sidebar-close" aria-label="${tr('收起图层面板','Hide layers')}">${ico('x')}</button></div></div><div class="layer-sidebar-body"><div id="layer-manager"></div></div><div id="layer-resize" role="separator" tabindex="0" aria-orientation="vertical" aria-label="${tr('调整图层侧栏宽度','Resize layer sidebar')}" title="${tr('拖动调整宽度；方向键微调','Drag to resize; arrow keys to adjust')}"></div>`;
+  $('.app').insertBefore(panel,$('#view-workspace'));
+  $('#layer-layout-toggle').onclick=()=>{
+   panes.layersAlongside=panes.layersAlongside!==true;
+   remember(true);
+   syncSidebarButton();
+   if(panes.layersAlongside)drawer('lib',true);
+  };
+  $('#layer-sidebar-close').onclick=close;
+  installResize(panel);
+  panel.addEventListener('keydown',e=>{if(e.key==='Escape'){e.stopPropagation();close();}});
+  return panel;
  }
  function remember(shown){panes.showLayers=shown;try{localStorage.setItem(PANES,JSON.stringify(panes));}catch{}}
- function open(){document.getElementById('showMenu').open=false;if(narrow())closeDrawers();ensureSidebar().hidden=false;remember(true);draw();syncSidebarButton();}
- function close(){const panel=document.getElementById('layer-sidebar');if(panel)panel.hidden=true;remember(false);syncSidebarButton();}
+ function open(){
+  const active=document.activeElement,showMenu=$('#showMenu');
+  const restoreFocus=showMenu.contains(active)||$('aside.lib').contains(active)&&(narrow()||panes.layersAlongside!==true);
+  showMenu.open=false;
+  if(narrow())closeDrawers();
+  const panel=ensureSidebar();
+  panel.hidden=false;
+  remember(true);
+  syncSidebarButton();
+  draw();
+  if(restoreFocus)panel.querySelector('.layer-sidebar-head b').focus({preventScroll:true});
+ }
+ function close(){
+  const panel=$('#layer-sidebar'),restoreFocus=panel?.contains(document.activeElement);
+  if(panel)panel.hidden=true;
+  remember(false);
+  syncSidebarButton();
+  if(restoreFocus)$('#tgLayers').focus({preventScroll:true});
+ }
  function toggle(){const panel=document.getElementById('layer-sidebar');if(panel&&!panel.hidden)close();else open();}
  function afterRender(){if(document.getElementById('layer-sidebar')?.hidden===false)draw();}
  if(typeof window!=='undefined')window.addEventListener('load',()=>{if(panes.showLayers)open();else syncSidebarButton();});
