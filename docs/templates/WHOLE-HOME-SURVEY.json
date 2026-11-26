@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "sources": [
+    {
+      "id": "S01",
+      "file": "原始建筑图.dxf",
+      "note": "填写图纸版次、出处与日期"
+    },
+    {
+      "id": "S02",
+      "file": "照片/P01.jpg",
+      "note": "填写房间、拍摄站位和朝向"
+    }
+  ],
+  "measurements": [
+    {
+      "id": "M01",
+      "target": "填写图纸或模型中的梁／洞口编号",
+      "field": "填写梁底、窗台、门洞净宽或其他尺寸字段",
+      "datum": "模型绝对标高或参照构件",
+      "value": null,
+      "status": "pending",
+      "sourceId": "S02"
+    }
+  ],
+  "structureReview": {
+    "status": "pending",
+    "sourceIds": ["S01"],
+    "note": "填写承重、外墙、隔墙和可拆改来源；完成现场核对后再更新状态"
+  }
+}

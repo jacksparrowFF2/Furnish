@@ -449,12 +449,10 @@ function stageMany(targets,sample){
  }
  if(rebuild(edits)&&session.mode==='surface'&&(!session.target||key(session.target)!==key(targets[0])))choose(targets[0]);
 }
-function rebuild(edits=session.edits,scheme=session.scheme){
- try{
-  if(!scheme?.scopes.length&&!edits.size){session.scheme=scheme;session.preview=null;render();View3D.sync();return true;}
+function preview(edits,scheme,plan){
   let preview={...state,styleAppearance:state.styleAppearance?structuredClone(state.styleAppearance):undefined,furniture:state.furniture.slice()};
   if(scheme?.scopes.length){
-   S.applySelected(preview,ROOMS,scheme.id,{...scheme,bodySurface:scheme.bodySurface||undefined});
+   if(!S.applySelected(preview,ROOMS,scheme.id,{...scheme,bodySurface:scheme.bodySurface||undefined}))throw Error('找不到配色方案');
    preview.furniture=preview.furniture.map((f,i)=>f!==state.furniture[i]&&furnitureLocked(state.furniture[i])?state.furniture[i]:f);
    if(scheme.floorMaterials&&scheme.scopes.includes('floors'))S.applyFloorMaterials(preview,ROOMS,scheme.id,!!PLAN.customDraft);
   }
@@ -464,10 +462,15 @@ function rebuild(edits=session.edits,scheme=session.scheme){
    if(!Object.hasOwn(sample,'grout')||Object.hasOwn(sample,'label')||Object.hasOwn(sample,'sheen'))change(preview,target,sample);
   }
   if(grout.length){
-   preview=G.editSurfaces(preview,tilePlan(),grout);
+   preview=G.editSurfaces(preview,plan(),grout);
    if(state.tilePresets?.bindings?.length)preview.tilePresets=FurnishTilePresets.unsubscribe({tilePresets:state.tilePresets},grout).tilePresets;
   }
-  session.edits=edits;session.preview=preview;session.scheme=scheme;
+  return preview;
+}
+function rebuild(edits=session.edits,scheme=session.scheme){
+ try{
+  session.preview=scheme?.scopes.length||edits.size?preview(edits,scheme,tilePlan):null;
+  session.edits=edits;session.scheme=scheme;
   render();View3D.sync();
   return true;
  }catch(err){render();toast(err.message);return false;}
@@ -527,22 +530,60 @@ function stageGrout(value){
  const tiles=(session.mode==='tiles'?tileTargets():[session.target]).filter(t=>groutTarget(t)&&!locked(t));
  stageMany(tiles.filter(t=>groutValue(work(),t)!==value),{grout:value});
 }
-function apply(){
- if(!dirty())return;
- const result=session.preview,original=session;
+function commitPreview(result){
  const appearanceEdit=result.rooms===state.rooms;
- session=null;render();
- try{
-  mutate(()=>{
+ mutate(()=>{
    if(result.style!==undefined)state.style=result.style;
    state.rooms=result.rooms;
    if(result.styleAppearance===undefined)delete state.styleAppearance;else state.styleAppearance=result.styleAppearance;
    if(result.tileGrout===undefined)delete state.tileGrout;else state.tileGrout=result.tileGrout;
    if(result.tilePresets===undefined)delete state.tilePresets;else state.tilePresets=result.tilePresets;
-   state.furniture=result.furniture;
-  },{sceneFirst:true,appearanceEdit});
+  state.furniture=result.furniture;
+  if(result.assets!==state.assets){if(result.assets)state.assets=result.assets;else delete state.assets;}
+ },{sceneFirst:true,appearanceEdit});
+}
+function apply(){
+ if(!dirty())return;
+ const result=session.preview,original=session;
+ session=null;render();
+ try{
+  commitPreview(result);
   toast('搭配已应用，可一次撤销');
  }catch(err){session=original;if(!active())session=null;render();View3D.sync();toast(err.message);}
+}
+function automationSurfaces(){
+ return indexEntries().map(({target,name,material})=>({target,name,material,
+  current:{...currentSample(target),sheen:tileSheen(state,target)??null,grout:groutValue(state,target)??null},
+  samples:samples(target),groutEditable:groutTarget(target,state)}));
+}
+function configureSurfaces({scheme,edits=[],selections=[]}){
+ const entries=new Map(automationSurfaces().map(row=>[JSON.stringify(FurnishMaterialSchedule.canonical(row.target)),row]));
+ const resolve=input=>{
+  const row=entries.get(JSON.stringify(FurnishMaterialSchedule.canonical(input)));
+  if(!row)throw Error('表面身份无效、不可见或已锁定，请重新读取正式表面');
+  return row;
+ };
+ const patches=new Map();
+ for(const {target:input,sample:raw} of edits){
+  const row=resolve(input),target=row.target,kind=target.kind,sample={...raw},fields=Object.keys(sample);
+  const allowed={floor:['asset','color','sheen','useTile','grout'],wall:['color'],wallTile:['color','sheen','grout'],door:['doorFinish'],
+   cabinet:['color','surface'],front:['color','surface'],board:['color','surface'],legacyFront:['color'],furniture:['color'],bay:['color'],frame:['color']}[kind];
+  if(patches.has(key(target))||!fields.length||fields.some(field=>!allowed?.includes(field)))throw Error('表面重复或不支持指定的材质字段');
+  if(Object.hasOwn(sample,'grout')&&(!row.groutEditable||sample.grout!==null&&!/^#[0-9a-f]{6}$/i.test(sample.grout)))throw Error('该表面不支持指定的美缝');
+  if(sample.asset&&!floorSamples.some(item=>item.asset===sample.asset)||sample.surface&&!P.cabinetAppearance.surfaces.includes(sample.surface))throw Error('样片或木饰面不存在');
+  if(Object.hasOwn(sample,'color')&&sample.color===null&&kind==='furniture')throw Error('家具颜色须明确填写');
+  if(Object.hasOwn(sample,'color')||Object.hasOwn(sample,'asset'))sample.label='自定义';
+  if(kind==='cabinet'||kind==='front'||kind==='board'){
+   sample.surface=Object.hasOwn(raw,'surface')?raw.surface:row.current.surface;
+   sample.color=Object.hasOwn(raw,'color')?raw.color:Object.hasOwn(raw,'surface')?undefined:row.current.color;
+  }
+  for(const field of Object.keys(sample))if(sample[field]===null)sample[field]=undefined;
+  patches.set(key(target),{target,sample});
+ }
+ const plan=()=>FurnishProject.effectivePlan(PLAN,state),next=preview(patches,scheme,plan);
+ if(selections.length)FurnishMaterialSchedule.apply(next,selections.map(item=>({...item,target:resolve(item.target).target})));
+ FurnishProject.validateWork(next);FurnishProject.validatePlanWork(PLAN,next);FurnishLayers.assertEditable(state,next);
+ commitPreview(next);
 }
 function selectStyle(id){
  const current=session.scheme;
@@ -598,5 +639,5 @@ panel.querySelector('[data-material-current-collapse]').onclick=()=>{if(active()
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&active()){e.stopImmediatePropagation();close();button.focus();}},true);
 const target=()=>active()&&session.mode==='surface'?session.target:null;
 const doorPose=()=>target()?.kind==='door'?{id:session.target.id,open:!!session.doorOpen}:null;
-window.FurnishMaterialUI={open,openStyle,openTiles,close,active,dirty,lighting,choose:t=>{if(session?.mode!=='tiles')choose(t);},drop,work,afterRender,furnitureTarget,refreshCurrent,targetKey:key,target,doorPose};
+window.FurnishMaterialUI={open,openStyle,openTiles,close,active,dirty,lighting,choose:t=>{if(session?.mode!=='tiles')choose(t);},drop,work,afterRender,furnitureTarget,refreshCurrent,targetKey:key,target,doorPose,automationSurfaces,configureSurfaces};
 })();

@@ -103,7 +103,14 @@ function ensureMcp(){
  mcpStarting=require(path.join(root,'scripts/desktop-mcp.cjs')).start({root,dispatch:async(name,args)=>{
     const win=mainWindow;if(quitting||!win||win.isDestroyed())throw Error('Furnish 主窗口尚未就绪');
     const page=new URL(win.webContents.getURL());if(page.origin!==new URL(backend.url).origin||!['/','/index.html'].includes(page.pathname))throw Error('Furnish 主窗口未处于正式项目页面');
-    const result=await win.webContents.executeJavaScript(`(async()=>{if(!window.FurnishMcp)throw Error('Furnish 页面尚未加载 MCP 接口，请刷新');return window.FurnishMcp.execute(${JSON.stringify(name)},${JSON.stringify(args)});})()`);
+    let staged=null;
+    if(name==='inspect_project_source'||name==='import_project_source'||name==='configure_building'&&args.surveyFileName){
+     const {readStagedSource}=require(path.join(root,'scripts/mcp-artifacts.cjs'));
+     try{staged={source:args.fileName?readStagedSource(root,args.fileName,args.fileName.endsWith('.dxf')?20e6:30e6):null,
+      evidence:args.surveyFileName?readStagedSource(root,args.surveyFileName,500000):null};}
+     catch(error){staged={error:error.message};}
+    }
+    const result=await win.webContents.executeJavaScript(`(async()=>{if(!window.FurnishMcp)throw Error('Furnish 页面尚未加载 MCP 接口，请刷新');return window.FurnishMcp.execute(${JSON.stringify(name)},${JSON.stringify(args)},${JSON.stringify(staged)});})()`);
     if(name==='export_artifact'){const {artifact,...metadata}=result;return {...metadata,artifact:require(path.join(root,'scripts/mcp-artifacts.cjs')).writeArtifact(root,args.requestId,artifact)};}
     if(name==='take_screenshot'){
      const picture=await win.webContents.capturePage(result.screenshotTarget==='window'?undefined:result.viewport);

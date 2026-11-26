@@ -375,6 +375,11 @@
   if(!base.known)for(const issue of checks){issue.ok=null;issue.pending=true;issue.message+='；家具基准地面标高未知，待核对';}
   return {checks,zones:{opening:openingWorld,vent:vent.map(world)},spec};
  }
+ function furnitureOpeningZones(f,{passage=0}={}){
+  const products=design().products(),C=root.FurnishCabinet||require('./cabinet-core.js');
+  if(f.obj)return [];
+  return products.definition(f)?.feedingFrame?(root.FurnishPetFeedingCore||require('./pet-feeding-core.js')).openingZones(f,{passage}):products.definition(f)?.sofaBedProfile?(root.FurnishSofaBed||require('./sofa-bed-core.js')).openingZones(f):products.family(f,'side-table')?(root.FurnishSideTable||require('./side-table-core.js')).openingZones(f):products.definition(f)?.washerMotion?(root.FurnishWasherMotion||require('./washer-motion-core.js')).openingZones(f):products.definition(f)?.hoodMotion?(root.FurnishHoodMotion||require('./hood-motion-core.js')).openingZones(f):f.kitchen?(root.FurnishKitchen||require('./kitchen-core.js')).openingZones(f,{passage}):products.definition(f)?.fridgeMotion?(root.FurnishFridge||require('./fridge-core.js')).openingZones(f):products.family(f,'tea-bar')?products.teaBarOpeningZones(f):C.openingZones(f,{passage});
+ }
  function drain(steps){let step;do{step=steps.next();}while(!step.done);return step.value;}
  function spaceCheck(plan,furniture,options){return drain(spaceCheckSteps(plan,furniture,options));}
  function* spaceCheckSteps(plan,furniture,{passage=800,focusId=null,focusIds=null,scanPassages=true,maxIssues=Infinity}={}){
@@ -433,7 +438,7 @@
    const C=root.FurnishCabinet||(typeof require==='function'?require('./cabinet-core.js'):null);
    if(C?.supported(f)||f.kitchen||(products.family(f,'tea-bar')||products.definition(f)?.fridgeMotion||products.definition(f)?.hoodMotion||products.definition(f)?.washerMotion||(products.family(f,'side-table')||products.definition(f)?.sofaBedProfile||products.definition(f)?.feedingFrame))&&!f.obj){
     const base=products.floorBase(plan,f,furniture),localPipes=pipes.map(p=>({...p,vertical:p.vertical?{bottom:p.vertical.bottom-base.z,top:p.vertical.top-base.z}:null})),movingParts=pipes.length&&!f.kitchen&&C.supported(f)?S.prepareOpening(f,localPipes):[];
-    for(const relativeOpening of (products.definition(f)?.feedingFrame?(root.FurnishPetFeedingCore||require('./pet-feeding-core.js')).openingZones(f,{passage}):products.definition(f)?.sofaBedProfile?(root.FurnishSofaBed||require('./sofa-bed-core.js')).openingZones(f):products.family(f,'side-table')?(root.FurnishSideTable||require('./side-table-core.js')).openingZones(f):products.definition(f)?.washerMotion?(root.FurnishWasherMotion||require('./washer-motion-core.js')).openingZones(f):products.definition(f)?.hoodMotion?(root.FurnishHoodMotion||require('./hood-motion-core.js')).openingZones(f):f.kitchen?(root.FurnishKitchen||require('./kitchen-core.js')).openingZones(f,{passage}):products.definition(f)?.fridgeMotion?(root.FurnishFridge||require('./fridge-core.js')).openingZones(f):products.family(f,'tea-bar')?products.teaBarOpeningZones(f):C.openingZones(f,{passage}))){
+    for(const relativeOpening of furnitureOpeningZones(f,{passage})){
      yield;const opening=C.shiftOpening(relativeOpening,base.z);
      const K=root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null),movingFurniture=f.kitchen?(opening.section?.startsWith('laundry:')?K.laundryParts(f).find(p=>p.key===opening.section.slice(8)).furniture:K.moduleFurniture(f,K.cabinetLayout(f).find(m=>m.index===opening.column))):f,partOpening=f.kitchen?(opening.section?.startsWith('laundry:')?{...opening,section:opening.sourceSection}:{...opening,column:opening.bay??0}):opening,parts=f.kitchen&&pipes.length?S.prepareOpening(movingFurniture,localPipes):movingParts;
      const openingIntersector=opening.foldDoor?(a,b)=>G.polygonOverlap(a,b,products.cabinetBuilder.foldDoor.contactTolerance):intersects,hit=(poly,vertical)=>C.openingIntersects(opening,poly,vertical,openingIntersector),physical=opening.kind!=='cabinetpassage';
@@ -606,6 +611,6 @@
   const catalogIds=new Set();for(const c of data.catalog){if(c?.id!==undefined){if(typeof c.id!=='string'||!c.id||c.id.length>200||catalogIds.has(c.id))fail('家具库编号无效或重复');catalogIds.add(c.id);}if(!c||typeof c.name!=='string'||c.name.length>80||![c.w,c.d,c.h,c.price].every(num)||c.w<design().products().catalogMinimum(c,'w')||c.d<design().products().catalogMinimum(c,'d')||c.w>20000||c.d>20000||c.h<=0||c.h>20000||c.price<0)fail('家具库数据无效');validateWork({furniture:[{...c,id:'model',cx:0,cy:0,rot:0}]});}return data;
  }
  root.FurnishProject={dishwasherChecks,roomCeilingHeight,ceilingAt,ceilingHeight,validateBeamCeiling,readiness,pricing,materialQuantity,furniturePriceBasis,priceBasis,estimate,architecture,assertStructure,protectOriginal,changes,quantities,effectivePlan,validatePlanWork,previewPlan,checkFingerprint,review,openingSchedule,purchaseStates,purchaseMoney,procurement,updatePurchaseGroup,csv,historyEntries,recoveryEntry,mergeDesigns,mergeCatalog,extraCosts,remapRooms,remapOpenings,spaceCheck,reviewSteps,parseOBJ,formatVersion,pack,unpack,validateWorkspacePayload,validateWork,copyProject,area,polygon,fitsInRooms,intersects};
- Object.assign(root.FurnishProject,{materialBreakdown,explainIssue,withDraftCache});
+ Object.assign(root.FurnishProject,{materialBreakdown,explainIssue,withDraftCache,furnitureOpeningZones});
  if(typeof module!=='undefined')module.exports=root.FurnishProject;
 })(typeof window==='undefined'?globalThis:window);

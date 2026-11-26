@@ -4,7 +4,7 @@
 
 方案操作技能源文件位于 [`skills/furnish-operation/SKILL.md`](../skills/furnish-operation/SKILL.md)。安装到 Codex 技能目录后可用 `$furnish-operation`，也可由方案操作请求自动匹配；内容覆盖读取／复制／编辑、revision 与请求去重、空间与目视复核、保存异常处理及按需采购／交付。技能不替代工具当前 schema，也不因安装而刷新已有聊天的工具或技能清单。
 
-2026-11-17：现有35项工具（含方案讲解读取／配置，见[PRESENTATION.md](PRESENTATION.md)）。新增资料归档／采购、组件编辑、净距、文件导出、建筑及方案管理的完整契约见 [MCP-CAPABILITIES.md](MCP-CAPABILITIES.md)；旧版本数量与验收日期保留为历史。
+2026-11-26（能力版本 3）：当前 40 项工具。户型首建、连续动线、逐面选材和同版本图册见[全屋设计与交底](WHOLE-HOME-WORKFLOW.md)，方案讲解另见[PRESENTATION.md](PRESENTATION.md)。新增资料归档／采购、组件编辑、净距、文件导出、建筑及方案管理的完整契约见 [MCP-CAPABILITIES.md](MCP-CAPABILITIES.md)；旧版本数量与验收日期保留为历史。
 
 MCP 连接正在运行的 Furnish 桌面主窗口。它读取的是当前画布和保存状态，包括尚在保存中的编辑，不是重新解析一份磁盘项目来代替桌面状态。默认连接本仓库；桌面快捷方式的 `furnish-desktop.json` 须指向相同工作目录。
 

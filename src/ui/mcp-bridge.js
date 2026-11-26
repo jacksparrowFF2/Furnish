@@ -21,11 +21,19 @@
   const plan=FurnishProject.effectivePlan(PLAN,state),data=clone(state.ceilings||{version:1,items:[]});
   return {ceilings:data,measurements:(data.regions||[]).map(r=>({id:r.id,...FurnishCeiling.heightMeasurements(plan,r.polygon,FurnishCeiling.regionItems(r).map(c=>c.kind==='flat'?c.height:c.height-Math.max(...FurnishCeiling.sectionPoints(c.section).map(v=>v.d))))})),sectionPresets:{plain:FurnishCeiling.sectionPreset('plain'),up:FurnishCeiling.sectionPreset('upMount')},heightSemantics:'region.height及构件标高为模型绝对mm；measurements为完成面派生读数，不直接回写height'};
  }
+ function packProject(){return FurnishProject.pack({planId:PLAN.id,name:PLAN.name,current:clone(state),designs:clone(store.designs.filter(d=>d.planId===PLAN.id)),catalog:clone(store.custom||[])});}
  async function exportArtifact(args){
   visualReady();const start=revisionSource(),format=args.format;let content,mimeType,encoding='utf8';
-  if(format==='project'){const packed=FurnishProject.pack({planId:PLAN.id,name:PLAN.name,current:clone(state),designs:clone(store.designs.filter(d=>d.planId===PLAN.id)),catalog:clone(store.custom||[])});FurnishProject.previewPlan(FurnishProject.unpack(packed),PLANS);content=JSON.stringify(packed,null,2);mimeType='application/json';}
+  if(format==='project'){const packed=packProject();FurnishProject.previewPlan(FurnishProject.unpack(packed),PLANS);content=JSON.stringify(packed,null,2);mimeType='application/json';}
   else if(format==='quote_csv'){const {rows,B}=quoteRows();content=FurnishProject.csv([['类别','名称','规格','数量','单位','单价','小计','价格依据'],...rows,[],['','合计','','','','',B.total,'']]);mimeType='text/csv';}
   else if(format==='report_html'){content=FurnishDesignUI.reportHTML(PLAN.name+' · 装修方案',state.designNote||'',false,{dimensions:true,measurements:true,notes:true});mimeType='text/html';}
+  else if(format==='plan_dxf'){content=FurnishDXFExport.drawing(FurnishProject.effectivePlan(PLAN,state),state);mimeType='application/dxf';}
+  else if(format==='handoff_html'){
+   const version=await revision(start);
+   if(start!==revisionSource())throw Error('导出期间方案发生变化，请重新读取后重试');
+   content=FurnishHandoff.drawingSet({plan:FurnishProject.effectivePlan(PLAN,state),work:state,title:PLAN.name+' · 施工交底',revision:version,
+    roomIds:args.roomIds,cabinetIds:args.cabinetIds,project:packProject()});mimeType='text/html';
+  }
   else if(format==='scene_glb'){if(!is3D())throw Error('请先使用set_camera切换到3D，再导出生产GLB');await View3D.automationReady();const scene=await View3D.blenderScene({includeCeilings:args.includeCeilings===true,expandInstances:true});const bytes=new Uint8Array(scene.buffer);let text='';for(let i=0;i<bytes.length;i+=32768)text+=String.fromCharCode(...bytes.subarray(i,i+32768));content=btoa(text);encoding='base64';mimeType='model/gltf-binary';}
   else {if(is3D())throw Error('请先使用set_camera切回2D，再导出平面图');const prepared=preparePlanSVG({light:true,visibleLayers:false});let svg=prepared.svg;if(format==='plan_svg'){content=new XMLSerializer().serializeToString(svg);mimeType='image/svg+xml';}else{const size=FurnishDrawing.rasterSize(prepared.bounds);svg.setAttribute('width',size.width);svg.setAttribute('height',size.height);const image=new Image();await new Promise((resolve,reject)=>{image.onload=resolve;image.onerror=()=>reject(Error('平面图栅格化失败'));image.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(new XMLSerializer().serializeToString(svg));});const canvas=document.createElement('canvas');canvas.width=size.width;canvas.height=size.height;canvas.getContext('2d').drawImage(image,0,0);content=canvas.toDataURL('image/png').split(',')[1];mimeType='image/png';encoding='base64';}}
   if(start!==revisionSource())throw Error('导出期间方案发生变化，请重新读取后重试');return {exported:true,revision:await revision(start),artifact:{format,mimeType,encoding,content}};
@@ -47,6 +55,12 @@
  }
  const revisionSource=()=>JSON.stringify([session,store.updatedAt||null,PLAN.id,store.activeDesigns?.[PLAN.id]||null,state,store.designs.map(d=>[d.id,d.name,d.ts])]);
  async function revision(source=revisionSource()){return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(source))),v=>v.toString(16).padStart(2,'0')).join('');}
+ async function inspectSource(args,staged){
+  const result=FurnishProjectIntake.inspect(args,staged);
+  if(result.payload)result.public.previewKey=await revision(JSON.stringify([args.fileName,result.public.sourceSha256,
+   args.surveyFileName,result.public.evidenceSha256,FurnishMaterialSchedule.canonical(args.options)]));
+  return result;
+ }
  async function assertRevision(args){const source=revisionSource();if(args.planId!==PLAN.id||args.revision!==await revision(source)||source!==revisionSource())throw Error('当前方案已变化，请重新读取 revision');}
  function saving(){return {mode:repositoryClient?.status.mode||'cache',message:repositoryClient?.status.message||'',pending:!!repositoryClient?.pending};}
  async function read(includeDetails=false){
@@ -54,16 +68,29 @@
   const source=revisionSource(),result={plan:{id:PLAN.id,name:PLAN.name,bounds:clone(p.bounds),rooms:clone(p.rooms||[]),walls:clone(p.walls||[]),doors:clone(p.doors||[]),windows:clone(p.wins||[])},coordinates:{unit:'mm',position:'cx/cy 为户型模型坐标中的家具中心',dimensions:'w/d 为局部宽深；h 为机身高度，缺失高度保持未知；旋转与镜像按现有模型解释',rotationUnit:'degree'},activeDesign:active?{id:active.id,name:active.name}:null,designs:store.designs.filter(d=>d.planId===PLAN.id&&d.editable).map(d=>({id:d.id,name:d.name})),furniture:clone(state.furniture),save:saving(),mcp:{version:core.capabilityVersion,tools:core.tools.map(t=>t.name)},undo:{available:undoStack.length,redoAvailable:redoStack.length},...(includeDetails?{work:clone(state)}:{})};result.revision=await revision(source);return result;
  }
  function space(args){const passage=state.spaceThreshold||800,plan=FurnishProject.effectivePlan(PLAN,state),options={passage,...(args.focusIds?{focusIds:args.focusIds}:{}),scanPassages:true};if(args.focusIds?.some(id=>!getF(id)))throw Error('空间核对包含不存在的家具');const issues=FurnishProject.spaceCheck(plan,state.furniture,options).map(issue=>({...issue,confirmed:(state.spaceIgnored||[]).includes(FurnishProject.checkFingerprint(issue,plan,state.furniture,passage))}));return {passage,issues:clone(issues),count:issues.length,pending:issues.filter(i=>i.pending).length,limit:'按现有空间算法输出；未知信息不代表通过，未自动确认或移动家具。'};}
- async function execute(name,args){
+ async function execute(name,args,staged){
   core.validate(name,args);ready(writes.has(name));
   if(['get_product_dossier','archive_product_reference','get_connection_status'].includes(name))throw Error('产品档案及连接检查须通过本机stdio入口调用，不在网页里直接执行');
   if(name==='get_current_plan')return read(args.includeDetails);
-  if(name==='get_building')return {revision:await revision(),architecture:state.architecture?clone(state.architecture):null,floorFinishes:state.floorFinishes?clone(state.floorFinishes):null,wallFinishes:state.wallFinishes?clone(state.wallFinishes):null,wallTiling:state.wallTiling?clone(state.wallTiling):null,plan:FurnishProject.effectivePlan(PLAN,state),unit:'mm',limit:'draft坐标仍沿其scale，梁上下标高为绝对mm；已确认承重基线不可改写。'};
+  if(name==='inspect_project_source'){const result=await inspectSource(args,staged);return result.public||result;}
+  if(name==='check_route'){
+   const source=revisionSource(),result=FurnishRoute.check(FurnishProject.effectivePlan(PLAN,state),state.furniture,args);
+   return {...result,revision:await revision(source)};
+  }
+  if(name==='get_material_surfaces'){
+   visualReady();if(!is3D())throw Error('请先使用 set_camera 切换到 3D');
+   const source=revisionSource();await View3D.automationReady();
+   if(source!==revisionSource())throw Error('模型准备期间方案发生变化，请重新读取');
+   return {revision:await revision(source),surfaces:FurnishMaterialUI.automationSurfaces(),
+    schemes:FurnishStylePresets.map(({id,zh,en})=>({id,name:tr(zh,en)})),doorStyles:FurnishProducts.styleAppearance.interiorDoorAppearance,
+    procurement:FurnishMaterialSchedule.report(FurnishProject.effectivePlan(PLAN,state),state)};
+  }
+  if(name==='get_building')return {revision:await revision(),architecture:state.architecture?clone(state.architecture):null,floorFinishes:state.floorFinishes?clone(state.floorFinishes):null,wallFinishes:state.wallFinishes?clone(state.wallFinishes):null,wallTiling:state.wallTiling?clone(state.wallTiling):null,surveyEvidence:FurnishProjectIntake.readEvidence(state),roomSettings:clone(state.rooms),roomUses:FurnishDesign.uses,materials:Object.fromEntries(Object.entries(MATS).map(([id,material])=>[id,nm(material.name)])),plan:FurnishProject.effectivePlan(PLAN,state),unit:'mm',limit:'draft坐标仍沿其scale，梁上下标高为绝对mm；已确认承重基线不可改写。'};
   if(name==='compare_designs'){const selected=args.designIds.map(id=>{const d=store.designs.find(d=>d.id===id&&d.planId===PLAN.id&&d.editable);if(!d)throw Error('只能比较当前户型已有的可编辑方案');const work=store.activeDesigns?.[PLAN.id]===id?clone(state):clone(d.work);FurnishProject.validateWork(work);return {id,name:d.name,work};}),[a,b]=selected,m1=new Map(a.work.furniture.map(f=>[f.id,f])),m2=new Map(b.work.furniture.map(f=>[f.id,f]));return {revision:await revision(),designs:selected.map(d=>({id:d.id,name:d.name,furnitureCount:d.work.furniture.length,budget:FurnishProject.estimate(FurnishProject.effectivePlan(PLAN,d.work),d.work,MATS,priceOf).total,procurement:FurnishPurchasing.summary(FurnishProject.effectivePlan(PLAN,d.work),d.work,MATS,priceOf).orderedAmount})),added:b.work.furniture.filter(f=>!m1.has(f.id)),removed:a.work.furniture.filter(f=>!m2.has(f.id)),changed:a.work.furniture.filter(f=>m2.has(f.id)&&JSON.stringify(f)!==JSON.stringify(m2.get(f.id))).map(f=>({id:f.id,before:f,after:m2.get(f.id)})),changedWorkFields:[...new Set([...Object.keys(a.work),...Object.keys(b.work)])].filter(k=>k!=='furniture'&&JSON.stringify(a.work[k])!==JSON.stringify(b.work[k]))};}
   if(name==='get_cabinet_components'){const f=getF(args.id);if(!f)throw Error('家具不存在');return {revision:await revision(),id:f.id,modules:cabinetModules(f).map(r=>({moduleId:r.moduleId,label:r.label,editable:r.editable,...(r.editable?{dimensions:{w:r.furniture.w,d:r.furniture.d,h:r.furniture.h},boxes:clone(r.furniture.cabinet.boxes)}:{})})),unit:'mm',limit:'编辑仅用于明确列出的v2组件；旧结构通过原升级或完整配置接口处理。'};}
   if(name==='measure_clearances'){const f=getF(args.id);if(!f)throw Error('家具不存在');if(args.targetIds?.some(id=>id===f.id||!getF(id))||args.targetIds&&new Set(args.targetIds).size!==args.targetIds.length)throw Error('目标家具不存在、重复或为自身');const plan=FurnishProject.effectivePlan(PLAN,state),furniture=args.targetIds?[f,...args.targetIds.map(getF)]:state.furniture;return {revision:await revision(),unit:'mm',directions:FurnishSnapping.directional(f,{plan,furniture,rotation:args.rotation??0}),interior:FurnishSnapping.cabinetInterior(f,{plan,furniture}),issues:space({focusIds:[f.id]}),limit:'directional沿给定rotation坐标系；targetIds限制家具目标，墙仍参与。containedBoundary是包络内边距，不证明柜内净空；未知高度保持未知。'};}
   if(name==='get_product_info'){const source=revisionSource();return {revision:await revision(source),items:args.ids.map(id=>{const f=getF(id);if(!f)throw Error('家具不存在：'+id);return {id,name:f.name,brand:f.brand??null,model:f.model??null,sourceUrl:f.sourceUrl??null,priceDate:f.priceDate??null,price:f.price??null,referencePrice:f.referencePrice??null,effectivePrice:priceOf(f),priceBasis:FurnishProject.furniturePriceBasis(f,priceOf(f)),purchaseStatus:f.purchaseStatus||'planned',purchaseNote:f.purchaseNote??'',dimensions:{w:f.w,d:f.d,h:f.h??null,unit:'mm'}};}),limit:'尺寸为当前模型记录；来源或备注不自动证明厂家尺寸，页面显示价不自动确认为单价。'};}
-  if(name==='get_procurement'){const source=revisionSource(),plan=FurnishProject.effectivePlan(PLAN,state);return {revision:await revision(source),pricing:clone(state.pricing||{}),...FurnishPurchasing.summary(plan,state,MATS,priceOf),priceBasis:FurnishProject.priceBasis(plan,state,MATS,priceOf),save:saving()};}
+  if(name==='get_procurement'){const source=revisionSource(),plan=FurnishProject.effectivePlan(PLAN,state);return {revision:await revision(source),pricing:clone(state.pricing||{}),...FurnishPurchasing.summary(plan,state,MATS,priceOf),priceBasis:FurnishProject.priceBasis(plan,state,MATS,priceOf),surfaceSelections:FurnishMaterialSchedule.report(plan,state),save:saving()};}
   if(name==='get_ceilings'){const source=revisionSource();return {revision:await revision(source),...ceilings()};}
   if(name==='list_catalog')return {items:catalog().filter(c=>!args.query||[...c.it,c.category,FurnishProducts.kind(c.it[0])].join(' ').toLowerCase().includes(args.query.toLowerCase())).map(({it,...c})=>({...c,type:it[0],name:it[1],w:it[2],d:it[3],h:FurnishCatalogData.itemHeight(it)??null,kind:FurnishProducts.kind(it[0]),assembly:FurnishCatalogData.isAssemblyItem(it)}))};
   if(name==='get_furniture_parameters'){const source=revisionSource(),result=parameters(args.id);return {revision:await revision(source),...result};}
@@ -77,14 +104,26 @@
   if(name==='check_space'){const source=revisionSource(),result=space(args);return {revision:await revision(source),...result,save:saving()};}
   await assertRevision(args);
   if(name==='export_artifact')return exportArtifact(args);
-  if(['configure_presentation','configure_product_info','configure_procurement','configure_cabinet_components','configure_building','rename_design','history_action'].includes(name))visualReady();
+  if(['configure_presentation','configure_product_info','configure_procurement','configure_cabinet_components','configure_building','rename_design','history_action','import_project_source','configure_material_surfaces'].includes(name))visualReady();
   if(name==='set_camera'){visualReady();if(args.focusIds?.some(id=>!getF(id)))throw Error('取景家具不存在');if(args.roomId&&!ROOMS.some(r=>r.id===args.roomId))throw Error('取景房间不存在');await setView(args.view);await assertRevision(args);if((is3D()?'3d':'2d')!==args.view)throw Error('视图切换失败');if(is3D())await window.View3D.automationCamera(args);return {viewChanged:true,undoable:false,revision:await revision(),...await camera()};}
   if(name==='switch_design')visualReady();
   await autosave.flush();await repositoryClient.flush();ready(true);
   await assertRevision(args);ready(true);
-  let addedIds,designChanged;
+  let addedIds,designChanged,structureLocked;
   if(['add_furniture','add_furniture_batch'].includes(name)&&FurnishLayers.list(state).some(l=>l.id==='0'&&l.locked))throw Error('默认图层已锁定，请先解锁');
-  if(name==='switch_design'){
+  if(name==='import_project_source'){
+   const candidate=await inspectSource(args,staged);
+   if(!candidate.payload||candidate.public.previewKey!==args.previewKey)throw Error('源文件或转换选项已变化，请重新预检');
+   if(!candidate.payload.current.architecture&&!args.replaceBuiltin)throw Error('内置户型导入会恢复该户型布置，请明确提供 replaceBuiltin');
+   await assertRevision(args);visualReady();FurnishProjectIntake.restore(candidate,args.confirmStructure);
+  }
+  else if(name==='configure_material_surfaces'){
+   if(!is3D())throw Error('请先使用 set_camera 切换到 3D');
+   if(!args.edits&&!args.scheme&&!args.selections)throw Error('请提供配色、表面修改或材料选型');
+   await View3D.automationReady();await assertRevision(args);visualReady();
+   FurnishMaterialUI.configureSurfaces(args);
+  }
+  else if(name==='switch_design'){
    visualReady();
    const target=store.designs.find(d=>d.id===args.designId&&d.planId===PLAN.id&&d.editable===true);
    if(!target)throw Error('目标须为当前户型已有的可编辑方案，请从 get_current_plan.designs 读取 designId');
@@ -111,9 +150,31 @@
   else if(name==='rename_design'){const target=store.designs.find(d=>d.id===args.designId&&d.planId===PLAN.id&&d.editable);if(!target)throw Error('目标须为当前户型已有可编辑方案');FurnishDesignUI.renameDesign(args.designId,args.name);}
   else if(name==='history_action'){if(!(args.action==='undo'?undoStack:redoStack).length)throw Error('当前没有可用的撤销／重做记录');if(args.action==='undo')undo();else redo();}
   else if(name==='configure_building'){
-   const work=clone(state),keys=[];if(args.draft){if(!work.architecture)throw Error('请先通过原界面创建可编辑户型副本，不自动改写内置图纸');FurnishDraft.validate(args.draft);if(args.draft.id!==work.architecture.draft.id)throw Error('建筑户型ID不能改变');if(work.architecture.phase==='design')FurnishProject.assertStructure(work.architecture.baseline,args.draft);const plan=FurnishDraft.build(args.draft);work.architecture={...work.architecture,draft:clone(args.draft)};work.rooms=FurnishProject.remapRooms(ROOMS,plan.rooms,state.rooms);work.demolished=[];work.open=FurnishProject.remapOpenings(PLAN,plan,state.open);keys.push('architecture','rooms','demolished','open');}
+   const work=clone(state),keys=[];let rooms=ROOMS;
+   if(args.draft){if(!work.architecture)throw Error('请先通过原界面创建可编辑户型副本，不自动改写内置图纸');FurnishDraft.validate(args.draft);if(args.draft.id!==work.architecture.draft.id)throw Error('建筑户型ID不能改变');if(work.architecture.phase==='design')FurnishProject.assertStructure(work.architecture.baseline,args.draft);const plan=FurnishDraft.build(args.draft);rooms=plan.rooms;work.architecture={...work.architecture,draft:clone(args.draft)};work.rooms=FurnishProject.remapRooms(ROOMS,rooms,state.rooms);work.demolished=[];work.open=FurnishProject.remapOpenings(PLAN,plan,state.open);keys.push('architecture','rooms','demolished','open');}
+   const updated=new Set();
+   for(const {id,...patch} of args.roomUpdates||[]){
+    const room=rooms.find(room=>room.id===id),settings=work.rooms[id];
+    if(!room||!settings||updated.has(id)||!Object.keys(patch).length)throw Error('房间不存在、重复或未提供修改');
+    if(patch.use!==undefined&&(!Object.hasOwn(FurnishDesign.uses,patch.use)||(room.counted===false)!==(patch.use==='bay')))throw Error('房间用途无效');
+    if(patch.mat!==undefined&&!Object.hasOwn(MATS,patch.mat))throw Error('地面材料不存在');
+    if(patch.ceilingHeight!==undefined&&room.counted===false)throw Error('飘窗台不支持独立房间标高');
+    Object.assign(settings,patch);
+    if(patch.ceilingHeight===null)delete settings.ceilingHeight;
+    updated.add(id);
+   }
+   if(updated.size)keys.push('rooms');
    for(const key of ['floorFinishes','wallFinishes','wallTiling'])if(Object.hasOwn(args,key)){if(args[key]===null)delete work[key];else work[key]=clone(args[key]);keys.push(key);}
+   if(args.surveyFileName){if(staged?.error)throw Error(staged.error);FurnishProjectIntake.attach(work,args.surveyFileName,staged?.evidence);keys.push('assets');}
+   if(args.confirmStructure===true){
+    if(work.architecture?.phase!=='survey'||FurnishProjectIntake.readEvidence(work)?.structureReview?.status!=='verified')
+     throw Error('原始结构锁定需要测绘阶段的可编辑户型和已核对的结构来源');
+    work.architecture=FurnishProject.architecture({...work.architecture,phase:'design',baseline:work.architecture.draft});
+    keys.push('architecture');structureLocked=true;
+   }
+   if(!keys.length)throw Error('没有指定建筑、饰面、量房证据或结构确认变更');
    FurnishLayers.assertEditable(state,work);FurnishProject.validateWork(work);FurnishProject.validatePlanWork(PLAN,work);mutate(()=>{for(const key of keys){if(work[key]===undefined)delete state[key];else state[key]=work[key];}});
+   if(structureLocked){undoStack.length=redoStack.length=0;snapshot(true,state,'锁定原始结构');renderAll();}
   }
   else if(name==='configure_cabinet_components'){
    const work=clone(state);for(const edit of args.edits){const index=work.furniture.findIndex(f=>f.id===edit.id),f=work.furniture[index];if(!f)throw Error('家具不存在');if(furnitureLocked(getF(f.id)))throw Error('家具或所在图层已锁定');const row=cabinetModules(f).find(r=>r.moduleId===edit.moduleId);if(!row?.editable)throw Error('模块不存在或并非可编辑v2组件');const selected=FurnishCabinetBuilder.selection(row.furniture,edit.selection);if(!selected.box||edit.selection.componentId&&!selected.component)throw Error('柜箱或组件身份已变化');const next=edit.position!==undefined?FurnishCabinetBuilder.adjustComponent(row.furniture,edit.selection,edit.position):FurnishCabinetBuilder.update(row.furniture,edit.selection,edit.changes);work.furniture[index]=f.kitchen?FurnishCabinetAssembly.setPart(f,edit.moduleId,next):next;}applyWork(work);
@@ -161,14 +222,14 @@
    mutate(()=>{for(const next of candidates)Object.assign(getF(next.id),next);});
   }
   let saveError=null;try{await autosave.flush();await repositoryClient.flush();}catch(e){saveError=e.message;}
-  const result={applied:name==='switch_design'?designChanged:true,persisted:!saveError&&!repositoryClient.blocked&&repositoryClient.status.mode==='saved',...(saveError?{saveError}:{}),...(addedIds?{addedIds}:{}),...(['copy_design','switch_design','rename_design'].includes(name)?{undoable:false}:{}),...(name==='switch_design'?{designChanged}:{}),...await read()};
+  const result={applied:name==='switch_design'?designChanged:true,persisted:!saveError&&!repositoryClient.blocked&&repositoryClient.status.mode==='saved',...(saveError?{saveError}:{}),...(addedIds?{addedIds}:{}),...(structureLocked||['copy_design','switch_design','rename_design'].includes(name)?{undoable:false}:{}),...(name==='switch_design'?{designChanged}:{}),...await read()};
   toast(name==='copy_design'?'MCP 已复制当前方案':name==='switch_design'?(designChanged?'MCP 已切换方案':'MCP 当前已是目标方案'):'MCP 已应用调整，可使用撤销');return result;
  }
- window.FurnishMcp=Object.freeze({execute(name,args={}){
+ window.FurnishMcp=Object.freeze({execute(name,args={},staged=null){
   try{core.validate(name,args);}catch(e){return Promise.reject(e);}
   const key=args.requestId,signature=JSON.stringify([name,args]);
   if(key&&receipts.has(key)){const old=receipts.get(key);return old.signature===signature?old.promise:Promise.reject(Error('requestId 已用于不同请求'));}
-  const promise=queue.catch(()=>{}).then(()=>execute(name,args));queue=promise;
+  const promise=queue.catch(()=>{}).then(()=>execute(name,args,staged));queue=promise;
   if(key){receipts.set(key,{signature,promise});if(receipts.size>200)receipts.delete(receipts.keys().next().value);}
   return promise;
  }});

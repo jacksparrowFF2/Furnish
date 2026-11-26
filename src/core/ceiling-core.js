@@ -525,6 +525,15 @@ function fitCeilingPanel(plan,f,furniture=[]){
  }
  fail('区域内没有可替换的完整空闲300×600铝扣板；裁切板、收边或已安装筒灯／整板设备的格子不能替换');
 }
+function profileBands(part){
+ if(part.kind==='flat')return [];
+ const legs=route(part);
+ return sectionContours(part.section).map(vertices=>{
+  const outline=vertices.map(point=>[point.u,point.d]),offsets=outline.map(point=>point[0]),depth=outline.map(point=>point[1]);
+  return {outline,bottom:part.height-Math.max(...depth),top:part.height-Math.min(...depth),
+   legs:legs.map((leg,index)=>({leg,poly:legFootprint(part,index,offsets)}))};
+ });
+}
 function checks(plan,bodies,{focusIds=null}={}){
  const out=(plan.ceilings?.pending||[]).map(p=>({kind:'ceiling',id:p.id,ceilingId:p.id,name:'吊顶',pending:true,message:p.message}));
  const apertures=new Map((plan.ceilings?.items||[]).map(c=>[c.id,downlightHoles(c,bodies)])),replacements=new Map((plan.ceilings?.items||[]).map(c=>[c.id,panelReplacements(c,bodies)]));
@@ -535,10 +544,7 @@ function checks(plan,bodies,{focusIds=null}={}){
  const bounds=poly=>[Math.min(...poly.map(p=>p[0])),Math.min(...poly.map(p=>p[1])),Math.max(...poly.map(p=>p[0])),Math.max(...poly.map(p=>p[1]))];
  const disjoint=(a,b)=>a[2]<b[0]-eps()||b[2]<a[0]-eps()||a[3]<b[1]-eps()||b[3]<a[1]-eps();
  for(const c of plan.ceilings?.items||[]){
- const sections=c.kind==='flat'?[]:sectionContours(c.section).map(vertices=>{
-  const outline=vertices.map(v=>[v.u,v.d]),bottom=c.height-Math.max(...vertices.map(v=>v.d)),top=c.height-Math.min(...vertices.map(v=>v.d));
-  return {outline,bottom,top,legs:route(c).map((leg,i)=>{const poly=legFootprint(c,i,outline.map(v=>v[0]));return {leg,poly,box:bounds(poly)};})};
- });
+ const sections=profileBands(c).map(band=>({...band,legs:band.legs.map(leg=>({...leg,box:bounds(leg.poly)}))}));
  const caps=c.kind==='flat'?[]:endCaps(c).plates.map(plate=>({...plate,box:bounds(plate.footprint),bottom:c.height-Math.max(...plate.section.map(p=>p[1])),top:c.height-Math.min(...plate.section.map(p=>p[1]))}));
  const flatBox=c.kind==='flat'?bounds(c.polygon):null,flatConvex=c.kind==='flat'&&convex(c.polygon);
  const closures=(plan.ceilings?.closures||[]).filter(edge=>edge.id===c.id).map(edge=>({...edge,box:bounds(edge.polygon)}));
@@ -604,5 +610,6 @@ function requiresV23(work){return [...(work?.ceilings?.items||[]).filter(c=>c.ki
 function requiresV22(work){return [...(work?.ceilings?.regions||[]),...(work?.ceilings?.items||[])].some(c=>c.aluminum&&(c.aluminum.origin!==undefined||![0,90].includes(c.aluminum.direction)));}
 const api={heightMeasurements,sectionActive,setChannelEnabled,requiresV25,duplicateRegion,stableRegionParts,sectionRole,componentPresets,componentPreset,replaceAssemblyPart,removeAssemblyPart,setPresetExcluded,requiresV24,plainSoffit,plainSoffitValues,reuseAssembly,requiresV23,requiresV22,aluminumBasis,panelReplacements,fitCeilingPanel,requiresV21,aluminumDefaults,aluminumLayout,requiresV20,mirrorSection,sectionMeasurements,requiresV19,transformSection,snapSectionMove,snapSectionAngle,rotateUD,roomInsetBoundary,assemblyIssues,assemblySample,upChannel,sectionContours,sectionPoints,channelValues,centerLayout,assemblyInfo,editAssembly,requiresV18,sameValue,requiresV17,validateRegion,regionItems,setRegion,removeRegion,closedOffset,regionContext,sectionPreset,designRegion,fitDownlight,downlightHoles,rules,lowCove,section,validate,polygon,area,inside,lightPolygon,lightIssues,route,tangent,samePath,joinedPath,offsetStations,legFootprint,compactLightRadius,endOpening,endCaps,lightLayout,sample,regionBoundary,boundaryPaths,pointAt,footprint,resolve,edit,derive,onlyChange,checks,signature,shift,requiresV6,requiresV7,requiresV8};
 api.mergeFlatRegions=mergeFlatRegions;
+api.profileBands=profileBands;
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishCeiling=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
