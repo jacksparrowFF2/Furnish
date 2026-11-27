@@ -70,7 +70,13 @@ const xiaomiPanelVariants=Object.freeze(Object.fromEntries(['2','2pro'].flatMap(
  const label=name+' · '+['','单开','双开','三开'][gangs]+' · '+finish;
  return ['xiaomi-'+series+'-'+gangs+'-'+color,{label,listLabel:name+' · '+finish,group:name,control:'smart',series,gangs,color,depth:pro?5:7.9,totalDepth:pro?34.8:(gangs===3?34.7:30.7),brand:'小米/Xiaomi',model:name,sourceUrl:'https://item.jd.com/'+(pro?'100434281318':'100313419465')+'.html'}];
 })))));
-const panelOptions=Object.freeze({...panelVariants,...xiaomiPanelVariants});
+const wirelessPanelKey='xiaomi-wireless-2-white';
+const panelOptions=Object.freeze({...panelVariants,...xiaomiPanelVariants,[wirelessPanelKey]:{
+ label:'小米智能无线开关（双开） · 白色',listLabel:'小米智能无线开关 · 白色',
+ group:'小米智能无线开关',control:'smart',series:'wireless',gangs:2,color:'white',
+ requiresWiring:false,depth:11,totalDepth:11,brand:'小米/Xiaomi',model:'XMWS01XS',
+ sourceUrl:'https://item.m.jd.com/product/100197232066.html'
+}});
 function panelSpec(f){const key=value(f,'panelVariant');return panelOptions[key];}
 function panelSpatialKey(f){
  const key=value(f,'panelVariant'),spec=panelSpec(f);

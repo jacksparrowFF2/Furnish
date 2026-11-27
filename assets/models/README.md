@@ -6,7 +6,7 @@
 
 更新：`node scripts/index-model-assets.cjs --write`；核对：`node scripts/index-model-assets.cjs --check`。
 
-95份产品／设计档案，381张参考图，20张历史原图待补；68组Blender模型。参数化验证配置101组，全部家具库213条目／182种类型。
+96份产品／设计档案，383张参考图，20张历史原图待补；69组Blender模型。参数化验证配置101组，全部家具库213条目／182种类型。
 
 | 产品／设计资料 | 参考图 | 输出／构造 | 待补原图 |
 |---|---|---|---|
@@ -67,6 +67,7 @@
 | [公牛G12 86开关插座面板](panel-bull-g12/README.md) | 42 | [BLEND](panel-bull-g12/v8/panel-bull-g12-v1.blend) · [GLB](panel-bull-g12/v8/panel-bull-g12-v1.glb) | 0 |
 | [厨房平板灯-300×600-24W](panel-light/README.md) | 1 | 参数化 | 0 |
 | [小米智能开关2与2 Pro · 86面板](panel-xiaomi-switch2/README.md) | 69 | [BLEND](panel-xiaomi-switch2/v2/panel-xiaomi-switch2-v1.blend) · [GLB](panel-xiaomi-switch2/v2/panel-xiaomi-switch2-v1.glb) | 0 |
+| [小米智能无线开关（双开） · XMWS01XS 白色](panel-xiaomi-wireless/README.md) | 2 | [BLEND](panel-xiaomi-wireless/v1/panel-xiaomi-wireless-v1.blend) · [GLB](panel-xiaomi-wireless/v1/panel-xiaomi-wireless-v1.glb) | 0 |
 | [PETSTAR猫水碗 · 图示180×65](pet-bowl/README.md) | 1 | [BLEND](pet-bowl/v1/pet-bowl-v1.blend) · [GLB](pet-bowl/v1/pet-bowl-v1.glb) | 0 |
 | [米家-智能宠物喂食器2](pet-feeder-mijia-2/README.md) | 0 | 参数化 | 5 |
 | [亚朵星球 深睡枕 Pro 4.0 · 岩溪蓝 10 cm](pillow-atour-pro4/README.md) | 2 | [BLEND](pillow-atour-pro4/v1/pillow-atour-pro4-v1.blend) · [GLB](pillow-atour-pro4/v1/pillow-atour-pro4-v1.glb) | 0 |

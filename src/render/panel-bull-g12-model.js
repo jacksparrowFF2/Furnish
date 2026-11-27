@@ -4,9 +4,12 @@
 const products=()=>root.FurnishProducts||require('../core/product-rules.js');
 const supported=f=>products().family(f,'wall-panel')&&!f.obj;
 function build(T,f){
- const P=products(),bundle=root.FurnishPanelBullG12Asset||(typeof require==='function'?require('../data/panel-bull-g12-blender-asset.js'):null);
- const key=P.value(f,'panelVariant'),xiaomi=P.panelSpec(f).series;
- const selected=xiaomi?(root.FurnishPanelXiaomiSwitch2Asset||(typeof require==='function'?require('../data/panel-xiaomi-switch2-blender-asset.js'):null)):bundle,asset=selected?.variants[key];
+ const P=products(),key=P.value(f,'panelVariant'),{series}=P.panelSpec(f);
+ const asset=series==='wireless'
+  ?root.FurnishPanelXiaomiWirelessAsset||(typeof require==='function'?require('../data/panel-xiaomi-wireless-blender-asset.js'):null)
+  :series
+   ?(root.FurnishPanelXiaomiSwitch2Asset||(typeof require==='function'?require('../data/panel-xiaomi-switch2-blender-asset.js'):null))?.variants[key]
+   :(root.FurnishPanelBullG12Asset||(typeof require==='function'?require('../data/panel-bull-g12-blender-asset.js'):null))?.variants[key];
  if(!asset)throw Error('86面板离线资产缺失：'+key);
  const g=(root.FurnishStaticAssetModel||require('./static-asset-model.js')).build(T,asset,{...f,h:P.height(f)},P.value(f,'mountHeight')),light=P.definition(f).nightLight;
  if(light&&key===light.variant){

@@ -53,6 +53,10 @@
   if(writing&&(typeof drag!=='undefined'&&drag||ui.mA||!$('#dlg').hidden))throw Error('请先完成当前拖动、绘制或编辑窗口');
   if(writing&&(!repositoryClient?.flush||repositoryClient.blocked||['error','conflict','loading'].includes(repositoryClient.status.mode)))throw Error('正式文件保存尚未就绪或存在冲突，请先处理保存状态');
  }
+ function applyPanelVariant(f,value){
+  Object.assign(f,FurnishProducts.editPanelVariant(f,value??FurnishProducts.definition(f)?.defaults?.panelVariant));
+  if(value===null)delete f.panelVariant;
+ }
  const revisionSource=()=>JSON.stringify([session,store.updatedAt||null,PLAN.id,store.activeDesigns?.[PLAN.id]||null,state,store.designs.map(d=>[d.id,d.name,d.ts])]);
  async function revision(source=revisionSource()){return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(source))),v=>v.toString(16).padStart(2,'0')).join('');}
  async function inspectSource(args,staged){
@@ -198,8 +202,11 @@
   }
   else if(name==='add_furniture_batch'){
    const work=clone(state),entries=catalog();addedIds=[];
-   for(const item of args.items){const entry=entries.find(c=>c.catalogKey===item.catalogKey);if(!entry||FurnishCatalogData.isAssemblyItem(entry.it))throw Error('批量新增须使用有效的单件家具库条目');const created=createCatalogFurniture(entry.it,item.cx,item.cy);if(created.length!==1)throw Error('批量新增不支持关联组合');let f=created[0];const sizes=Object.fromEntries(['w','d','h'].filter(k=>Object.hasOwn(item,k)).map(k=>[k,item[k]]));if(Object.keys(sizes).length)f=FurnishDesign.resizeFurniture(f,sizes);if(item.rot!==undefined)f.rot=((item.rot%360)+360)%360;
-    for(const [key,value]of Object.entries(item.parameters||{})){if(Object.hasOwn(core.commonParameters,key)){if(value===null)throw Error('批量新建通用参数须显式填写');core.validateCommonParameter(key,value);}else{if(!FurnishProducts.supports(f,key)||['inventoryArray','paperArray'].includes(key))throw Error('批量新增不支持此参数或结构动作：'+key);if(value!==null)FurnishProducts.validateField(f,key,value);}if(value===null)delete f[key];else f[key]=clone(value);}
+   for(const item of args.items){const entry=entries.find(c=>c.catalogKey===item.catalogKey);if(!entry||FurnishCatalogData.isAssemblyItem(entry.it))throw Error('批量新增须使用有效的单件家具库条目');const created=createCatalogFurniture(entry.it,item.cx,item.cy);if(created.length!==1)throw Error('批量新增不支持关联组合');let f=created[0];
+    const {panelVariant,...params}=item.parameters||{};
+    if(panelVariant!==undefined)applyPanelVariant(f,panelVariant);
+    const sizes=Object.fromEntries(['w','d','h'].filter(k=>Object.hasOwn(item,k)).map(k=>[k,item[k]]));if(Object.keys(sizes).length)f=FurnishDesign.resizeFurniture(f,sizes);if(item.rot!==undefined)f.rot=((item.rot%360)+360)%360;
+    for(const [key,value]of Object.entries(params)){if(Object.hasOwn(core.commonParameters,key)){if(value===null)throw Error('批量新建通用参数须显式填写');core.validateCommonParameter(key,value);}else{if(!FurnishProducts.supports(f,key)||['inventoryArray','paperArray'].includes(key))throw Error('批量新增不支持此参数或结构动作：'+key);if(value!==null)FurnishProducts.validateField(f,key,value);}if(value===null)delete f[key];else f[key]=clone(value);}
     FurnishProducts.validate(f);work.furniture.push(f);addedIds.push(f.id);
    }applyWork(work);
   }else if(name==='add_furniture'){
@@ -208,7 +215,9 @@
   }else if(name==='configure_furniture'){
    let work=clone(state);
    for(const update of args.updates){let f=work.furniture.find(f=>f.id===update.id);if(!f)throw Error('家具不存在：'+update.id);if(furnitureLocked(getF(f.id)))throw Error('家具或所在图层已锁定：'+f.id);if(Object.hasOwn(update.parameters,'replacementCatalogKey')){const entry=catalog().find(c=>c.catalogKey===update.parameters.replacementCatalogKey);if(!entry||FurnishCatalogData.isAssemblyItem(entry.it))throw Error('替换须使用有效的单件家具库条目');if(f.kitchen?.laundry||f.laundryHostId)throw Error('关联洗衣组合须通过原组合编辑器替换');const items=createCatalogFurniture(entry.it,f.cx,f.cy);if(items.length!==1)throw Error('组合模型不支持单件替换');const candidate={...items[0]};if(entry.it[7])candidate.id=entry.it[7];else delete candidate.id;const index=work.furniture.indexOf(f);f=FurnishDesign.replaceFurniture(f,candidate,{anchor:'center'});work.furniture[index]=f;}const allowed=parameters(f.id,f).parameters;if(Object.hasOwn(update.parameters,'cabinetUpgrade')){if(!allowed.cabinetUpgrade||update.parameters.cabinetUpgrade!==true||['cabinet','replacementCatalogKey'].some(k=>Object.hasOwn(update.parameters,k)))throw Error('柜体升级须为true，且不能与结构替换混用');const index=work.furniture.indexOf(f);f=FurnishCabinetBuilder.upgrade(f,{referencePrice:priceOf(f)});work.furniture[index]=f;}FurnishProducts.editCurtainOpening(f,update.parameters);
-   for(const [key,value]of Object.entries(update.parameters)){if(['replacementCatalogKey','cabinetUpgrade','curtainOpen',...FurnishProducts.curtainOpening.sideFields].includes(key))continue;if(key==='arrayEdit'){if(!Object.hasOwn(allowed,key))throw Error('此物品不支持物品阵列');work=FurnishDesign.applyInventoryArray(work,f.id,value,uid);f=work.furniture.find(item=>item.id===f.id);continue;}if(key==='inventoryArray')throw Error('阵列参数请通过arrayEdit操作');if(!Object.hasOwn(allowed,key))throw Error('不支持的产品参数：'+key);if(Object.hasOwn(core.commonParameters,key)&&value!==null)core.validateCommonParameter(key,value);if(value===null&&['name','color'].includes(key))throw Error('名称与颜色须显式填写');if(key==='paperArray'&&value===null){const next=FurnishProducts.clearPaperArray(f);delete f.paperArray;Object.assign(f,next);}else if(key==='paperArray'&&value!==null){FurnishProducts.validateField(f,key,value);Object.assign(f,FurnishProducts.editPaperArray(f,clone(value)));}else if(value===null)delete f[key];else f[key]=clone(value);}}
+   const {panelVariant,...params}=update.parameters;
+   if(panelVariant!==undefined)applyPanelVariant(f,panelVariant);
+   for(const [key,value]of Object.entries(params)){if(['replacementCatalogKey','cabinetUpgrade','curtainOpen',...FurnishProducts.curtainOpening.sideFields].includes(key))continue;if(key==='arrayEdit'){if(!Object.hasOwn(allowed,key))throw Error('此物品不支持物品阵列');work=FurnishDesign.applyInventoryArray(work,f.id,value,uid);f=work.furniture.find(item=>item.id===f.id);continue;}if(key==='inventoryArray')throw Error('阵列参数请通过arrayEdit操作');if(!Object.hasOwn(allowed,key))throw Error('不支持的产品参数：'+key);if(Object.hasOwn(core.commonParameters,key)&&value!==null)core.validateCommonParameter(key,value);if(value===null&&['name','color'].includes(key))throw Error('名称与颜色须显式填写');if(key==='paperArray'&&value===null){const next=FurnishProducts.clearPaperArray(f);delete f.paperArray;Object.assign(f,next);}else if(key==='paperArray'&&value!==null){FurnishProducts.validateField(f,key,value);Object.assign(f,FurnishProducts.editPaperArray(f,clone(value)));}else if(value===null)delete f[key];else f[key]=clone(value);}}
    applyWork(work);
   }else{
    const candidates=args.updates.map(update=>{

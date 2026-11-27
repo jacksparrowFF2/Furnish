@@ -20,6 +20,7 @@ docs['curtain-mijia-3-pro-motor']='CURTAIN-MIJIA-3-PRO.md';
 docs['track-socket-bull-gb50k']='TRACK-SOCKET-BULL-GB50K.md';
 docs['toshiba-d232']='OVEN-TOSHIBA-D232.md';
 docs['panel-bull-g12']='PANEL-BULL-G12.md';docs['panel-xiaomi-switch2']='PANEL-XIAOMI-SWITCH2.md';
+docs['panel-xiaomi-wireless']='PANEL-XIAOMI-WIRELESS.md';
 const supplies=require('./storage-supply-specs.json');for(const id of Object.keys(supplies))docs[id]='STORAGE-CABINET-2400.md';
 const garments=require('./garment-photo-specs.json');for(const id of Object.keys(garments))docs[id]='GARMENT-PHOTO-CARDS.md';
 docs['storage-bin-shallow-large']='STORAGE-BINS-LANJIAOLUO.md';

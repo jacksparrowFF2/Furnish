@@ -83,6 +83,7 @@ globalThis.FurnishElectricalUI=(()=>{
    const series=product.panelLine&&tr(...product.panelLine);
    const model=r.variant.model?detail:series;
    const type=product.trackSocket?`${tr('轨道插座','Track socket')} · ${variantLabel}`
+    :r.variant.requiresWiring===false?tr('无线开关','Wireless switch')
     :r.variant.control==='smart'?tr('墙壁开关','Wall switch')
     :r.variant.gangs?`${tr('开关','Switch')} · ${detail}`
     :r.variant.group==='插座类'?`${tr('插座','Socket')} · ${detail}`:detail;

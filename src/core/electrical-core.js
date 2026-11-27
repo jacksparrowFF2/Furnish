@@ -140,6 +140,7 @@ function endpointKind(f){
  if(boxKind(f))return boxKind(f);
  if(!panel(f))return null;
  const spec=P().panelSpec(f);
+ if(spec?.requiresWiring===false)return null;
  if(spec?.group==='信息类'&&/net[56]/.test(P().value(f,'panelVariant')))return 'network';
  if(spec?.gangs||spec?.group==='插座类'||spec?.control==='sensor'||P().definition(f)?.trackSocket)return 'power';
  return null;

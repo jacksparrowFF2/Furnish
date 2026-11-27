@@ -1,0 +1,6 @@
+{
+  "type": "panel_bull_g12",
+  "global": "FurnishPanelXiaomiWirelessAsset",
+  "size": [86, 86, 11],
+  "parts": ["mounting-back", "housing", "left-rocker", "right-rocker", "left-indicator", "right-indicator"]
+}

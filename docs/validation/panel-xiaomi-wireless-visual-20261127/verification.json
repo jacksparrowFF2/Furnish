@@ -1,0 +1,245 @@
+{
+  "blender": "/Applications/Blender.app/Contents/MacOS/Blender",
+  "version": "5.3.0",
+  "passed": true,
+  "workspacePruned": true,
+  "sourceFingerprint": "b010a6956bd1d1c17248cf4e7a63645730263d66441c6750403eea79e90072f3",
+  "stages": [
+    {
+      "name": "author-preflight",
+      "passed": true,
+      "result": {
+        "command": "author-panel-xiaomi-wireless",
+        "passed": true,
+        "profile": "panel-xiaomi-wireless",
+        "parts": 6,
+        "version": "5.3.0",
+        "preflight": {
+          "passed": true,
+          "profile": "panel-xiaomi-wireless",
+          "parts": 6,
+          "motions": 0
+        }
+      }
+    },
+    {
+      "name": "preflight-negative",
+      "passed": true,
+      "result": {
+        "passed": true,
+        "profile": "panel-xiaomi-wireless",
+        "blender": "5.3.0",
+        "rejected": [
+          "empty-material-slot",
+          "wrong-face-index",
+          "wrong-stable-identity",
+          "wrong-units",
+          "nonfinite-vertex",
+          "unexpected-part"
+        ],
+        "motionApplicable": false
+      }
+    },
+    {
+      "name": "publish",
+      "passed": true,
+      "result": {
+        "command": "publish-panel-xiaomi-wireless",
+        "passed": true,
+        "blender": "5.3.0",
+        "glbSha256": "9d8afdc6f345f88c15abfe622ab4dc8c84eeb62f5eddaf42be3f329ca754df10",
+        "runtimeSha256": "e532cda4b503cd3f8d952f01a591e58bdc29100f6b832db0196fb59e67f1cd7b"
+      }
+    },
+    {
+      "name": "geometry-state",
+      "passed": true
+    },
+    {
+      "name": "http-file-production",
+      "passed": true,
+      "result": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "http",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": null,
+            "offline": false
+          },
+          {
+            "mode": "file",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": null,
+            "offline": true
+          }
+        ],
+        "exports": [
+          {
+            "mode": "http",
+            "state": "nominal",
+            "parts": 6,
+            "bounds": [
+              [
+                -0.0430000014603138,
+                0,
+                -0.005499999970197678
+              ],
+              [
+                0.0430000014603138,
+                0.0860000029206276,
+                0.005499999970197678
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "resized",
+            "parts": 6,
+            "bounds": [
+              [
+                -0.04816000163555145,
+                0,
+                -0.005940000060945749
+              ],
+              [
+                0.04816000163555145,
+                0.0928800031542778,
+                0.005940000060945749
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "nominal",
+            "parts": 6,
+            "bounds": [
+              [
+                -0.0430000014603138,
+                0,
+                -0.005499999970197678
+              ],
+              [
+                0.0430000014603138,
+                0.0860000029206276,
+                0.005499999970197678
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "blender-production-readback",
+      "passed": true,
+      "result": {
+        "passed": true,
+        "profile": "panel-xiaomi-wireless",
+        "blender": "5.3.0",
+        "source": "production-glb",
+        "results": [
+          {
+            "case": "http-nominal",
+            "parts": 6,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-resized",
+            "parts": 6,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-nominal",
+            "parts": 6,
+            "boundsAndAlpha": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "studio-production-export",
+      "passed": true
+    },
+    {
+      "name": "render-front",
+      "passed": true,
+      "renderDevice": {
+        "requested": "auto",
+        "type": "GPU",
+        "backend": "METAL",
+        "devices": [
+          "Apple M6 (GPU - 12 cores)"
+        ],
+        "fallback": null
+      }
+    },
+    {
+      "name": "render-oblique",
+      "passed": true,
+      "renderDevice": {
+        "requested": "auto",
+        "type": "GPU",
+        "backend": "METAL",
+        "devices": [
+          "Apple M6 (GPU - 12 cores)"
+        ],
+        "fallback": null
+      }
+    },
+    {
+      "name": "render-back",
+      "passed": true,
+      "renderDevice": {
+        "requested": "auto",
+        "type": "GPU",
+        "backend": "METAL",
+        "devices": [
+          "Apple M6 (GPU - 12 cores)"
+        ],
+        "fallback": null
+      }
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "passed": true,
+      "result": {
+        "passed": true,
+        "profile": "panel-xiaomi-wireless",
+        "blender": "5.3.0",
+        "source": "downloaded-render-blend",
+        "results": [
+          {
+            "case": "front",
+            "parts": 6,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "oblique",
+            "parts": 6,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "back",
+            "parts": 6,
+            "boundsAndAlpha": true
+          }
+        ]
+      }
+    }
+  ],
+  "desktop": {
+    "passed": true,
+    "checks": [
+      "existing panel catalog, wireless option, 11 mm depth, independent elevation, undo and redo",
+      "正式保存及刷新恢复",
+      "MCP wired-to-wireless switch, correct default depth and explicit depth override"
+    ],
+    "sourceUnchanged": true
+  }
+}

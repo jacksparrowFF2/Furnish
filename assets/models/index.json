@@ -2,13 +2,13 @@
   "format": 2,
   "description": "Generated repository index; paths relative to repository root. This is metadata, not the application loading manifest.",
   "counts": {
-    "blenderModels": 68,
+    "blenderModels": 69,
     "parametricVerificationConfigurations": 101,
-    "verificationConfigurations": 169,
+    "verificationConfigurations": 170,
     "catalogEntries": 213,
     "catalogTypes": 182,
-    "productDossiers": 95,
-    "referenceImages": 381,
+    "productDossiers": 96,
+    "referenceImages": 383,
     "missingReferences": 20
   },
   "models": [
@@ -2250,6 +2250,50 @@
         "assets/models/panel-xiaomi-switch2/references/product-page/pro-detail-33.avif",
         "assets/models/panel-xiaomi-switch2/references/product-page/pro-detail-34.avif",
         "assets/models/panel-xiaomi-switch2/references/product-page/pro-detail-35.avif"
+      ]
+    },
+    {
+      "profile": "panel-xiaomi-wireless",
+      "type": "panel_bull_g12",
+      "name": "小米智能无线开关（双开） · 白色",
+      "sizeMm": [
+        86,
+        11,
+        86
+      ],
+      "parts": 6,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/panel-xiaomi-wireless-blender-asset.js",
+        "sha256": "e532cda4b503cd3f8d952f01a591e58bdc29100f6b832db0196fb59e67f1cd7b",
+        "normalization": "utf8-lf"
+      },
+      "sourceSha256": "9d8afdc6f345f88c15abfe622ab4dc8c84eeb62f5eddaf42be3f329ca754df10",
+      "current": {
+        "blend": "assets/models/panel-xiaomi-wireless/v1/panel-xiaomi-wireless-v1.blend",
+        "glb": "assets/models/panel-xiaomi-wireless/v1/panel-xiaomi-wireless-v1.glb"
+      },
+      "document": "docs/PANEL-XIAOMI-WIRELESS.md",
+      "constructor": "src/render/panel-bull-g12-model.js",
+      "author": "scripts/blender-model-panel-xiaomi-wireless.py",
+      "files": [
+        {
+          "path": "assets/models/panel-xiaomi-wireless/v1/panel-xiaomi-wireless-v1.blend",
+          "role": "published-source",
+          "sha256": "7f9acd8c2f3729eb30eb7cef6fe6b3f1dcbcfa630a90073deeb92a1aca9c97ab",
+          "bytes": 127794
+        },
+        {
+          "path": "assets/models/panel-xiaomi-wireless/v1/panel-xiaomi-wireless-v1.glb",
+          "role": "published-source",
+          "sha256": "9d8afdc6f345f88c15abfe622ab4dc8c84eeb62f5eddaf42be3f329ca754df10",
+          "bytes": 99440
+        }
+      ],
+      "dossier": "assets/models/panel-xiaomi-wireless/asset.json",
+      "references": [
+        "assets/models/panel-xiaomi-wireless/references/jd-appearance.jpg",
+        "assets/models/panel-xiaomi-wireless/references/white-in-use.jpg"
       ]
     },
     {
@@ -9583,6 +9627,54 @@
       ],
       "manifest": "assets/models/panel-xiaomi-switch2/asset.json",
       "readme": "assets/models/panel-xiaomi-switch2/README.md"
+    },
+    {
+      "format": 1,
+      "id": "panel-xiaomi-wireless",
+      "name": "小米智能无线开关（双开） · XMWS01XS 白色",
+      "types": [
+        "panel_bull_g12"
+      ],
+      "route": "blender",
+      "document": "docs/PANEL-XIAOMI-WIRELESS.md",
+      "sourceLinks": [
+        "https://3.cn/3dM7-M05?jkl=@J6zb5FvQUb@",
+        "https://item.m.jd.com/product/100197232066.html",
+        "https://www.xiaomiyoupin.com/detail?gid=174191"
+      ],
+      "references": [
+        {
+          "path": "references/jd-appearance.jpg",
+          "kind": "product-page-original",
+          "url": "https://img14.360buyimg.com/pop/jfs/t1/346258/12/6443/77222/68d166baF9bfcee8e/ae6393f576f32850.jpg",
+          "sha256": "bc647e7ea21c1b4c6fc18c5a0ebc2e81fb9950967a41ca642e09e568c4af6e47",
+          "bytes": 144242
+        },
+        {
+          "path": "references/white-in-use.jpg",
+          "kind": "product-page-original",
+          "url": "https://img.youpin.mi-img.com/shopmain/fadf7df2_0ccb_414d_ad4c_2e6e960c4722.jpeg",
+          "sha256": "f52ea7ebebbc126a48731d9147d89bdc1eccc06ccf7ecd6c3e103c484fd990e1",
+          "bytes": 183647
+        }
+      ],
+      "supportingFiles": [
+        {
+          "path": "references/manual.pdf",
+          "url": "https://cdn.cnbj1.fds.api.mi-img.com/iotweb-product-center/d5ec425cada65856bffc7614dfbda674_1752057394210.pdf?Expires=9223372036854775807&GalaxyAccessKeyId=AKVGLQWBOVIRQ3XLEW&Signature=Xr7d6rQFsTu2AWnGPMVIhthhAVY%3D",
+          "sha256": "48c9f06150df8754bc0bf8b49f8a90a145d4fc0241014229063a084663d2cdab",
+          "bytes": 626251
+        }
+      ],
+      "missingReferences": [],
+      "validation": [
+        "docs/validation/panel-xiaomi-wireless-visual-20261127/README.md"
+      ],
+      "notes": [
+        "短链落在自营白色 SKU 100197232066。说明书文件名标为深空灰，正文型号 XMWS01XS 与白色商品规格一致。白色外观以京东及有品实图为准。"
+      ],
+      "manifest": "assets/models/panel-xiaomi-wireless/asset.json",
+      "readme": "assets/models/panel-xiaomi-wireless/README.md"
     },
     {
       "format": 1,
