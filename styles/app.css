@@ -1201,6 +1201,9 @@ aside.right{scroll-padding-block-start:104px}
 #panel.object-properties :is(.form,.project-grid){grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;align-items:end}
 #panel.object-properties :is(.form,.project-grid)>:is(.full,p,small,fieldset,details){grid-column:1/-1}
 #panel.object-properties :is(.form,.project-grid) label{min-width:0;overflow-wrap:anywhere;font-size:11px;line-height:1.4;color:var(--muted);font-weight:500}
+#panel.object-properties .form.property-price-field{align-items:center}
+#panel.object-properties .property-price-field label{font-size:13px;font-weight:700;color:var(--ink)}
+#panel .property-price-field small{display:block;margin-top:2px;font-size:11px}
 #panel.object-properties .project-grid :is(input,select){min-height:35px;padding:5px 10px;border:1px solid var(--line);border-radius:8px;background:var(--soft);font-size:12px}
 #panel.object-properties .project-grid input[type=number]{font-family:var(--mono)}
 #panel.object-properties .project-grid :is(input,select):focus{border-color:var(--accent);background:var(--card)}

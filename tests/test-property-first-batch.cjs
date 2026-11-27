@@ -20,10 +20,10 @@ for(const [item,bottom,top] of [
 }
 assert(ctx.furnitureDimensionSummary({...base,type:'unrecognised'}).includes('高度未知'));
 assert(!ctx.furnitureDimensionSummary({...base,type:'unrecognised'}).includes('0 mm'));
-assert.equal(ctx.furniturePriceText({...base}),'价格待填写');
-assert.equal(ctx.furniturePriceText({...base,price:0}),'¥0 · 已确认价');
-assert.equal(ctx.furniturePriceText({...base,referencePrice:0}),'¥0 · 参考价');
-assert.equal(ctx.furniturePriceText({...base,referencePrice:23}),'¥23 · 参考价');
+assert.match(ctx.furniturePriceField(base),/value="" placeholder="待填写"/);
+assert.match(ctx.furniturePriceField({...base,price:0}),/已确认价<\/small>[\s\S]*value="0"/);
+assert.match(ctx.furniturePriceField({...base,referencePrice:0}),/参考价<\/small>[\s\S]*value="0"/);
+assert.match(ctx.furniturePriceField({...base,referencePrice:23}),/参考价<\/small>[\s\S]*value="23"/);
 
 let current={...base,type:'custom'},history=[],errors=[];
 const nodes=Object.fromEntries(['#fName','#fP','#full-product-details'].map(id=>[id,{}]));
@@ -32,7 +32,7 @@ ctx.renderPanel=()=>{};ctx.bindFurnPanel(current);
 nodes['#fP'].onchange({target:{value:'0'}});assert.equal(current.price,0);
 nodes['#fP'].onchange({target:{value:''}});assert(!Object.hasOwn(current,'price'));
 current.referencePrice=88;nodes['#fP'].onchange({target:{value:'9'}});nodes['#fP'].onchange({target:{value:''}});
-assert.equal(current.referencePrice,88);assert.equal(ctx.furniturePriceText(current),'¥88 · 参考价');
+assert.equal(current.referencePrice,88);assert.match(ctx.furniturePriceField(current),/参考价<\/small>[\s\S]*value="88"/);
 for(const value of ['-1','NaN','Infinity'])nodes['#fP'].onchange({target:{value}});
 assert.equal(history.length,4);assert.equal(errors.length,3);assert(!Object.hasOwn(current,'price'));
 

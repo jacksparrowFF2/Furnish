@@ -287,9 +287,13 @@ function bindRoomPanel(){
 }
 
 const SWATCHES = ['#ffffff','#efe6d8','#e2cfb4','#d6b99a','#a57c56','#c9d6df','#c3cbd6','#d8c7dc','#b7c4b0','#9dbb8c','#cfc6b8','#8a7a5e','#4a4f55','#1f1d1b'];
-function furniturePriceText(f){
- const value=priceOf(f),basis=FurnishProject.furniturePriceBasis(f,value);
- return basis==='missing'?tr('价格待填写','Price not entered'):`${yen(value)} · ${basis==='confirmed'?tr('已确认价','Confirmed price'):tr('参考价','Reference price')}`;
+function furniturePriceField(f){
+  const value=priceOf(f),basis=FurnishProject.furniturePriceBasis(f,value);
+  const status=basis==='confirmed'?tr('已确认价','Confirmed price'):basis==='reference'?tr('参考价','Reference price'):'';
+  return `<section class="property-group" aria-labelledby="f-price-label"><div class="form property-price-field">
+    <div><label id="f-price-label" for="fP">${tr('单价（元）','Unit price (¥)')}</label>${status?`<small id="f-price-basis" class="muted" data-furniture-price>${status}</small>`:''}</div>
+    <input id="fP" type="number" value="${basis==='missing'?'':Math.round(value)}" placeholder="${tr('待填写','Not entered')}" min="0" step="50" ${status?'aria-describedby="f-price-basis"':''}>
+  </div></section>`;
 }
 function furnitureMeasuredSize(f){
   const measurements=FurnishDesign.furnitureHeightMeasurements(f,canvasEffectivePlan(),state.furniture);
@@ -393,6 +397,7 @@ function furnPanel(f){
     ${isOutside(f) ? `<div class="alert">${ico('warn')}<span>${tr('这件家具在户型外','This item is outside the plan')}</span><button class="btn" data-act="rescueOne">${tr('移回','Bring back')}</button></div>` : ''}
     ${clashWith.length ? `<div class="alert">${ico('warn')}<span>${tr('与以下家具重叠：','Overlaps: ')}${clashWith.map(g => esc(nm(g.name))).join('、')}</span></div>` : ''}
     ${fridgeConflictDetails.length?`<div class="alert" id="fridge-bay-conflict-details"><span>${fridgeConflictDetails.map(message=>esc(message)).join('<br>')}</span></div>`:''}
+    ${furniturePriceField(f)}
     ${furnitureSizePanel(f,cabinetDesign)}
     <section class="property-group" data-model-adjustments><h3>${FurnishProducts.family(f,'side-table')?tr('抽屉开合','Drawer operation'):tr('专属设置','Item settings')}</h3>
     ${inventoryArrayPanel([f])}
@@ -471,9 +476,8 @@ function furnPanel(f){
     ${window.FurnishDesignUI?.placementPanel(f,{shownIssues:installation?.checks||[]})||''}
     ${!cabinetDesign&&!fixedPanelColor?`<details class="property-group property-fold" data-property-fold="appearance"><summary>${tr('外观颜色','Colour')}</summary><div class="property-colours"><label>${tr('自定义颜色','Custom colour')}<input type="color" id="fC" value="${f.color}"></label><div class="swatches">${SWATCHES.map(c => `<button data-sw="${c}" class="${c === f.color ? 'on' : ''}" style="background:${c}" title="${c}" aria-label="${c}" aria-pressed="${c===f.color}"></button>`).join('')}</div></div></details>`:''}
     <details class="property-group property-fold" data-model-notes data-property-fold="model"><summary>${tr('模型与使用说明','Model and usage notes')}</summary></details>
-    <details class="property-group property-fold" data-property-fold="identity"><summary>${tr('名称与价格','Name and price')} <small data-furniture-price>${furniturePriceText(f)}</small></summary>
+    <details class="property-group property-fold" data-property-fold="identity"><summary>${tr('名称与资料','Name and details')}</summary>
       <div class="form"><label class="full">${tr('显示名称','Display name')}<input id="fName" value="${esc(nm(propertyFurnitureName(f)))}"></label>
-      <label class="full">${tr('单价','Unit price')} (¥)<input type="number" id="fP" value="${FurnishProject.furniturePriceBasis(f,priceOf(f))==='missing'?'':Math.round(priceOf(f))}" placeholder="${tr('待填写','Not entered')}" min="0" step="50"></label>
       </div>
       <div class="actions"><button class="btn" id="full-product-details">${tr('完整家具资料','Full product details')}</button></div>
     </details>

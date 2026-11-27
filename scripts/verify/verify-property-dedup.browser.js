@@ -17,8 +17,13 @@ async(page,V)=>{
    check(await p.locator('[data-elevation-fields] #hood-height,[data-elevation-fields] #kitchen-mount').count()===2,'height and bottom elevation are together');
    check(await p.locator('#panel #fBottomElevation').count()===0,'hood bottom elevation has one editor');
    const identity=p.locator('[data-property-fold="identity"]');
+   const price=p.getByRole('spinbutton',{name:'单价（元）'});
+   check(await price.isVisible()&&!await identity.evaluate(el=>el.open),'unit price is editable with details closed');
+   await price.fill('0');await price.press('Tab');
+   check(await p.locator('[data-furniture-price]').innerText()==='已确认价','zero is a confirmed unit price');
+   await p.evaluate(()=>undo());
    await identity.locator('summary').click();await identity.locator('#fName').fill('更新烟机名称');await identity.locator('#fName').press('Tab');
-   check(await identity.evaluate(el=>el.open),'name and price stays expanded after renaming');
+   check(await identity.evaluate(el=>el.open),'name and details stays expanded after renaming');
    check(await p.locator('#panel h2').innerText()==='更新烟机名称','object header updates after an edit');
    await p.evaluate(()=>undo());
    check(await identity.evaluate(el=>el.open),'undo preserves the expanded group');
