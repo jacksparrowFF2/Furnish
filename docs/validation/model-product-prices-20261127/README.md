@@ -2,12 +2,12 @@
 
 2026-11-27，人民币。盘点范围为 Furnish [本地建模资产索引](../../../assets/models/index.html) 中的 96 份档案，一个档案可包含多个规格。
 
-- 43 份档案取得可对应商品的当日页面价，共 57 条规格价格。
-- 3 份档案有部分报价或采购参考，共 3 条。销售单位、所缺规格及适用范围已注明。
-- 20 份档案仍缺可归属到目标商品的当日价格。
+- 51 份档案取得可对应商品的当日页面价，共 71 条规格价格。
+- 2 份档案有部分报价或采购参考，共 2 条。销售单位、所缺规格及适用范围已注明。
+- 13 份档案仍缺可归属到目标商品的当日价格。
 - 30 份为定制设计、参考或无独立售价的模型。
 
-京东页面价按实际规格记录，优惠和配送可随地区、账号和活动变化。亚朵深睡枕在通过验证后已读取。查飞利浦 DL269 时再次触发安全验证，尚未读取的货号保留在待核清单。天猫所录价格来自实际选中的规格。小米商城默认配送地区为北京时，按该地区的页面价格记录。部分旧活动或导购参考保留在待核备注里。
+通过京东验证后，使用同一窗口逐个读取商品详情，每次读完至少间隔 15 秒。飞利浦筒灯按功率及色温，懒角落收纳盒按尺寸及单只销售单位，源氏木语沙发按面料颜色核对货号。页面价随地区、账号和优惠变化。天猫按实际选中规格记录，小米商城按页面默认配送地北京记录。旧活动和导购参考保留在待核备注里。
 
 ## 当日页面价
 
@@ -26,6 +26,7 @@
 | [米家智能窗帘 3 Pro · MJZNCL08LM](../../../assets/models/curtain-mijia-3-pro-motor/README.md) | 白色 · 标准版单套 ¥832.50 [来源](<https://www.mi.com/shop/buy/detail?product_id=23885>) |
 | [米家桌面学习灯 Pro · MJTD07YL](../../../assets/models/desk-lamp-mijia-pro/README.md) | 白色 Pro · 双段灯头 ¥505.00 [来源](<https://www.mi.com/shop/search?keyword=%E7%B1%B3%E5%AE%B6%E6%A1%8C%E9%9D%A2%E5%AD%A6%E4%B9%A0%E7%81%AFPro>) |
 | [米家-台式5套洗碗机](../../../assets/models/dishwasher/README.md) | 白色 · 磁吸折叠门 ¥1699.00 [来源](<https://www.mi.com/shop/buy/detail?product_id=25605>) |
+| [飞利浦-DL269-筒灯](../../../assets/models/downlight-dl269/README.md) | DL269 · 5 W · 4000 K · 开孔 75–78 mm ¥30.51 [来源](<https://item.jd.com/10085271761115.html>)<br>DL269 · 5 W · 3000 K · 开孔 75–78 mm ¥30.51 [来源](<https://item.jd.com/10085271761114.html>)<br>DL269 · 5 W · 6500 K · 开孔 75–78 mm ¥30.51 [来源](<https://item.jd.com/10085271761116.html>)<br>DL269 · 7 W · 3000 K · 开孔 75–78 mm ¥37.31 [来源](<https://item.jd.com/10085271761117.html>)<br>DL269 · 7 W · 4000 K · 开孔 75–78 mm ¥37.31 [来源](<https://item.jd.com/10085271761118.html>)<br>DL269 · 7 W · 6500 K · 开孔 75–78 mm ¥37.31 [来源](<https://item.jd.com/10085271761119.html>) |
 | [拉伯塔IP65防水筒灯7W全白4000K](../../../assets/models/downlight-labot-ip65/README.md) | 7 W · 全白 · 中性光 4000 K ¥34.98 [来源](<https://item.jd.com/10087901407535.html>) |
 | [好太太手摇升降晾衣架 Y024 · 米粉2.4米四杆](../../../assets/models/drying-rack-hotata-y024/README.md) | 米粉 · 2.4 米 · 四杆整套 ¥426.36 [来源](<https://item.jd.com/100220349957.html>) |
 | [好太太手摇升降晾衣架 Y024 · 米粉2米四杆](../../../assets/models/drying-rack-hotata-y024-2m/README.md) | 米粉 · 2 米 · 四杆整套 ¥406.98 [来源](<https://item.jd.com/100294066834.html>) |
@@ -48,6 +49,12 @@
 | [双抽岩板边几-680×300×612](../../../assets/models/side-table/README.md) | Y102J16 · 樱桃木／鱼肚白 · 680×300×612 mm ¥956.00 [来源](<https://detail.tmall.com/item.htm?id=635382906309&skuId=5776584417656>) |
 | [源氏木语-Y107H03-1.25米沙发床](../../../assets/models/sofa-bed/README.md) | Y107H03 · 1.25 米 · 山毛榉原木色／梨白 ¥1929.80 [来源](<https://item.jd.com/10222453768218.html>) |
 | [收纳盒 · 懒角落深柜 · 大号](../../../assets/models/storage-bin-deep-large/README.md) | 深柜大号 · 200×280×150 mm · 单只 ¥30.70 [来源](<https://item.jd.com/100259402044.html>) |
+| [收纳盒 · 懒角落深柜 · 中号](../../../assets/models/storage-bin-deep-medium/README.md) | 深柜中号 · 150×280×150 mm · 单只 ¥24.20 [来源](<https://item.jd.com/100259402050.html>) |
+| [收纳盒 · 懒角落加深 · 大号](../../../assets/models/storage-bin-deeper-large/README.md) | 加深柜大号 · 200×350×150 mm · 单只 ¥35.10 [来源](<https://item.jd.com/100196725217.html>) |
+| [收纳盒 · 懒角落加深 · 中号](../../../assets/models/storage-bin-deeper-medium/README.md) | 加深柜中号 · 150×350×150 mm · 单只 ¥33.30 [来源](<https://item.jd.com/100273391044.html>) |
+| [收纳盒 · 懒角落浅柜 · 大号](../../../assets/models/storage-bin-shallow-large/README.md) | 浅柜大号 · 200×210×150 mm · 单只 ¥28.90 [来源](<https://item.jd.com/100273391046.html>) |
+| [收纳盒 · 懒角落超深 · 大号](../../../assets/models/storage-bin-ultradeep-large/README.md) | 超深柜大号 · 200×450×150 mm · 单只 ¥37.70 [来源](<https://item.jd.com/100396833078.html>) |
+| [收纳盒 · 懒角落超深 · 中号](../../../assets/models/storage-bin-ultradeep-medium/README.md) | 超深柜中号 · 150×450×150 mm · 单只 ¥35.10 [来源](<https://item.jd.com/100396832668.html>) |
 | [世达95101工具箱 · 收起参考](../../../assets/models/storage-toolbox/README.md) | 360×150×115 mm · 1 只 ¥139.04 [来源](<https://www.scr.com.cn/ProductView.aspx?CatalogNo=05041302&SeqNo=688176>) |
 | [米家-茶吧机Pro](../../../assets/models/tea-bar/README.md) | 白色 · 立式 315×310×1155 mm ¥1399.00 [来源](<https://www.mi.com/shop/search?keyword=%E7%B1%B3%E5%AE%B6%E6%99%BA%E8%83%BD%E8%8C%B6%E5%90%A7%E6%9C%BA>) |
 | [透明工具箱 · 佳帮手大号](../../../assets/models/toolbox-jiabangshou-390/README.md) | 透明大号 · 加大提手 · 390×270×210 mm ¥37.50 [来源](<https://item.jd.com/100359220602.html>) |
@@ -56,6 +63,7 @@
 | [公牛 GN‑GB50K · 墨云灰 · 500 mm＋3五孔](../../../assets/models/track-socket-bull-gb50k/README.md) | GN-GB50K · 墨云灰 · 500 mm＋3 个五孔 ¥249.82 [来源](<https://item.jd.com/100396204646.html>) |
 | [宜家大号拉斯克手推车](../../../assets/models/trolley-ikea-raskog-large/README.md) | 灰绿色 · 35×45×77 cm ¥179.00 [来源](<https://www.ikea.cn/cn/zh/p/raskog-la-si-ke-shou-tui-che-hui-lu-se-30591666/>) |
 | [源氏木语-Y52Y09-六格书柜](../../../assets/models/y52y09/README.md) | Y52Y09 · 1115×230×750 mm · 六格无底框 ¥1129.00 [来源](<https://item.jd.com/100266639340.html>) |
+| [源氏木语-樱桃木三人沙发-2.16米](../../../assets/models/yeswood-sofa/README.md) | Y102H11 · 樱桃木 · 2.16 米三人位 · 梨白 ¥3913.57 [来源](<https://item.jd.com/10096040538224.html>)<br>Y102H11 · 樱桃木 · 2.16 米三人位 · 灯芯绒松绿 ¥3913.57 [来源](<https://item.jd.com/10096040538225.html>) |
 
 ## 部分报价与采购参考
 
@@ -63,7 +71,6 @@
 | --- | --- |
 | [家用双层药箱 · 340×250×200参考](../../../assets/models/medicine-box/README.md) | 透茶大号 34×25×20 cm · 同尺寸参考 ¥41.05 [来源](<https://item.jd.com/10234345780237.html>)。按原档案的同尺寸采购参考商品记录。档案模型是通用外观，实物为透茶大号。 |
 | [公牛G12 86开关插座面板](../../../assets/models/panel-bull-g12/README.md) | 暮雪白 · 10 A 斜五孔 · 十只套装 ¥98.60 [来源](<https://item.jd.com/100071863715.html>)。十只装补入档案。单只和其余款式、颜色仍待核。 |
-| [源氏木语-樱桃木三人沙发-2.16米](../../../assets/models/yeswood-sofa/README.md) | Y102H11 · 樱桃木 · 2.16 米三人位 · 梨白 ¥3913.57 [来源](<https://item.jd.com/10096040538224.html>)。梨白款已录，灯芯绒松绿另按指定 SKU 核价。 [松绿规格](https://item.jd.com/10096040538225.html) |
 
 ## 现价待核
 
@@ -72,7 +79,6 @@
 | [源氏木语-柏林单人沙发椅](../../../assets/models/armchair-berlin/README.md) | 原图未注明型号。公开柏林 Y83H10 单人位促销所示尺寸与本模型 710×850×845 mm 不同。 [核对来源](<https://www.smzdm.com/p/94728832/>) |
 | [猫爬架-绿叶成荫围栏款](../../../assets/models/cat-tree/README.md) | 参考图确定绿叶成荫围栏款与尺寸，仍缺品牌或原商品链接。 |
 | [樱桃木白色岩板茶几-1.2米](../../../assets/models/cherry-coffee-table/README.md) | 原图有 1.2 米白岩板与樱桃木配置，公开搜索结果未确定同款 SKU。 |
-| [飞利浦-DL269-筒灯](../../../assets/models/downlight-dl269/README.md) | 京东已定位品焕 DL269 5 W 与 7 W 的三种色温，货号为 10085271761114 至 10085271761119。首次读取此组价格时触发安全验证。 5 W／7 W 和三种色温分开核对，旧活动没有覆盖这六个规格。 [核对来源](<https://www.lighting.philips.com.cn/consumer/p/other-recessed-spot-light/6941970617369/support>) |
 | [纯平四门冰箱（双抽屉）](../../../assets/models/fridge/README.md) | 两门两抽屉参考图未确认品牌型号，外包尺寸不能作为唯一识别。 |
 | [秋季夹克 · 优衣库照片厚片](../../../assets/models/garment-autumn-jacket/README.md) | 已确认优衣库 459592 棕色图源，找到的同款官网页为美国站。 [核对来源](<https://www.uniqlo.com/us/en/products/E459592-000/00?colorDisplayCode=37>) |
 | [短款羽绒服 · 优衣库照片厚片](../../../assets/models/garment-short-down/README.md) | 已确认优衣库 449725 黑色图源，找到的同款官网页为日本站。 [核对来源](<https://www.uniqlo.com/jp/ja/products/E449725-000/00>) |
@@ -82,12 +88,6 @@
 | [源氏木语-橡木软包换鞋凳-80厘米](../../../assets/models/shoe-bench/README.md) | 已知源氏木语 80 cm 橡木软包，货号与当前同款商品链接待确认。 |
 | [箭牌-奶油白花洒](../../../assets/models/shower-arrow/README.md) | 已定位 AE34129ZMKW-P2 奶油白冷热款；旧促销不作为现价。 [核对来源](<https://wiki.smzdm.com/p/0y561p4/>) |
 | [禧天龙-软包叠放方凳-370](../../../assets/models/stack-stool/README.md) | 已有禧天龙软包叠放方凳 370 mm 外观和尺寸资料，未确认同款销售链接。 |
-| [收纳盒 · 懒角落深柜 · 中号](../../../assets/models/storage-bin-deep-medium/README.md) | 已对应厂家选项文字与货号，单只价格待核。 [对应规格](https://item.jd.com/100259402050.html) 需在懒角落共用商品页选择该款深度和尺寸，逐规格核价。 [核对来源](<https://item.jd.com/100259402044.html>) |
-| [收纳盒 · 懒角落加深 · 大号](../../../assets/models/storage-bin-deeper-large/README.md) | 已对应厂家选项文字与货号，单只价格待核。 [对应规格](https://item.jd.com/100196725217.html) 需在懒角落共用商品页选择该款深度和尺寸，逐规格核价。 [核对来源](<https://item.jd.com/100259402044.html>) |
-| [收纳盒 · 懒角落加深 · 中号](../../../assets/models/storage-bin-deeper-medium/README.md) | 已对应厂家选项文字与货号，单只价格待核。 [对应规格](https://item.jd.com/100273391044.html) 需在懒角落共用商品页选择该款深度和尺寸，逐规格核价。 [核对来源](<https://item.jd.com/100259402044.html>) |
-| [收纳盒 · 懒角落浅柜 · 大号](../../../assets/models/storage-bin-shallow-large/README.md) | 已对应厂家选项文字与货号，单只价格待核。 [对应规格](https://item.jd.com/100273391046.html) 需在懒角落共用商品页选择该款深度和尺寸，逐规格核价。 [核对来源](<https://item.jd.com/100259402044.html>) |
-| [收纳盒 · 懒角落超深 · 大号](../../../assets/models/storage-bin-ultradeep-large/README.md) | 已对应厂家选项文字与货号，单只价格待核。 [对应规格](https://item.jd.com/100396833078.html) 需在懒角落共用商品页选择该款深度和尺寸，逐规格核价。 [核对来源](<https://item.jd.com/100259402044.html>) |
-| [收纳盒 · 懒角落超深 · 中号](../../../assets/models/storage-bin-ultradeep-medium/README.md) | 已对应厂家选项文字与货号，单只价格待核。 [对应规格](https://item.jd.com/100396832668.html) 需在懒角落共用商品页选择该款深度和尺寸，逐规格核价。 [核对来源](<https://item.jd.com/100259402044.html>) |
 | [小天鹅-TG10K60W-洗衣机](../../../assets/models/washer-tg10k60w/README.md) | 限定奶油白小乌梅 5.0 TG10K60W。公开活动含以旧换新或返卡，单品现价待核。 [核对来源](<https://m.smzdm.com/p/180178280/>) |
 
 ## 无独立商品价格

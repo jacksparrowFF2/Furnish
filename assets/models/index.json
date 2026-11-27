@@ -7964,7 +7964,14 @@
       ],
       "route": "parametric",
       "document": "docs/DOWNLIGHT-PHILIPS-DL269.md",
-      "sourceLinks": [],
+      "sourceLinks": [
+        "https://item.jd.com/10085271761115.html",
+        "https://item.jd.com/10085271761114.html",
+        "https://item.jd.com/10085271761116.html",
+        "https://item.jd.com/10085271761117.html",
+        "https://item.jd.com/10085271761118.html",
+        "https://item.jd.com/10085271761119.html"
+      ],
       "references": [
         {
           "path": "references/user/appearance.png",
@@ -8054,6 +8061,92 @@
         "docs/validation/downlight-20261024/six-variants-settings.json",
         "docs/validation/downlight-20261024/section-geometry.json",
         "docs/validation/full-regression-main-20261025/browser-final.json"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/10085271761115.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。对应商品页选项中的功率及色温。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "飞利浦（PHILIPS）金属筒灯led嵌入式家用5w孔灯吊顶客厅过道防眩天花灯DL269品焕 【5W-4000K】全金属开孔75-78mm",
+            "shop": "飞利浦电工旗舰店",
+            "itemCode": "10085271761115",
+            "variant": "DL269 · 5 W · 4000 K · 开孔 75–78 mm",
+            "priceFen": 3051,
+            "priceScope": "sku"
+          }
+        },
+        {
+          "sourceUrl": "https://item.jd.com/10085271761114.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。对应商品页选项中的功率及色温。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "飞利浦（PHILIPS）金属筒灯led嵌入式家用5w孔灯吊顶客厅过道防眩天花灯DL269品焕 【5W-3000K】全金属开孔75-78mm",
+            "shop": "飞利浦电工旗舰店",
+            "itemCode": "10085271761114",
+            "variant": "DL269 · 5 W · 3000 K · 开孔 75–78 mm",
+            "priceFen": 3051,
+            "priceScope": "sku"
+          }
+        },
+        {
+          "sourceUrl": "https://item.jd.com/10085271761116.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。对应商品页选项中的功率及色温。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "飞利浦（PHILIPS）金属筒灯led嵌入式家用5w孔灯吊顶客厅过道防眩天花灯DL269品焕 【5W-6500K】全金属开孔75-78mm",
+            "shop": "飞利浦电工旗舰店",
+            "itemCode": "10085271761116",
+            "variant": "DL269 · 5 W · 6500 K · 开孔 75–78 mm",
+            "priceFen": 3051,
+            "priceScope": "sku"
+          }
+        },
+        {
+          "sourceUrl": "https://item.jd.com/10085271761117.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。对应商品页选项中的功率及色温。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "飞利浦（PHILIPS）金属筒灯led嵌入式家用5w孔灯吊顶客厅过道防眩天花灯DL269品焕 【7W-3000K】全金属开孔75-78mm",
+            "shop": "飞利浦电工旗舰店",
+            "itemCode": "10085271761117",
+            "variant": "DL269 · 7 W · 3000 K · 开孔 75–78 mm",
+            "priceFen": 3731,
+            "priceScope": "sku"
+          }
+        },
+        {
+          "sourceUrl": "https://item.jd.com/10085271761118.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。对应商品页选项中的功率及色温。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "飞利浦（PHILIPS）金属筒灯led嵌入式家用5w孔灯吊顶客厅过道防眩天花灯DL269品焕 【7W-4000K】全金属开孔75-78mm",
+            "shop": "飞利浦电工旗舰店",
+            "itemCode": "10085271761118",
+            "variant": "DL269 · 7 W · 4000 K · 开孔 75–78 mm",
+            "priceFen": 3731,
+            "priceScope": "sku"
+          }
+        },
+        {
+          "sourceUrl": "https://item.jd.com/10085271761119.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。对应商品页选项中的功率及色温。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "飞利浦（PHILIPS）金属筒灯led嵌入式家用5w孔灯吊顶客厅过道防眩天花灯DL269品焕 【7W-6500K】全金属开孔75-78mm",
+            "shop": "飞利浦电工旗舰店",
+            "itemCode": "10085271761119",
+            "variant": "DL269 · 7 W · 6500 K · 开孔 75–78 mm",
+            "priceFen": 3731,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/downlight-dl269/asset.json",
       "readme": "assets/models/downlight-dl269/README.md"
@@ -11521,7 +11614,8 @@
       "route": "blender",
       "document": "docs/STORAGE-BINS-LANJIAOLUO.md",
       "sourceLinks": [
-        "https://item.jd.com/100259402044.html"
+        "https://item.jd.com/100259402044.html",
+        "https://item.jd.com/100259402050.html"
       ],
       "references": [
         {
@@ -11552,6 +11646,22 @@
       ],
       "notes": [
         "用户确认仅先做7款固定尺寸。尺寸顺序：宽×高×深；前U口、壁厚和圆角为外观估算，非厂家净空或容积。"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100259402050.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。商家页面的尺寸按深×宽×高标注，档案按宽×深×高记录。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "懒角落橱柜收纳盒厨房整理盒零食杂物收纳筐直角储物盒 深柜-中号",
+            "shop": "懒角落京东自营旗舰店",
+            "itemCode": "100259402050",
+            "variant": "深柜中号 · 150×280×150 mm · 单只",
+            "priceFen": 2420,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/storage-bin-deep-medium/asset.json",
       "readme": "assets/models/storage-bin-deep-medium/README.md"
@@ -11566,7 +11676,8 @@
       "route": "blender",
       "document": "docs/STORAGE-BINS-LANJIAOLUO.md",
       "sourceLinks": [
-        "https://item.jd.com/100259402044.html"
+        "https://item.jd.com/100259402044.html",
+        "https://item.jd.com/100196725217.html"
       ],
       "references": [
         {
@@ -11597,6 +11708,22 @@
       ],
       "notes": [
         "用户确认仅先做7款固定尺寸。尺寸顺序：宽×高×深；前U口、壁厚和圆角为外观估算，非厂家净空或容积。"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100196725217.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。商家页面的尺寸按深×宽×高标注，档案按宽×深×高记录。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "懒角落橱柜收纳盒直角厨房储物盒杂物抽屉收纳筐零食整理盒 加深柜-大号",
+            "shop": "懒角落京东自营旗舰店",
+            "itemCode": "100196725217",
+            "variant": "加深柜大号 · 200×350×150 mm · 单只",
+            "priceFen": 3510,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/storage-bin-deeper-large/asset.json",
       "readme": "assets/models/storage-bin-deeper-large/README.md"
@@ -11611,7 +11738,8 @@
       "route": "blender",
       "document": "docs/STORAGE-BINS-LANJIAOLUO.md",
       "sourceLinks": [
-        "https://item.jd.com/100259402044.html"
+        "https://item.jd.com/100259402044.html",
+        "https://item.jd.com/100273391044.html"
       ],
       "references": [
         {
@@ -11642,6 +11770,22 @@
       ],
       "notes": [
         "用户确认仅先做7款固定尺寸。尺寸顺序：宽×高×深；前U口、壁厚和圆角为外观估算，非厂家净空或容积。"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100273391044.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。商家页面的尺寸按深×宽×高标注，档案按宽×深×高记录。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "懒角落橱柜收纳盒厨房整理盒杂物筐桌面直角储物盒收纳箱 加深柜-中号",
+            "shop": "懒角落京东自营旗舰店",
+            "itemCode": "100273391044",
+            "variant": "加深柜中号 · 150×350×150 mm · 单只",
+            "priceFen": 3330,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/storage-bin-deeper-medium/asset.json",
       "readme": "assets/models/storage-bin-deeper-medium/README.md"
@@ -11656,7 +11800,8 @@
       "route": "blender",
       "document": "docs/STORAGE-BINS-LANJIAOLUO.md",
       "sourceLinks": [
-        "https://item.jd.com/100259402044.html"
+        "https://item.jd.com/100259402044.html",
+        "https://item.jd.com/100273391046.html"
       ],
       "references": [
         {
@@ -11687,6 +11832,22 @@
       ],
       "notes": [
         "用户确认仅先做7款固定尺寸。尺寸顺序：宽×高×深；前U口、壁厚和圆角为外观估算，非厂家净空或容积。"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100273391046.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。商家页面的尺寸按深×宽×高标注，档案按宽×深×高记录。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "懒角落橱柜收纳盒厨房整理盒杂物玩具筐桌面直角储物盒收纳箱 浅柜-大号",
+            "shop": "懒角落京东自营旗舰店",
+            "itemCode": "100273391046",
+            "variant": "浅柜大号 · 200×210×150 mm · 单只",
+            "priceFen": 2890,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/storage-bin-shallow-large/asset.json",
       "readme": "assets/models/storage-bin-shallow-large/README.md"
@@ -11701,7 +11862,8 @@
       "route": "blender",
       "document": "docs/STORAGE-BINS-LANJIAOLUO.md",
       "sourceLinks": [
-        "https://item.jd.com/100259402044.html"
+        "https://item.jd.com/100259402044.html",
+        "https://item.jd.com/100396833078.html"
       ],
       "references": [
         {
@@ -11732,6 +11894,22 @@
       ],
       "notes": [
         "用户确认仅先做7款固定尺寸。尺寸顺序：宽×高×深；前U口、壁厚和圆角为外观估算，非厂家净空或容积。"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100396833078.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。商家页面的尺寸按深×宽×高标注，档案按宽×深×高记录。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "懒角落橱柜收纳盒直角厨房储物盒杂物抽屉收纳筐零食收纳箱 超深款大号",
+            "shop": "懒角落京东自营旗舰店",
+            "itemCode": "100396833078",
+            "variant": "超深柜大号 · 200×450×150 mm · 单只",
+            "priceFen": 3770,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/storage-bin-ultradeep-large/asset.json",
       "readme": "assets/models/storage-bin-ultradeep-large/README.md"
@@ -11746,7 +11924,8 @@
       "route": "blender",
       "document": "docs/STORAGE-BINS-LANJIAOLUO.md",
       "sourceLinks": [
-        "https://item.jd.com/100259402044.html"
+        "https://item.jd.com/100259402044.html",
+        "https://item.jd.com/100396832668.html"
       ],
       "references": [
         {
@@ -11777,6 +11956,22 @@
       ],
       "notes": [
         "用户确认仅先做7款固定尺寸。尺寸顺序：宽×高×深；前U口、壁厚和圆角为外观估算，非厂家净空或容积。"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100396832668.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。商家页面的尺寸按深×宽×高标注，档案按宽×深×高记录。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "懒角落橱柜收纳盒直角厨房储物盒杂物抽屉收纳筐零食收纳箱 超深款中号",
+            "shop": "懒角落京东自营旗舰店",
+            "itemCode": "100396832668",
+            "variant": "超深柜中号 · 150×450×150 mm · 单只",
+            "priceFen": 3510,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/storage-bin-ultradeep-medium/asset.json",
       "readme": "assets/models/storage-bin-ultradeep-medium/README.md"
@@ -12706,7 +12901,8 @@
       "document": "docs/YESWOOD-CHERRY-SOFA.md",
       "sourceLinks": [
         "https://item.jd.com/10096040538224.html",
-        "https://www.ruten.com.tw/item/22629124214162/"
+        "https://www.ruten.com.tw/item/22629124214162/",
+        "https://item.jd.com/10096040538225.html"
       ],
       "references": [
         {
@@ -12764,6 +12960,20 @@
             "shop": "源氏木语官方旗舰店",
             "itemCode": "10096040538224",
             "variant": "Y102H11 · 樱桃木 · 2.16 米三人位 · 梨白",
+            "priceFen": 391357,
+            "priceScope": "sku"
+          }
+        },
+        {
+          "sourceUrl": "https://item.jd.com/10096040538225.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。所选规格为 2.16 米三人位灯芯绒松绿。梨白为同档案的另一规格。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "源氏木语全实木沙发客厅中古风樱桃木三人位沙发小户型直排沙发 【3】樱桃木2.16米三人位(灯芯绒松绿)",
+            "shop": "源氏木语官方旗舰店",
+            "itemCode": "10096040538225",
+            "variant": "Y102H11 · 樱桃木 · 2.16 米三人位 · 灯芯绒松绿",
             "priceFen": 391357,
             "priceScope": "sku"
           }

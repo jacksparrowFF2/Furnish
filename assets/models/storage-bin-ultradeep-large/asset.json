@@ -8,7 +8,8 @@
   "route": "blender",
   "document": "docs/STORAGE-BINS-LANJIAOLUO.md",
   "sourceLinks": [
-    "https://item.jd.com/100259402044.html"
+    "https://item.jd.com/100259402044.html",
+    "https://item.jd.com/100396833078.html"
   ],
   "references": [
     {
@@ -39,5 +40,21 @@
   ],
   "notes": [
     "用户确认仅先做7款固定尺寸。尺寸顺序：宽×高×深；前U口、壁厚和圆角为外观估算，非厂家净空或容积。"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/100396833078.html",
+      "capturedOn": "2026-11-27",
+      "note": "京东商品详情显示价，优惠和配送条件以页面为准。商家页面的尺寸按深×宽×高标注，档案按宽×深×高记录。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "懒角落橱柜收纳盒直角厨房储物盒杂物抽屉收纳筐零食收纳箱 超深款大号",
+        "shop": "懒角落京东自营旗舰店",
+        "itemCode": "100396833078",
+        "variant": "超深柜大号 · 200×450×150 mm · 单只",
+        "priceFen": 3770,
+        "priceScope": "sku"
+      }
+    }
   ]
 }

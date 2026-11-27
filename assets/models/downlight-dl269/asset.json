@@ -7,7 +7,14 @@
   ],
   "route": "parametric",
   "document": "docs/DOWNLIGHT-PHILIPS-DL269.md",
-  "sourceLinks": [],
+  "sourceLinks": [
+    "https://item.jd.com/10085271761115.html",
+    "https://item.jd.com/10085271761114.html",
+    "https://item.jd.com/10085271761116.html",
+    "https://item.jd.com/10085271761117.html",
+    "https://item.jd.com/10085271761118.html",
+    "https://item.jd.com/10085271761119.html"
+  ],
   "references": [
     {
       "path": "references/user/appearance.png",
@@ -97,5 +104,91 @@
     "docs/validation/downlight-20261024/six-variants-settings.json",
     "docs/validation/downlight-20261024/section-geometry.json",
     "docs/validation/full-regression-main-20261025/browser-final.json"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/10085271761115.html",
+      "capturedOn": "2026-11-27",
+      "note": "京东商品详情显示价，优惠和配送条件以页面为准。对应商品页选项中的功率及色温。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "飞利浦（PHILIPS）金属筒灯led嵌入式家用5w孔灯吊顶客厅过道防眩天花灯DL269品焕 【5W-4000K】全金属开孔75-78mm",
+        "shop": "飞利浦电工旗舰店",
+        "itemCode": "10085271761115",
+        "variant": "DL269 · 5 W · 4000 K · 开孔 75–78 mm",
+        "priceFen": 3051,
+        "priceScope": "sku"
+      }
+    },
+    {
+      "sourceUrl": "https://item.jd.com/10085271761114.html",
+      "capturedOn": "2026-11-27",
+      "note": "京东商品详情显示价，优惠和配送条件以页面为准。对应商品页选项中的功率及色温。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "飞利浦（PHILIPS）金属筒灯led嵌入式家用5w孔灯吊顶客厅过道防眩天花灯DL269品焕 【5W-3000K】全金属开孔75-78mm",
+        "shop": "飞利浦电工旗舰店",
+        "itemCode": "10085271761114",
+        "variant": "DL269 · 5 W · 3000 K · 开孔 75–78 mm",
+        "priceFen": 3051,
+        "priceScope": "sku"
+      }
+    },
+    {
+      "sourceUrl": "https://item.jd.com/10085271761116.html",
+      "capturedOn": "2026-11-27",
+      "note": "京东商品详情显示价，优惠和配送条件以页面为准。对应商品页选项中的功率及色温。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "飞利浦（PHILIPS）金属筒灯led嵌入式家用5w孔灯吊顶客厅过道防眩天花灯DL269品焕 【5W-6500K】全金属开孔75-78mm",
+        "shop": "飞利浦电工旗舰店",
+        "itemCode": "10085271761116",
+        "variant": "DL269 · 5 W · 6500 K · 开孔 75–78 mm",
+        "priceFen": 3051,
+        "priceScope": "sku"
+      }
+    },
+    {
+      "sourceUrl": "https://item.jd.com/10085271761117.html",
+      "capturedOn": "2026-11-27",
+      "note": "京东商品详情显示价，优惠和配送条件以页面为准。对应商品页选项中的功率及色温。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "飞利浦（PHILIPS）金属筒灯led嵌入式家用5w孔灯吊顶客厅过道防眩天花灯DL269品焕 【7W-3000K】全金属开孔75-78mm",
+        "shop": "飞利浦电工旗舰店",
+        "itemCode": "10085271761117",
+        "variant": "DL269 · 7 W · 3000 K · 开孔 75–78 mm",
+        "priceFen": 3731,
+        "priceScope": "sku"
+      }
+    },
+    {
+      "sourceUrl": "https://item.jd.com/10085271761118.html",
+      "capturedOn": "2026-11-27",
+      "note": "京东商品详情显示价，优惠和配送条件以页面为准。对应商品页选项中的功率及色温。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "飞利浦（PHILIPS）金属筒灯led嵌入式家用5w孔灯吊顶客厅过道防眩天花灯DL269品焕 【7W-4000K】全金属开孔75-78mm",
+        "shop": "飞利浦电工旗舰店",
+        "itemCode": "10085271761118",
+        "variant": "DL269 · 7 W · 4000 K · 开孔 75–78 mm",
+        "priceFen": 3731,
+        "priceScope": "sku"
+      }
+    },
+    {
+      "sourceUrl": "https://item.jd.com/10085271761119.html",
+      "capturedOn": "2026-11-27",
+      "note": "京东商品详情显示价，优惠和配送条件以页面为准。对应商品页选项中的功率及色温。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "飞利浦（PHILIPS）金属筒灯led嵌入式家用5w孔灯吊顶客厅过道防眩天花灯DL269品焕 【7W-6500K】全金属开孔75-78mm",
+        "shop": "飞利浦电工旗舰店",
+        "itemCode": "10085271761119",
+        "variant": "DL269 · 7 W · 6500 K · 开孔 75–78 mm",
+        "priceFen": 3731,
+        "priceScope": "sku"
+      }
+    }
   ]
 }
