@@ -18,7 +18,7 @@ async(page,V)=>{
    check(await p.locator('#bay-height').inputValue()===String(b.height)&&await p.locator('#bay-depth').inputValue()===String(b.depth),'current measurements '+b.id);
    check(await p.locator('[data-bay-selection="whole"]').count()===1,'whole selection '+b.id);
    await p.screenshot({path:V.output('playwright/current-bays/'+mode+'-'+i+'-2d.png')});
-   await p.locator('[data-bay-part="window"]').click();check(await p.evaluate(index=>ui.sel.kind==='win'&&ui.sel.id===index,b.index),'window part '+b.id);
+   await p.locator('[data-bay-fab="window"]').click();check(await p.evaluate(index=>ui.sel.kind==='win'&&ui.sel.id===index,b.index),'window part '+b.id);
    await p.locator('#bay-panels').selectOption('3');await p.locator('#bay-stack-side').selectOption('right');await p.locator('#bay-window-apply').click();
    await p.locator('#bay-height').fill(String(b.height+20));check(await p.locator('#bay-head').inputValue()===String(b.head+20),'linked head '+b.id);
    check(await p.evaluate(id=>FurnishWorkspace.openingPreviewPlan().wins.filter(w=>w.bayId===id).every(w=>w.panels===3&&w.stackSide==='right'),b.id),'preview preserves face style '+b.id);

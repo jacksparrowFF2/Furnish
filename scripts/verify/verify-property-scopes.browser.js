@@ -17,7 +17,8 @@ async(page,V)=>{
    await p.locator('#panel [data-act="al"]').click();ok(await p.evaluate(()=>FurnishDesign.bounds(getF('scope-a'))[0]===FurnishDesign.bounds(getF('scope-b'))[0]),'sidebar alignment works');await p.evaluate(()=>undo());ok(await read()===original,'alignment undo');
    await p.locator('#panel [data-act="match"]').click();ok(await p.evaluate(()=>getF('scope-a').w===getF('scope-b').w&&getF('scope-a').d===getF('scope-b').d),'sidebar match size works');await p.evaluate(()=>undo());
    await p.locator('#fab [data-act="group"]').click();ok(await p.locator('#fab [data-act="ungroup"]').count()===1,'floating group and ungroup retained');await p.evaluate(()=>undo());
-   await p.locator('#panel [data-act="home"]').click();ok(await p.evaluate(()=>ui.panelScope==='design'&&selIds().length===2),'view whole design preserves multiselection');
+   ok(await p.locator('#panel [data-act="home"]').count()===0,'whole design scope has one entry');
+   await p.locator('#panel [data-panel-scope="design"]').click();ok(await p.evaluate(()=>ui.panelScope==='design'&&selIds().length===2),'view whole design preserves multiselection');
    await p.locator('[data-panel-scope="object"]').click();await shot('multi-desktop');
    await p.setViewportSize({width:390,height:844});await p.evaluate(()=>drawer('panel',true));await p.locator('#panel [data-act="match"]').scrollIntoViewIfNeeded();ok(await p.locator('#panel [data-act="match"]').isVisible(),'unique multi edit reachable on mobile');await shot('multi-mobile');
    await p.evaluate(()=>{closeDrawers();selectIds(['scope-a','scope-b']);});await p.locator('#fab [data-act="done"]').click();ok(await p.evaluate(()=>ui.sel===null),'floating done clears selection');await p.setViewportSize({width:1500,height:1000});
@@ -42,7 +43,7 @@ async(page,V)=>{
    const beforeWall=await read();await p.locator('#wall-batch-thickness').fill('210');await p.locator('#wall-batch-apply').click();ok(await p.evaluate(()=>state.architecture.draft.walls.filter(w=>PLAN.wallRefs.slice(0,2).includes(w.id)).every(w=>w.thickness===210)),'batch wall thickness edit works');await p.evaluate(()=>undo());ok(await read()===beforeWall,'wall edit undo');
    await shot('wall-desktop');await p.setViewportSize({width:390,height:844});await p.evaluate(()=>drawer('panel',true));await p.locator('#wall-batch-apply').scrollIntoViewIfNeeded();ok(await p.locator('#wall-batch-apply').isVisible(),'mobile wall batch edit reachable');await shot('wall-mobile');
    await p.evaluate(()=>{mutate(()=>state.measures.push({a:{x:2000,y:2000},b:{x:3000,y:2000}}));select({kind:'measure',id:state.measures.length-1});});
-   await p.locator('#panel [data-act="home"]').click();ok(await p.evaluate(()=>ui.sel?.kind==='measure'&&ui.panelScope==='design'),'restored measurement view design keeps selection');
+   await p.locator('#panel [data-panel-scope="design"]').click();ok(await p.evaluate(()=>ui.sel?.kind==='measure'&&ui.panelScope==='design'),'whole design scope keeps measurement selection');
    ok(errors.length===0,'no page errors: '+errors.join(';'));results.push({mode,passed:true,checks});
   }finally{await ctx.close();}
  }

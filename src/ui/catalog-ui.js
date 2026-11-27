@@ -183,6 +183,6 @@
   preview();drawer('lib',true);
  }
  window.FurnishCatalog={matches,replacement,details,active,previewWork:()=>session?.work&&valid()?session.work:null,isCandidate:it=>!!session?.itemKey&&FurnishCatalogData.itemKey(it)===session.itemKey,choose,afterRender,afterView:positionPreview,selectionChanged,cancel,preferredCategory:()=>session?libAll().find(c=>c.items.some(it=>it[0]===getF(session.id)?.type))?.cat:null};
- document.addEventListener('click',e=>{if(e.target.closest('#replace-furniture,[data-replace-furniture]'))replacement();if(e.target.closest('[data-replacement-cancel]'))cancel();if(e.target.closest('[data-replacement-picker]'))openPicker();});
+ document.addEventListener('click',e=>{if(e.target.closest('[data-replace-furniture]'))replacement();if(e.target.closest('[data-replacement-cancel]'))cancel();if(e.target.closest('[data-replacement-picker]'))openPicker();});
  addEventListener('keydown',e=>{if(session&&e.key==='Escape'){e.preventDefault();e.stopImmediatePropagation();if(!$('#replacement-picker').hidden)closePicker();else cancel();}},true);
 })();

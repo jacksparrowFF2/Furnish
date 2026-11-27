@@ -9,7 +9,7 @@ async (page,verification)=>{
   const id=await p.evaluate(()=>selIds()[0]);check(await p.evaluate(id=>{const f=getF(id);return f.type==='coffeetable_yeswood_cherry'&&f.w===1200&&f.d===650&&f.h===450;},id),'catalog dimensions');
   await p.locator('[data-fab-edit="size"]').click();await p.locator('#fab-width').fill('960');await p.locator('#fab-depth').fill('480');await p.getByRole('button',{name:'应用尺寸',exact:true}).click();
   check(await p.evaluate(id=>getF(id).w===960&&getF(id).d===480,id),'size edit');await p.evaluate(()=>undo());check(await p.evaluate(id=>getF(id).w===1200,id),'undo');await p.evaluate(()=>redo());check(await p.evaluate(id=>getF(id).w===960,id),'redo');
-  await p.locator('#fab [data-act="prop"]').click();await p.locator('#fH').fill('800');await p.locator('#fH').press('Tab');check(await p.evaluate(id=>getF(id).h===800,id),'height edit');
+  await p.evaluate(()=>drawer('panel',true));await p.locator('#fH').fill('800');await p.locator('#fH').press('Tab');check(await p.evaluate(id=>getF(id).h===800,id),'height edit');
   await p.locator('#fab [data-act="dup"]').click();check(await p.evaluate(()=>state.furniture.filter(f=>f.type==='coffeetable_yeswood_cherry').length===2),'copy');await p.evaluate(()=>undo());
   const before=await p.evaluate(id=>JSON.stringify(getF(id)),id);await verification.waitForCache(p);await p.reload();check(await p.evaluate(id=>JSON.stringify(getF(id)),id)===before,'refresh');
   check(await p.evaluate(id=>{const w={furniture:[getF(id)]},r=FurnishProject.unpack(FurnishProject.pack({planId:PLAN.id,current:w,designs:[{id:'tea-table',name:'茶台',work:w}],catalog:[]}));return JSON.stringify(r.current.furniture)===JSON.stringify(w.furniture)&&r.designs[0].work.furniture[0].h===800;},id),'project roundtrip');

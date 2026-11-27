@@ -6,8 +6,12 @@ async(page,V)=>{
   try{
    await p.goto((mode==='file'?V.fileBase:V.baseURL)+'index.html');await p.waitForFunction(()=>!repositoryBooting);
    await p.evaluate(()=>{mutate(()=>{state.furniture=[F('rangehood_fotile_jcd10ta','烟机去重验收',2500,2500,900,350,0,'#111214')];state.furniture[0].id='dedup-hood';});selectIds(['dedup-hood']);});
-   check(await p.locator('#panel #fW,#panel #fD').count()===2,'hood exposes one width/depth pair in the property size group');
+   check(await p.locator('#panel #fW,#panel #fD').count()===0,'hood footprint is edited only in the toolbar');
    check(await p.locator('#panel #hood-height,#panel #hood-bodyHeight,#panel #fX,#panel #fY,#panel #fR').count()===5,'unique geometry and placement controls retained');
+   check(await p.locator('#panel #replace-furniture').count()===0&&await p.locator('#fab [data-replace-furniture]').count()===1,'one replacement entry');
+   check(await p.locator('#fab [data-act="prop"]').isHidden(),'visible right panel removes the floating properties shortcut');
+   await p.locator('#tgPanel').click();await p.locator('#fab [data-act="prop"]').press('Enter');
+   check(await p.locator('#panel [data-panel-scope="object"]').evaluate(el=>el===document.activeElement),'floating properties shortcut reopens the panel and moves keyboard focus');
    check((await p.locator('#panel [data-furniture-dimensions]>small').first().innerText())==='包络高','sidebar shows vertical dimensions only');
    await p.locator('#fab [data-fab-edit="size"]').click();await p.locator('#fab-width').fill('990');await p.locator('#fab-depth').fill('385');
    await p.getByRole('button',{name:'应用尺寸',exact:true}).click();

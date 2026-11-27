@@ -19,11 +19,11 @@ async function main(){
   await page.evaluate(()=>{mutate(()=>{state.furniture=[];state.furnitureDatum='survey';});addItem(LIB.flatMap(c=>c.items).find(i=>i[0]==='art_glass_partition'),3000,3000);});
   const id=await page.evaluate(()=>state.furniture[0].id);assert.equal(await page.locator('#fArtGlassPattern option').count(),9);assert.equal(await page.locator('#fH').count(),1);
   await page.locator('#fArtGlassPattern').selectOption('cube');await page.locator('#fArtGlassPattern').blur();await page.keyboard.press('Control+z');assert.equal(await page.evaluate(id=>getF(id).artGlassPattern,id),'fluted');await page.keyboard.press('Control+Shift+z');assert.equal(await page.evaluate(id=>getF(id).artGlassPattern,id),'cube');
-  for(const [selector,value] of [['#fGlassDepth',6.5],['#fH',2200],['#fMountHeight',120]]){await page.locator(selector).fill(String(value));await page.locator(selector).dispatchEvent('change');}
-  await page.locator('[data-fab-edit="size"]').click();await page.locator('#fab-width').fill('1100');await page.locator('#fab-size-form [type="submit"]').click();
+  for(const [selector,value] of [['#fH',2200],['#fMountHeight',120]]){await page.locator(selector).fill(String(value));await page.locator(selector).dispatchEvent('change');}
+  await page.locator('[data-fab-edit="size"]').click();await page.locator('#fab-width').fill('1100');await page.locator('#fab-depth').fill('6.5');await page.locator('#fab-size-form [type="submit"]').click();
   assert.deepEqual(await page.evaluate(id=>{const f=getF(id);return [f.w,f.d,f.h,f.mountHeight];},id),[1100,6.5,2200,120]);
-  await page.locator('#fGlassDepth').fill('31');await page.locator('#fGlassDepth').dispatchEvent('change');assert.equal(await page.evaluate(id=>getF(id).d,id),6.5);
-  await page.evaluate(id=>{mutate(()=>getF(id).locked=true);selectIds([id]);},id);assert(await page.locator('#fArtGlassPattern').isDisabled());assert(await page.locator('#fGlassDepth').isDisabled());await page.evaluate(id=>{mutate(()=>delete getF(id).locked);selectIds([id]);},id);
+  await page.locator('[data-fab-edit="size"]').click();await page.locator('#fab-depth').fill('31');await page.locator('#fab-size-form [type="submit"]').click();assert.equal(await page.evaluate(id=>getF(id).d,id),6.5);await page.keyboard.press('Escape');
+  await page.evaluate(id=>{mutate(()=>getF(id).locked=true);selectIds([id]);},id);assert(await page.locator('#fArtGlassPattern').isDisabled());assert(await page.locator('[data-fab-edit="size"]').isDisabled());await page.evaluate(id=>{mutate(()=>delete getF(id).locked);selectIds([id]);},id);
   checks.push('catalog; nine choices; actual property edits; thin decimal depth; invalid input; lock; undo/redo');
   await page.screenshot({path:path.join(run,'desktop-properties.png')});await page.evaluate(()=>FurnishRepository.flush());await page.reload();await page.locator('#repository-loading').waitFor({state:'hidden'});
   assert.deepEqual(await page.evaluate(id=>{const f=getF(id);return [f.w,f.d,f.h,f.mountHeight,f.artGlassPattern];},id),[1100,6.5,2200,120,'cube']);checks.push('v46 save and refresh');

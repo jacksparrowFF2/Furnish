@@ -11,7 +11,7 @@ async(page,V)=>{
   check(await p.locator('[data-bay-surface]').count()===1,'platform opens bay surface panel');
   check(await p.locator('#panel').innerText().then(t=>!t.includes('房间用途')&&!t.includes('房间内家具')),'no generic room controls');
   check(await p.locator('[data-bay-selection="whole"]').count()===1,'whole assembly selection');
-  await p.locator('[data-bay-part="window"]').click();check(await p.evaluate(i=>ui.sel.kind==='win'&&ui.sel.id===i,bay.index),'window part switch');
+  await p.locator('[data-bay-fab="window"]').click();check(await p.evaluate(i=>ui.sel.kind==='win'&&ui.sel.id===i,bay.index),'window part switch');
   await p.locator('#bay-height').fill('600');check(await p.locator('#bay-head').inputValue()==='2550','height linkage preserves window height');await p.locator('#bay-apply').click();
   check(await p.evaluate(()=>FurnishBayWindows.list(FurnishProject.effectivePlan(PLAN,state))[0].platform.height===.6),'platform height applied');
   await p.locator('#undo').click();check(await p.locator('#bay-height').inputValue()==='450','undo height');await p.locator('#redo').click();check(await p.locator('#bay-height').inputValue()==='600','redo height');
