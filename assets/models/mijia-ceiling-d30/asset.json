@@ -8,12 +8,29 @@
   "route": "blender",
   "document": "docs/MIJIA-CEILING-LIGHTS.md",
   "sourceLinks": [
-    "https://www.mi.com/hk/product/xiaomi-smart-ceiling-light-d30/specs/"
+    "https://www.mi.com/hk/product/xiaomi-smart-ceiling-light-d30/specs/",
+    "https://item.jd.com/100139123218.html"
   ],
   "references": [],
   "missingReferences": [
     "厂家CAD、隐藏构造及IES"
   ],
   "supportingFiles": [],
-  "validation": []
+  "validation": [],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/100139123218.html",
+      "capturedOn": "2026-11-27",
+      "note": "京东商品详情显示价，优惠和配送条件以页面为准。大陆商品页面标注包安装。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "米家【包安装】小米米家智能吸顶灯D30全光谱卧室灯",
+        "shop": "小米京东自营旗舰店",
+        "itemCode": "100139123218",
+        "variant": "D30 · 9290041691 · 单灯",
+        "priceFen": 25168,
+        "priceScope": "sku"
+      }
+    }
+  ]
 }

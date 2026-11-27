@@ -8,7 +8,8 @@
   "route": "blender",
   "document": "docs/MIJIA-CEILING-LIGHTS.md",
   "sourceLinks": [
-    "https://www.mi.com/shop/buy/detail?product_id=22569"
+    "https://www.mi.com/shop/buy/detail?product_id=22569",
+    "https://item.jd.com/100116543159.html"
   ],
   "references": [
     {
@@ -23,5 +24,21 @@
     "厂家CAD、隐藏构造及IES"
   ],
   "supportingFiles": [],
-  "validation": []
+  "validation": [],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/100116543159.html",
+      "capturedOn": "2026-11-27",
+      "note": "京东商品详情显示价，优惠和配送条件以页面为准。原吸顶灯套系单灯。大陆商品页面标注包安装。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "米家【包安装】小米智能吸顶灯L60全光谱客厅灯卧室灯无极调光",
+        "shop": "小米京东自营旗舰店",
+        "itemCode": "100116543159",
+        "variant": "L60 · 9290041689 · 单灯",
+        "priceFen": 53473,
+        "priceScope": "sku"
+      }
+    }
+  ]
 }

@@ -9,7 +9,8 @@
   "document": "docs/PILLOW-ATOUR-PRO4.md",
   "sourceLinks": [
     "https://item.m.jd.com/product/100385738150.html",
-    "https://www.jd.com/brand/15248f7a36386fa205223.html"
+    "https://www.jd.com/brand/15248f7a36386fa205223.html",
+    "https://item.jd.com/100385738150.html"
   ],
   "references": [
     {
@@ -30,5 +31,21 @@
   "missingReferences": [],
   "validation": [
     "docs/validation/pillow-atour-pro4-20261124/README.md"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/100385738150.html",
+      "capturedOn": "2026-11-27",
+      "note": "京东商品详情显示价，优惠和配送条件以页面为准。原档案的指定 SKU，页面规格复核为高 10 cm、单只。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "亚朵星球深睡枕Pro4.0记忆枕头枕芯记忆棉海绵护颈椎助睡眠侧睡送礼",
+        "shop": "亚朵星球京东自营旗舰店",
+        "itemCode": "100385738150",
+        "variant": "10 cm · 岩溪蓝枕套＋枕芯 · 单只装",
+        "priceFen": 44500,
+        "priceScope": "sku"
+      }
+    }
   ]
 }

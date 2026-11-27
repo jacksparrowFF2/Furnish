@@ -8,7 +8,8 @@
   "route": "blender",
   "document": "docs/SOFA-BED-YESWOOD-Y107H03.md",
   "sourceLinks": [
-    "https://item.jd.com/10222453768218.html?pcdk=tYm4zPuxlfwfMDJGKB3FpmsLp6UaRNDrZfrEncvYAtvwb3VqGIj8y7DNuXVth1_2.rQ4a.tlbT"
+    "https://item.jd.com/10222453768218.html?pcdk=tYm4zPuxlfwfMDJGKB3FpmsLp6UaRNDrZfrEncvYAtvwb3VqGIj8y7DNuXVth1_2.rQ4a.tlbT",
+    "https://item.jd.com/10222453768218.html"
   ],
   "references": [
     {
@@ -301,5 +302,21 @@
     "docs/validation/sofa-bed-details-20261031/README.md",
     "docs/validation/sofa-bed-motion-20261031/README.md",
     "docs/validation/sofa-bed-y107h03-20261031/README.md"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/10222453768218.html",
+      "capturedOn": "2026-11-27",
+      "note": "京东商品详情显示价，优惠和配送条件以页面为准。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "源氏木语实木沙发床现代简约多功能可折叠床北欧风小户型客厅两用双人沙发 【15】1.25米山毛榉原木色(梨白)",
+        "shop": "源氏木语官方旗舰店",
+        "itemCode": "10222453768218",
+        "variant": "Y107H03 · 1.25 米 · 山毛榉原木色／梨白",
+        "priceFen": 192980,
+        "priceScope": "sku"
+      }
+    }
   ]
 }

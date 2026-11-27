@@ -55,5 +55,21 @@
   ],
   "missingReferences": [],
   "supportingFiles": [],
-  "validation": []
+  "validation": [],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/10096040538224.html",
+      "capturedOn": "2026-11-27",
+      "note": "京东商品详情显示价，优惠和配送条件以页面为准。对应家具库梨白条目。灯芯绒松绿另按规格核价。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "源氏木语全实木沙发客厅中古风樱桃木三人位沙发小户型直排沙发 【1】樱桃木2.16米三人位（布艺梨白)",
+        "shop": "源氏木语官方旗舰店",
+        "itemCode": "10096040538224",
+        "variant": "Y102H11 · 樱桃木 · 2.16 米三人位 · 梨白",
+        "priceFen": 391357,
+        "priceScope": "sku"
+      }
+    }
+  ]
 }

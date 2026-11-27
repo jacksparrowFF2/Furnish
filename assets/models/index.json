@@ -8870,7 +8870,8 @@
       "document": "docs/PET-SUPPLIES.md",
       "sourceLinks": [
         "https://img14.360buyimg.com/pop/jfs/t1/248679/35/10461/184255/665e7a83F62fa7c19/a98f8fdffe9d954a.jpg",
-        "https://www.jtsww.shop/product/detail/245415"
+        "https://www.jtsww.shop/product/detail/245415",
+        "https://item.jd.com/100015934832.html"
       ],
       "references": [
         {
@@ -8918,6 +8919,20 @@
             "itemCode": "100015934864",
             "variant": "2.5 kg×4 袋整箱",
             "priceFen": 6195,
+            "priceScope": "sku"
+          }
+        },
+        {
+          "sourceUrl": "https://item.jd.com/100015934832.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。同系列单袋商品。京东标为新老包装混发。先前整箱报价仍可在档案查阅。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "网易严选四合一豆腐膨润土植物混合猫砂强结团不沾底除臭木薯5斤-新老混发",
+            "shop": "网易严选京东自营旗舰店",
+            "itemCode": "100015934832",
+            "variant": "四合一混合猫砂 · 2.5 kg 单袋",
+            "priceFen": 1890,
             "priceScope": "sku"
           }
         }
@@ -9045,7 +9060,8 @@
       "route": "blender",
       "document": "docs/MIJIA-CEILING-LIGHTS.md",
       "sourceLinks": [
-        "https://www.mi.com/tw/product/xiaomi-smart-ceiling-light-d20/specs/"
+        "https://www.mi.com/tw/product/xiaomi-smart-ceiling-light-d20/specs/",
+        "https://item.jd.com/100116543183.html"
       ],
       "references": [],
       "missingReferences": [
@@ -9053,6 +9069,22 @@
       ],
       "supportingFiles": [],
       "validation": [],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100116543183.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。大陆商品页面标注包安装。地区版本的电气规格可有差异。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "米家【包安装】小米米家雷达光感吸顶灯D20玄关人来灯亮",
+            "shop": "小米京东自营旗舰店",
+            "itemCode": "100116543183",
+            "variant": "D20 · 9290041692 · 雷达光感 · 单灯",
+            "priceFen": 15223,
+            "priceScope": "sku"
+          }
+        }
+      ],
       "manifest": "assets/models/mijia-ceiling-d20/asset.json",
       "readme": "assets/models/mijia-ceiling-d20/README.md"
     },
@@ -9066,7 +9098,8 @@
       "route": "blender",
       "document": "docs/MIJIA-CEILING-LIGHTS.md",
       "sourceLinks": [
-        "https://www.mi.com/hk/product/xiaomi-smart-ceiling-light-d30/specs/"
+        "https://www.mi.com/hk/product/xiaomi-smart-ceiling-light-d30/specs/",
+        "https://item.jd.com/100139123218.html"
       ],
       "references": [],
       "missingReferences": [
@@ -9074,6 +9107,22 @@
       ],
       "supportingFiles": [],
       "validation": [],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100139123218.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。大陆商品页面标注包安装。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "米家【包安装】小米米家智能吸顶灯D30全光谱卧室灯",
+            "shop": "小米京东自营旗舰店",
+            "itemCode": "100139123218",
+            "variant": "D30 · 9290041691 · 单灯",
+            "priceFen": 25168,
+            "priceScope": "sku"
+          }
+        }
+      ],
       "manifest": "assets/models/mijia-ceiling-d30/asset.json",
       "readme": "assets/models/mijia-ceiling-d30/README.md"
     },
@@ -9087,7 +9136,8 @@
       "route": "blender",
       "document": "docs/MIJIA-CEILING-LIGHTS.md",
       "sourceLinks": [
-        "https://www.mi.com/tw/product/xiaomi-smart-ceiling-light-d40/specs/"
+        "https://www.mi.com/tw/product/xiaomi-smart-ceiling-light-d40/specs/",
+        "https://item.jd.com/10115021009283.html"
       ],
       "references": [
         {
@@ -9103,6 +9153,22 @@
       ],
       "supportingFiles": [],
       "validation": [],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/10115021009283.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。大陆商品页面标注初次免费安装。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "米家吸顶灯初次免费安装 过道阳台小爱智能语音 米家吸顶灯D40",
+            "shop": "小米官方旗舰店",
+            "itemCode": "10115021009283",
+            "variant": "D40 · 9290041690 · 单灯",
+            "priceFen": 31968,
+            "priceScope": "sku"
+          }
+        }
+      ],
       "manifest": "assets/models/mijia-ceiling-d40/asset.json",
       "readme": "assets/models/mijia-ceiling-d40/README.md"
     },
@@ -9116,7 +9182,8 @@
       "route": "blender",
       "document": "docs/MIJIA-CEILING-LIGHTS.md",
       "sourceLinks": [
-        "https://www.mi.com/shop/buy/detail?product_id=22569"
+        "https://www.mi.com/shop/buy/detail?product_id=22569",
+        "https://item.jd.com/100116543159.html"
       ],
       "references": [
         {
@@ -9132,6 +9199,22 @@
       ],
       "supportingFiles": [],
       "validation": [],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100116543159.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。原吸顶灯套系单灯。大陆商品页面标注包安装。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "米家【包安装】小米智能吸顶灯L60全光谱客厅灯卧室灯无极调光",
+            "shop": "小米京东自营旗舰店",
+            "itemCode": "100116543159",
+            "variant": "L60 · 9290041689 · 单灯",
+            "priceFen": 53473,
+            "priceScope": "sku"
+          }
+        }
+      ],
       "manifest": "assets/models/mijia-ceiling-l60/asset.json",
       "readme": "assets/models/mijia-ceiling-l60/README.md"
     },
@@ -10446,7 +10529,8 @@
       "document": "docs/PILLOW-ATOUR-PRO4.md",
       "sourceLinks": [
         "https://item.m.jd.com/product/100385738150.html",
-        "https://www.jd.com/brand/15248f7a36386fa205223.html"
+        "https://www.jd.com/brand/15248f7a36386fa205223.html",
+        "https://item.jd.com/100385738150.html"
       ],
       "references": [
         {
@@ -10467,6 +10551,22 @@
       "missingReferences": [],
       "validation": [
         "docs/validation/pillow-atour-pro4-20261124/README.md"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100385738150.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。原档案的指定 SKU，页面规格复核为高 10 cm、单只。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "亚朵星球深睡枕Pro4.0记忆枕头枕芯记忆棉海绵护颈椎助睡眠侧睡送礼",
+            "shop": "亚朵星球京东自营旗舰店",
+            "itemCode": "100385738150",
+            "variant": "10 cm · 岩溪蓝枕套＋枕芯 · 单只装",
+            "priceFen": 44500,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/pillow-atour-pro4/asset.json",
       "readme": "assets/models/pillow-atour-pro4/README.md"
@@ -10500,7 +10600,9 @@
       "route": "parametric",
       "document": "docs/ROBOROCK-P20MAX.md",
       "sourceLinks": [
-        "http://127.0.0.1:8765/output/robot-p20max/preview.html"
+        "http://127.0.0.1:8765/output/robot-p20max/preview.html",
+        "https://item.jd.com/100325625266.html",
+        "https://item.jd.com/100325565100.html"
       ],
       "references": [
         {
@@ -10567,6 +10669,36 @@
       "missingReferences": [],
       "supportingFiles": [],
       "validation": [],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100325625266.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。与自动上下水版分别核对售价。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "石头（roborock）扫地机器人扫拖一体 P20 Max自动集尘热水洗拖布擦地拖地 A2950RR（支持鸿蒙智联）",
+            "shop": "石头科技京东自营旗舰店",
+            "itemCode": "100325625266",
+            "variant": "P20 Max · A2950RR · 水箱版",
+            "priceFen": 309900,
+            "priceScope": "sku"
+          }
+        },
+        {
+          "sourceUrl": "https://item.jd.com/100325565100.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。与水箱版分别核对售价。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "石头（roborock）扫地机器人P20 Max 自动上下水版自动集尘热水洗拖布拖地 A2950RR（支持鸿蒙智联）",
+            "shop": "石头科技京东自营旗舰店",
+            "itemCode": "100325565100",
+            "variant": "P20 Max · A2950RR · 自动上下水版",
+            "priceFen": 309900,
+            "priceScope": "sku"
+          }
+        }
+      ],
       "manifest": "assets/models/robot-p20max/asset.json",
       "readme": "assets/models/robot-p20max/README.md"
     },
@@ -10579,7 +10711,9 @@
       ],
       "route": "blender",
       "document": "docs/BATH-HEATER-AOPU-SE2.md",
-      "sourceLinks": [],
+      "sourceLinks": [
+        "https://item.jd.com/100227280160.html"
+      ],
       "references": [
         {
           "path": "references/user/reference-front.png",
@@ -10622,6 +10756,22 @@
       "supportingFiles": [],
       "validation": [
         "docs/validation/bath-heater-se2-20261027/README.md"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100227280160.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。商品参数列风暖功率 2750 W，原建模参考图标 2800 W；以厂家随货资料核对。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "奥普（AUPU）智能浴霸热浪系列【送安装拆旧】智能AI恒温预约排气照明一体SE2",
+            "shop": "奥普浴霸京东自营旗舰店",
+            "itemCode": "100227280160",
+            "variant": "SE2 · 热浪系列 · 300×600 mm 安装 · 送安装拆旧",
+            "priceFen": 47139,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/se2/asset.json",
       "readme": "assets/models/se2/README.md"
@@ -10930,7 +11080,8 @@
       "route": "blender",
       "document": "docs/SOFA-BED-YESWOOD-Y107H03.md",
       "sourceLinks": [
-        "https://item.jd.com/10222453768218.html?pcdk=tYm4zPuxlfwfMDJGKB3FpmsLp6UaRNDrZfrEncvYAtvwb3VqGIj8y7DNuXVth1_2.rQ4a.tlbT"
+        "https://item.jd.com/10222453768218.html?pcdk=tYm4zPuxlfwfMDJGKB3FpmsLp6UaRNDrZfrEncvYAtvwb3VqGIj8y7DNuXVth1_2.rQ4a.tlbT",
+        "https://item.jd.com/10222453768218.html"
       ],
       "references": [
         {
@@ -11224,6 +11375,22 @@
         "docs/validation/sofa-bed-motion-20261031/README.md",
         "docs/validation/sofa-bed-y107h03-20261031/README.md"
       ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/10222453768218.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "源氏木语实木沙发床现代简约多功能可折叠床北欧风小户型客厅两用双人沙发 【15】1.25米山毛榉原木色(梨白)",
+            "shop": "源氏木语官方旗舰店",
+            "itemCode": "10222453768218",
+            "variant": "Y107H03 · 1.25 米 · 山毛榉原木色／梨白",
+            "priceFen": 192980,
+            "priceScope": "sku"
+          }
+        }
+      ],
       "manifest": "assets/models/sofa-bed/asset.json",
       "readme": "assets/models/sofa-bed/README.md"
     },
@@ -11324,6 +11491,22 @@
       ],
       "notes": [
         "用户确认仅先做7款固定尺寸。尺寸顺序：宽×高×深；前U口、壁厚和圆角为外观估算，非厂家净空或容积。"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100259402044.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。尺寸链采用原档案对应的深柜大号选项。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "懒角落橱柜收纳盒直角厨房储物盒零食杂物抽屉收纳筐整理盒 深柜-大号",
+            "shop": "懒角落京东自营旗舰店",
+            "itemCode": "100259402044",
+            "variant": "深柜大号 · 200×280×150 mm · 单只",
+            "priceFen": 3070,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/storage-bin-deep-large/asset.json",
       "readme": "assets/models/storage-bin-deep-large/README.md"
@@ -11817,7 +12000,8 @@
       "route": "blender",
       "document": "docs/TOOLBOX-JIABANGSHOU-390.md",
       "sourceLinks": [
-        "https://item.jd.com/100359220602.html?pcdk=RJa6PDO-Zo0FpVTOHjGIKpw-upu2XtqCI2HoepGgMAPLz682W0ZkBDAqvF97TX4s.3z6a.aI3x&spmTag=YTAyMTkuYjAwMjM1Ni5jMDAwMDcyMTAua2V5d29yZF9lbnRlciU0MDE3OTM5ODQ1ODk5MzUlMjMxNzc5MjAwODk2ODQ0MTk1MjY0MDYxNiUyMzE5NDcyODI0MzklMkNhMDI0MC5iMDAyNDkzLmMwMDAwNDAyNy40JTIzc2t1X2NhcmQlNDAxNzk0MDU5OTQzOTQ1JTIzMTc3OTIwMDg5Njg0NDE5NTI2NDA2MTYlMjMzNTc1NDI5OTc"
+        "https://item.jd.com/100359220602.html?pcdk=RJa6PDO-Zo0FpVTOHjGIKpw-upu2XtqCI2HoepGgMAPLz682W0ZkBDAqvF97TX4s.3z6a.aI3x&spmTag=YTAyMTkuYjAwMjM1Ni5jMDAwMDcyMTAua2V5d29yZF9lbnRlciU0MDE3OTM5ODQ1ODk5MzUlMjMxNzc5MjAwODk2ODQ0MTk1MjY0MDYxNiUyMzE5NDcyODI0MzklMkNhMDI0MC5iMDAyNDkzLmMwMDAwNDAyNy40JTIzc2t1X2NhcmQlNDAxNzk0MDU5OTQzOTQ1JTIzMTc3OTIwMDg5Njg0NDE5NTI2NDA2MTYlMjMzNTc1NDI5OTc",
+        "https://item.jd.com/100359220602.html"
       ],
       "references": [
         {
@@ -11835,6 +12019,22 @@
       "notes": [
         "已读取京东SKU100359220602，品牌/商品名与附件一致；标注390×270×210mm，图注手量误差1–2cm。PP、外观依据用户营销图，未取得实测壁厚和开盖机构。"
       ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100359220602.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东对应的选中规格标为大号（加大提手）39×27×21 cm。页面价格与运送条件以实际页面为准。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "佳帮手工具收纳箱透明分格便携家用螺丝零件小型五金收纳工具盒",
+            "shop": "佳帮手京东自营旗舰店",
+            "itemCode": "100359220602",
+            "variant": "透明大号 · 加大提手 · 390×270×210 mm",
+            "priceFen": 3750,
+            "priceScope": "sku"
+          }
+        }
+      ],
       "manifest": "assets/models/toolbox-jiabangshou-390/asset.json",
       "readme": "assets/models/toolbox-jiabangshou-390/README.md"
     },
@@ -11848,7 +12048,8 @@
       "route": "blender",
       "document": "docs/TOOLBOX-SHIMOYAMA-9L.md",
       "sourceLinks": [
-        "https://item.jd.com/10192952050315.html?pcdk=yzUFzt4sJJtnvJXckvDqccqYxXjS3dy1qK_N85l4bbBpNEKQ5hBA8SeEqDyw2SBz.3z6a.aI3x&spmTag=YTAyNDAuYjAwMjQ5My5jMDAwMDQwMjcuOSUyM3NrdV9jYXJkJTQwMTc5NDA3MDk2NDAzNiUyMzE3NzkyMDA4OTY4NDQxOTUyNjQwNjE2JTIzMTc0NTk0NjcwMw"
+        "https://item.jd.com/10192952050315.html?pcdk=yzUFzt4sJJtnvJXckvDqccqYxXjS3dy1qK_N85l4bbBpNEKQ5hBA8SeEqDyw2SBz.3z6a.aI3x&spmTag=YTAyNDAuYjAwMjQ5My5jMDAwMDQwMjcuOSUyM3NrdV9jYXJkJTQwMTc5NDA3MDk2NDAzNiUyMzE3NzkyMDA4OTY4NDQxOTUyNjQwNjE2JTIzMTc0NTk0NjcwMw",
+        "https://item.jd.com/10192952050315.html"
       ],
       "references": [
         {
@@ -11874,6 +12075,22 @@
       "notes": [
         "用户尺寸图340×240×180mm，含提手220mm。京东SKU/品牌/尺寸已读取；价格保留未知。静态闭盖，卡扣、壁厚、圆角及隐藏托盘为外观估算，无开盖轨迹或容量认证。",
         "2026-11-08用户确认默认提手放平；v8静态闭盖默认高180mm，旧保存高度不批量改写，几何版本2。"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/10192952050315.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "霜山工具箱大号手提式车载多功能维修电工家用双层五金零件收纳盒 工具箱-长34*宽24*高18cm",
+            "shop": "霜山SHIMOYAMA旗舰店",
+            "itemCode": "10192952050315",
+            "variant": "霜山 9 L · 大号 340×240×180 mm",
+            "priceFen": 6120,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/toolbox-shimoyama-9l/asset.json",
       "readme": "assets/models/toolbox-shimoyama-9l/README.md"
@@ -11920,6 +12137,22 @@
       "missingReferences": [],
       "validation": [
         "docs/validation/toshiba-d232-visual-20261125/README.md"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/10232038915570.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。商品参数列明 420×399×337 mm。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "东芝（TOSHIBA）【台嵌一体】东芝小白茶mix新品首发微蒸烤一体机嵌入式家用变频彩屏微波炉蒸烤箱空气炸 东芝D232 东芝小白茶Mix微蒸烤台嵌一体机",
+            "shop": "东芝西式厨电旗舰店",
+            "itemCode": "10232038915570",
+            "variant": "D232 · 白色 · 23 L 台嵌一体",
+            "priceFen": 399865,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/toshiba-d232/asset.json",
       "readme": "assets/models/toshiba-d232/README.md"
@@ -11978,6 +12211,22 @@
       "notes": [
         "规格对应京东自营 SKU 100396204646；商品图标注轨道厚度13.9mm、槽宽4.3mm。",
         "轨道高94mm、整组深36mm、模块直径68mm依据商品图估算。三个模块静态布置。"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100396204646.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。整套包括一根轨道与 3 个五孔适配器。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "公牛（BULL）超薄轨道插座可移动插线板轨道式导轨插排餐边柜 开关插座面板 GB50K 50厘米+3个五孔 墨云灰",
+            "shop": "公牛插座京东自营旗舰店",
+            "itemCode": "100396204646",
+            "variant": "GN-GB50K · 墨云灰 · 500 mm＋3 个五孔",
+            "priceFen": 24982,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/track-socket-bull-gb50k/asset.json",
       "readme": "assets/models/track-socket-bull-gb50k/README.md"
@@ -12427,6 +12676,22 @@
         "docs/validation/blender-bookcase-y52y09-20261029/README.md",
         "docs/validation/bookcase-y52y09-20261029/placement-check.json"
       ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100266639340.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。采用高 750 mm 无底框款，对应建模规格。另有 850 mm 带底框款。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "源氏木语儿童家具儿童书柜实木落地柜组合书架收纳柜1.11米儿童书柜(3*2格)无底框",
+            "shop": "源氏木语儿童家具京东自营旗舰店",
+            "itemCode": "100266639340",
+            "variant": "Y52Y09 · 1115×230×750 mm · 六格无底框",
+            "priceFen": 112900,
+            "priceScope": "sku"
+          }
+        }
+      ],
       "manifest": "assets/models/y52y09/asset.json",
       "readme": "assets/models/y52y09/README.md"
     },
@@ -12488,6 +12753,22 @@
       "missingReferences": [],
       "supportingFiles": [],
       "validation": [],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/10096040538224.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。对应家具库梨白条目。灯芯绒松绿另按规格核价。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "源氏木语全实木沙发客厅中古风樱桃木三人位沙发小户型直排沙发 【1】樱桃木2.16米三人位（布艺梨白)",
+            "shop": "源氏木语官方旗舰店",
+            "itemCode": "10096040538224",
+            "variant": "Y102H11 · 樱桃木 · 2.16 米三人位 · 梨白",
+            "priceFen": 391357,
+            "priceScope": "sku"
+          }
+        }
+      ],
       "manifest": "assets/models/yeswood-sofa/asset.json",
       "readme": "assets/models/yeswood-sofa/README.md"
     }

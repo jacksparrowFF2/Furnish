@@ -8,7 +8,8 @@
   "route": "blender",
   "document": "docs/TOOLBOX-JIABANGSHOU-390.md",
   "sourceLinks": [
-    "https://item.jd.com/100359220602.html?pcdk=RJa6PDO-Zo0FpVTOHjGIKpw-upu2XtqCI2HoepGgMAPLz682W0ZkBDAqvF97TX4s.3z6a.aI3x&spmTag=YTAyMTkuYjAwMjM1Ni5jMDAwMDcyMTAua2V5d29yZF9lbnRlciU0MDE3OTM5ODQ1ODk5MzUlMjMxNzc5MjAwODk2ODQ0MTk1MjY0MDYxNiUyMzE5NDcyODI0MzklMkNhMDI0MC5iMDAyNDkzLmMwMDAwNDAyNy40JTIzc2t1X2NhcmQlNDAxNzk0MDU5OTQzOTQ1JTIzMTc3OTIwMDg5Njg0NDE5NTI2NDA2MTYlMjMzNTc1NDI5OTc"
+    "https://item.jd.com/100359220602.html?pcdk=RJa6PDO-Zo0FpVTOHjGIKpw-upu2XtqCI2HoepGgMAPLz682W0ZkBDAqvF97TX4s.3z6a.aI3x&spmTag=YTAyMTkuYjAwMjM1Ni5jMDAwMDcyMTAua2V5d29yZF9lbnRlciU0MDE3OTM5ODQ1ODk5MzUlMjMxNzc5MjAwODk2ODQ0MTk1MjY0MDYxNiUyMzE5NDcyODI0MzklMkNhMDI0MC5iMDAyNDkzLmMwMDAwNDAyNy40JTIzc2t1X2NhcmQlNDAxNzk0MDU5OTQzOTQ1JTIzMTc3OTIwMDg5Njg0NDE5NTI2NDA2MTYlMjMzNTc1NDI5OTc",
+    "https://item.jd.com/100359220602.html"
   ],
   "references": [
     {
@@ -25,5 +26,21 @@
   ],
   "notes": [
     "已读取京东SKU100359220602，品牌/商品名与附件一致；标注390×270×210mm，图注手量误差1–2cm。PP、外观依据用户营销图，未取得实测壁厚和开盖机构。"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/100359220602.html",
+      "capturedOn": "2026-11-27",
+      "note": "京东对应的选中规格标为大号（加大提手）39×27×21 cm。页面价格与运送条件以实际页面为准。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "佳帮手工具收纳箱透明分格便携家用螺丝零件小型五金收纳工具盒",
+        "shop": "佳帮手京东自营旗舰店",
+        "itemCode": "100359220602",
+        "variant": "透明大号 · 加大提手 · 390×270×210 mm",
+        "priceFen": 3750,
+        "priceScope": "sku"
+      }
+    }
   ]
 }

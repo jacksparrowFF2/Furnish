@@ -39,5 +39,21 @@
   ],
   "notes": [
     "用户确认仅先做7款固定尺寸。尺寸顺序：宽×高×深；前U口、壁厚和圆角为外观估算，非厂家净空或容积。"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/100259402044.html",
+      "capturedOn": "2026-11-27",
+      "note": "京东商品详情显示价，优惠和配送条件以页面为准。尺寸链采用原档案对应的深柜大号选项。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "懒角落橱柜收纳盒直角厨房储物盒零食杂物抽屉收纳筐整理盒 深柜-大号",
+        "shop": "懒角落京东自营旗舰店",
+        "itemCode": "100259402044",
+        "variant": "深柜大号 · 200×280×150 mm · 单只",
+        "priceFen": 3070,
+        "priceScope": "sku"
+      }
+    }
   ]
 }

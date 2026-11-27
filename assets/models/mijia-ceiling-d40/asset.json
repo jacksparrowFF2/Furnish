@@ -8,7 +8,8 @@
   "route": "blender",
   "document": "docs/MIJIA-CEILING-LIGHTS.md",
   "sourceLinks": [
-    "https://www.mi.com/tw/product/xiaomi-smart-ceiling-light-d40/specs/"
+    "https://www.mi.com/tw/product/xiaomi-smart-ceiling-light-d40/specs/",
+    "https://item.jd.com/10115021009283.html"
   ],
   "references": [
     {
@@ -23,5 +24,21 @@
     "厂家CAD、隐藏构造及IES"
   ],
   "supportingFiles": [],
-  "validation": []
+  "validation": [],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/10115021009283.html",
+      "capturedOn": "2026-11-27",
+      "note": "京东商品详情显示价，优惠和配送条件以页面为准。大陆商品页面标注初次免费安装。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "米家吸顶灯初次免费安装 过道阳台小爱智能语音 米家吸顶灯D40",
+        "shop": "小米官方旗舰店",
+        "itemCode": "10115021009283",
+        "variant": "D40 · 9290041690 · 单灯",
+        "priceFen": 31968,
+        "priceScope": "sku"
+      }
+    }
+  ]
 }

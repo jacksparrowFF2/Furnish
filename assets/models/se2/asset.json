@@ -7,7 +7,9 @@
   ],
   "route": "blender",
   "document": "docs/BATH-HEATER-AOPU-SE2.md",
-  "sourceLinks": [],
+  "sourceLinks": [
+    "https://item.jd.com/100227280160.html"
+  ],
   "references": [
     {
       "path": "references/user/reference-front.png",
@@ -50,5 +52,21 @@
   "supportingFiles": [],
   "validation": [
     "docs/validation/bath-heater-se2-20261027/README.md"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/100227280160.html",
+      "capturedOn": "2026-11-27",
+      "note": "京东商品详情显示价，优惠和配送条件以页面为准。商品参数列风暖功率 2750 W，原建模参考图标 2800 W；以厂家随货资料核对。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "奥普（AUPU）智能浴霸热浪系列【送安装拆旧】智能AI恒温预约排气照明一体SE2",
+        "shop": "奥普浴霸京东自营旗舰店",
+        "itemCode": "100227280160",
+        "variant": "SE2 · 热浪系列 · 300×600 mm 安装 · 送安装拆旧",
+        "priceFen": 47139,
+        "priceScope": "sku"
+      }
+    }
   ]
 }

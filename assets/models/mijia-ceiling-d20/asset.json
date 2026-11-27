@@ -8,12 +8,29 @@
   "route": "blender",
   "document": "docs/MIJIA-CEILING-LIGHTS.md",
   "sourceLinks": [
-    "https://www.mi.com/tw/product/xiaomi-smart-ceiling-light-d20/specs/"
+    "https://www.mi.com/tw/product/xiaomi-smart-ceiling-light-d20/specs/",
+    "https://item.jd.com/100116543183.html"
   ],
   "references": [],
   "missingReferences": [
     "厂家CAD、隐藏构造及IES"
   ],
   "supportingFiles": [],
-  "validation": []
+  "validation": [],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/100116543183.html",
+      "capturedOn": "2026-11-27",
+      "note": "京东商品详情显示价，优惠和配送条件以页面为准。大陆商品页面标注包安装。地区版本的电气规格可有差异。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "米家【包安装】小米米家雷达光感吸顶灯D20玄关人来灯亮",
+        "shop": "小米京东自营旗舰店",
+        "itemCode": "100116543183",
+        "variant": "D20 · 9290041692 · 雷达光感 · 单灯",
+        "priceFen": 15223,
+        "priceScope": "sku"
+      }
+    }
+  ]
 }

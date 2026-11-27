@@ -46,9 +46,16 @@
 | [30.jpg](references/product-page/30.jpg) | 商品页资料 |
 | [user-dimensions.png](references/user/user-dimensions.png) | 用户上传 |
 
+## 商品与采集价格
+
+| 日期 | 商品 | 店铺 | 编号／规格 | 价格 | 资料 |
+|---|---|---|---|---|---|
+| 2026-11-27 | 源氏木语实木沙发床现代简约多功能可折叠床北欧风小户型客厅两用双人沙发 【15】1.25米山毛榉原木色(梨白) | 源氏木语官方旗舰店 | 10222453768218 / Y107H03 · 1.25 米 · 山毛榉原木色／梨白 | ¥1929.80（商品 SKU） | [商品页](<https://item.jd.com/10222453768218.html>) · 京东商品详情显示价，优惠和配送条件以页面为准。 |
+
 ## 来源链接
 
 - [来源](https://item.jd.com/10222453768218.html?pcdk=tYm4zPuxlfwfMDJGKB3FpmsLp6UaRNDrZfrEncvYAtvwb3VqGIj8y7DNuXVth1_2.rQ4a.tlbT)
+- [来源](https://item.jd.com/10222453768218.html)
 
 ## 原始来源记录
 

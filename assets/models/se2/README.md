@@ -22,6 +22,16 @@
 | [reference-installed.png](references/user/reference-installed.png) | 用户上传 |
 | [reference-spec.png](references/user/reference-spec.png) | 用户上传 |
 
+## 商品与采集价格
+
+| 日期 | 商品 | 店铺 | 编号／规格 | 价格 | 资料 |
+|---|---|---|---|---|---|
+| 2026-11-27 | 奥普（AUPU）智能浴霸热浪系列【送安装拆旧】智能AI恒温预约排气照明一体SE2 | 奥普浴霸京东自营旗舰店 | 100227280160 / SE2 · 热浪系列 · 300×600 mm 安装 · 送安装拆旧 | ¥471.39（商品 SKU） | [商品页](<https://item.jd.com/100227280160.html>) · 京东商品详情显示价，优惠和配送条件以页面为准。商品参数列风暖功率 2750 W，原建模参考图标 2800 W；以厂家随货资料核对。 |
+
+## 来源链接
+
+- [来源](https://item.jd.com/100227280160.html)
+
 ## 验收入口
 
 - [验收资料](../../../docs/validation/bath-heater-se2-20261027/README.md)

@@ -9,7 +9,8 @@
   "document": "docs/PET-SUPPLIES.md",
   "sourceLinks": [
     "https://img14.360buyimg.com/pop/jfs/t1/248679/35/10461/184255/665e7a83F62fa7c19/a98f8fdffe9d954a.jpg",
-    "https://www.jtsww.shop/product/detail/245415"
+    "https://www.jtsww.shop/product/detail/245415",
+    "https://item.jd.com/100015934832.html"
   ],
   "references": [
     {
@@ -57,6 +58,20 @@
         "itemCode": "100015934864",
         "variant": "2.5 kg×4 袋整箱",
         "priceFen": 6195,
+        "priceScope": "sku"
+      }
+    },
+    {
+      "sourceUrl": "https://item.jd.com/100015934832.html",
+      "capturedOn": "2026-11-27",
+      "note": "京东商品详情显示价，优惠和配送条件以页面为准。同系列单袋商品。京东标为新老包装混发。先前整箱报价仍可在档案查阅。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "网易严选四合一豆腐膨润土植物混合猫砂强结团不沾底除臭木薯5斤-新老混发",
+        "shop": "网易严选京东自营旗舰店",
+        "itemCode": "100015934832",
+        "variant": "四合一混合猫砂 · 2.5 kg 单袋",
+        "priceFen": 1890,
         "priceScope": "sku"
       }
     }

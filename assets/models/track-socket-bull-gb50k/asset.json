@@ -52,5 +52,21 @@
   "notes": [
     "规格对应京东自营 SKU 100396204646；商品图标注轨道厚度13.9mm、槽宽4.3mm。",
     "轨道高94mm、整组深36mm、模块直径68mm依据商品图估算。三个模块静态布置。"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/100396204646.html",
+      "capturedOn": "2026-11-27",
+      "note": "京东商品详情显示价，优惠和配送条件以页面为准。整套包括一根轨道与 3 个五孔适配器。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "公牛（BULL）超薄轨道插座可移动插线板轨道式导轨插排餐边柜 开关插座面板 GB50K 50厘米+3个五孔 墨云灰",
+        "shop": "公牛插座京东自营旗舰店",
+        "itemCode": "100396204646",
+        "variant": "GN-GB50K · 墨云灰 · 500 mm＋3 个五孔",
+        "priceFen": 24982,
+        "priceScope": "sku"
+      }
+    }
   ]
 }

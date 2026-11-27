@@ -29,5 +29,21 @@
   "validation": [
     "docs/validation/blender-bookcase-y52y09-20261029/README.md",
     "docs/validation/bookcase-y52y09-20261029/placement-check.json"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/100266639340.html",
+      "capturedOn": "2026-11-27",
+      "note": "京东商品详情显示价，优惠和配送条件以页面为准。采用高 750 mm 无底框款，对应建模规格。另有 850 mm 带底框款。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "源氏木语儿童家具儿童书柜实木落地柜组合书架收纳柜1.11米儿童书柜(3*2格)无底框",
+        "shop": "源氏木语儿童家具京东自营旗舰店",
+        "itemCode": "100266639340",
+        "variant": "Y52Y09 · 1115×230×750 mm · 六格无底框",
+        "priceFen": 112900,
+        "priceScope": "sku"
+      }
+    }
   ]
 }

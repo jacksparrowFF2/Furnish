@@ -20,9 +20,16 @@
 |---|---|
 | [user-dimensions.png](references/user-dimensions.png) | 用户上传 |
 
+## 商品与采集价格
+
+| 日期 | 商品 | 店铺 | 编号／规格 | 价格 | 资料 |
+|---|---|---|---|---|---|
+| 2026-11-27 | 佳帮手工具收纳箱透明分格便携家用螺丝零件小型五金收纳工具盒 | 佳帮手京东自营旗舰店 | 100359220602 / 透明大号 · 加大提手 · 390×270×210 mm | ¥37.50（商品 SKU） | [商品页](<https://item.jd.com/100359220602.html>) · 京东对应的选中规格标为大号（加大提手）39×27×21 cm。页面价格与运送条件以实际页面为准。 |
+
 ## 来源链接
 
 - [来源](https://item.jd.com/100359220602.html?pcdk=RJa6PDO-Zo0FpVTOHjGIKpw-upu2XtqCI2HoepGgMAPLz682W0ZkBDAqvF97TX4s.3z6a.aI3x&spmTag=YTAyMTkuYjAwMjM1Ni5jMDAwMDcyMTAua2V5d29yZF9lbnRlciU0MDE3OTM5ODQ1ODk5MzUlMjMxNzc5MjAwODk2ODQ0MTk1MjY0MDYxNiUyMzE5NDcyODI0MzklMkNhMDI0MC5iMDAyNDkzLmMwMDAwNDAyNy40JTIzc2t1X2NhcmQlNDAxNzk0MDU5OTQzOTQ1JTIzMTc3OTIwMDg5Njg0NDE5NTI2NDA2MTYlMjMzNTc1NDI5OTc)
+- [来源](https://item.jd.com/100359220602.html)
 
 ## 验收入口
 

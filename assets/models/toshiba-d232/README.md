@@ -22,6 +22,12 @@
 | [jd-third.jpg](references/product-page/jd-third.jpg) | 商品页资料 |
 | [jd-fourth.jpg](references/product-page/jd-fourth.jpg) | 商品页资料 |
 
+## 商品与采集价格
+
+| 日期 | 商品 | 店铺 | 编号／规格 | 价格 | 资料 |
+|---|---|---|---|---|---|
+| 2026-11-27 | 东芝（TOSHIBA）【台嵌一体】东芝小白茶mix新品首发微蒸烤一体机嵌入式家用变频彩屏微波炉蒸烤箱空气炸 东芝D232 东芝小白茶Mix微蒸烤台嵌一体机 | 东芝西式厨电旗舰店 | 10232038915570 / D232 · 白色 · 23 L 台嵌一体 | ¥3998.65（商品 SKU） | [商品页](<https://item.jd.com/10232038915570.html>) · 京东商品详情显示价，优惠和配送条件以页面为准。商品参数列明 420×399×337 mm。 |
+
 ## 来源链接
 
 - [来源](https://3.cn/3dxx-ZKm?jkl=@Z4DhqBMldA@)

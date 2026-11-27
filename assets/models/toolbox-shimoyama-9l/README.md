@@ -21,9 +21,16 @@
 | [appearance.png](references/appearance.png) | 用户上传 |
 | [dimensions.png](references/dimensions.png) | 用户上传 |
 
+## 商品与采集价格
+
+| 日期 | 商品 | 店铺 | 编号／规格 | 价格 | 资料 |
+|---|---|---|---|---|---|
+| 2026-11-27 | 霜山工具箱大号手提式车载多功能维修电工家用双层五金零件收纳盒 工具箱-长34\*宽24\*高18cm | 霜山SHIMOYAMA旗舰店 | 10192952050315 / 霜山 9 L · 大号 340×240×180 mm | ¥61.20（商品 SKU） | [商品页](<https://item.jd.com/10192952050315.html>) · 京东商品详情显示价，优惠和配送条件以页面为准。 |
+
 ## 来源链接
 
 - [来源](https://item.jd.com/10192952050315.html?pcdk=yzUFzt4sJJtnvJXckvDqccqYxXjS3dy1qK_N85l4bbBpNEKQ5hBA8SeEqDyw2SBz.3z6a.aI3x&spmTag=YTAyNDAuYjAwMjQ5My5jMDAwMDQwMjcuOSUyM3NrdV9jYXJkJTQwMTc5NDA3MDk2NDAzNiUyMzE3NzkyMDA4OTY4NDQxOTUyNjQwNjE2JTIzMTc0NTk0NjcwMw)
+- [来源](https://item.jd.com/10192952050315.html)
 
 ## 验收入口
 
