@@ -7,7 +7,9 @@
   ],
   "route": "blender",
   "document": "docs/DISHWASHER-MIJIA-COUNTERTOP.md",
-  "sourceLinks": [],
+  "sourceLinks": [
+    "https://www.mi.com/shop/buy/detail?product_id=25605"
+  ],
   "references": [],
   "missingReferences": [
     {
@@ -29,5 +31,21 @@
   "supportingFiles": [],
   "validation": [
     "docs/validation/blender-dishwasher-fold-20261029/README.md"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=25605",
+      "capturedOn": "2026-11-27",
+      "note": "商城小米自营页面标价。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "米家智能洗碗机 台式 5套",
+        "shop": "小米商城自营",
+        "itemCode": "25605",
+        "variant": "白色 · 磁吸折叠门",
+        "priceFen": 169900,
+        "priceScope": "sku"
+      }
+    }
   ]
 }

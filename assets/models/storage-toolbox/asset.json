@@ -8,7 +8,8 @@
   "route": "blender",
   "document": "docs/STORAGE-CABINET-2400.md",
   "sourceLinks": [
-    "https://item.jd.com/100024900561.html"
+    "https://item.jd.com/100024900561.html",
+    "https://www.scr.com.cn/ProductView.aspx?CatalogNo=05041302&SeqNo=688176"
   ],
   "references": [
     {
@@ -25,5 +26,21 @@
   ],
   "notes": [
     "外观及尺寸依据分类见型号说明；纸品宽深估算、药箱不透明结构示意，不认证同批次实物复刻。"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://www.scr.com.cn/ProductView.aspx?CatalogNo=05041302&SeqNo=688176",
+      "capturedOn": "2026-11-27",
+      "note": "商城含税标准价；未税 ¥123.04。订货品，会员优惠需登录查看。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "SATA 世达手提工具箱 95101 14 英寸",
+        "shop": "中儒股份商城",
+        "itemCode": "95101",
+        "variant": "360×150×115 mm · 1 只",
+        "priceFen": 13904,
+        "priceScope": "sku"
+      }
+    }
   ]
 }

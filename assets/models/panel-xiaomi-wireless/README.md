@@ -22,12 +22,21 @@
 | [white-in-use.jpg](references/white-in-use.jpg) | 商品页原格式 |
 | [jd-grey.jpg](references/jd-grey.jpg) | 商品页原格式 |
 
+## 商品与采集价格
+
+| 日期 | 商品 | 店铺 | 编号／规格 | 价格 | 资料 |
+|---|---|---|---|---|---|
+| 2026-11-27 | 小米智能无线开关（双开） XMWS01XS | 小米商城自营 | XMWS01XS / 深空灰 · 无线双开 | ¥64.90（商品 SKU） | [商品页](<https://www.mi.com/shop/buy/detail?product_id=21074>) · 选中深空灰显示 ¥64.90，划线价 ¥79；采集地区暂时无法送达。 |
+| 2026-11-27 | 小米智能无线开关（双开） XMWS01XS | 小米商城自营 | XMWS01XS / 白色 · 无线双开 | ¥59.00（商品 SKU） | [商品页](<https://www.mi.com/shop/buy/detail?product_id=1230803659>) · 小米商城白色商品卡片读数，原价 ¥79。 |
+
 ## 来源链接
 
 - [来源](https://3.cn/3dM7-M05?jkl=@J6zb5FvQUb@)
 - [来源](https://item.m.jd.com/product/100197232066.html)
 - [来源](https://item.m.jd.com/product/100282401934.html)
 - [来源](https://www.xiaomiyoupin.com/detail?gid=174191)
+- [来源](https://www.mi.com/shop/buy/detail?product_id=1230803659)
+- [来源](https://www.mi.com/shop/buy/detail?product_id=21074)
 
 ## 原始来源记录
 

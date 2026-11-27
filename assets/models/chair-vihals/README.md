@@ -24,6 +24,14 @@
 | [1547019_pe1020304.jpg](references/1547019_pe1020304.jpg) | 商品页资料 |
 | [official-open.jpg](references/official-open.jpg) | 商品页资料 |
 
+## 商品与采集价格
+
+| 日期 | 商品 | 店铺 | 编号／规格 | 价格 | 资料 |
+|---|---|---|---|---|---|
+| 2026-11-27 | 宜家 VIHALS 维哈斯绿色折叠椅 | 宜家中国 | 805.927.53 / 绿色 | ¥99.99（商品 SKU） | [商品页](<https://www.ikea.cn/cn/zh/p/vihals-folding-chair-green-80592753/>) · 宜家中国同货号商品页标价。 |
+| 2026-11-27 | 宜家 VIHALS 维哈斯白色折叠椅 | 宜家中国 | 905.927.38 / 白色 | ¥99.99（商品 SKU） | [商品页](<https://www.ikea.cn/cn/zh/p/vihals-wei-ha-si-zhe-die-yi-bai-se-90592738/>) · 宜家中国同货号商品页标价。 |
+| 2026-11-04 | 宜家 VIHALS 维哈斯白色折叠椅 | IKEA 宜家家居官方旗舰店 | 10167132712534 / 白色 905.927.38 | ¥99.99（商品 SKU） | [商品页](<https://item.jd.com/10167132712534.html>) · 型号文档记录的京东商品接口读数。绿色 805.927.53 单独核对。 |
+
 ## 来源链接
 
 - [来源](https://item.jd.com/10167132712534.html)
@@ -36,6 +44,7 @@
 - [来源](https://www.ikea.com/sg/en/images/products/vihals-folding-chair-white__1414875_pe974961_s5.jpg?f=xl)
 - [来源](https://www.ikea.com/sg/en/images/products/vihals-folding-chair-white__1547019_pe1020304_s5.jpg?f=xl)
 - [来源](https://www.ikea.com/sg/en/images/products/vihals-folding-chair-white__1370474_pe958747_s5.jpg?f=xl)
+- [来源](https://www.ikea.cn/cn/zh/p/vihals-folding-chair-green-80592753/)
 
 ## 原始来源记录
 

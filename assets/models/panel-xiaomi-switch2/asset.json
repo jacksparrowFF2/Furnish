@@ -9,7 +9,9 @@
   "document": "docs/PANEL-XIAOMI-SWITCH2.md",
   "sourceLinks": [
     "https://item.jd.com/100434281318.html",
-    "https://item.jd.com/100313419465.html"
+    "https://item.jd.com/100313419465.html",
+    "https://www.mi.com/shop/buy/detail?product_id=25273",
+    "https://www.mi.com/shop/buy/detail?product_id=25749"
   ],
   "references": [
     {
@@ -513,6 +515,176 @@
       "bytes": 11006,
       "normalization": "utf8-lf",
       "legacyPaths": []
+    }
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=25273",
+      "capturedOn": "2026-11-27",
+      "note": "商城对应颜色与开数的选项价，划线价 ¥99。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "小米智能开关2",
+        "shop": "小米商城自营",
+        "itemCode": "",
+        "variant": "白色 · 单开",
+        "priceFen": 7900,
+        "priceScope": "sku"
+      }
+    },
+    {
+      "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=25273",
+      "capturedOn": "2026-11-27",
+      "note": "商城对应颜色与开数的选项价，划线价 ¥109。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "小米智能开关2",
+        "shop": "小米商城自营",
+        "itemCode": "",
+        "variant": "白色 · 双开",
+        "priceFen": 8900,
+        "priceScope": "sku"
+      }
+    },
+    {
+      "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=25273",
+      "capturedOn": "2026-11-27",
+      "note": "商城对应颜色与开数的选项价，划线价 ¥129。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "小米智能开关2",
+        "shop": "小米商城自营",
+        "itemCode": "",
+        "variant": "白色 · 三开",
+        "priceFen": 10900,
+        "priceScope": "sku"
+      }
+    },
+    {
+      "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=25273",
+      "capturedOn": "2026-11-27",
+      "note": "商城对应颜色与开数的选项价，划线价 ¥99。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "小米智能开关2",
+        "shop": "小米商城自营",
+        "itemCode": "",
+        "variant": "深空灰 · 单开",
+        "priceFen": 8490,
+        "priceScope": "sku"
+      }
+    },
+    {
+      "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=25273",
+      "capturedOn": "2026-11-27",
+      "note": "商城对应颜色与开数的选项价，划线价 ¥109。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "小米智能开关2",
+        "shop": "小米商城自营",
+        "itemCode": "",
+        "variant": "深空灰 · 双开",
+        "priceFen": 9490,
+        "priceScope": "sku"
+      }
+    },
+    {
+      "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=25273",
+      "capturedOn": "2026-11-27",
+      "note": "商城对应颜色与开数的选项价，划线价 ¥129。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "小米智能开关2",
+        "shop": "小米商城自营",
+        "itemCode": "",
+        "variant": "深空灰 · 三开",
+        "priceFen": 11490,
+        "priceScope": "sku"
+      }
+    },
+    {
+      "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=25749",
+      "capturedOn": "2026-11-27",
+      "note": "商城对应颜色与开数的选项价，划线价 ¥149。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "小米智能开关2 Pro",
+        "shop": "小米商城自营",
+        "itemCode": "",
+        "variant": "白色 · 单开",
+        "priceFen": 12900,
+        "priceScope": "sku"
+      }
+    },
+    {
+      "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=25749",
+      "capturedOn": "2026-11-27",
+      "note": "商城对应颜色与开数的选项价，划线价 ¥169。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "小米智能开关2 Pro",
+        "shop": "小米商城自营",
+        "itemCode": "",
+        "variant": "白色 · 双开",
+        "priceFen": 14900,
+        "priceScope": "sku"
+      }
+    },
+    {
+      "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=25749",
+      "capturedOn": "2026-11-27",
+      "note": "商城对应颜色与开数的选项价，划线价 ¥189。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "小米智能开关2 Pro",
+        "shop": "小米商城自营",
+        "itemCode": "",
+        "variant": "白色 · 三开",
+        "priceFen": 16900,
+        "priceScope": "sku"
+      }
+    },
+    {
+      "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=25749",
+      "capturedOn": "2026-11-27",
+      "note": "商城对应颜色与开数的选项价，划线价 ¥149。商城颜色标签为「深灰色」。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "小米智能开关2 Pro",
+        "shop": "小米商城自营",
+        "itemCode": "",
+        "variant": "深空灰 · 单开",
+        "priceFen": 12900,
+        "priceScope": "sku"
+      }
+    },
+    {
+      "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=25749",
+      "capturedOn": "2026-11-27",
+      "note": "商城对应颜色与开数的选项价，划线价 ¥169。商城颜色标签为「深灰色」。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "小米智能开关2 Pro",
+        "shop": "小米商城自营",
+        "itemCode": "",
+        "variant": "深空灰 · 双开",
+        "priceFen": 14900,
+        "priceScope": "sku"
+      }
+    },
+    {
+      "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=25749",
+      "capturedOn": "2026-11-27",
+      "note": "商城对应颜色与开数的选项价，划线价 ¥189。商城颜色标签为「深灰色」。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "小米智能开关2 Pro",
+        "shop": "小米商城自营",
+        "itemCode": "",
+        "variant": "深空灰 · 三开",
+        "priceFen": 16900,
+        "priceScope": "sku"
+      }
     }
   ]
 }

@@ -21,10 +21,17 @@
 
 当前未归档可用原图；不代表不需要参考资料。
 
+## 商品与采集价格
+
+| 日期 | 商品 | 店铺 | 编号／规格 | 价格 | 资料 |
+|---|---|---|---|---|---|
+| 2026-11-27 | 米家吸顶灯套系 L90 | 小米商城 | L90 / L90 单灯 · 原米家吸顶灯套系 | ¥899.00（页面显示价） | [商品页](<https://www.mi.com/shop/search?keyword=%E7%B1%B3%E5%AE%B6%E5%90%B8%E9%A1%B6%E7%81%AF>) · 小米商城单灯商品卡片标价。另有同名规格的吸顶灯 C 系列，价格不同。 |
+
 ## 来源链接
 
 - [来源](https://www.mi.com/shop/buy/detail?product_id=22566)
 - [来源](https://home.mi.com/webapp/content/baike/product/index.html?model=xiaomi.light.ceil05)
+- [来源](https://www.mi.com/shop/search?keyword=%E7%B1%B3%E5%AE%B6%E5%90%B8%E9%A1%B6%E7%81%AF)
 
 ## 待补历史原图
 

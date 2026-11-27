@@ -17,7 +17,8 @@
     "https://www.ikea.com/sg/en/images/products/vihals-folding-chair-white__1414874_pe974960_s5.jpg?f=xl",
     "https://www.ikea.com/sg/en/images/products/vihals-folding-chair-white__1414875_pe974961_s5.jpg?f=xl",
     "https://www.ikea.com/sg/en/images/products/vihals-folding-chair-white__1547019_pe1020304_s5.jpg?f=xl",
-    "https://www.ikea.com/sg/en/images/products/vihals-folding-chair-white__1370474_pe958747_s5.jpg?f=xl"
+    "https://www.ikea.com/sg/en/images/products/vihals-folding-chair-white__1370474_pe958747_s5.jpg?f=xl",
+    "https://www.ikea.cn/cn/zh/p/vihals-folding-chair-green-80592753/"
   ],
   "references": [
     {
@@ -86,5 +87,49 @@
   "notes": [
     "v2支持展开／折叠端态、承托高度及预览配色；v1展开源和官方原件保留。",
     "官方折叠标注高880／深90mm，当前官方网格刚性折起约895.648高／89.081深，按较大生产包络核对。连续连杆与完整折叠扫掠未验证。"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/10167132712534.html",
+      "capturedOn": "2026-11-04",
+      "note": "型号文档记录的京东商品接口读数。绿色 805.927.53 单独核对。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "宜家 VIHALS 维哈斯白色折叠椅",
+        "shop": "IKEA 宜家家居官方旗舰店",
+        "itemCode": "10167132712534",
+        "variant": "白色 905.927.38",
+        "priceFen": 9999,
+        "priceScope": "sku"
+      }
+    },
+    {
+      "sourceUrl": "https://www.ikea.cn/cn/zh/p/vihals-wei-ha-si-zhe-die-yi-bai-se-90592738/",
+      "capturedOn": "2026-11-27",
+      "note": "宜家中国同货号商品页标价。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "宜家 VIHALS 维哈斯白色折叠椅",
+        "shop": "宜家中国",
+        "itemCode": "905.927.38",
+        "variant": "白色",
+        "priceFen": 9999,
+        "priceScope": "sku"
+      }
+    },
+    {
+      "sourceUrl": "https://www.ikea.cn/cn/zh/p/vihals-folding-chair-green-80592753/",
+      "capturedOn": "2026-11-27",
+      "note": "宜家中国同货号商品页标价。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "宜家 VIHALS 维哈斯绿色折叠椅",
+        "shop": "宜家中国",
+        "itemCode": "805.927.53",
+        "variant": "绿色",
+        "priceFen": 9999,
+        "priceScope": "sku"
+      }
+    }
   ]
 }

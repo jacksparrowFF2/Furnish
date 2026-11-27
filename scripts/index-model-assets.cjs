@@ -41,7 +41,10 @@ function outputs(index=require('./lib/model-asset-index.cjs').build()){
   const images=p.references.map(r=>{const f=p.id+'/'+r.path;return '<a class="image" href="'+url(f)+'"><img loading="lazy" src="'+url(f)+'"><span>'+esc(r.path.split('/').pop())+'</span><small>'+esc(kindName[r.kind]||r.kind)+'</small></a>';}).join('');
   const captureTerms=captures.flatMap(row=>[row.capture.title,row.capture.itemCode,row.capture.variant]).filter(Boolean).join(' ');
   const search=p.name+' '+p.id+' '+p.types.join(' ')+(captureTerms?' '+captureTerms:'');
-  const price=latest?'<p>'+esc(priceText(latest.capture))+' · '+esc(latest.capturedOn)+' · <a href="'+esc(latest.sourceUrl)+'">商品页</a></p>':'';
+  const price=latest?'<p>'+[
+   captures.some(row=>row.capture.title!==latest.capture.title)?latest.capture.title:'',
+   latest.capture.variant,priceText(latest.capture),latest.capturedOn
+  ].filter(Boolean).map(esc).join(' · ')+' · <a href="'+esc(latest.sourceUrl)+'">商品页</a></p>':'';
   cards.push('<section data-name="'+esc(search)+'"><h2>'+esc(p.name)+'</h2><p><a href="'+url(p.id+'/README.md')+'">产品档案</a>'+(p.document?' · <a href="'+url(from('assets/models',p.document))+'">型号／依据</a>':'')+(model?' · <a href="'+url(from('assets/models',model.current.blend))+'">BLEND</a> · <a href="'+url(from('assets/models',model.current.glb))+'">GLB</a>':' · '+(p.route==='parametric'?'参数化构造':'设计参考'))+'</p>'+price+'<p>'+p.references.length+'张参考图'+(p.missingReferences.length?' · '+p.missingReferences.length+'张历史原图待补':'')+'</p><details><summary>展开参考图片</summary><div class="grid">'+images+'</div></details></section>');
  }
  overview.push('','运行网格继续位于src/data，生产构造与产品规则继续位于src/render和src/core。索引不接管应用加载。型号文档与验收报告保留在docs。','','参考图统一在各产品references/user、product-page、product-page-original、annotations内；每张图的哈希、字节数、历史路径与已知附件名记录在asset.json。缺失图只登记，不猜造。','','D盘库仅为导出快照，修改后不自动发布。全屋本机工程绑定留在.local。详见[存放说明](../../docs/MODEL-ASSET-STORAGE.md)。','');

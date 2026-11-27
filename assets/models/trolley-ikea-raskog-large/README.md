@@ -25,6 +25,12 @@
 | [official-white-detail.jpg](references/official-white-detail.jpg) | 商品页资料 |
 | [official-white-overall.jpg](references/official-white-overall.jpg) | 商品页资料 |
 
+## 商品与采集价格
+
+| 日期 | 商品 | 店铺 | 编号／规格 | 价格 | 资料 |
+|---|---|---|---|---|---|
+| 2026-11-27 | RÅSKOG 拉斯克 手推车 灰绿色 | 宜家中国 | 305.916.66 / 灰绿色 · 35×45×77 cm | ¥179.00（商品 SKU） | [商品页](<https://www.ikea.cn/cn/zh/p/raskog-la-si-ke-shou-tui-che-hui-lu-se-30591666/>) · 宜家中国同货号页面标价。 |
+
 ## 来源链接
 
 - [来源](https://www.ikea.cn/cn/zh/p/raskog-la-si-ke-shou-tui-che-hui-lu-se-30591666/)

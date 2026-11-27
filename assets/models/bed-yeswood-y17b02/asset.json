@@ -9,7 +9,8 @@
   "document": "docs/BED-YESWOOD-Y17B02.md",
   "sourceLinks": [
     "https://yeswoodhome.com/products/yws-600871898009",
-    "https://item.taobao.com/item.htm?id=600871898009"
+    "https://item.taobao.com/item.htm?id=600871898009",
+    "https://detail.tmall.com/item.htm?id=600871898009&skuId=6238749930598"
   ],
   "references": [
     {
@@ -37,5 +38,21 @@
   "missingReferences": [],
   "validation": [
     "docs/validation/y17b02-composition-20261125/README.md"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://detail.tmall.com/item.htm?id=600871898009&skuId=6238749930598",
+      "capturedOn": "2026-11-27",
+      "note": "实际选中樱桃木箱体床 Y17B02 适用床垫 1200×2000 mm，天猫页面显示 ¥3597；店铺预售。床垫与被褥另行采购。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "源氏木语 Y17B02 半夏樱桃木箱体床",
+        "shop": "源氏木语官方旗舰店",
+        "itemCode": "6238749930598",
+        "variant": "樱桃木 · 适用 1200×2000 mm 床垫 · 床架",
+        "priceFen": 359700,
+        "priceScope": "sku"
+      }
+    }
   ]
 }

@@ -68,5 +68,21 @@
   ],
   "notes": [
     "尺寸为当前77cm款；内部净空、轮径、层距及网孔采样为照片估算；模型自行制作，未复用第三方模型。"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://www.ikea.cn/cn/zh/p/raskog-la-si-ke-shou-tui-che-hui-lu-se-30591666/",
+      "capturedOn": "2026-11-27",
+      "note": "宜家中国同货号页面标价。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "RÅSKOG 拉斯克 手推车 灰绿色",
+        "shop": "宜家中国",
+        "itemCode": "305.916.66",
+        "variant": "灰绿色 · 35×45×77 cm",
+        "priceFen": 17900,
+        "priceScope": "sku"
+      }
+    }
   ]
 }

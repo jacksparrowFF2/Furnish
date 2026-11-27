@@ -7,7 +7,9 @@
   ],
   "route": "parametric",
   "document": "docs/PET-FEEDER-MIJIA-2.md",
-  "sourceLinks": [],
+  "sourceLinks": [
+    "https://www.mi.com/shop/buy/detail?product_id=19511"
+  ],
   "references": [],
   "missingReferences": [
     {
@@ -39,5 +41,21 @@
   "supportingFiles": [],
   "validation": [
     "docs/validation/pet-feeder-20261019.json"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=19511",
+      "capturedOn": "2026-11-27",
+      "note": "商城标价，当前显示到货通知。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "米家智能宠物喂食器 2",
+        "shop": "小米商城自营",
+        "itemCode": "19511",
+        "variant": "5 L · 标准版 · 非可视版",
+        "priceFen": 39900,
+        "priceScope": "default-selection"
+      }
+    }
   ]
 }

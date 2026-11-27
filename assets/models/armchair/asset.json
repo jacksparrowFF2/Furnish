@@ -8,7 +8,8 @@
   "route": "blender",
   "document": "docs/ARMCHAIR-YESWOOD-TMALL-1013742104698.md",
   "sourceLinks": [
-    "https://detail.tmall.com/item.htm?id=1013742104698&mi_id=0000YOu__P7FO1Od4DVMBOKIdVmXewhzkN4eAYmXTAOn9nU&skuId=6131810120970&spm=tbpc.boughtlist.suborder_itemtitle.1.24b02e8dUKATHx"
+    "https://detail.tmall.com/item.htm?id=1013742104698&mi_id=0000YOu__P7FO1Od4DVMBOKIdVmXewhzkN4eAYmXTAOn9nU&skuId=6131810120970&spm=tbpc.boughtlist.suborder_itemtitle.1.24b02e8dUKATHx",
+    "https://detail.tmall.com/item.htm?id=1013742104698&skuId=6065683829136"
   ],
   "references": [
     {
@@ -114,5 +115,21 @@
   "supportingFiles": [],
   "validation": [
     "docs/validation/armchair-yeswood-20261029/README.md"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://detail.tmall.com/item.htm?id=1013742104698&skuId=6065683829136",
+      "capturedOn": "2026-11-27",
+      "note": "实际选中单椅。天猫显示优惠前 ¥2304，平台加补后 ¥1527.54，为预售，条件与成交价以页面结算为准。原用户链接是含脚凳套餐。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "源氏木语 Y09HS 0.72 米沙发椅",
+        "shop": "源氏木语官方旗舰店",
+        "itemCode": "6065683829136",
+        "variant": "仿棉麻亚麻色，725×900×905 mm，单椅",
+        "priceFen": 230400,
+        "priceScope": "sku"
+      }
+    }
   ]
 }

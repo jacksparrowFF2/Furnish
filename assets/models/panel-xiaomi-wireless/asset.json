@@ -11,7 +11,9 @@
     "https://3.cn/3dM7-M05?jkl=@J6zb5FvQUb@",
     "https://item.m.jd.com/product/100197232066.html",
     "https://item.m.jd.com/product/100282401934.html",
-    "https://www.xiaomiyoupin.com/detail?gid=174191"
+    "https://www.xiaomiyoupin.com/detail?gid=174191",
+    "https://www.mi.com/shop/buy/detail?product_id=1230803659",
+    "https://www.mi.com/shop/buy/detail?product_id=21074"
   ],
   "references": [
     {
@@ -51,5 +53,35 @@
   "notes": [
     "短链落在自营白色 SKU 100197232066。说明书文件名标为深空灰，正文型号 XMWS01XS 与白色商品规格一致。白色外观以京东及有品实图为准。",
     "京东同款深空灰 SKU 100282401934，与白色共用已发布网格。颜色及粗糙度按图估算。"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=1230803659",
+      "capturedOn": "2026-11-27",
+      "note": "小米商城白色商品卡片读数，原价 ¥79。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "小米智能无线开关（双开） XMWS01XS",
+        "shop": "小米商城自营",
+        "itemCode": "XMWS01XS",
+        "variant": "白色 · 无线双开",
+        "priceFen": 5900,
+        "priceScope": "sku"
+      }
+    },
+    {
+      "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=21074",
+      "capturedOn": "2026-11-27",
+      "note": "选中深空灰显示 ¥64.90，划线价 ¥79；采集地区暂时无法送达。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "小米智能无线开关（双开） XMWS01XS",
+        "shop": "小米商城自营",
+        "itemCode": "XMWS01XS",
+        "variant": "深空灰 · 无线双开",
+        "priceFen": 6490,
+        "priceScope": "sku"
+      }
+    }
   ]
 }

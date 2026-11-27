@@ -26,11 +26,19 @@
 | [mi-product-6.png](references/product-page/mi-product-6.png) | 商品页资料 |
 | [mi-product-specs-reproduced.jpg](references/product-page/mi-product-specs-reproduced.jpg) | 商品页资料 |
 
+## 商品与采集价格
+
+| 日期 | 商品 | 店铺 | 编号／规格 | 价格 | 资料 |
+|---|---|---|---|---|---|
+| 2026-11-27 | 米家桌面学习灯 Pro | 小米商城 | MJTD07YL / 白色 Pro · 双段灯头 | ¥505.00（页面显示价） | [商品页](<https://www.mi.com/shop/search?keyword=%E7%B1%B3%E5%AE%B6%E6%A1%8C%E9%9D%A2%E5%AD%A6%E4%B9%A0%E7%81%AFPro>) · 小米商城同名白色 Pro 商品卡片当日显示价，划线价 ¥549。 |
+| 2026-11-14 | 米家桌面学习灯 Pro MJTD07YL | 小米京东自营旗舰店 | 100118995289 / 白色双段灯头 · MJTD07YL | ¥429.25（商品 SKU） | [商品页](<https://item.jd.com/100118995289.html>) · 型号文档记录的小米京东自营店读数，活动与地区可变。等待复核现价。 |
+
 ## 来源链接
 
 - [来源](https://item.jd.com/100118995289.html)
 - [来源](https://www.ithome.com/0/795/480.htm)
 - [来源](https://finance.sina.com.cn/tech/digi/2024-09-13/doc-incnxsxy7327115.shtml)
+- [来源](https://www.mi.com/shop/search?keyword=%E7%B1%B3%E5%AE%B6%E6%A1%8C%E9%9D%A2%E5%AD%A6%E4%B9%A0%E7%81%AFPro)
 
 ## 验收入口
 

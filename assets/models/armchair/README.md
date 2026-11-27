@@ -28,9 +28,16 @@
 | [补充上传-07.png](references/user/%E8%A1%A5%E5%85%85%E4%B8%8A%E4%BC%A0-07.png) | 用户上传 |
 | [补充上传-08.png](references/user/%E8%A1%A5%E5%85%85%E4%B8%8A%E4%BC%A0-08.png) | 用户上传 |
 
+## 商品与采集价格
+
+| 日期 | 商品 | 店铺 | 编号／规格 | 价格 | 资料 |
+|---|---|---|---|---|---|
+| 2026-11-27 | 源氏木语 Y09HS 0.72 米沙发椅 | 源氏木语官方旗舰店 | 6065683829136 / 仿棉麻亚麻色，725×900×905 mm，单椅 | ¥2304.00（商品 SKU） | [商品页](<https://detail.tmall.com/item.htm?id=1013742104698&skuId=6065683829136>) · 实际选中单椅。天猫显示优惠前 ¥2304，平台加补后 ¥1527.54，为预售，条件与成交价以页面结算为准。原用户链接是含脚凳套餐。 |
+
 ## 来源链接
 
 - [来源](https://detail.tmall.com/item.htm?id=1013742104698&mi_id=0000YOu__P7FO1Od4DVMBOKIdVmXewhzkN4eAYmXTAOn9nU&skuId=6131810120970&spm=tbpc.boughtlist.suborder_itemtitle.1.24b02e8dUKATHx)
+- [来源](https://detail.tmall.com/item.htm?id=1013742104698&skuId=6065683829136)
 
 ## 验收入口
 

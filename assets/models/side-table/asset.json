@@ -8,7 +8,8 @@
   "route": "blender",
   "document": "docs/SIDE-TABLE-TMALL-635382906309.md",
   "sourceLinks": [
-    "https://detail.tmall.com/item.htm?abbucket=0&id=635382906309&mi_id=0000n64ioooJG8d3oTuI_3sSR6yl6NubVt7Jui-6QXW-OA4&rn=1d72a6e371179b1c55984da266deb1b9&skuId=5776584417656&spm=a1z10.3-b-s.w4011-14781637738.244.629a5884FD6Y30"
+    "https://detail.tmall.com/item.htm?abbucket=0&id=635382906309&mi_id=0000n64ioooJG8d3oTuI_3sSR6yl6NubVt7Jui-6QXW-OA4&rn=1d72a6e371179b1c55984da266deb1b9&skuId=5776584417656&spm=a1z10.3-b-s.w4011-14781637738.244.629a5884FD6Y30",
+    "https://detail.tmall.com/item.htm?id=635382906309&skuId=5776584417656"
   ],
   "references": [
     {
@@ -76,5 +77,21 @@
   "supportingFiles": [],
   "validation": [
     "docs/validation/side-table-20261029/README.md"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://detail.tmall.com/item.htm?id=635382906309&skuId=5776584417656",
+      "capturedOn": "2026-11-27",
+      "note": "天猫已选用户原链接对应的樱桃木鱼肚白规格，读取页面标价。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "源氏木语实木双抽岩板边几",
+        "shop": "源氏木语官方旗舰店",
+        "itemCode": "5776584417656",
+        "variant": "Y102J16 · 樱桃木／鱼肚白 · 680×300×612 mm",
+        "priceFen": 95600,
+        "priceScope": "sku"
+      }
+    }
   ]
 }

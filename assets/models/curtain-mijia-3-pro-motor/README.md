@@ -22,6 +22,12 @@
 | [drive-track.jpg](references/drive-track.jpg) | 商品页资料 |
 | [installation.jpg](references/installation.jpg) | 商品页资料 |
 
+## 商品与采集价格
+
+| 日期 | 商品 | 店铺 | 编号／规格 | 价格 | 资料 |
+|---|---|---|---|---|---|
+| 2026-11-27 | 米家智能窗帘 3 Pro | 小米商城自营 | MJZNCL08LM / 白色 · 标准版单套 | ¥832.50（页面默认选项） | [商品页](<https://www.mi.com/shop/buy/detail?product_id=23885>) · 商城默认标准版价格，页面划线价 ¥999。适用于商品单套，布帘或纱帘布料另计。 |
+
 ## 来源链接
 
 - [来源](https://item.jd.com/100341996966.html)

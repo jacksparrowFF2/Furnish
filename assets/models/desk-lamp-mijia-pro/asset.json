@@ -10,7 +10,8 @@
   "sourceLinks": [
     "https://item.jd.com/100118995289.html",
     "https://www.ithome.com/0/795/480.htm",
-    "https://finance.sina.com.cn/tech/digi/2024-09-13/doc-incnxsxy7327115.shtml"
+    "https://finance.sina.com.cn/tech/digi/2024-09-13/doc-incnxsxy7327115.shtml",
+    "https://www.mi.com/shop/search?keyword=%E7%B1%B3%E5%AE%B6%E6%A1%8C%E9%9D%A2%E5%AD%A6%E4%B9%A0%E7%81%AFPro"
   ],
   "references": [
     {
@@ -77,5 +78,35 @@
   "notes": [
     "京东自营核对型号MJTD07YL；归档同型号营销尺寸图，不是用户实拍。520mm灯头、470mm标注整高、344mm灯臂及213×159mm底座；420mm整灯占深与各厚度/细节为静态姿态估算。",
     "静态参考姿态，未实现机械调臂、雷达人感或真实米家联动；4000K固定白光，未知光通量仅作规划亮度。"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/100118995289.html",
+      "capturedOn": "2026-11-14",
+      "note": "型号文档记录的小米京东自营店读数，活动与地区可变。等待复核现价。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "米家桌面学习灯 Pro MJTD07YL",
+        "shop": "小米京东自营旗舰店",
+        "itemCode": "100118995289",
+        "variant": "白色双段灯头 · MJTD07YL",
+        "priceFen": 42925,
+        "priceScope": "sku"
+      }
+    },
+    {
+      "sourceUrl": "https://www.mi.com/shop/search?keyword=%E7%B1%B3%E5%AE%B6%E6%A1%8C%E9%9D%A2%E5%AD%A6%E4%B9%A0%E7%81%AFPro",
+      "capturedOn": "2026-11-27",
+      "note": "小米商城同名白色 Pro 商品卡片当日显示价，划线价 ¥549。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "米家桌面学习灯 Pro",
+        "shop": "小米商城",
+        "itemCode": "MJTD07YL",
+        "variant": "白色 Pro · 双段灯头",
+        "priceFen": 50500,
+        "priceScope": "page-display"
+      }
+    }
   ]
 }

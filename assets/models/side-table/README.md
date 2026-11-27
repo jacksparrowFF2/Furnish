@@ -25,9 +25,16 @@
 | [reference-5.png](references/user/reference-5.png) | 用户上传 |
 | [reference-6.png](references/user/reference-6.png) | 用户上传 |
 
+## 商品与采集价格
+
+| 日期 | 商品 | 店铺 | 编号／规格 | 价格 | 资料 |
+|---|---|---|---|---|---|
+| 2026-11-27 | 源氏木语实木双抽岩板边几 | 源氏木语官方旗舰店 | 5776584417656 / Y102J16 · 樱桃木／鱼肚白 · 680×300×612 mm | ¥956.00（商品 SKU） | [商品页](<https://detail.tmall.com/item.htm?id=635382906309&skuId=5776584417656>) · 天猫已选用户原链接对应的樱桃木鱼肚白规格，读取页面标价。 |
+
 ## 来源链接
 
 - [来源](https://detail.tmall.com/item.htm?abbucket=0&id=635382906309&mi_id=0000n64ioooJG8d3oTuI_3sSR6yl6NubVt7Jui-6QXW-OA4&rn=1d72a6e371179b1c55984da266deb1b9&skuId=5776584417656&spm=a1z10.3-b-s.w4011-14781637738.244.629a5884FD6Y30)
+- [来源](https://detail.tmall.com/item.htm?id=635382906309&skuId=5776584417656)
 
 ## 验收入口
 

@@ -9,12 +9,29 @@
   "document": "docs/MIJIA-CEILING-LIGHTS.md",
   "sourceLinks": [
     "https://www.mi.com/shop/buy/detail?product_id=22566",
-    "https://home.mi.com/webapp/content/baike/product/index.html?model=xiaomi.light.ceil05"
+    "https://home.mi.com/webapp/content/baike/product/index.html?model=xiaomi.light.ceil05",
+    "https://www.mi.com/shop/search?keyword=%E7%B1%B3%E5%AE%B6%E5%90%B8%E9%A1%B6%E7%81%AF"
   ],
   "references": [],
   "missingReferences": [
     "厂家CAD、隐藏构造及IES"
   ],
   "supportingFiles": [],
-  "validation": []
+  "validation": [],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://www.mi.com/shop/search?keyword=%E7%B1%B3%E5%AE%B6%E5%90%B8%E9%A1%B6%E7%81%AF",
+      "capturedOn": "2026-11-27",
+      "note": "小米商城单灯商品卡片标价。另有同名规格的吸顶灯 C 系列，价格不同。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "米家吸顶灯套系 L90",
+        "shop": "小米商城",
+        "itemCode": "L90",
+        "variant": "L90 单灯 · 原米家吸顶灯套系",
+        "priceFen": 89900,
+        "priceScope": "page-display"
+      }
+    }
+  ]
 }

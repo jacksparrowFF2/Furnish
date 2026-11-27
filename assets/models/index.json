@@ -6307,7 +6307,8 @@
       "route": "parametric",
       "document": "docs/AQUARIUM-MIJIA-2PRO.md",
       "sourceLinks": [
-        "https://item.jd.com/100317574693.html"
+        "https://item.jd.com/100317574693.html",
+        "https://www.mi.com/shop/buy/detail?product_id=1230808777"
       ],
       "references": [],
       "missingReferences": [
@@ -6328,6 +6329,22 @@
         "docs/validation/aquarium-test-context-20261018/summary.json",
         "docs/validation/generator-part-identities-20261025/summary.json"
       ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=1230808777",
+          "capturedOn": "2026-11-27",
+          "note": "商城标准版选项价格。页面划线价 ¥699，滤芯组合另有定价。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "米家智能鱼缸 2 Pro",
+            "shop": "小米商城自营",
+            "itemCode": "1230808777",
+            "variant": "黑色 · 31 L · 标准版单缸",
+            "priceFen": 64900,
+            "priceScope": "default-selection"
+          }
+        }
+      ],
       "manifest": "assets/models/aquarium-mijia-2pro/asset.json",
       "readme": "assets/models/aquarium-mijia-2pro/README.md"
     },
@@ -6341,7 +6358,8 @@
       "route": "blender",
       "document": "docs/ARMCHAIR-YESWOOD-TMALL-1013742104698.md",
       "sourceLinks": [
-        "https://detail.tmall.com/item.htm?id=1013742104698&mi_id=0000YOu__P7FO1Od4DVMBOKIdVmXewhzkN4eAYmXTAOn9nU&skuId=6131810120970&spm=tbpc.boughtlist.suborder_itemtitle.1.24b02e8dUKATHx"
+        "https://detail.tmall.com/item.htm?id=1013742104698&mi_id=0000YOu__P7FO1Od4DVMBOKIdVmXewhzkN4eAYmXTAOn9nU&skuId=6131810120970&spm=tbpc.boughtlist.suborder_itemtitle.1.24b02e8dUKATHx",
+        "https://detail.tmall.com/item.htm?id=1013742104698&skuId=6065683829136"
       ],
       "references": [
         {
@@ -6447,6 +6465,22 @@
       "supportingFiles": [],
       "validation": [
         "docs/validation/armchair-yeswood-20261029/README.md"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://detail.tmall.com/item.htm?id=1013742104698&skuId=6065683829136",
+          "capturedOn": "2026-11-27",
+          "note": "实际选中单椅。天猫显示优惠前 ¥2304，平台加补后 ¥1527.54，为预售，条件与成交价以页面结算为准。原用户链接是含脚凳套餐。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "源氏木语 Y09HS 0.72 米沙发椅",
+            "shop": "源氏木语官方旗舰店",
+            "itemCode": "6065683829136",
+            "variant": "仿棉麻亚麻色，725×900×905 mm，单椅",
+            "priceFen": 230400,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/armchair/asset.json",
       "readme": "assets/models/armchair/README.md"
@@ -6559,7 +6593,8 @@
       "document": "docs/BED-YESWOOD-Y17B02.md",
       "sourceLinks": [
         "https://yeswoodhome.com/products/yws-600871898009",
-        "https://item.taobao.com/item.htm?id=600871898009"
+        "https://item.taobao.com/item.htm?id=600871898009",
+        "https://detail.tmall.com/item.htm?id=600871898009&skuId=6238749930598"
       ],
       "references": [
         {
@@ -6587,6 +6622,22 @@
       "missingReferences": [],
       "validation": [
         "docs/validation/y17b02-composition-20261125/README.md"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://detail.tmall.com/item.htm?id=600871898009&skuId=6238749930598",
+          "capturedOn": "2026-11-27",
+          "note": "实际选中樱桃木箱体床 Y17B02 适用床垫 1200×2000 mm，天猫页面显示 ¥3597；店铺预售。床垫与被褥另行采购。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "源氏木语 Y17B02 半夏樱桃木箱体床",
+            "shop": "源氏木语官方旗舰店",
+            "itemCode": "6238749930598",
+            "variant": "樱桃木 · 适用 1200×2000 mm 床垫 · 床架",
+            "priceFen": 359700,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/bed-yeswood-y17b02/asset.json",
       "readme": "assets/models/bed-yeswood-y17b02/README.md"
@@ -7191,6 +7242,22 @@
         "docs/validation/chair-s05118-20261031/README.md",
         "docs/validation/chair-s05118-visual-20261031/README.md"
       ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/10115482828125.html",
+          "capturedOn": "2026-10-31",
+          "note": "来自本型号文档在 2026-10-31 记录的商品接口读数。等待复核现价。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "源氏木语 S05118 书椅",
+            "shop": "源氏木语官方旗舰店",
+            "itemCode": "10115482828125",
+            "variant": "白蜡木原木色 0.66 m · 有机皮奶茶色",
+            "priceFen": 91370,
+            "priceScope": "sku"
+          }
+        }
+      ],
       "manifest": "assets/models/chair-s05118/asset.json",
       "readme": "assets/models/chair-s05118/README.md"
     },
@@ -7213,7 +7280,8 @@
         "https://www.ikea.com/sg/en/images/products/vihals-folding-chair-white__1414874_pe974960_s5.jpg?f=xl",
         "https://www.ikea.com/sg/en/images/products/vihals-folding-chair-white__1414875_pe974961_s5.jpg?f=xl",
         "https://www.ikea.com/sg/en/images/products/vihals-folding-chair-white__1547019_pe1020304_s5.jpg?f=xl",
-        "https://www.ikea.com/sg/en/images/products/vihals-folding-chair-white__1370474_pe958747_s5.jpg?f=xl"
+        "https://www.ikea.com/sg/en/images/products/vihals-folding-chair-white__1370474_pe958747_s5.jpg?f=xl",
+        "https://www.ikea.cn/cn/zh/p/vihals-folding-chair-green-80592753/"
       ],
       "references": [
         {
@@ -7282,6 +7350,50 @@
       "notes": [
         "v2支持展开／折叠端态、承托高度及预览配色；v1展开源和官方原件保留。",
         "官方折叠标注高880／深90mm，当前官方网格刚性折起约895.648高／89.081深，按较大生产包络核对。连续连杆与完整折叠扫掠未验证。"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/10167132712534.html",
+          "capturedOn": "2026-11-04",
+          "note": "型号文档记录的京东商品接口读数。绿色 805.927.53 单独核对。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "宜家 VIHALS 维哈斯白色折叠椅",
+            "shop": "IKEA 宜家家居官方旗舰店",
+            "itemCode": "10167132712534",
+            "variant": "白色 905.927.38",
+            "priceFen": 9999,
+            "priceScope": "sku"
+          }
+        },
+        {
+          "sourceUrl": "https://www.ikea.cn/cn/zh/p/vihals-wei-ha-si-zhe-die-yi-bai-se-90592738/",
+          "capturedOn": "2026-11-27",
+          "note": "宜家中国同货号商品页标价。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "宜家 VIHALS 维哈斯白色折叠椅",
+            "shop": "宜家中国",
+            "itemCode": "905.927.38",
+            "variant": "白色",
+            "priceFen": 9999,
+            "priceScope": "sku"
+          }
+        },
+        {
+          "sourceUrl": "https://www.ikea.cn/cn/zh/p/vihals-folding-chair-green-80592753/",
+          "capturedOn": "2026-11-27",
+          "note": "宜家中国同货号商品页标价。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "宜家 VIHALS 维哈斯绿色折叠椅",
+            "shop": "宜家中国",
+            "itemCode": "805.927.53",
+            "variant": "绿色",
+            "priceFen": 9999,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/chair-vihals/asset.json",
       "readme": "assets/models/chair-vihals/README.md"
@@ -7532,6 +7644,22 @@
       "notes": [
         "111 × 59 × 93 mm 为固定电机外包；轨道与帘布由生产模型按实例尺寸构造。"
       ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=23885",
+          "capturedOn": "2026-11-27",
+          "note": "商城默认标准版价格，页面划线价 ¥999。适用于商品单套，布帘或纱帘布料另计。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "米家智能窗帘 3 Pro",
+            "shop": "小米商城自营",
+            "itemCode": "MJZNCL08LM",
+            "variant": "白色 · 标准版单套",
+            "priceFen": 83250,
+            "priceScope": "default-selection"
+          }
+        }
+      ],
       "manifest": "assets/models/curtain-mijia-3-pro-motor/asset.json",
       "readme": "assets/models/curtain-mijia-3-pro-motor/README.md"
     },
@@ -7577,7 +7705,8 @@
       "sourceLinks": [
         "https://item.jd.com/100118995289.html",
         "https://www.ithome.com/0/795/480.htm",
-        "https://finance.sina.com.cn/tech/digi/2024-09-13/doc-incnxsxy7327115.shtml"
+        "https://finance.sina.com.cn/tech/digi/2024-09-13/doc-incnxsxy7327115.shtml",
+        "https://www.mi.com/shop/search?keyword=%E7%B1%B3%E5%AE%B6%E6%A1%8C%E9%9D%A2%E5%AD%A6%E4%B9%A0%E7%81%AFPro"
       ],
       "references": [
         {
@@ -7645,6 +7774,36 @@
         "京东自营核对型号MJTD07YL；归档同型号营销尺寸图，不是用户实拍。520mm灯头、470mm标注整高、344mm灯臂及213×159mm底座；420mm整灯占深与各厚度/细节为静态姿态估算。",
         "静态参考姿态，未实现机械调臂、雷达人感或真实米家联动；4000K固定白光，未知光通量仅作规划亮度。"
       ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100118995289.html",
+          "capturedOn": "2026-11-14",
+          "note": "型号文档记录的小米京东自营店读数，活动与地区可变。等待复核现价。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "米家桌面学习灯 Pro MJTD07YL",
+            "shop": "小米京东自营旗舰店",
+            "itemCode": "100118995289",
+            "variant": "白色双段灯头 · MJTD07YL",
+            "priceFen": 42925,
+            "priceScope": "sku"
+          }
+        },
+        {
+          "sourceUrl": "https://www.mi.com/shop/search?keyword=%E7%B1%B3%E5%AE%B6%E6%A1%8C%E9%9D%A2%E5%AD%A6%E4%B9%A0%E7%81%AFPro",
+          "capturedOn": "2026-11-27",
+          "note": "小米商城同名白色 Pro 商品卡片当日显示价，划线价 ¥549。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "米家桌面学习灯 Pro",
+            "shop": "小米商城",
+            "itemCode": "MJTD07YL",
+            "variant": "白色 Pro · 双段灯头",
+            "priceFen": 50500,
+            "priceScope": "page-display"
+          }
+        }
+      ],
       "manifest": "assets/models/desk-lamp-mijia-pro/asset.json",
       "readme": "assets/models/desk-lamp-mijia-pro/README.md"
     },
@@ -7657,7 +7816,9 @@
       ],
       "route": "blender",
       "document": "docs/DISHWASHER-MIJIA-COUNTERTOP.md",
-      "sourceLinks": [],
+      "sourceLinks": [
+        "https://www.mi.com/shop/buy/detail?product_id=25605"
+      ],
       "references": [],
       "missingReferences": [
         {
@@ -7679,6 +7840,22 @@
       "supportingFiles": [],
       "validation": [
         "docs/validation/blender-dishwasher-fold-20261029/README.md"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=25605",
+          "capturedOn": "2026-11-27",
+          "note": "商城小米自营页面标价。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "米家智能洗碗机 台式 5套",
+            "shop": "小米商城自营",
+            "itemCode": "25605",
+            "variant": "白色 · 磁吸折叠门",
+            "priceFen": 169900,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/dishwasher/asset.json",
       "readme": "assets/models/dishwasher/README.md"
@@ -8500,7 +8677,8 @@
       "route": "blender",
       "document": "docs/PET-SUPPLIES.md",
       "sourceLinks": [
-        "https://img14.360buyimg.com/pop/jfs/t1/248679/35/10461/184255/665e7a83F62fa7c19/a98f8fdffe9d954a.jpg"
+        "https://img14.360buyimg.com/pop/jfs/t1/248679/35/10461/184255/665e7a83F62fa7c19/a98f8fdffe9d954a.jpg",
+        "https://www.jtsww.shop/product/detail/245415"
       ],
       "references": [
         {
@@ -8534,6 +8712,22 @@
           "sha256": "7fb84967a03a0e3ed113e0ef5459635273220c44309e87c9472231b774f31290",
           "bytes": 382,
           "legacyPaths": []
+        }
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://www.jtsww.shop/product/detail/245415",
+          "capturedOn": "2026-11-27",
+          "note": "建投商城标注京东商品编码 100015934864，销售单位为箱，页面显示无货。模型是一袋，¥61.95 对应四袋整箱。单袋现价待核。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "网易严选 四合一混合猫砂",
+            "shop": "建投商城",
+            "itemCode": "100015934864",
+            "variant": "2.5 kg×4 袋整箱",
+            "priceFen": 6195,
+            "priceScope": "sku"
+          }
         }
       ],
       "manifest": "assets/models/litter-bag/asset.json",
@@ -8744,7 +8938,8 @@
       "document": "docs/MIJIA-CEILING-LIGHTS.md",
       "sourceLinks": [
         "https://www.mi.com/shop/buy/detail?product_id=22566",
-        "https://home.mi.com/webapp/content/baike/product/index.html?model=xiaomi.light.ceil05"
+        "https://home.mi.com/webapp/content/baike/product/index.html?model=xiaomi.light.ceil05",
+        "https://www.mi.com/shop/search?keyword=%E7%B1%B3%E5%AE%B6%E5%90%B8%E9%A1%B6%E7%81%AF"
       ],
       "references": [],
       "missingReferences": [
@@ -8752,6 +8947,22 @@
       ],
       "supportingFiles": [],
       "validation": [],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://www.mi.com/shop/search?keyword=%E7%B1%B3%E5%AE%B6%E5%90%B8%E9%A1%B6%E7%81%AF",
+          "capturedOn": "2026-11-27",
+          "note": "小米商城单灯商品卡片标价。另有同名规格的吸顶灯 C 系列，价格不同。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "米家吸顶灯套系 L90",
+            "shop": "小米商城",
+            "itemCode": "L90",
+            "variant": "L90 单灯 · 原米家吸顶灯套系",
+            "priceFen": 89900,
+            "priceScope": "page-display"
+          }
+        }
+      ],
       "manifest": "assets/models/mijia-ceiling-l90/asset.json",
       "readme": "assets/models/mijia-ceiling-l90/README.md"
     },
@@ -9120,7 +9331,9 @@
       "document": "docs/PANEL-XIAOMI-SWITCH2.md",
       "sourceLinks": [
         "https://item.jd.com/100434281318.html",
-        "https://item.jd.com/100313419465.html"
+        "https://item.jd.com/100313419465.html",
+        "https://www.mi.com/shop/buy/detail?product_id=25273",
+        "https://www.mi.com/shop/buy/detail?product_id=25749"
       ],
       "references": [
         {
@@ -9626,6 +9839,176 @@
           "legacyPaths": []
         }
       ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=25273",
+          "capturedOn": "2026-11-27",
+          "note": "商城对应颜色与开数的选项价，划线价 ¥99。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "小米智能开关2",
+            "shop": "小米商城自营",
+            "itemCode": "",
+            "variant": "白色 · 单开",
+            "priceFen": 7900,
+            "priceScope": "sku"
+          }
+        },
+        {
+          "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=25273",
+          "capturedOn": "2026-11-27",
+          "note": "商城对应颜色与开数的选项价，划线价 ¥109。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "小米智能开关2",
+            "shop": "小米商城自营",
+            "itemCode": "",
+            "variant": "白色 · 双开",
+            "priceFen": 8900,
+            "priceScope": "sku"
+          }
+        },
+        {
+          "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=25273",
+          "capturedOn": "2026-11-27",
+          "note": "商城对应颜色与开数的选项价，划线价 ¥129。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "小米智能开关2",
+            "shop": "小米商城自营",
+            "itemCode": "",
+            "variant": "白色 · 三开",
+            "priceFen": 10900,
+            "priceScope": "sku"
+          }
+        },
+        {
+          "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=25273",
+          "capturedOn": "2026-11-27",
+          "note": "商城对应颜色与开数的选项价，划线价 ¥99。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "小米智能开关2",
+            "shop": "小米商城自营",
+            "itemCode": "",
+            "variant": "深空灰 · 单开",
+            "priceFen": 8490,
+            "priceScope": "sku"
+          }
+        },
+        {
+          "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=25273",
+          "capturedOn": "2026-11-27",
+          "note": "商城对应颜色与开数的选项价，划线价 ¥109。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "小米智能开关2",
+            "shop": "小米商城自营",
+            "itemCode": "",
+            "variant": "深空灰 · 双开",
+            "priceFen": 9490,
+            "priceScope": "sku"
+          }
+        },
+        {
+          "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=25273",
+          "capturedOn": "2026-11-27",
+          "note": "商城对应颜色与开数的选项价，划线价 ¥129。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "小米智能开关2",
+            "shop": "小米商城自营",
+            "itemCode": "",
+            "variant": "深空灰 · 三开",
+            "priceFen": 11490,
+            "priceScope": "sku"
+          }
+        },
+        {
+          "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=25749",
+          "capturedOn": "2026-11-27",
+          "note": "商城对应颜色与开数的选项价，划线价 ¥149。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "小米智能开关2 Pro",
+            "shop": "小米商城自营",
+            "itemCode": "",
+            "variant": "白色 · 单开",
+            "priceFen": 12900,
+            "priceScope": "sku"
+          }
+        },
+        {
+          "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=25749",
+          "capturedOn": "2026-11-27",
+          "note": "商城对应颜色与开数的选项价，划线价 ¥169。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "小米智能开关2 Pro",
+            "shop": "小米商城自营",
+            "itemCode": "",
+            "variant": "白色 · 双开",
+            "priceFen": 14900,
+            "priceScope": "sku"
+          }
+        },
+        {
+          "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=25749",
+          "capturedOn": "2026-11-27",
+          "note": "商城对应颜色与开数的选项价，划线价 ¥189。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "小米智能开关2 Pro",
+            "shop": "小米商城自营",
+            "itemCode": "",
+            "variant": "白色 · 三开",
+            "priceFen": 16900,
+            "priceScope": "sku"
+          }
+        },
+        {
+          "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=25749",
+          "capturedOn": "2026-11-27",
+          "note": "商城对应颜色与开数的选项价，划线价 ¥149。商城颜色标签为「深灰色」。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "小米智能开关2 Pro",
+            "shop": "小米商城自营",
+            "itemCode": "",
+            "variant": "深空灰 · 单开",
+            "priceFen": 12900,
+            "priceScope": "sku"
+          }
+        },
+        {
+          "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=25749",
+          "capturedOn": "2026-11-27",
+          "note": "商城对应颜色与开数的选项价，划线价 ¥169。商城颜色标签为「深灰色」。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "小米智能开关2 Pro",
+            "shop": "小米商城自营",
+            "itemCode": "",
+            "variant": "深空灰 · 双开",
+            "priceFen": 14900,
+            "priceScope": "sku"
+          }
+        },
+        {
+          "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=25749",
+          "capturedOn": "2026-11-27",
+          "note": "商城对应颜色与开数的选项价，划线价 ¥189。商城颜色标签为「深灰色」。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "小米智能开关2 Pro",
+            "shop": "小米商城自营",
+            "itemCode": "",
+            "variant": "深空灰 · 三开",
+            "priceFen": 16900,
+            "priceScope": "sku"
+          }
+        }
+      ],
       "manifest": "assets/models/panel-xiaomi-switch2/asset.json",
       "readme": "assets/models/panel-xiaomi-switch2/README.md"
     },
@@ -9642,7 +10025,9 @@
         "https://3.cn/3dM7-M05?jkl=@J6zb5FvQUb@",
         "https://item.m.jd.com/product/100197232066.html",
         "https://item.m.jd.com/product/100282401934.html",
-        "https://www.xiaomiyoupin.com/detail?gid=174191"
+        "https://www.xiaomiyoupin.com/detail?gid=174191",
+        "https://www.mi.com/shop/buy/detail?product_id=1230803659",
+        "https://www.mi.com/shop/buy/detail?product_id=21074"
       ],
       "references": [
         {
@@ -9682,6 +10067,36 @@
       "notes": [
         "短链落在自营白色 SKU 100197232066。说明书文件名标为深空灰，正文型号 XMWS01XS 与白色商品规格一致。白色外观以京东及有品实图为准。",
         "京东同款深空灰 SKU 100282401934，与白色共用已发布网格。颜色及粗糙度按图估算。"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=1230803659",
+          "capturedOn": "2026-11-27",
+          "note": "小米商城白色商品卡片读数，原价 ¥79。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "小米智能无线开关（双开） XMWS01XS",
+            "shop": "小米商城自营",
+            "itemCode": "XMWS01XS",
+            "variant": "白色 · 无线双开",
+            "priceFen": 5900,
+            "priceScope": "sku"
+          }
+        },
+        {
+          "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=21074",
+          "capturedOn": "2026-11-27",
+          "note": "选中深空灰显示 ¥64.90，划线价 ¥79；采集地区暂时无法送达。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "小米智能无线开关（双开） XMWS01XS",
+            "shop": "小米商城自营",
+            "itemCode": "XMWS01XS",
+            "variant": "深空灰 · 无线双开",
+            "priceFen": 6490,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/panel-xiaomi-wireless/asset.json",
       "readme": "assets/models/panel-xiaomi-wireless/README.md"
@@ -9726,7 +10141,9 @@
       ],
       "route": "parametric",
       "document": "docs/PET-FEEDER-MIJIA-2.md",
-      "sourceLinks": [],
+      "sourceLinks": [
+        "https://www.mi.com/shop/buy/detail?product_id=19511"
+      ],
       "references": [],
       "missingReferences": [
         {
@@ -9758,6 +10175,22 @@
       "supportingFiles": [],
       "validation": [
         "docs/validation/pet-feeder-20261019.json"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=19511",
+          "capturedOn": "2026-11-27",
+          "note": "商城标价，当前显示到货通知。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "米家智能宠物喂食器 2",
+            "shop": "小米商城自营",
+            "itemCode": "19511",
+            "variant": "5 L · 标准版 · 非可视版",
+            "priceFen": 39900,
+            "priceScope": "default-selection"
+          }
+        }
       ],
       "manifest": "assets/models/pet-feeder-mijia-2/asset.json",
       "readme": "assets/models/pet-feeder-mijia-2/README.md"
@@ -10111,7 +10544,8 @@
       "route": "blender",
       "document": "docs/SIDE-TABLE-TMALL-635382906309.md",
       "sourceLinks": [
-        "https://detail.tmall.com/item.htm?abbucket=0&id=635382906309&mi_id=0000n64ioooJG8d3oTuI_3sSR6yl6NubVt7Jui-6QXW-OA4&rn=1d72a6e371179b1c55984da266deb1b9&skuId=5776584417656&spm=a1z10.3-b-s.w4011-14781637738.244.629a5884FD6Y30"
+        "https://detail.tmall.com/item.htm?abbucket=0&id=635382906309&mi_id=0000n64ioooJG8d3oTuI_3sSR6yl6NubVt7Jui-6QXW-OA4&rn=1d72a6e371179b1c55984da266deb1b9&skuId=5776584417656&spm=a1z10.3-b-s.w4011-14781637738.244.629a5884FD6Y30",
+        "https://detail.tmall.com/item.htm?id=635382906309&skuId=5776584417656"
       ],
       "references": [
         {
@@ -10179,6 +10613,22 @@
       "supportingFiles": [],
       "validation": [
         "docs/validation/side-table-20261029/README.md"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://detail.tmall.com/item.htm?id=635382906309&skuId=5776584417656",
+          "capturedOn": "2026-11-27",
+          "note": "天猫已选用户原链接对应的樱桃木鱼肚白规格，读取页面标价。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "源氏木语实木双抽岩板边几",
+            "shop": "源氏木语官方旗舰店",
+            "itemCode": "5776584417656",
+            "variant": "Y102J16 · 樱桃木／鱼肚白 · 680×300×612 mm",
+            "priceFen": 95600,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/side-table/asset.json",
       "readme": "assets/models/side-table/README.md"
@@ -10918,7 +11368,8 @@
       "route": "blender",
       "document": "docs/STORAGE-CABINET-2400.md",
       "sourceLinks": [
-        "https://item.jd.com/100024900561.html"
+        "https://item.jd.com/100024900561.html",
+        "https://www.scr.com.cn/ProductView.aspx?CatalogNo=05041302&SeqNo=688176"
       ],
       "references": [
         {
@@ -10936,6 +11387,22 @@
       "notes": [
         "外观及尺寸依据分类见型号说明；纸品宽深估算、药箱不透明结构示意，不认证同批次实物复刻。"
       ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://www.scr.com.cn/ProductView.aspx?CatalogNo=05041302&SeqNo=688176",
+          "capturedOn": "2026-11-27",
+          "note": "商城含税标准价；未税 ¥123.04。订货品，会员优惠需登录查看。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "SATA 世达手提工具箱 95101 14 英寸",
+            "shop": "中儒股份商城",
+            "itemCode": "95101",
+            "variant": "360×150×115 mm · 1 只",
+            "priceFen": 13904,
+            "priceScope": "sku"
+          }
+        }
+      ],
       "manifest": "assets/models/storage-toolbox/asset.json",
       "readme": "assets/models/storage-toolbox/README.md"
     },
@@ -10948,7 +11415,9 @@
       ],
       "route": "parametric",
       "document": "docs/TEA-BAR-MIJIA-PRO.md",
-      "sourceLinks": [],
+      "sourceLinks": [
+        "https://www.mi.com/shop/search?keyword=%E7%B1%B3%E5%AE%B6%E6%99%BA%E8%83%BD%E8%8C%B6%E5%90%A7%E6%9C%BA"
+      ],
       "references": [
         {
           "path": "references/user/reference-bottle-dimensions.png",
@@ -11016,6 +11485,22 @@
       "validation": [
         "docs/validation/tea-bar-20261020.json",
         "docs/validation/tea-bar-opening-20261020.json"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://www.mi.com/shop/search?keyword=%E7%B1%B3%E5%AE%B6%E6%99%BA%E8%83%BD%E8%8C%B6%E5%90%A7%E6%9C%BA",
+          "capturedOn": "2026-11-27",
+          "note": "小米商城同名立式款商品卡片标价。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "米家智能茶吧机 Pro 立式",
+            "shop": "小米商城",
+            "itemCode": "",
+            "variant": "白色 · 立式 315×310×1155 mm",
+            "priceFen": 139900,
+            "priceScope": "page-display"
+          }
+        }
       ],
       "manifest": "assets/models/tea-bar/asset.json",
       "readme": "assets/models/tea-bar/README.md"
@@ -11327,6 +11812,22 @@
       ],
       "notes": [
         "尺寸为当前77cm款；内部净空、轮径、层距及网孔采样为照片估算；模型自行制作，未复用第三方模型。"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://www.ikea.cn/cn/zh/p/raskog-la-si-ke-shou-tui-che-hui-lu-se-30591666/",
+          "capturedOn": "2026-11-27",
+          "note": "宜家中国同货号页面标价。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "RÅSKOG 拉斯克 手推车 灰绿色",
+            "shop": "宜家中国",
+            "itemCode": "305.916.66",
+            "variant": "灰绿色 · 35×45×77 cm",
+            "priceFen": 17900,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/trolley-ikea-raskog-large/asset.json",
       "readme": "assets/models/trolley-ikea-raskog-large/README.md"

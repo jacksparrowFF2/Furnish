@@ -44,5 +44,21 @@
   ],
   "notes": [
     "111 × 59 × 93 mm 为固定电机外包；轨道与帘布由生产模型按实例尺寸构造。"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://www.mi.com/shop/buy/detail?product_id=23885",
+      "capturedOn": "2026-11-27",
+      "note": "商城默认标准版价格，页面划线价 ¥999。适用于商品单套，布帘或纱帘布料另计。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "米家智能窗帘 3 Pro",
+        "shop": "小米商城自营",
+        "itemCode": "MJZNCL08LM",
+        "variant": "白色 · 标准版单套",
+        "priceFen": 83250,
+        "priceScope": "default-selection"
+      }
+    }
   ]
 }

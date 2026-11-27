@@ -8,7 +8,8 @@
   "route": "blender",
   "document": "docs/PET-SUPPLIES.md",
   "sourceLinks": [
-    "https://img14.360buyimg.com/pop/jfs/t1/248679/35/10461/184255/665e7a83F62fa7c19/a98f8fdffe9d954a.jpg"
+    "https://img14.360buyimg.com/pop/jfs/t1/248679/35/10461/184255/665e7a83F62fa7c19/a98f8fdffe9d954a.jpg",
+    "https://www.jtsww.shop/product/detail/245415"
   ],
   "references": [
     {
@@ -42,6 +43,22 @@
       "sha256": "7fb84967a03a0e3ed113e0ef5459635273220c44309e87c9472231b774f31290",
       "bytes": 382,
       "legacyPaths": []
+    }
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://www.jtsww.shop/product/detail/245415",
+      "capturedOn": "2026-11-27",
+      "note": "建投商城标注京东商品编码 100015934864，销售单位为箱，页面显示无货。模型是一袋，¥61.95 对应四袋整箱。单袋现价待核。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "网易严选 四合一混合猫砂",
+        "shop": "建投商城",
+        "itemCode": "100015934864",
+        "variant": "2.5 kg×4 袋整箱",
+        "priceFen": 6195,
+        "priceScope": "sku"
+      }
     }
   ]
 }

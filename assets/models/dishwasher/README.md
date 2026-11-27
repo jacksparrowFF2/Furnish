@@ -21,6 +21,16 @@
 
 当前未归档可用原图；不代表不需要参考资料。
 
+## 商品与采集价格
+
+| 日期 | 商品 | 店铺 | 编号／规格 | 价格 | 资料 |
+|---|---|---|---|---|---|
+| 2026-11-27 | 米家智能洗碗机 台式 5套 | 小米商城自营 | 25605 / 白色 · 磁吸折叠门 | ¥1699.00（商品 SKU） | [商品页](<https://www.mi.com/shop/buy/detail?product_id=25605>) · 商城小米自营页面标价。 |
+
+## 来源链接
+
+- [来源](https://www.mi.com/shop/buy/detail?product_id=25605)
+
 ## 待补历史原图
 
 - `codex-clipboard-f81b2a64-8bd3-494d-8671-ad4508fe76e2.png`，依据[原记录](../../../docs/DISHWASHER-MIJIA-COUNTERTOP.md)；本机未找到。

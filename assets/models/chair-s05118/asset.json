@@ -89,5 +89,21 @@
   "validation": [
     "docs/validation/chair-s05118-20261031/README.md",
     "docs/validation/chair-s05118-visual-20261031/README.md"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/10115482828125.html",
+      "capturedOn": "2026-10-31",
+      "note": "来自本型号文档在 2026-10-31 记录的商品接口读数。等待复核现价。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "源氏木语 S05118 书椅",
+        "shop": "源氏木语官方旗舰店",
+        "itemCode": "10115482828125",
+        "variant": "白蜡木原木色 0.66 m · 有机皮奶茶色",
+        "priceFen": 91370,
+        "priceScope": "sku"
+      }
+    }
   ]
 }

@@ -48,10 +48,10 @@ assert.deepEqual(I.outputs(),I.outputs());I.main('--check');
 const sourceUrl='https://item.jd.com/123456.html?source=A&sku=123456';
 const archived={...lining,productCaptures:[
  {sourceUrl,capturedOn:'2026-11-26',capture:{title:'双开 <面板>',itemCode:'123456',priceFen:0,priceScope:'sku'}},
- {sourceUrl,capturedOn:'2026-11-27',capture:{title:'双开面板',itemCode:'123456',priceFen:12345,priceScope:'default-selection'}}
+ {sourceUrl,capturedOn:'2026-11-27',capture:{title:'双开面板',itemCode:'123456',variant:'深空灰',priceFen:12345,priceScope:'default-selection'}}
 ]};
 const views=I.outputs({...index,products:[archived]});
-assert(views['assets/models/index.html'].includes('¥123.45（页面默认选项） · 2026-11-27'));
+assert(views['assets/models/index.html'].includes('双开面板 · 深空灰 · ¥123.45（页面默认选项） · 2026-11-27'));
 assert(views['assets/models/index.html'].includes('sku=123456'));
 assert(!views['assets/models/index.html'].includes('双开 <面板>'));
 assert(views['assets/models/window-lining/README.md'].includes('¥0.00（商品 SKU）'));

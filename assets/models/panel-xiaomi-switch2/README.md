@@ -88,10 +88,29 @@
 | [pro-detail-34.avif](references/product-page/pro-detail-34.avif) | 商品页资料 |
 | [pro-detail-35.avif](references/product-page/pro-detail-35.avif) | 商品页资料 |
 
+## 商品与采集价格
+
+| 日期 | 商品 | 店铺 | 编号／规格 | 价格 | 资料 |
+|---|---|---|---|---|---|
+| 2026-11-27 | 小米智能开关2 Pro | 小米商城自营 | 深空灰 · 三开 | ¥169.00（商品 SKU） | [商品页](<https://www.mi.com/shop/buy/detail?product_id=25749>) · 商城对应颜色与开数的选项价，划线价 ¥189。商城颜色标签为「深灰色」。 |
+| 2026-11-27 | 小米智能开关2 Pro | 小米商城自营 | 深空灰 · 双开 | ¥149.00（商品 SKU） | [商品页](<https://www.mi.com/shop/buy/detail?product_id=25749>) · 商城对应颜色与开数的选项价，划线价 ¥169。商城颜色标签为「深灰色」。 |
+| 2026-11-27 | 小米智能开关2 Pro | 小米商城自营 | 深空灰 · 单开 | ¥129.00（商品 SKU） | [商品页](<https://www.mi.com/shop/buy/detail?product_id=25749>) · 商城对应颜色与开数的选项价，划线价 ¥149。商城颜色标签为「深灰色」。 |
+| 2026-11-27 | 小米智能开关2 Pro | 小米商城自营 | 白色 · 三开 | ¥169.00（商品 SKU） | [商品页](<https://www.mi.com/shop/buy/detail?product_id=25749>) · 商城对应颜色与开数的选项价，划线价 ¥189。 |
+| 2026-11-27 | 小米智能开关2 Pro | 小米商城自营 | 白色 · 双开 | ¥149.00（商品 SKU） | [商品页](<https://www.mi.com/shop/buy/detail?product_id=25749>) · 商城对应颜色与开数的选项价，划线价 ¥169。 |
+| 2026-11-27 | 小米智能开关2 Pro | 小米商城自营 | 白色 · 单开 | ¥129.00（商品 SKU） | [商品页](<https://www.mi.com/shop/buy/detail?product_id=25749>) · 商城对应颜色与开数的选项价，划线价 ¥149。 |
+| 2026-11-27 | 小米智能开关2 | 小米商城自营 | 深空灰 · 三开 | ¥114.90（商品 SKU） | [商品页](<https://www.mi.com/shop/buy/detail?product_id=25273>) · 商城对应颜色与开数的选项价，划线价 ¥129。 |
+| 2026-11-27 | 小米智能开关2 | 小米商城自营 | 深空灰 · 双开 | ¥94.90（商品 SKU） | [商品页](<https://www.mi.com/shop/buy/detail?product_id=25273>) · 商城对应颜色与开数的选项价，划线价 ¥109。 |
+| 2026-11-27 | 小米智能开关2 | 小米商城自营 | 深空灰 · 单开 | ¥84.90（商品 SKU） | [商品页](<https://www.mi.com/shop/buy/detail?product_id=25273>) · 商城对应颜色与开数的选项价，划线价 ¥99。 |
+| 2026-11-27 | 小米智能开关2 | 小米商城自营 | 白色 · 三开 | ¥109.00（商品 SKU） | [商品页](<https://www.mi.com/shop/buy/detail?product_id=25273>) · 商城对应颜色与开数的选项价，划线价 ¥129。 |
+| 2026-11-27 | 小米智能开关2 | 小米商城自营 | 白色 · 双开 | ¥89.00（商品 SKU） | [商品页](<https://www.mi.com/shop/buy/detail?product_id=25273>) · 商城对应颜色与开数的选项价，划线价 ¥109。 |
+| 2026-11-27 | 小米智能开关2 | 小米商城自营 | 白色 · 单开 | ¥79.00（商品 SKU） | [商品页](<https://www.mi.com/shop/buy/detail?product_id=25273>) · 商城对应颜色与开数的选项价，划线价 ¥99。 |
+
 ## 来源链接
 
 - [来源](https://item.jd.com/100434281318.html)
 - [来源](https://item.jd.com/100313419465.html)
+- [来源](https://www.mi.com/shop/buy/detail?product_id=25273)
+- [来源](https://www.mi.com/shop/buy/detail?product_id=25749)
 
 ## 原始来源记录
 

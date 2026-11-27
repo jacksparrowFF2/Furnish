@@ -22,10 +22,17 @@
 | [storage.jpg](references/storage.jpg) | 商品页资料 |
 | [upgrade-dimensions.jpg](references/upgrade-dimensions.jpg) | 商品页资料 |
 
+## 商品与采集价格
+
+| 日期 | 商品 | 店铺 | 编号／规格 | 价格 | 资料 |
+|---|---|---|---|---|---|
+| 2026-11-27 | 源氏木语 Y17B02 半夏樱桃木箱体床 | 源氏木语官方旗舰店 | 6238749930598 / 樱桃木 · 适用 1200×2000 mm 床垫 · 床架 | ¥3597.00（商品 SKU） | [商品页](<https://detail.tmall.com/item.htm?id=600871898009&skuId=6238749930598>) · 实际选中樱桃木箱体床 Y17B02 适用床垫 1200×2000 mm，天猫页面显示 ¥3597；店铺预售。床垫与被褥另行采购。 |
+
 ## 来源链接
 
 - [来源](https://yeswoodhome.com/products/yws-600871898009)
 - [来源](https://item.taobao.com/item.htm?id=600871898009)
+- [来源](https://detail.tmall.com/item.htm?id=600871898009&skuId=6238749930598)
 
 ## 验收入口
 

@@ -20,6 +20,16 @@
 | [reference-sterilizer.png](references/user/reference-sterilizer.png) | 用户上传 |
 | [reference-storage.png](references/user/reference-storage.png) | 用户上传 |
 
+## 商品与采集价格
+
+| 日期 | 商品 | 店铺 | 编号／规格 | 价格 | 资料 |
+|---|---|---|---|---|---|
+| 2026-11-27 | 米家智能茶吧机 Pro 立式 | 小米商城 | 白色 · 立式 315×310×1155 mm | ¥1399.00（页面显示价） | [商品页](<https://www.mi.com/shop/search?keyword=%E7%B1%B3%E5%AE%B6%E6%99%BA%E8%83%BD%E8%8C%B6%E5%90%A7%E6%9C%BA>) · 小米商城同名立式款商品卡片标价。 |
+
+## 来源链接
+
+- [来源](https://www.mi.com/shop/search?keyword=%E7%B1%B3%E5%AE%B6%E6%99%BA%E8%83%BD%E8%8C%B6%E5%90%A7%E6%9C%BA)
+
 ## 验收入口
 
 - [验收资料](../../../docs/validation/tea-bar-20261020.json)

@@ -21,9 +21,16 @@
 | [mix-packaging-family.jpg](references/mix-packaging-family.jpg) | 商品页资料 |
 | [user-body-handle-annotation.png](references/user-body-handle-annotation.png) | 用户批注 |
 
+## 商品与采集价格
+
+| 日期 | 商品 | 店铺 | 编号／规格 | 价格 | 资料 |
+|---|---|---|---|---|---|
+| 2026-11-27 | 网易严选 四合一混合猫砂 | 建投商城 | 100015934864 / 2.5 kg×4 袋整箱 | ¥61.95（商品 SKU） | [商品页](<https://www.jtsww.shop/product/detail/245415>) · 建投商城标注京东商品编码 100015934864，销售单位为箱，页面显示无货。模型是一袋，¥61.95 对应四袋整箱。单袋现价待核。 |
+
 ## 来源链接
 
 - [来源](https://img14.360buyimg.com/pop/jfs/t1/248679/35/10461/184255/665e7a83F62fa7c19/a98f8fdffe9d954a.jpg)
+- [来源](https://www.jtsww.shop/product/detail/245415)
 
 ## 原始来源记录
 
