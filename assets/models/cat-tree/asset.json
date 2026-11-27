@@ -7,7 +7,9 @@
   ],
   "route": "parametric",
   "document": "docs/CAT-TREE.md",
-  "sourceLinks": [],
+  "sourceLinks": [
+    "https://item.taobao.com/item.htm?id=1070152285167&skuId=6118835552103"
+  ],
   "references": [
     {
       "path": "references/user/reference.png",
@@ -24,5 +26,21 @@
   "supportingFiles": [],
   "validation": [
     "docs/validation/cat-tree-20261019/browser-results.json"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.taobao.com/item.htm?id=1070152285167&skuId=6118835552103",
+      "capturedOn": "2026-11-27",
+      "note": "淘宝选中升级围栏款。规格图核对为 500×500 mm、总高 1430 mm，图中绿猫屋、围栏窝、透明舱及跳台布局与原档案对应。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "绿叶成荫猫爬架四季款家用通天柱猫抓板宠物猫窝猫树一体猫咪玩具",
+        "shop": "九宠喵宠物用品店",
+        "itemCode": "1070152285167",
+        "variant": "绿叶成荫 · 升级围栏款 · 500×500×1430 mm",
+        "priceFen": 29900,
+        "priceScope": "sku"
+      }
+    }
   ]
 }

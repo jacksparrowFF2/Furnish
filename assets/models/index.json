@@ -6510,7 +6510,9 @@
       ],
       "route": "blender",
       "document": "docs/ARMCHAIR-YESWOOD-BERLIN.md",
-      "sourceLinks": [],
+      "sourceLinks": [
+        "https://detail.tmall.com/item.htm?id=605016424357&skuId=6095872157959"
+      ],
       "references": [
         {
           "path": "references/user/appearance.png",
@@ -6541,6 +6543,22 @@
       "supportingFiles": [],
       "validation": [
         "docs/validation/armchair-berlin-20261029/README.md"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://detail.tmall.com/item.htm?id=605016424357&skuId=6095872157959",
+          "capturedOn": "2026-11-27",
+          "note": "天猫源氏木语官方旗舰店选中 0.71 米单人沙发椅。规格图标注橡木原木色、仿棉麻砂砾白与 710×850×845 mm，外观和尺寸与归档图片一致。页面另有预计到手活动说明。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "源氏木语实木沙发椅可躺极简阳台休闲椅北欧椅子小户型客厅单人椅",
+            "shop": "源氏木语官方旗舰店",
+            "itemCode": "605016424357",
+            "variant": "Y83H04 · 橡木原木色 · 仿棉麻砂砾白 · 710×850×845 mm 单椅",
+            "priceFen": 117900,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/armchair-berlin/asset.json",
       "readme": "assets/models/armchair-berlin/README.md"
@@ -7079,7 +7097,9 @@
       ],
       "route": "parametric",
       "document": "docs/CAT-TREE.md",
-      "sourceLinks": [],
+      "sourceLinks": [
+        "https://item.taobao.com/item.htm?id=1070152285167&skuId=6118835552103"
+      ],
       "references": [
         {
           "path": "references/user/reference.png",
@@ -7096,6 +7116,22 @@
       "supportingFiles": [],
       "validation": [
         "docs/validation/cat-tree-20261019/browser-results.json"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.taobao.com/item.htm?id=1070152285167&skuId=6118835552103",
+          "capturedOn": "2026-11-27",
+          "note": "淘宝选中升级围栏款。规格图核对为 500×500 mm、总高 1430 mm，图中绿猫屋、围栏窝、透明舱及跳台布局与原档案对应。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "绿叶成荫猫爬架四季款家用通天柱猫抓板宠物猫窝猫树一体猫咪玩具",
+            "shop": "九宠喵宠物用品店",
+            "itemCode": "1070152285167",
+            "variant": "绿叶成荫 · 升级围栏款 · 500×500×1430 mm",
+            "priceFen": 29900,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/cat-tree/asset.json",
       "readme": "assets/models/cat-tree/README.md"
@@ -7470,7 +7506,9 @@
       ],
       "route": "parametric",
       "document": "docs/CHERRY-COFFEE-TABLE.md",
-      "sourceLinks": [],
+      "sourceLinks": [
+        "https://detail.tmall.com/item.htm?id=893292092565&skuId=6073781480206"
+      ],
       "references": [
         {
           "path": "references/user/bent-leg-reference.png",
@@ -7524,6 +7562,22 @@
         "docs/validation/cherry-coffee-table-20261020/results.json",
         "docs/validation/cherry-coffee-table-20261020/rounded/results.json",
         "docs/validation/generator-part-identities-20261025/summary.json"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://detail.tmall.com/item.htm?id=893292092565&skuId=6073781480206",
+          "capturedOn": "2026-11-27",
+          "note": "天猫源氏木语官方旗舰店所选 T209J02 白色岩板规格。选项尺寸为 1200×650×450 mm，规格图与原归档参考图一致。页面显示预售 15 天内发货。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "源氏木语实木茶几客厅现代简约岩板茶桌家用樱桃木黑标双层茶台",
+            "shop": "源氏木语官方旗舰店",
+            "itemCode": "893292092565",
+            "variant": "T209J02 · 樱桃木 · 1.2 米白色岩板 · 1200×650×450 mm",
+            "priceFen": 314100,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/cherry-coffee-table/asset.json",
       "readme": "assets/models/cherry-coffee-table/README.md"
@@ -8689,7 +8743,9 @@
       ],
       "route": "blender",
       "document": "docs/FRIDGE-BLENDER-MOTION.md",
-      "sourceLinks": [],
+      "sourceLinks": [
+        "https://detail.tmall.com/item.htm?id=905665829113&skuId=6296484394137"
+      ],
       "references": [],
       "missingReferences": [],
       "supportingFiles": [],
@@ -8697,6 +8753,22 @@
         "docs/validation/appliance-materials-stage2-20261031/README.md",
         "docs/validation/blender-fridge-motion-20261029/README.md",
         "docs/validation/regression-fixes-20261030/results.json"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://detail.tmall.com/item.htm?id=905665829113&skuId=6296484394137",
+          "capturedOn": "2026-11-27",
+          "note": "美的官方旗舰店选中机皇 2.0 520 云隐白。规格图标注 83.3×59.5×191 cm，右门竖屏及下部两层抽屉与原档案相符。商品页显示 ¥9499。主图另列以旧换新和国补活动，活动条件与结算价以页面为准。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "美的机皇2.0 520升级款家用冰箱双系统零嵌入式法式四门多门对开",
+            "shop": "美的官方旗舰店",
+            "itemCode": "905665829113",
+            "variant": "BCD-520WUFJDPZ(E) · 520 L 云隐白 · 833×595×1910 mm",
+            "priceFen": 949900,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/fridge/asset.json",
       "readme": "assets/models/fridge/README.md"
@@ -8941,13 +9013,31 @@
       ],
       "route": "blender",
       "document": "docs/HOOD-BLENDER-MOTION.md",
-      "sourceLinks": [],
+      "sourceLinks": [
+        "https://item.jd.com/10162001128197.html"
+      ],
       "references": [],
       "missingReferences": [],
       "supportingFiles": [],
       "validation": [
         "docs/validation/appliance-materials-stage2-20261031/README.md",
         "docs/validation/blender-hood-motion-20261029/README.md"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/10162001128197.html",
+          "capturedOn": "2026-11-27",
+          "note": "万佳拼购店京东商品页所选为 CXW-358-01-JCD10TA 单烟机。页面同时列 ¥2622.00 到手价，优惠与配送按商品页条件。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "方太Fotile/ CXW-358-01-JCD10TA变频侧吸式吸抽排油烟机23大风量 京东款[JCD10TA]23风量*千",
+            "shop": "万佳拼购店",
+            "itemCode": "10162001128197",
+            "variant": "CXW-358-01-JCD10TA · 单烟机",
+            "priceFen": 263200,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/hood/asset.json",
       "readme": "assets/models/hood/README.md"
@@ -9042,7 +9132,9 @@
       ],
       "route": "parametric",
       "document": "docs/LITTER-BOX.md",
-      "sourceLinks": [],
+      "sourceLinks": [
+        "https://detail.tmall.com/item.htm?id=660024953235&skuId=4933391370443"
+      ],
       "references": [],
       "missingReferences": [
         {
@@ -9058,6 +9150,22 @@
       ],
       "supportingFiles": [],
       "validation": [],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://detail.tmall.com/item.htm?id=660024953235&skuId=4933391370443",
+          "capturedOn": "2026-11-27",
+          "note": "天猫派派猫旗舰店所选灰白大号。尺寸图标注宽 440、深 510、高 400 mm，并显示原模型参考的半透明爪印门与顶部漏砂格栅。页面标有回头客立减 ¥2，优惠以页面条件为准。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "派派猫全封闭猫砂盆防臭防外溅顶出式顶入超大号猫屎盆猫厕所除臭",
+            "shop": "派派猫旗舰店",
+            "itemCode": "660024953235",
+            "variant": "派派猫 · 灰白大号 · 440×510×400 mm",
+            "priceFen": 13900,
+            "priceScope": "sku"
+          }
+        }
+      ],
       "manifest": "assets/models/litter-box/asset.json",
       "readme": "assets/models/litter-box/README.md"
     },
@@ -9695,7 +9803,9 @@
       ],
       "route": "parametric",
       "document": "docs/KITCHEN-PANEL-LIGHT.md",
-      "sourceLinks": [],
+      "sourceLinks": [
+        "https://detail.tmall.com/item.htm?id=629806668485&skuId=6176147547430"
+      ],
       "references": [
         {
           "path": "references/user/reference.png",
@@ -9716,6 +9826,22 @@
         "docs/validation/panel-light-bounce-20261027/README.md",
         "docs/validation/panel-light-soft-20261027/README.md",
         "docs/validation/panel-light-20261027/README.md"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://detail.tmall.com/item.htm?id=629806668485&skuId=6176147547430",
+          "capturedOn": "2026-11-27",
+          "note": "天猫美的官方旗舰店选中的 1.5 mm 窄边 24 W 长灯。选项与参数图对应原档案的 300×600×35 mm、全光谱、PP、IP44 和集成吊顶规格。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "政府补贴15% 美的厨房集成吊顶led铝扣板300x600卫生间厨卫平板灯",
+            "shop": "美的官方旗舰店",
+            "itemCode": "629806668485",
+            "variant": "美的 · 24 W 全光谱长灯 · 300×600×35 mm · IP44 白光",
+            "priceFen": 7370,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/panel-light/asset.json",
       "readme": "assets/models/panel-light/README.md"
@@ -10907,7 +11033,9 @@
       ],
       "route": "parametric",
       "document": "docs/SHOE-BENCH.md",
-      "sourceLinks": [],
+      "sourceLinks": [
+        "https://detail.tmall.com/item.htm?id=732347227357&skuId=6158139549343"
+      ],
       "references": [
         {
           "path": "references/user/dimensions.png",
@@ -10955,6 +11083,22 @@
       "validation": [
         "docs/validation/furniture-solids-upgrade-20261021/summary.json",
         "docs/validation/shoe-bench-20261020/results.json"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://detail.tmall.com/item.htm?id=732347227357&skuId=6158139549343",
+          "capturedOn": "2026-11-27",
+          "note": "天猫源氏木语官方旗舰店所选 Y83T53 橡木原木色 0.8 米款。当前规格图标注 800×300×450 mm、砂砾白软包及双层圆杆，与原档案的浅色软包款对应。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "源氏木语实木换鞋凳现代简约试鞋凳家用小户型玄关可坐式入户鞋架",
+            "shop": "源氏木语官方旗舰店",
+            "itemCode": "732347227357",
+            "variant": "Y83T53 · 80 cm 橡木原木色 · 仿棉麻砂砾白 · 800×300×450 mm",
+            "priceFen": 64800,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/shoe-bench/asset.json",
       "readme": "assets/models/shoe-bench/README.md"
@@ -11496,7 +11640,9 @@
       ],
       "route": "blender",
       "document": "docs/STACK-STOOL-CITYLONG-370.md",
-      "sourceLinks": [],
+      "sourceLinks": [
+        "https://detail.tmall.com/item.htm?id=860764169240&skuId=5675922188859"
+      ],
       "references": [
         {
           "path": "references/user/appearance.png",
@@ -11539,6 +11685,22 @@
       "supportingFiles": [],
       "validation": [
         "docs/validation/stack-stool-20261031/README.md"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://detail.tmall.com/item.htm?id=860764169240&skuId=5675922188859",
+          "capturedOn": "2026-11-27",
+          "note": "天猫禧天龙官方旗舰店所选奶油白 PVC 软包高凳。规格图标注 37×37×46.7 cm，单只装，对应原档案的仿皮革高凳。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "禧天龙皮革凳家用轻奢软包加厚客厅高级防滑塑料高凳皮面简约凳子",
+            "shop": "禧天龙官方旗舰店",
+            "itemCode": "860764169240",
+            "variant": "奶油白 · PVC 仿皮革软包高凳 · 370×370×467 mm · 单只",
+            "priceFen": 6990,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/stack-stool/asset.json",
       "readme": "assets/models/stack-stool/README.md"
@@ -12625,7 +12787,9 @@
       ],
       "route": "blender",
       "document": "docs/WASHER-LITTLESWAN-TG10K60W.md",
-      "sourceLinks": [],
+      "sourceLinks": [
+        "https://item.jd.com/10215804700461.html"
+      ],
       "references": [
         {
           "path": "references/user/appearance.png",
@@ -12697,6 +12861,22 @@
         "docs/validation/scoop-tg10k60w-20261030/README.md",
         "docs/validation/washer-tg10k60w-20261029/README.md",
         "docs/validation/washer-tg10k60w-front-20261029/README.md"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/10215804700461.html",
+          "capturedOn": "2026-11-27",
+          "note": "小天鹅官方旗舰店京东详情页显示价。规格表核对为奶油白 TG10K60W，595×560×850 mm、10 kg 单洗。页面标有国家补贴，优惠资格与配送条件以页面为准。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "小天鹅（LittleSwan）小乌梅5.0奶油白跨代机皇滚筒洗衣机全自动10公斤纯平全嵌大筒径超微除菌1.36高洗净比国家补贴 TG10K60W 滚筒单洗",
+            "shop": "小天鹅官方旗舰店",
+            "itemCode": "10215804700461",
+            "variant": "TG10K60W · 奶油白 · 10 kg 滚筒单洗",
+            "priceFen": 354007,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/washer-tg10k60w/asset.json",
       "readme": "assets/models/washer-tg10k60w/README.md"

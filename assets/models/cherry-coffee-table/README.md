@@ -18,6 +18,16 @@
 | [leg-reference.png](references/user/leg-reference.png) | 用户上传 |
 | [white-top.png](references/user/white-top.png) | 用户上传 |
 
+## 商品与采集价格
+
+| 日期 | 商品 | 店铺 | 编号／规格 | 价格 | 资料 |
+|---|---|---|---|---|---|
+| 2026-11-27 | 源氏木语实木茶几客厅现代简约岩板茶桌家用樱桃木黑标双层茶台 | 源氏木语官方旗舰店 | 893292092565 / T209J02 · 樱桃木 · 1.2 米白色岩板 · 1200×650×450 mm | ¥3141.00（商品 SKU） | [商品页](<https://detail.tmall.com/item.htm?id=893292092565&skuId=6073781480206>) · 天猫源氏木语官方旗舰店所选 T209J02 白色岩板规格。选项尺寸为 1200×650×450 mm，规格图与原归档参考图一致。页面显示预售 15 天内发货。 |
+
+## 来源链接
+
+- [来源](https://detail.tmall.com/item.htm?id=893292092565&skuId=6073781480206)
+
 ## 验收入口
 
 - [验收资料](../../../docs/validation/blender-part-identities-20261024/summary.json)

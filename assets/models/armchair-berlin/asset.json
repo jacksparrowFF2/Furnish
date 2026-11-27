@@ -7,7 +7,9 @@
   ],
   "route": "blender",
   "document": "docs/ARMCHAIR-YESWOOD-BERLIN.md",
-  "sourceLinks": [],
+  "sourceLinks": [
+    "https://detail.tmall.com/item.htm?id=605016424357&skuId=6095872157959"
+  ],
   "references": [
     {
       "path": "references/user/appearance.png",
@@ -38,5 +40,21 @@
   "supportingFiles": [],
   "validation": [
     "docs/validation/armchair-berlin-20261029/README.md"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://detail.tmall.com/item.htm?id=605016424357&skuId=6095872157959",
+      "capturedOn": "2026-11-27",
+      "note": "天猫源氏木语官方旗舰店选中 0.71 米单人沙发椅。规格图标注橡木原木色、仿棉麻砂砾白与 710×850×845 mm，外观和尺寸与归档图片一致。页面另有预计到手活动说明。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "源氏木语实木沙发椅可躺极简阳台休闲椅北欧椅子小户型客厅单人椅",
+        "shop": "源氏木语官方旗舰店",
+        "itemCode": "605016424357",
+        "variant": "Y83H04 · 橡木原木色 · 仿棉麻砂砾白 · 710×850×845 mm 单椅",
+        "priceFen": 117900,
+        "priceScope": "sku"
+      }
+    }
   ]
 }

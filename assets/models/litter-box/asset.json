@@ -7,7 +7,9 @@
   ],
   "route": "parametric",
   "document": "docs/LITTER-BOX.md",
-  "sourceLinks": [],
+  "sourceLinks": [
+    "https://detail.tmall.com/item.htm?id=660024953235&skuId=4933391370443"
+  ],
   "references": [],
   "missingReferences": [
     {
@@ -22,5 +24,21 @@
     }
   ],
   "supportingFiles": [],
-  "validation": []
+  "validation": [],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://detail.tmall.com/item.htm?id=660024953235&skuId=4933391370443",
+      "capturedOn": "2026-11-27",
+      "note": "天猫派派猫旗舰店所选灰白大号。尺寸图标注宽 440、深 510、高 400 mm，并显示原模型参考的半透明爪印门与顶部漏砂格栅。页面标有回头客立减 ¥2，优惠以页面条件为准。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "派派猫全封闭猫砂盆防臭防外溅顶出式顶入超大号猫屎盆猫厕所除臭",
+        "shop": "派派猫旗舰店",
+        "itemCode": "660024953235",
+        "variant": "派派猫 · 灰白大号 · 440×510×400 mm",
+        "priceFen": 13900,
+        "priceScope": "sku"
+      }
+    }
+  ]
 }

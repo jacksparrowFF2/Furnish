@@ -22,6 +22,16 @@
 | [dimensions.png](references/user/dimensions.png) | 用户上传 |
 | [stack.png](references/user/stack.png) | 用户上传 |
 
+## 商品与采集价格
+
+| 日期 | 商品 | 店铺 | 编号／规格 | 价格 | 资料 |
+|---|---|---|---|---|---|
+| 2026-11-27 | 禧天龙皮革凳家用轻奢软包加厚客厅高级防滑塑料高凳皮面简约凳子 | 禧天龙官方旗舰店 | 860764169240 / 奶油白 · PVC 仿皮革软包高凳 · 370×370×467 mm · 单只 | ¥69.90（商品 SKU） | [商品页](<https://detail.tmall.com/item.htm?id=860764169240&skuId=5675922188859>) · 天猫禧天龙官方旗舰店所选奶油白 PVC 软包高凳。规格图标注 37×37×46.7 cm，单只装，对应原档案的仿皮革高凳。 |
+
+## 来源链接
+
+- [来源](https://detail.tmall.com/item.htm?id=860764169240&skuId=5675922188859)
+
 ## 验收入口
 
 - [验收资料](../../../docs/validation/stack-stool-20261031/README.md)

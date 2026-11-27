@@ -7,12 +7,30 @@
   ],
   "route": "blender",
   "document": "docs/HOOD-BLENDER-MOTION.md",
-  "sourceLinks": [],
+  "sourceLinks": [
+    "https://item.jd.com/10162001128197.html"
+  ],
   "references": [],
   "missingReferences": [],
   "supportingFiles": [],
   "validation": [
     "docs/validation/appliance-materials-stage2-20261031/README.md",
     "docs/validation/blender-hood-motion-20261029/README.md"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/10162001128197.html",
+      "capturedOn": "2026-11-27",
+      "note": "万佳拼购店京东商品页所选为 CXW-358-01-JCD10TA 单烟机。页面同时列 ¥2622.00 到手价，优惠与配送按商品页条件。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "方太Fotile/ CXW-358-01-JCD10TA变频侧吸式吸抽排油烟机23大风量 京东款[JCD10TA]23风量*千",
+        "shop": "万佳拼购店",
+        "itemCode": "10162001128197",
+        "variant": "CXW-358-01-JCD10TA · 单烟机",
+        "priceFen": 263200,
+        "priceScope": "sku"
+      }
+    }
   ]
 }

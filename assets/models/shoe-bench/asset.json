@@ -7,7 +7,9 @@
   ],
   "route": "parametric",
   "document": "docs/SHOE-BENCH.md",
-  "sourceLinks": [],
+  "sourceLinks": [
+    "https://detail.tmall.com/item.htm?id=732347227357&skuId=6158139549343"
+  ],
   "references": [
     {
       "path": "references/user/dimensions.png",
@@ -55,5 +57,21 @@
   "validation": [
     "docs/validation/furniture-solids-upgrade-20261021/summary.json",
     "docs/validation/shoe-bench-20261020/results.json"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://detail.tmall.com/item.htm?id=732347227357&skuId=6158139549343",
+      "capturedOn": "2026-11-27",
+      "note": "天猫源氏木语官方旗舰店所选 Y83T53 橡木原木色 0.8 米款。当前规格图标注 800×300×450 mm、砂砾白软包及双层圆杆，与原档案的浅色软包款对应。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "源氏木语实木换鞋凳现代简约试鞋凳家用小户型玄关可坐式入户鞋架",
+        "shop": "源氏木语官方旗舰店",
+        "itemCode": "732347227357",
+        "variant": "Y83T53 · 80 cm 橡木原木色 · 仿棉麻砂砾白 · 800×300×450 mm",
+        "priceFen": 64800,
+        "priceScope": "sku"
+      }
+    }
   ]
 }

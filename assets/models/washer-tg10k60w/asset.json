@@ -7,7 +7,9 @@
   ],
   "route": "blender",
   "document": "docs/WASHER-LITTLESWAN-TG10K60W.md",
-  "sourceLinks": [],
+  "sourceLinks": [
+    "https://item.jd.com/10215804700461.html"
+  ],
   "references": [
     {
       "path": "references/user/appearance.png",
@@ -79,5 +81,21 @@
     "docs/validation/scoop-tg10k60w-20261030/README.md",
     "docs/validation/washer-tg10k60w-20261029/README.md",
     "docs/validation/washer-tg10k60w-front-20261029/README.md"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/10215804700461.html",
+      "capturedOn": "2026-11-27",
+      "note": "小天鹅官方旗舰店京东详情页显示价。规格表核对为奶油白 TG10K60W，595×560×850 mm、10 kg 单洗。页面标有国家补贴，优惠资格与配送条件以页面为准。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "小天鹅（LittleSwan）小乌梅5.0奶油白跨代机皇滚筒洗衣机全自动10公斤纯平全嵌大筒径超微除菌1.36高洗净比国家补贴 TG10K60W 滚筒单洗",
+        "shop": "小天鹅官方旗舰店",
+        "itemCode": "10215804700461",
+        "variant": "TG10K60W · 奶油白 · 10 kg 滚筒单洗",
+        "priceFen": 354007,
+        "priceScope": "sku"
+      }
+    }
   ]
 }
