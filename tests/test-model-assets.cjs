@@ -45,4 +45,16 @@ try{
  for(const p of [first.path,second.path])fs.unlinkSync(path.join(productDir,p));
 }finally{fs.unlinkSync(manifest);fs.unlinkSync(source);for(const p of ['references/user','references','', '..','../..','../../..'])fs.rmdirSync(path.resolve(productDir,p));}
 assert.deepEqual(I.outputs(),I.outputs());I.main('--check');
+const sourceUrl='https://item.jd.com/123456.html?source=A&sku=123456';
+const archived={...lining,productCaptures:[
+ {sourceUrl,capturedOn:'2026-11-26',capture:{title:'双开 <面板>',itemCode:'123456',priceFen:0,priceScope:'sku'}},
+ {sourceUrl,capturedOn:'2026-11-27',capture:{title:'双开面板',itemCode:'123456',priceFen:12345,priceScope:'default-selection'}}
+]};
+const views=I.outputs({...index,products:[archived]});
+assert(views['assets/models/index.html'].includes('¥123.45（页面默认选项） · 2026-11-27'));
+assert(views['assets/models/index.html'].includes('sku=123456'));
+assert(!views['assets/models/index.html'].includes('双开 <面板>'));
+assert(views['assets/models/window-lining/README.md'].includes('¥0.00（商品 SKU）'));
+assert(views['assets/models/window-lining/README.md'].includes('[商品页](<'+sourceUrl+'>)'));
+assert.deepEqual(JSON.parse(views['assets/models/index.json']).products[0].productCaptures,archived.productCaptures);
 console.log('PASS original 39 dossiers plus window lining, '+index.counts.referenceImages+' input hashes, '+index.models.length+' model source identities, dynamic counts, missing records, portable paths, deterministic navigation and rejection cases');

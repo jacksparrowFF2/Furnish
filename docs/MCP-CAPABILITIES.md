@@ -10,13 +10,13 @@
 
 `configure_product_info` 使用原 `updatePurchaseGroup()` 批量应用 `updates:[{ids,values}]`，支持原字段 `brand/model/sourceUrl/priceDate/price/purchaseStatus/purchaseNote`，没有新项目字段。每个实例在同批中只能出现一次；字段缺省保持，文字 `""` 可以清空，`price:null` 删除确认单价，0元有效。完整HTTP(S)链接保留参数，不接受脚本链接或URL账号密码。`priceDate` 为有效YYYY-MM-DD；状态仍是 planned/confirmed/ordered/received。
 
-采集工具不自动写确认价：淘宝页面默认选项价格先记录到 `purchaseNote`，确认适用规格与价格后才显式写 `price`。采购进度也不推定订单实付。尺寸调整继续使用原产品参数／尺寸接口，不用资料录入绕开空间验证。
+采集的页面价进入模型档案。方案备注可引用页面价，确认适用规格与价格后才显式写 `price`。采购进度也不推定订单实付。尺寸调整继续使用原产品参数／尺寸接口，不用资料录入绕开空间验证。
 
 已有模型档案使用：
 
 1. `get_product_dossier({productId})` 读取 `assets/models/<productId>/asset.json` 和 `dossierRevision`；缺少档案时拒绝，不创建空目录。
-2. `archive_product_reference({productId,dossierRevision,requestId,sourceUrl,capturedOn,note,imageBase64?,imageType?})` 记录已采集资料；原图可选PNG/JPEG/WebP，二进制最多2 MB。不会替调用者抓取网页、解析尺寸或创建新型号。
-3. 原图及包含来源／日期／备注的证据JSON按SHA256写入 `references/product-page/`，清单沿已有 `references/sourceLinks` 结构。证据标记 `recorded-not-independently-verified`；未知日期／来源不猜造。小红书完整访问参数原样保留。
+2. `archive_product_reference({productId,dossierRevision,requestId,sourceUrl,capturedOn,note,capture?,imageBase64?,imageType?})` 记录已采集资料。原图可选 PNG/JPEG/WebP，二进制最多 2 MB。联网读取和新建档案沿 [商品采集入口](MODEL-ASSET-STORAGE.md#商品采集与自动归档)。
+3. 带 `capture` 的记录写入 `asset.json` 的 `productCaptures`，必须带来源和日期。原图和无 `capture` 的普通证据 JSON 按 SHA256 写入 `references/product-page/`，来源沿现有 `sourceLinks` 维护。原始完整链接照录，证据标记 `recorded-not-independently-verified`。
 
 此两项工具在 Node stdio 入口处理，独立于正式方案和界面撤销。只读指定产品清单，写入固定产品目录；拒绝路径穿越、符号链接目录及非图片编码。清单采用版本核对、同产品写锁和临时文件替换；重复requestId持久回执在 `.local/mcp-reference-receipts`。版本冲突不会覆盖清单，已写入的内容寻址文件可能保留待核对。与不遵循同一锁的外部写入工具并用时仍须协调。已有CLI参考图导入入口保留。
 

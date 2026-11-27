@@ -2,6 +2,7 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const root=path.resolve(__dirname,'../..'),P=require('../../src/core/product-rules.js'),C=require('../../src/data/catalog.js');
+const {validateCapture}=require('../../src/core/mcp-core.js');
 const docs={'pet-bowl':'PET-SUPPLIES.md','litter-bag':'PET-SUPPLIES.md',
  'cat-tower':'CAT-TOWER-JD-10141711472484.md',
  'fan-x231':'FAN-AIRMATE-FA18-X231.md',
@@ -56,6 +57,13 @@ function dossiers(){
   const product=JSON.parse(fs.readFileSync(file,'utf8'));
   if(product.format!==1||product.id!==entry.name||!Array.isArray(product.references)||!Array.isArray(product.types)||!Array.isArray(product.missingReferences))throw Error('Invalid product dossier: '+entry.name);
   const paths=new Set();for(const r of [...product.references,...(product.supportingFiles||[])]){referenceFile(directory,r);if(paths.has(r.path))throw Error('Duplicate reference: '+r.path);paths.add(r.path);}
+  if(product.productCaptures!==undefined){
+   if(!Array.isArray(product.productCaptures)||!Array.isArray(product.sourceLinks))throw Error('Invalid product captures: '+entry.name);
+   for(const row of product.productCaptures){
+    validateCapture(row.capture,row.sourceUrl,row.capturedOn);
+    if(!product.sourceLinks.includes(row.sourceUrl)||row.image&&!product.references.some(r=>r.path===row.image))throw Error('Unlisted product capture source: '+entry.name);
+   }
+  }
   for(const f of [product.document,...(product.validation||[])].filter(Boolean)){
    if(path.isAbsolute(f)||f.includes('\\')||f.split('/').includes('..')||!fs.existsSync(path.join(root,f)))throw Error('Invalid dossier link: '+f);
   }

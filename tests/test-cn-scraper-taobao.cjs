@@ -15,7 +15,9 @@ if(!process.env.FURNISH_RESEARCH_PYTHON&&(probe.status===42||probe.error?.code==
 if(probe.status!==0)throw Error(probe.stderr||probe.error?.message||'Research environment probe failed');
 const source=String.raw`
 import asyncio
+import runpy
 import sys
+from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 sys.path.insert(0, 'scripts/research')
@@ -29,6 +31,29 @@ def snapshot(**changes):
     return dict(data, **changes)
 
 class DetailTests(unittest.TestCase):
+    def test_model_capture_matches_detail_and_preserves_price_scope(self):
+        capture = runpy.run_path('scripts/research/capture-model-product.py')['observation']
+        args = SimpleNamespace(platform='taobao', item_code=ITEM, product_id='example',
+                               source_url='https://detail.tmall.com/item.htm?id=123456&from=share',
+                               model_name=None, variant=None)
+        date = '2026-11-27'
+        selected = capture(args, adapter.parse_snapshot(ITEM, snapshot()), date)
+        self.assertEqual(selected['sourceUrl'], args.source_url)
+        self.assertEqual(selected['capture']['priceFen'], 255600)
+        self.assertEqual(selected['capture']['priceScope'], 'default-selection')
+        missing = capture(args, adapter.parse_snapshot(ITEM, snapshot(priceCandidates=['1','2'])), date)
+        self.assertIsNone(missing['capture']['priceFen'])
+        self.assertEqual(missing['capture']['priceScope'], 'unknown')
+        with self.assertRaises(ValueError):
+            capture(args, {'error_code': 'ACTION_REQUIRED'}, date)
+        args.platform, args.source_url = 'jd', None
+        jd = dict(sku=ITEM, name='京东商品', price='￥1,299.05', url='https://item.jd.com/123456.html')
+        result = capture(args, jd, date)
+        self.assertEqual((result['capture']['priceFen'],result['capture']['priceScope']), (129905,'sku'))
+        self.assertIsNone(capture(args, dict(jd, price='99-299'), date)['capture']['priceFen'])
+        with self.assertRaises(ValueError):
+            capture(args, dict(jd, sku='654321'), date)
+
     def test_normal_and_deduplicated_price(self):
         data = adapter.parse_snapshot(ITEM, snapshot(priceCandidates=['2556', '2556']))
         self.assertEqual((data['id'], data['title'], data['shop'], data['price']),

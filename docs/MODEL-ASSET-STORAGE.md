@@ -36,6 +36,21 @@ node scripts/index-model-assets.cjs --check
 
 只向已有产品档案导入，按哈希去重，同名不同内容另存带哈希的文件，不覆盖旧图，也不联网。补来源链接／判定缺失图对应关系时编辑`asset.json`，不把不同版本外观当作同一实物。创建新产品时先按现有档案结构建立资料清单；未知型号保留未知。
 
+## 商品采集与自动归档
+
+根据具体商品建模时，在选定适用型号／规格后采集同一商品的标题、店铺、商品号、页面价、完整来源链接和采集日期。关联对应的产品 ID，归档实际用到的商品图、说明书等参考文件。建模交付时核对总览、档案和型号文档。
+
+- 京东和淘宝／天猫用已有 cn-scraper 环境运行 `capture-model-product.py`。命令读取详情并保存档案，随后刷新本地总览、产品说明和 JSON 索引。新建档案时提供 `--model-name`，先登记为参考资料，模型接入时按原流程补入生产类型、文档和验证。已有档案沿原产品 ID 续录。如果用户提供分享链接，用 `--source-url` 保留同一商品的完整原链接。
+- 其它来源或已有采集回执，用 Furnish MCP 的 `archive_product_reference` 附 `capture`，或把同一结构的 UTF-8 JSON 送给 `node scripts/research/archive-model-product.cjs` 的标准输入。命令输入包括 `productId`、`sourceUrl`、`capturedOn`、`capture`，可选 `modelName`、`note` 及 `imageBase64`／`imageType`。MCP 归档后执行下节索引更新。多张参考图按原图导入流程登记，说明书存入 `supportingFiles`。
+- `capture` 含 `title`、可选 `shop`、`itemCode`、`variant`，及 `priceFen`（人民币整数分）和 `priceScope`。已知价格范围取 `sku`、`default-selection` 或 `page-display`，有明确价格时可以为 0。缺价、区间价或价格含义无法辨明时，填 `priceFen: null` 和 `priceScope: "unknown"`。淘宝详情返回页面默认选项价。页面价按日期保存为档案历史，方案确认单价仍由采购操作显式填写。
+
+~~~sh
+RESEARCH_PYTHON="$HOME/.local/share/uv/tools/cn-scraper-mcp/bin/python"
+"$RESEARCH_PYTHON" scripts/research/capture-model-product.py toshiba-d232 jd 10232038915570
+~~~
+
+`asset.json` 的 `productCaptures` 是可选采集历史，旧档案可继续读取。同一条资料重试会去重，新价格或日期保留为新记录。总览显示最近一笔的价格、日期及商品页，产品档案可查完整记录。若回执为 `archived:true`、`indexUpdated:false`，资料已落盘，排除错误后重新生成索引即可。
+
 ## 统一入口与维护
 
 ```powershell

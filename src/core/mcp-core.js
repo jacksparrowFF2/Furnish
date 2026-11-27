@@ -8,6 +8,11 @@
  const ids={type:'array',minItems:1,maxItems:100,items:string};
  const text=maxLength=>({type:'string',minLength:0,maxLength});
  const productInfo=schema({brand:text(500),model:text(500),sourceUrl:text(4000),priceDate:text(10),price:{type:['number','null'],minimum:0,maximum:1e7},purchaseStatus:{type:'string',enum:['planned','confirmed','ordered','received']},purchaseNote:text(2000)});
+ const productCapture=schema({
+  title:{type:'string',minLength:1,maxLength:500},shop:text(500),itemCode:text(100),variant:text(500),
+  priceFen:{type:['number','null'],minimum:0,maximum:1e9},
+  priceScope:{type:'string',enum:['sku','default-selection','page-display','unknown']}
+ },['title','priceFen','priceScope']);
  const commonParameters={name:{type:'string',minLength:1,maxLength:80},color:{type:'string',minLength:4,maxLength:9,pattern:'^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$'},flip:{type:'boolean'},frontClearance:{type:'number',minimum:0,maximum:3000}};
  const point=schema({x:{type:'number',minimum:-1000000,maximum:1000000},y:{type:'number',minimum:-1000000,maximum:1000000},z:{type:'number',minimum:-100000,maximum:100000}},['x','y','z']);
  const xy=schema({x:point.properties.x,y:point.properties.y},['x','y']);
@@ -47,7 +52,7 @@
   command('configure_presentation','更新完整讲解内容、采集指定页的当前正式画布或记录交付版本。沿原mutate一次撤销保存；先get_presentation保留页ID。presentation.pages的capture缺省保留原图、null显式移除，不接受外部图片；不自动编造设计意图或确认结论。',{...write,presentation:{type:'object',additionalProperties:true},capturePageId:string,releaseLabel:{type:'string',minLength:1,maxLength:80}},['planId','revision','requestId'],true),
   command('get_connection_status','只读检查stdio源码与活动桌面工具清单／保存状态是否一致，以及Blender精修工程是否登记；不打开或重启窗口。',{}),
   command('get_product_dossier','读取仓库已有产品asset.json档案及资料版本；不读取任意文件或联网。',{productId:{type:'string',pattern:'^[a-z0-9][a-z0-9-]{0,99}$'}},['productId']),
-  command('archive_product_reference','将调用者已采集的完整来源链接、日期、备注和可选PNG/JPEG/WebP原图归档到已有产品档案，保留哈希／未知状态；不自动证明尺寸，不修改正式方案。须先读取dossierRevision，重试沿用requestId。',{productId:{type:'string',pattern:'^[a-z0-9][a-z0-9-]{0,99}$'},dossierRevision:{type:'string',pattern:'^[a-f0-9]{64}$'},requestId:string,sourceUrl:text(4000),capturedOn:text(10),note:text(10000),imageBase64:{type:'string',minLength:1,maxLength:2700000},imageType:{type:'string',enum:['png','jpeg','webp']}},['productId','dossierRevision','requestId'],true),
+  command('archive_product_reference','将已采集的来源链接、日期、备注、可选商品标题及人民币页面价、可选原图归档到已有产品档案。capture.priceFen 使用分，未知填 null。须先读取dossierRevision，重试沿用requestId。',{productId:{type:'string',pattern:'^[a-z0-9][a-z0-9-]{0,99}$'},dossierRevision:{type:'string',pattern:'^[a-f0-9]{64}$'},requestId:string,sourceUrl:text(4000),capturedOn:text(10),note:text(10000),capture:productCapture,imageBase64:{type:'string',minLength:1,maxLength:2700000},imageType:{type:'string',enum:['png','jpeg','webp']}},['productId','dossierRevision','requestId'],true),
   command('get_building','读取建筑草稿、结构阶段、墙地完成层和铺贴原始设置及派生平面；未知值不推定为厂家要求。',{}),
   command('configure_building','完整替换已有建筑 draft 或墙地完成层／铺贴，null 清除可选饰面。可替换量房证据附件并将测绘阶段原始结构锁定。先 get_building 保留身份，沿原结构保护、映射与保存。',{...write,
    draft:record,floorFinishes:{...record,type:['object','null']},wallFinishes:{...record,type:['object','null']},wallTiling:{...record,type:['object','null']},
@@ -95,7 +100,24 @@
  const validatePrevious=validateCommand;
  function validateExtended(name,args){validatePrevious(name,args);if(name==='get_product_info'&&new Set(args.ids).size!==args.ids.length)throw Error('家具 ID 重复');if(name==='configure_product_info'){const seen=new Set();for(const u of args.updates){if(!Object.keys(u.values).length)throw Error('请填写商品资料');for(const id of u.ids){if(seen.has(id))throw Error('家具 ID 重复');seen.add(id);}const v=u.values;if(v.sourceUrl){let url;try{url=new URL(v.sourceUrl);}catch{throw Error('商品来源须为完整HTTP(S)链接');}if(!['http:','https:'].includes(url.protocol)||url.username||url.password)throw Error('商品来源须为无账号密码的HTTP(S)链接');}if(v.priceDate&&(!/^\d{4}-\d{2}-\d{2}$/.test(v.priceDate)||!Number.isFinite(Date.parse(v.priceDate))||new Date(v.priceDate).toISOString().slice(0,10)!==v.priceDate))throw Error('价格日期须为有效YYYY-MM-DD');}}if(name==='configure_procurement'){const orders=args.orders||[],removed=args.removeOrderIds||[],keys=orders.map(o=>o.id);if(!orders.length&&!removed.length&&!args.pricing)throw Error('请提供订单或pricing');if(keys.some(k=>typeof k!=='string'||!k)||new Set(keys).size!==keys.length||new Set(removed).size!==removed.length||keys.some(k=>removed.includes(k)))throw Error('订单 ID 缺失、重复或同时删除');}return args;}
  const validateInfo=validateExtended;
- function validateAutomation(name,args){validateInfo(name,args);if(name==='archive_product_reference'){if(!args.sourceUrl&&!args.note&&!args.imageBase64)throw Error('请提供资料');if(!!args.imageBase64!==!!args.imageType)throw Error('图片内容与类型须同时提供');if(args.sourceUrl||args.capturedOn)validateInfo('configure_product_info',{planId:'dossier',revision:'dossier',requestId:'dossier',updates:[{ids:['dossier'],values:{...(args.sourceUrl?{sourceUrl:args.sourceUrl}:{}),...(args.capturedOn?{priceDate:args.capturedOn}:{})}}]});}if(name==='compare_designs'&&args.designIds[0]===args.designIds[1])throw Error('请选择两个不同方案');if(name==='configure_building'&&!['draft','floorFinishes','wallFinishes','wallTiling','roomUpdates','surveyFileName','confirmStructure'].some(k=>Object.hasOwn(args,k)))throw Error('请提供建筑或饰面配置');if(name==='configure_cabinet_components')for(const edit of args.edits){if((edit.changes!==undefined)===(edit.position!==undefined)||edit.changes&&!Object.keys(edit.changes).length)throw Error('每次组件编辑须选择changes或绝对mm的position之一');}return args;}
+ function validateCapture(capture,sourceUrl,capturedOn){
+  check(capture,productCapture,'capture');
+  check(sourceUrl,{...text(4000),minLength:1},'sourceUrl');
+  check(capturedOn,{...text(10),minLength:10},'capturedOn');
+  if(!/^https?:\/\/[^\s<>\\]+$/i.test(sourceUrl))throw Error('商品来源须为完整HTTP(S)链接');
+  validateReferenceSource(sourceUrl,capturedOn);
+  if(capture.priceFen!==null&&!Number.isSafeInteger(capture.priceFen))throw Error('页面价格须为整数分');
+  if((capture.priceFen===null)!==(capture.priceScope==='unknown'))throw Error('页面价格与价格范围不一致');
+ }
+ function validateReferenceSource(sourceUrl,capturedOn){
+  if(sourceUrl||capturedOn)validateInfo('configure_product_info',{planId:'dossier',revision:'dossier',requestId:'dossier',updates:[{ids:['dossier'],values:{...(sourceUrl?{sourceUrl}:{}),...(capturedOn?{priceDate:capturedOn}:{})}}]});
+ }
+ function validateAutomation(name,args){validateInfo(name,args);if(name==='archive_product_reference'){
+  if(!args.sourceUrl&&!args.note&&!args.imageBase64&&!args.capture)throw Error('请提供资料');
+  if(!!args.imageBase64!==!!args.imageType)throw Error('图片内容与类型须同时提供');
+  if(args.capture)validateCapture(args.capture,args.sourceUrl,args.capturedOn);
+  else validateReferenceSource(args.sourceUrl,args.capturedOn);
+ }if(name==='compare_designs'&&args.designIds[0]===args.designIds[1])throw Error('请选择两个不同方案');if(name==='configure_building'&&!['draft','floorFinishes','wallFinishes','wallTiling','roomUpdates','surveyFileName','confirmStructure'].some(k=>Object.hasOwn(args,k)))throw Error('请提供建筑或饰面配置');if(name==='configure_cabinet_components')for(const edit of args.edits){if((edit.changes!==undefined)===(edit.position!==undefined)||edit.changes&&!Object.keys(edit.changes).length)throw Error('每次组件编辑须选择changes或绝对mm的position之一');}return args;}
  function validateCommonParameter(key,value){if(!Object.hasOwn(commonParameters,key))throw Error('不支持的通用参数');check(value,commonParameters[key],key);}
- return {capabilityVersion:3,tools,validate:validateAutomation,commonParameters,validateCommonParameter,maxRequestBytes:3*1024*1024};
+ return {capabilityVersion:3,tools,validate:validateAutomation,validateCapture,commonParameters,validateCommonParameter,maxRequestBytes:3*1024*1024};
 });

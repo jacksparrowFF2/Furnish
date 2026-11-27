@@ -17,6 +17,30 @@ try{
  assert.equal(R.call(root,'get_product_dossier',{productId:'example'}).dossierRevision,hash);
  assert.throws(()=>R.call(root,'get_product_dossier',{productId:'../../elsewhere'}));assert.throws(()=>R.call(root,'get_product_dossier',{productId:'missing'}));assert(!fs.existsSync(path.join(root,'assets/models/missing')),'read must not create directories');
  for(const extra of [{sourceUrl:'file:///etc/passwd'},{capturedOn:'2026-02-30'},{imageType:'png',imageBase64:undefined}])assert.throws(()=>C.validate('archive_product_reference',{productId:'example',dossierRevision:hash,requestId:'bad',note:'test',...extra}));
+ const capture={title:'采集商品',shop:'示例店',itemCode:'123456',priceFen:12345,priceScope:'sku'};
+ const paidListing={...args,dossierRevision:hash,requestId:'archive-price',capture};
+ C.validate('archive_product_reference',paidListing);
+ const firstPrice=R.call(root,'archive_product_reference',paidListing);
+ assert.equal(firstPrice.productCapture.capture.priceFen,12345);
+ assert.equal(firstPrice.productCapture.image,result.references[1].path);
+ const repeat={...paidListing,dossierRevision:firstPrice.dossierRevision,requestId:'archive-price-repeat'};
+ const repeated=R.call(root,'archive_product_reference',repeat);
+ assert.equal(repeated.dossierRevision,firstPrice.dossierRevision);
+ for(const changed of [{priceFen:1.23},{priceFen:null},{priceScope:'unknown'}]){
+  assert.throws(()=>C.validate('archive_product_reference',{...repeat,capture:{...capture,...changed}}),/价格/);
+ }
+ assert.throws(()=>C.validate('archive_product_reference',{...repeat,sourceUrl:''}),/sourceUrl/);
+ assert.throws(()=>C.validate('archive_product_reference',{...repeat,capturedOn:''}),/capturedOn/);
+ const draft={productId:'new-product',sourceUrl:url,capturedOn:'2026-11-27',capture:{...capture,priceFen:null,priceScope:'unknown'}};
+ assert.throws(()=>R.captureProduct(root,draft),/directory missing/);
+ R.captureProduct(root,{...draft,modelName:'新模型'});
+ R.captureProduct(root,{...draft,capture:{...capture,priceFen:0}});
+ const archivedDraft=R.call(root,'get_product_dossier',{productId:draft.productId}).product;
+ assert.equal(archivedDraft.name,'新模型');
+ assert.equal(archivedDraft.route,'reference');
+ assert.deepEqual(archivedDraft.sourceLinks,[url]);
+ assert.deepEqual(archivedDraft.productCaptures.map(row=>row.capture.priceFen),[null,0]);
+ assert.equal(R.call(root,'get_product_dossier',{productId:'example'}).product.productCaptures.length,1);
  for(const price of [0,null])C.validate('configure_product_info',{planId:'p',revision:'r',requestId:'i',updates:[{ids:['f'],values:{price}}]});
  for(const price of [-1,'0',{},false,1e8])assert.throws(()=>C.validate('configure_product_info',{planId:'p',revision:'r',requestId:'i',updates:[{ids:['f'],values:{price}}]}));
  const artifact={format:'plan_svg',mimeType:'image/svg+xml',encoding:'utf8',content:'<svg xmlns="http://www.w3.org/2000/svg"/>'};const saved=E.writeArtifact(root,'../../no-path',artifact);assert(saved.file.startsWith(path.join(root,'.local/mcp-exports/')));assert.deepEqual(E.writeArtifact(root,'../../no-path',artifact),saved);assert.equal(fs.readFileSync(saved.file,'utf8'),artifact.content);
