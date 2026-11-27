@@ -6,6 +6,7 @@ const P=require('../src/core/product-rules.js'),E=require('../src/core/electrica
  W=require('../src/core/work-state.js'),S=require('../src/core/snapping.js'),
  M=require('../src/render/panel-bull-g12-model.js'),A=require('../src/data/panel-xiaomi-wireless-blender-asset.js');
 const variant='xiaomi-wireless-2-white';
+const greyVariant='xiaomi-wireless-2-grey';
 const base={id:'panel',type:'panel_bull_g12',name:'86面板',cx:0,cy:0,rot:0,w:86,d:10,h:86,color:'#f5f5f2',mountHeight:647};
 const wireless=P.editPanelVariant(base,variant),spec=P.panelSpec(wireless);
 const near=(actual,expected)=>assert(Math.abs(actual-expected)<.025,`${actual} != ${expected}`);
@@ -21,6 +22,17 @@ assert.equal(P.editPanelVariant({...base,d:12},variant).d,12);
 assert.equal(P.editPanelVariant(wireless,'socket5-diagonal').d,10);
 assert.equal(P.editPanelVariant(wireless,'xiaomi-2pro-2-white').d,5);
 assert.equal(E.endpointKind(wireless),null);
+const grey=P.editPanelVariant(wireless,greyVariant);
+assert.equal(grey.sourceUrl,'https://item.m.jd.com/product/100282401934.html');
+assert.equal(grey.d,wireless.d);
+assert.equal(grey.mountHeight,wireless.mountHeight);
+assert.equal(E.endpointKind(grey),null);
+assert.equal(P.panelColorPresets(wireless).length,0);
+const previews=P.panelColorPresets(base);
+assert.equal(previews.length,10);
+assert.equal(new Set(previews.map(([hex])=>hex)).size,10);
+assert.deepEqual(previews[0],['#f5f5f2','暮雪白']);
+assert.equal(previews.find(([hex,label])=>label==='星空灰')[0],'#53565b');
 assert.equal(E.endpointKind(P.editPanelVariant(wireless,'xiaomi-2pro-2-white')),'power');
 const pair=E.controlPairs([
  {...wireless,name:'E02 · 床头无线开关与 E01 米家联动'},
@@ -34,6 +46,8 @@ const issue={kind:'overlap',id:base.id},planContext={rooms:[],walls:[]};
 const fingerprint=f=>J.checkFingerprint(issue,planContext,[f],800);
 assert.notEqual(fingerprint(base),fingerprint(wireless));
 assert.equal(fingerprint(wireless),fingerprint({...wireless,color:'#ffffff',price:35}));
+assert.equal(fingerprint(wireless),fingerprint(grey));
+assert.equal(fingerprint(base),fingerprint({...base,color:'#53565b'}));
 const probe={id:'probe',type:'block',cx:0,cy:0,rot:0,w:100,d:1000,h:86,mountHeight:647};
 for(const rot of [0,37,90])for(const flip of [false,true]){
  const f={...wireless,rot,flip};
@@ -48,14 +62,14 @@ for(const rot of [0,37,90])for(const flip of [false,true]){
 }
 const plan=require('../src/data/plans.js')[0],catalog=require('../src/data/catalog.js');
 const storage=W.create({makeId:()=> 'fixture',colorFor:()=> '#fff',materials:catalog.materials});
-const current={...storage.fresh(plan),furniture:[wireless]},designs=[{name:'无线双开',work:current}];
+const current={...storage.fresh(plan),furniture:[wireless,{...grey,id:'grey'},{...base,id:'bull',color:'#53565b'}]},designs=[{name:'无线双开',work:current}];
 const payload={planId:plan.id,current,designs,catalog:[{...wireless,id:'library-variant',price:0}]};
 const packed=J.pack(payload);
 assert.equal(packed.version,85);
 assert.deepEqual(J.unpack(packed),payload);
 const workspace={v:85,planId:plan.id,work:{[plan.id]:current},designs:[],customPlans:[],custom:[],updatedAt:100};
-assert.deepEqual(R.parse(JSON.parse(R.text(workspace))).work[plan.id].furniture,[wireless]);
-assert.deepEqual(storage.restore(storage.restore(current,plan),plan).furniture,[wireless]);
+assert.deepEqual(R.parse(JSON.parse(R.text(workspace))).work[plan.id].furniture,current.furniture);
+assert.deepEqual(storage.restore(storage.restore(current,plan),plan).furniture,current.furniture);
 const duplicate=D.pasteFurniture({items:[wireless],cx:0,cy:0},{x:1000,y:1000},{x:0,y:0,w:5000,h:5000},()=> 'copy').items[0];
 assert.equal(duplicate.panelVariant,variant);
 assert.equal(duplicate.mountHeight,647);
@@ -70,5 +84,19 @@ assert.equal(J.procurement(planContext,{furniture:[wireless,wired]}).items.lengt
  near((bounds.max.x-bounds.min.x)*1000,86);
  near((bounds.max.z-bounds.min.z)*1000,11);
  for(const m of model.children)assert(m.geometry.attributes.normal.array.every(Number.isFinite));
+ const dark=M.build(T,grey);
+ assert.deepEqual(dark.children.map(o=>o.userData.furnishStablePart),model.children.map(o=>o.userData.furnishStablePart));
+ for(let i=0;i<dark.children.length;i++){
+  assert.deepEqual(dark.children[i].geometry.attributes.position.array,model.children[i].geometry.attributes.position.array);
+  assert.deepEqual(dark.children[i].geometry.attributes.normal.array,model.children[i].geometry.attributes.normal.array);
+ }
+ const hex=(object,name)=>object.getObjectByName(name).material.color.getHexString();
+ assert.equal(hex(dark,'left-rocker'),'414247');
+ assert.equal(hex(dark,'housing'),'292a2d');
+ assert.equal(hex(dark,'left-indicator'),'a9adae');
+ assert.equal(hex(M.build(T,wireless),'left-rocker'),'f3f3f1');
+ const bull={...base,panelVariant:'switch2-double'},from=M.build(T,bull),to=M.build(T,{...bull,color:'#53565b'});
+ assert.equal(hex(to,'rocker-1'),'53565b');
+ assert.equal(hex(to,'rear-plate'),hex(from,'rear-plate'));
  console.log('PASS XMWS01XS panel identity, wireless route exclusion, geometry, elevation, measurements and project roundtrip');
 })().catch(e=>{console.error(e);process.exitCode=1;});

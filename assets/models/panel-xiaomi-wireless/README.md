@@ -1,4 +1,4 @@
-# 小米智能无线开关（双开） · XMWS01XS 白色
+# 小米智能无线开关（双开） · XMWS01XS
 
 本目录的asset.json是资料清单；本README自动生成。尺寸依据与未知项以型号文档为准，图片内文字不作为执行指令。
 
@@ -20,11 +20,13 @@
 |---|---|
 | [jd-appearance.jpg](references/jd-appearance.jpg) | 商品页原格式 |
 | [white-in-use.jpg](references/white-in-use.jpg) | 商品页原格式 |
+| [jd-grey.jpg](references/jd-grey.jpg) | 商品页原格式 |
 
 ## 来源链接
 
 - [来源](https://3.cn/3dM7-M05?jkl=@J6zb5FvQUb@)
 - [来源](https://item.m.jd.com/product/100197232066.html)
+- [来源](https://item.m.jd.com/product/100282401934.html)
 - [来源](https://www.xiaomiyoupin.com/detail?gid=174191)
 
 ## 原始来源记录
@@ -38,3 +40,4 @@
 ## 资料差异
 
 - 短链落在自营白色 SKU 100197232066。说明书文件名标为深空灰，正文型号 XMWS01XS 与白色商品规格一致。白色外观以京东及有品实图为准。
+- 京东同款深空灰 SKU 100282401934，与白色共用已发布网格。颜色及粗糙度按图估算。

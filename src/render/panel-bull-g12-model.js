@@ -3,14 +3,25 @@
 'use strict';
 const products=()=>root.FurnishProducts||require('../core/product-rules.js');
 const supported=f=>products().family(f,'wall-panel')&&!f.obj;
+const wirelessGrey={
+ 'mounting-back':{color:'#222326',roughness:.48},
+ housing:{color:'#292a2d',roughness:.39},
+ 'left-rocker':{color:'#414247',roughness:.40},
+ 'right-rocker':{color:'#414247',roughness:.40},
+ 'left-indicator':{color:'#a9adae'},
+ 'right-indicator':{color:'#a9adae'}
+};
 function build(T,f){
- const P=products(),key=P.value(f,'panelVariant'),{series}=P.panelSpec(f);
- const asset=series==='wireless'
+ const P=products(),key=P.value(f,'panelVariant'),{series,color}=P.panelSpec(f);
+ let asset=series==='wireless'
   ?root.FurnishPanelXiaomiWirelessAsset||(typeof require==='function'?require('../data/panel-xiaomi-wireless-blender-asset.js'):null)
   :series
    ?(root.FurnishPanelXiaomiSwitch2Asset||(typeof require==='function'?require('../data/panel-xiaomi-switch2-blender-asset.js'):null))?.variants[key]
    :(root.FurnishPanelBullG12Asset||(typeof require==='function'?require('../data/panel-bull-g12-blender-asset.js'):null))?.variants[key];
  if(!asset)throw Error('86面板离线资产缺失：'+key);
+ if(series==='wireless'&&color==='grey')asset={...asset,parts:asset.parts.map(part=>({
+  ...part,material:{...part.material,...wirelessGrey[part.name]}
+ }))};
  const g=(root.FurnishStaticAssetModel||require('./static-asset-model.js')).build(T,asset,{...f,h:P.height(f)},P.value(f,'mountHeight')),light=P.definition(f).nightLight;
  if(light&&key===light.variant){
   g.traverse(o=>{if(o.name===light.part&&o.material?.emissive){o.material.emissive.set(light.color);o.material.emissiveIntensity=0;(o.material.userData||={}).pathLightEmitter=true;}});

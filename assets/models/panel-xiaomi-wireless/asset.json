@@ -1,13 +1,16 @@
 {
   "format": 1,
   "id": "panel-xiaomi-wireless",
-  "name": "小米智能无线开关（双开） · XMWS01XS 白色",
-  "types": ["panel_bull_g12"],
+  "name": "小米智能无线开关（双开） · XMWS01XS",
+  "types": [
+    "panel_bull_g12"
+  ],
   "route": "blender",
   "document": "docs/PANEL-XIAOMI-WIRELESS.md",
   "sourceLinks": [
     "https://3.cn/3dM7-M05?jkl=@J6zb5FvQUb@",
     "https://item.m.jd.com/product/100197232066.html",
+    "https://item.m.jd.com/product/100282401934.html",
     "https://www.xiaomiyoupin.com/detail?gid=174191"
   ],
   "references": [
@@ -24,6 +27,13 @@
       "url": "https://img.youpin.mi-img.com/shopmain/fadf7df2_0ccb_414d_ad4c_2e6e960c4722.jpeg",
       "sha256": "f52ea7ebebbc126a48731d9147d89bdc1eccc06ccf7ecd6c3e103c484fd990e1",
       "bytes": 183647
+    },
+    {
+      "path": "references/jd-grey.jpg",
+      "kind": "product-page-original",
+      "url": "https://img14.360buyimg.com/pop/jfs/t1/457723/25/15511/24670/6a3b767bFb9e3acf0/0083320320727935.jpg",
+      "sha256": "b2c17e67a6e9dd8d867303768468d0fbc4dcc7773c74b5881dba8ecb34e8eba3",
+      "bytes": 74702
     }
   ],
   "supportingFiles": [
@@ -35,6 +45,11 @@
     }
   ],
   "missingReferences": [],
-  "validation": ["docs/validation/panel-xiaomi-wireless-visual-20261127/README.md"],
-  "notes": ["短链落在自营白色 SKU 100197232066。说明书文件名标为深空灰，正文型号 XMWS01XS 与白色商品规格一致。白色外观以京东及有品实图为准。"]
+  "validation": [
+    "docs/validation/panel-xiaomi-wireless-visual-20261127/README.md"
+  ],
+  "notes": [
+    "短链落在自营白色 SKU 100197232066。说明书文件名标为深空灰，正文型号 XMWS01XS 与白色商品规格一致。白色外观以京东及有品实图为准。",
+    "京东同款深空灰 SKU 100282401934，与白色共用已发布网格。颜色及粗糙度按图估算。"
+  ]
 }

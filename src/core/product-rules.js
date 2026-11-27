@@ -70,14 +70,23 @@ const xiaomiPanelVariants=Object.freeze(Object.fromEntries(['2','2pro'].flatMap(
  const label=name+' · '+['','单开','双开','三开'][gangs]+' · '+finish;
  return ['xiaomi-'+series+'-'+gangs+'-'+color,{label,listLabel:name+' · '+finish,group:name,control:'smart',series,gangs,color,depth:pro?5:7.9,totalDepth:pro?34.8:(gangs===3?34.7:30.7),brand:'小米/Xiaomi',model:name,sourceUrl:'https://item.jd.com/'+(pro?'100434281318':'100313419465')+'.html'}];
 })))));
-const wirelessPanelKey='xiaomi-wireless-2-white';
-const panelOptions=Object.freeze({...panelVariants,...xiaomiPanelVariants,[wirelessPanelKey]:{
- label:'小米智能无线开关（双开） · 白色',listLabel:'小米智能无线开关 · 白色',
- group:'小米智能无线开关',control:'smart',series:'wireless',gangs:2,color:'white',
+const wirelessPanelVariants=Object.fromEntries([
+ ['white','白色','100197232066','#f5f5f3'],['grey','深空灰','100282401934','#414247']
+].map(([color,finish,sku,faceColor])=>['xiaomi-wireless-2-'+color,{
+ label:'小米智能无线开关（双开） · '+finish,listLabel:'小米智能无线开关 · '+finish,
+ group:'小米智能无线开关',control:'smart',series:'wireless',gangs:2,color,faceColor,
  requiresWiring:false,depth:11,totalDepth:11,brand:'小米/Xiaomi',model:'XMWS01XS',
- sourceUrl:'https://item.m.jd.com/product/100197232066.html'
-}});
+ sourceUrl:'https://item.m.jd.com/product/'+sku+'.html'
+}]));
+const panelOptions=Object.freeze({...panelVariants,...xiaomiPanelVariants,...wirelessPanelVariants});
+// Series finish names from the official shop. Hex values are layout previews.
+const g12Colors=Object.freeze([
+ ['#f5f5f2','暮雪白'],['#adacaa','太空银'],['#c2a989','星辰金'],
+ ['#b79a85','奶绒咖'],['#898784','丝绒灰'],['#ebe5d8','米绒白'],
+ ['#f3ecd9','象牙白'],['#c9b58f','香槟金'],['#53565b','星空灰'],['#282a2d','皓钻黑']
+].map(Object.freeze));
 function panelSpec(f){const key=value(f,'panelVariant');return panelOptions[key];}
+function panelColorPresets(f){return family(f,'wall-panel')&&!f.obj&&!panelSpec(f).series?g12Colors:[];}
 function panelSpatialKey(f){
  const key=value(f,'panelVariant'),spec=panelSpec(f);
  if(spec.series)return key.replace(/-(white|grey)$/,'');
@@ -88,7 +97,7 @@ function editPanelVariant(f,key){
  if(!old.series&&!spec.series)return {...f,panelVariant:key};
  const metadata=spec.series?{brand:spec.brand,model:spec.model,sourceUrl:spec.sourceUrl}:{...types.panel_bull_g12.identity};
  // Preserve custom names, width/height, elevation and explicitly customized depths.
- return {...f,panelVariant:key,...metadata,d:Math.abs(f.d-stock)<.001?(spec.depth||10):f.d,color:spec.series?(spec.color==='white'?'#f5f5f3':'#535558'):'#f5f5f2'};
+ return {...f,panelVariant:key,...metadata,d:Math.abs(f.d-stock)<.001?(spec.depth||10):f.d,color:spec.faceColor??(spec.series?(spec.color==='white'?'#f5f5f3':'#535558'):'#f5f5f2')};
 }
 const fields={
  panelVariant:{values:Object.keys(panelOptions),message:'请选择有效的86面板种类'},
@@ -1120,6 +1129,6 @@ function coveLightLayout(f){
  const w=f.w,d=f.d,h=height(f),t=P.wall;if(![w,d,h].every(Number.isFinite)||w<100||d<25||h<P.minHeight)throw Error('反射灯槽至少100×25×20mm');
  return {w,d,h,t,base:value(f,'mountHeight'),innerWidth:w-2*t,stripWidth:P.stripWidth,emitterHeight:P.emitterHeight,emitterZ:0,level:value(f,'lightPreviewLevel')/100,color:P.colors[value(f,'lightKelvin')],candela:w/1000*P.previewCandelaPerM*value(f,'lightPreviewLevel')/100};
 }
-const api={curtainOpening,editCurtainOpening,coveringRetrofit,softCoveringOnly,dryingRackLayout,editDryingRackDrop,styleAppearance,styleRole,cabinetAppearance,coveLightLayout,panelVariants,panelOptions,xiaomiPanelVariants,panelSpec,panelSpatialKey,editPanelVariant,cabinetService,cabinetBuilder,inventoryArrayDefaults,inventoryArrayConfig,inventoryArraySpacing,arrayQuantityEdit,clearPaperArray,paperArrayConfig,paperArrayLayout,editPaperArray,cabinetDetail,cabinetTiers,cabinetDrawerBox,cabinetBackPanel,cabinetEntry,bottomMode,bottomHeight,editBottomHeight,elevationOriginal,elevationSource,elevationDelta,elevatedRange,elevatedParts,elevatedZones,circulatorLayout,catalogMinimum,artGlass,artGlassPatterns,gardenLayout,windowLining,stoolStack,cabinetDoorLimits,kind,kinds,matchesSearch,supportsAction,upgradeIdentity,wardrobeHanging,coveringLayout,coverSpecs,pocketLayout,cabinetSideClosure,cabinetTopClosure,cabinetConstruction,slidingGlass,slidingResizeFrame,resizeSliding,slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,planFurnitureInput,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
+const api={curtainOpening,editCurtainOpening,coveringRetrofit,softCoveringOnly,dryingRackLayout,editDryingRackDrop,styleAppearance,styleRole,cabinetAppearance,coveLightLayout,panelVariants,panelOptions,xiaomiPanelVariants,panelSpec,panelColorPresets,panelSpatialKey,editPanelVariant,cabinetService,cabinetBuilder,inventoryArrayDefaults,inventoryArrayConfig,inventoryArraySpacing,arrayQuantityEdit,clearPaperArray,paperArrayConfig,paperArrayLayout,editPaperArray,cabinetDetail,cabinetTiers,cabinetDrawerBox,cabinetBackPanel,cabinetEntry,bottomMode,bottomHeight,editBottomHeight,elevationOriginal,elevationSource,elevationDelta,elevatedRange,elevatedParts,elevatedZones,circulatorLayout,catalogMinimum,artGlass,artGlassPatterns,gardenLayout,windowLining,stoolStack,cabinetDoorLimits,kind,kinds,matchesSearch,supportsAction,upgradeIdentity,wardrobeHanging,coveringLayout,coverSpecs,pocketLayout,cabinetSideClosure,cabinetTopClosure,cabinetConstruction,slidingGlass,slidingResizeFrame,resizeSliding,slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,planFurnitureInput,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishProducts=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
