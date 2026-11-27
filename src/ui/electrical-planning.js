@@ -25,7 +25,7 @@ globalThis.FurnishElectricalUI=(()=>{
   poseHost=null;return {...sel,id,ids};
  }
  function geometry(){return E.surfaces(canvasEffectivePlan(),state,selItems()[0]);}
- function refreshRelations(){relations=E.controlPairs(state.furniture);}
+ function refreshRelations(){relations=E.controlPairs(state.furniture,ROOMS);}
  function relatedIds(){return [...(relations.links.get(ui.sel?.kind==='furn'?ui.sel.id:null)?.keys()||[])];}
  function pairedOverlay(){
   if(!active()&&!ui.layers.furn)return '';
@@ -38,7 +38,7 @@ globalThis.FurnishElectricalUI=(()=>{
   if(!g){g=document.createElementNS(NS,'g');g.id='gElectrical';root.querySelector('#gSel')?.before(g);if(!g.parentNode)root.append(g);}
   g.setAttribute('transform',`rotate(${drawingRotation()})`);
   const scale=exporting ? .075 : view.s,k=1/scale,rows=E.points(state,canvasEffectivePlan()).filter(r=>!visibleLayers||FurnishLayers.visible(state,'furniture:'+r.id));
-  g.innerHTML=rows.map(r=>{const f=getF(r.id),selected=selIds().includes(f.id),rotation=-drawingRotation();return `<g data-electrical-symbol="${esc(f.id)}" ${exporting?'':`data-fid="${esc(f.id)}"`} transform="translate(${f.cx} ${f.cy}) rotate(${rotation})" style="cursor:move"><title>${esc([r.number,E.pointName(r.name),r.variant.label].filter(Boolean).join(' · '))} · 底部 ${height(r.finishedBottom)} mm（完成地面）</title><circle r="${11*k}" fill="${selected?'#a64d31':'#fffaf4'}" stroke="#a64d31" stroke-width="2" vector-effect="non-scaling-stroke"/><text text-anchor="middle" dominant-baseline="central" font-size="${9*k}" font-weight="bold" fill="${selected?'white':'#783a28'}" pointer-events="none">${r.number}</text><text x="${16*k}" y="${-5*k}" font-size="${11*k}" fill="#783a28" stroke="#fffaf4" stroke-width="${3*k}" paint-order="stroke" pointer-events="none">${esc(r.variant.label)}</text><text x="${16*k}" y="${10*k}" font-size="${10*k}" fill="#783a28" stroke="#fffaf4" stroke-width="${3*k}" paint-order="stroke" pointer-events="none">底 ${height(r.finishedBottom)} / 中 ${height(r.finishedCenter)} mm</text></g>`;}).join('');
+  g.innerHTML=rows.map(r=>{const f=getF(r.id),selected=selIds().includes(f.id),rotation=-drawingRotation(),radius=11+Math.max(0,r.number.length-3)*3;return `<g data-electrical-symbol="${esc(f.id)}" ${exporting?'':`data-fid="${esc(f.id)}"`} transform="translate(${f.cx} ${f.cy}) rotate(${rotation})" style="cursor:move"><title>${esc([r.number,E.pointName(r.name),r.variant.label].filter(Boolean).join(' · '))} · 底部 ${height(r.finishedBottom)} mm（完成地面）</title><circle r="${radius*k}" fill="${selected?'#a64d31':'#fffaf4'}" stroke="#a64d31" stroke-width="2" vector-effect="non-scaling-stroke"/><text text-anchor="middle" dominant-baseline="central" font-size="${9*k}" font-weight="bold" fill="${selected?'white':'#783a28'}" pointer-events="none">${r.number}</text><text x="${(radius+5)*k}" y="${-5*k}" font-size="${11*k}" fill="#783a28" stroke="#fffaf4" stroke-width="${3*k}" paint-order="stroke" pointer-events="none">${esc(r.variant.label)}</text><text x="${(radius+5)*k}" y="${10*k}" font-size="${10*k}" fill="#783a28" stroke="#fffaf4" stroke-width="${3*k}" paint-order="stroke" pointer-events="none">底 ${height(r.finishedBottom)} / 中 ${height(r.finishedCenter)} mm</text></g>`;}).join('');
   const chosen=selItems().length===1&&selItems()[0];
   if(chosen&&E.panel(chosen)){const hit=E.nearest(chosen,E.surfaces(canvasEffectivePlan(),state,chosen),1);if(hit){const s=hit.surface,n=s.normal,a=s.a,b=[s.a[0]+(s.b[0]-s.a[0])*hit.offset/s.length,s.a[1]+(s.b[1]-s.a[1])*hit.offset/s.length],d=35*k,u=[a[0]+n[0]*d,a[1]+n[1]*d],v=[b[0]+n[0]*d,b[1]+n[1]*d],mid=[(u[0]+v[0])/2,(u[1]+v[1])/2];g.insertAdjacentHTML('beforeend',`<g pointer-events="none" data-electrical-dimension><path d="M${a}L${u}L${v}L${b}" fill="none" stroke="#a64d31" stroke-width="1" vector-effect="non-scaling-stroke"/><text transform="translate(${mid}) rotate(${-drawingRotation()})" text-anchor="middle" font-size="${11*k}" fill="#783a28" stroke="#fffaf4" stroke-width="${3*k}" paint-order="stroke">中心距面起点 ${Number(hit.offset.toFixed(1))} mm</text></g>`);}}
   globalThis.FurnishWiringUI?.draw(root,{exporting,visibleLayers});
@@ -58,27 +58,35 @@ globalThis.FurnishElectricalUI=(()=>{
   const p=toMM(e),item=LIB.flatMap(c=>c.items).find(i=>FurnishProducts.supports({type:i[0]},'panelVariant'));if(!item)return false;
   adding=false;addItem(item,p.x,p.y);return true;
  }
+ function roomName(room){
+  return room?nm(state.rooms[room.id]?.name||room.name):tr('未归属房间','No room assigned');
+ }
+ function relatedLabel(id,sourceRoom){
+  const target=relations.locations.get(id);
+  return target.room?.id===sourceRoom?.id?target.number:`${roomName(target.room)} ${target.number}`;
+ }
  function relatedButtons(id,room){
   const links=relations.links.get(id);
   if(!links)return '';
   return `<div class="electrical-row-links">${[...links].map(([peerId,methods])=>{
-   const peer=getF(peerId),destination=roomAt(peer.cx,peer.cy);
-   const location=destination?.id===room?.id?'':destination?nm(state.rooms[destination.id]?.name||destination.name):tr('未归属房间','No room assigned');
    const method=methods.size===1?linkLabels[[...methods][0]]:['双控','Two-way'];
-   const label=[tr(...method),relations.numbers.get(peerId),location].filter(Boolean).join(' · ');
+   const label=`${tr(...method)} · ${relatedLabel(peerId,room)}`;
    return `<button type="button" class="electrical-control electrical-link-tag" data-electrical-jump="${esc(peerId)}" aria-label="${esc(tr('定位 ','Locate ')+label)}">${esc(label)} <span aria-hidden="true">↗</span></button>`;
   }).join('')}</div>`;
  }
  function listRows(rows){
   if(!rows.length)return `<p class="muted">${tr('当前方案没有插座或开关面板。','There are no sockets or switch plates in this design.')}</p>`;
-  const groups=new Map(),current=ui.sel?.kind==='furn'?ui.sel.id:null,peers=relatedIds();
+  const groups=new Map(ROOMS.map(room=>[room.id,{room,items:[]}])),current=ui.sel?.kind==='furn'?ui.sel.id:null,peers=relatedIds();
   for(const r of rows){
-   const f=getF(r.id),room=roomAt(f.cx,f.cy),key=room?.id??null;
+   const f=getF(r.id),room=r.room,key=room?.id??null;
    if(!groups.has(key))groups.set(key,{room,items:[]});
    const hidden=!FurnishLayers.visible(state,FurnishLayers.furnitureKey(f));
    const references=relations.references.get(r.id);
    const label=E.purpose(nm(r.name),[room&&nm(state.rooms[room.id]?.name),room&&nm(room.name)])
-    .replace(/(?<![A-Z0-9])E\d+(?![A-Z0-9])/gi,code=>references?.get(code.toUpperCase())||code);
+    .replace(/(?<![A-Z0-9])E\d+(?![A-Z0-9])/gi,code=>{
+     const peerId=references?.get(code.toUpperCase());
+     return peerId?relatedLabel(peerId,room):code;
+    });
    const product=FurnishProducts.definition(f),variantLabel=nm(r.variant.label),detail=nm(r.variant.listLabel||r.variant.label);
    const series=product.panelLine&&tr(...product.panelLine);
    const model=r.variant.model?detail:series;
@@ -106,9 +114,8 @@ globalThis.FurnishElectricalUI=(()=>{
      </span>
     </button>${relatedButtons(r.id,room)}</li>`);
   }
-  return `<div class="electrical-list-groups">${[...groups.values()].map(({room,items})=>{
-   const location=room?nm(state.rooms[room.id]?.name||room.name):tr('未归属房间','No room assigned');
-   return `<div class="electrical-list-group"><h4>${esc(location)} <small>${items.length}</small></h4><ul>${items.join('')}</ul></div>`;
+  return `<div class="electrical-list-groups">${[...groups.values()].filter(group=>group.items.length).map(({room,items})=>{
+   return `<div class="electrical-list-group"><h4>${esc(roomName(room))} <small>${items.length}</small></h4><ul>${items.join('')}</ul></div>`;
   }).join('')}</div>`;
  }
  function locate(id){

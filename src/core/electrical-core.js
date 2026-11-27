@@ -19,7 +19,27 @@ function assertEditable(before,after){
  const rest=w=>{const out={...w};delete out.furniture;delete out.scene3d;delete out.wireRoutes;if(out.objectLayers){out.objectLayers=structuredClone(out.objectLayers);for(const f of [...before.furniture,...after.furniture].filter(panel))delete out.objectLayers.assignments?.['furniture:'+f.id];}return out;};
  if(!equal(rest(before),rest(after)))throw Error('插座布置视图中建筑、装修及其他方案资料只读');
 }
-const pointNumber=i=>'E'+String(i+1).padStart(2,'0');
+function areaPrefix(index){
+ let prefix='';
+ for(let n=index+1;n>0;n=Math.floor((n-1)/26)){
+  prefix=String.fromCharCode(65+(n-1)%26)+prefix;
+ }
+ return prefix;
+}
+function pointLocations(furniture,rooms){
+ const {inPoly}=root.FurnishGeometry||require('./layout-geometry.js');
+ const locations=new Map(),counts=new Map(),areas=rooms??[];
+ const prefixes=new Map(areas.map((r,i)=>[r.id,areaPrefix(i)]));
+ prefixes.set(null,rooms?areaPrefix(areas.length):'E');
+ for(const f of furniture){
+  if(!panel(f))continue;
+  const room=areas.find(r=>inPoly(f.cx,f.cy,r.poly))||null;
+  const key=room?.id??null,sequence=(counts.get(key)??0)+1;
+  locations.set(f.id,{room,number:prefixes.get(key)+String(sequence).padStart(2,'0')});
+  counts.set(key,sequence);
+ }
+ return locations;
+}
 const leadingCode=/^([EN]\d+)(?:\s*[·・:：-]\s*|\s+|(?=[\u3400-\u9fff])|$)/i;
 function pointName(name){
  let label=typeof name==='string'?name.trim():'';
@@ -41,13 +61,12 @@ function purpose(name,roomNames=[]){
  const room=roomNames.filter(Boolean).sort((a,b)=>b.length-a.length).find(name=>label.startsWith(name));
  return room?label.slice(room.length).replace(/^[\s·・:：-]+/,''):label;
 }
-function controlPairs(furniture){
- const panels=furniture.filter(panel),aliases=new Map(),numbers=new Map(),links=new Map(),references=new Map();
- panels.forEach((f,i)=>{
-  numbers.set(f.id,pointNumber(i));
+function controlPairs(furniture,rooms){
+ const panels=furniture.filter(panel),aliases=new Map(),locations=pointLocations(panels,rooms),links=new Map(),references=new Map();
+ for(const f of panels){
   const code=legacyCode(f.name);
   if(code?.startsWith('E'))aliases.set(code,aliases.has(code)?null:f);
- });
+ }
  for(const f of panels){
   if(!P().panelSpec(f)?.gangs)continue;
   for(const clause of purpose(f.name).split(/[，,。；;、\n]/)){
@@ -65,12 +84,19 @@ function controlPairs(furniture){
     for(const method of methods)peers.get(b).add(method);
    }
    if(!references.has(f.id))references.set(f.id,new Map());
-   references.get(f.id).set(code,numbers.get(other.id));
+   references.get(f.id).set(code,other.id);
   }
  }
- return {numbers,links,references};
+ return {locations,links,references};
 }
-function points(work,plan){return work.furniture.filter(panel).map((f,i)=>{const bottom=P().bottomHeight(f),height=P().height(f),m=plan?(root.FurnishDesign||require('./design-core.js')).furnitureHeightMeasurements(f,plan,work.furniture):{bottom};return {id:f.id,number:pointNumber(i),name:f.name,variant:P().panelSpec(f)||{label:P().definition(f).trackSocket.label},bottom,center:bottom+height/2,finishedBottom:m.bottom,finishedCenter:m.bottom===null?null:m.bottom+height/2};});}
+function points(work,plan){
+ const locations=pointLocations(work.furniture,plan?.rooms);
+ return work.furniture.filter(panel).map(f=>{
+  const bottom=P().bottomHeight(f),height=P().height(f);
+  const m=plan?(root.FurnishDesign||require('./design-core.js')).furnitureHeightMeasurements(f,plan,work.furniture):{bottom};
+  return {id:f.id,...locations.get(f.id),name:f.name,variant:P().panelSpec(f)||{label:P().definition(f).trackSocket.label},bottom,center:bottom+height/2,finishedBottom:m.bottom,finishedCenter:m.bottom===null?null:m.bottom+height/2};
+ });
+}
 const surfaceCache=new Map();
 function surfaces(plan,work,f){
  const G=root.FurnishGeometry||require('./layout-geometry.js'),M=root.FurnishCabinetMotion||require('./cabinet-motion.js'),out=[];
@@ -193,6 +219,6 @@ function routeGeometry(route,plan,furniture,byId=new Map(furniture.map(f=>[f.id,
  const length=unresolved||reversals.length?null:path.reduce((sum,p,i)=>i?sum+distance(path[i-1],p):0,0);
  return {points,path,length,unresolved,reversals};
 }
-const api={panel,assertEditable,pointName,displayName,renamePoint,purpose,controlPairs,points,surfaces,place,nearest,wireKinds,routeLimits,validateRoutes,boxKind,endpointKind,endpoint,routeGeometry,conduitDiameters,conduitDefault,conduitProfile};
+const api={panel,assertEditable,pointName,displayName,renamePoint,purpose,controlPairs,pointLocations,points,surfaces,place,nearest,wireKinds,routeLimits,validateRoutes,boxKind,endpointKind,endpoint,routeGeometry,conduitDiameters,conduitDefault,conduitProfile};
 root.FurnishElectrical=api;if(typeof module==='object'&&module.exports)module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

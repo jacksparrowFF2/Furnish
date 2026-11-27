@@ -40,10 +40,10 @@ globalThis.FurnishWiringUI=(()=>{
    const {path}=geometry(route,plan,byId);
    if(path.length&&path.every(p=>[p.x,p.y,p.z].every(Number.isFinite)))paths.push({kind:route.kind,path,editing:route===routeDraft,diameter:route.conduitDiameter});
   }
-  const numbers=new Map(E.points(state).map(row=>[row.id,row.number]));
+  const locations=E.pointLocations(furniture,plan.rooms);
   const markers=[];
   for(const f of furniture){
-   const box=E.boxKind(f),label=numbers.get(f.id)||(box==='power'?'强':box==='network'?'弱':null);
+   const box=E.boxKind(f),label=locations.get(f.id)?.number||(box==='power'?'强':box==='network'?'弱':null);
    if(!label||!FurnishLayers.visible(state,'furniture:'+f.id))continue;
    const p=E.endpoint(f,plan,furniture);
    if(Number.isFinite(p.z))markers.push({...p,label,kind:E.endpointKind(f)});

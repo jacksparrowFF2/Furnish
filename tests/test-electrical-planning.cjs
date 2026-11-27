@@ -45,7 +45,27 @@ for(const order of [switches,[...switches].reverse()]){
  assert.deepEqual(pairs.links.get(wired.id),new Map([[wiredPeer.id,new Set(['wired'])]]));
  assert.deepEqual(pairs.links.get(wiredPeer.id),new Map([[wired.id,new Set(['wired'])]]));
  assert.deepEqual(pairs.links.get(smart.id),new Map([[smartPeer.id,new Set(['mijia'])]]));
- assert.equal(pairs.references.get(smart.id).get('E28'),pairs.numbers.get(smartPeer.id));
+ assert.equal(pairs.references.get(smart.id).get('E28'),smartPeer.id);
+}
+{
+ const at=(f,cx)=>({...f,cx,cy:2000});
+ const outsideA=at({...panel,id:'outside-a'},4000),outsideB=at({...panel,id:'outside-b'},5000);
+ const fixtures=[at(wired,500),at(wiredPeer,2000),outsideA,at(smart,600),outsideB,at(smartPeer,2200)];
+ const summarize=furniture=>E.points({furniture},floors).map(({id,room,number})=>[id,room?.id,number]);
+ assert.deepEqual(summarize(fixtures),[
+  [wired.id,'low','A01'],[wiredPeer.id,'high','B01'],[outsideA.id,undefined,'C01'],
+  [smart.id,'low','A02'],[outsideB.id,undefined,'C02'],[smartPeer.id,'high','B02']
+ ]);
+ const pairs=E.controlPairs(fixtures,floors.rooms);
+ const targetId=pairs.references.get(wired.id).get('E67');
+ assert.equal(targetId,wiredPeer.id);
+ assert.deepEqual(pairs.locations.get(targetId),{room:floors.rooms[1],number:'B01'});
+ const moved=[at(wired,2500),...fixtures.slice(1)];
+ assert.deepEqual(summarize(moved).map(row=>row[2]),['B01','B02','C01','A01','C02','B03']);
+ assert.equal(E.controlPairs(moved,floors.rooms).references.get(wired.id).get('E67'),targetId);
+ const emptyRooms=Array.from({length:25},(_,i)=>({id:'empty'+i,poly:[]}));
+ const locations=E.pointLocations(fixtures,[...emptyRooms,...floors.rooms]);
+ assert.deepEqual([wired.id,wiredPeer.id,outsideA.id].map(id=>locations.get(id).number),['Z01','AA01','AB01']);
 }
 assert(!E.controlPairs([...switches,switchPoint('duplicate','E67 · 另一开关')]).links.has(wired.id));
 assert(!E.controlPairs([wired,{...wiredPeer,name:'门口开关'}]).links.size);
