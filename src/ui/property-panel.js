@@ -287,13 +287,30 @@ function bindRoomPanel(){
 }
 
 const SWATCHES = ['#ffffff','#efe6d8','#e2cfb4','#d6b99a','#a57c56','#c9d6df','#c3cbd6','#d8c7dc','#b7c4b0','#9dbb8c','#cfc6b8','#8a7a5e','#4a4f55','#1f1d1b'];
-function furniturePriceField(f){
-  const value=priceOf(f),basis=FurnishProject.furniturePriceBasis(f,value);
+function furniturePriceField(f,disabled=false){
+  const archive=FurnishProject.archivedFurniturePrice(f);
+  const value=priceOf(f,archive),basis=FurnishProject.furniturePriceBasis(f,value);
   const status=basis==='confirmed'?tr('已确认价','Confirmed price'):basis==='reference'?tr('参考价','Reference price'):'';
+  const specification=archive?.fields?.panelVariant?archive.model+' · '+archive.variant:archive?.variant;
   return `<section class="property-group" aria-labelledby="f-price-label"><div class="form property-price-field">
     <div><label id="f-price-label" for="fP">${tr('单价（元）','Unit price (¥)')}</label>${status?`<small id="f-price-basis" class="muted" data-furniture-price>${status}</small>`:''}</div>
-    <input id="fP" type="number" value="${basis==='missing'?'':Math.round(value)}" placeholder="${tr('待填写','Not entered')}" min="0" step="50" ${status?'aria-describedby="f-price-basis"':''}>
-  </div></section>`;
+    <input id="fP" type="number" value="${basis==='missing'?'':value}" placeholder="${tr('待填写','Not entered')}" min="0" max="10000000" step="any" ${status?'aria-describedby="f-price-basis"':''} ${disabled?'disabled':''}>
+  </div>${archive?`<p class="property-hint" data-archived-price>
+    ${basis==='confirmed'?`<strong>${tr('归档参考价','Archived reference price')} ¥${(archive.priceFen/100).toFixed(2)}</strong><br>`:''}
+    ${esc(specification)}${archive.detail?` · ${esc(tr(archive.detail,'Standard hardware only. Fabric and custom rails are priced separately.'))}`:''}<br>
+    ${esc(archive.capturedOn)} · <a href="${esc(archive.sourceUrl)}" target="_blank" rel="noopener noreferrer">${tr('归档商品页','Archived listing')}</a>
+  </p>`:''}</section>`;
+}
+function readFurniturePrice(input){
+  const text=input.value.trim(),value=Number(text);
+  if(input.validity?.badInput||!Number.isFinite(value)||value<0||value>1e7){
+    throw Error(tr('请输入 0–10000000 元的单价，留空恢复参考价或待填写状态','Enter a price from ¥0 to ¥10,000,000. Clear it to restore the reference price or leave it blank.'));
+  }
+  return text===''?undefined:Number(value.toFixed(2));
+}
+function setFurniturePrice(f,value){
+  if(value===undefined)delete f.price;
+  else f.price=value;
 }
 function furnitureMeasuredSize(f){
   const measurements=FurnishDesign.furnitureHeightMeasurements(f,canvasEffectivePlan(),state.furniture);
@@ -595,7 +612,10 @@ function bindFurnPanel(f){
   num('#fManifoldLeft',(g,v)=>{if(furnitureLocked(g))throw Error('家具已锁定，请先解锁');Object.assign(g,FurnishProducts.editManifold(g,{leftLength:v}));});
   num('#fManifoldLower',(g,v)=>{if(furnitureLocked(g))throw Error('家具已锁定，请先解锁');Object.assign(g,FurnishProducts.editManifold(g,{lower:v}));});
   num('#fX', (g,v) => g.cx = v); num('#fY', (g,v) => g.cy = v); num('#fR', (g,v) => g.rot = norm(v));
-  const priceField=$('#fP');if(priceField)priceField.onchange=e=>{const text=e.target.value.trim(),value=Number(text);if(text!==''&&(!Number.isFinite(value)||value<0)){toast(tr('请输入非负单价，留空恢复参考价或待填写状态','Enter a nonnegative price; clear to restore reference or unknown price'));renderPanel();return;}upd(g=>{if(text==='')delete g.price;else g.price=Math.round(value);});};
+  const priceField=$('#fP');if(priceField)priceField.onchange=e=>{
+    try{const value=readFurniturePrice(e.target);upd(g=>setFurniturePrice(g,value));}
+    catch(error){toast(error.message);renderPanel();}
+  };
   const embedWall=$('#fEmbedWall');if(embedWall)embedWall.onclick=()=>{try{if(furnitureLocked(getF(f.id)))throw Error('家具已锁定，请先解锁');upd(g=>Object.assign(g,FurnishElectricalBox.embed(g,FurnishProject.effectivePlan(PLAN,state))));}catch(e){toast(e.message);}};
   num('#fDryingRackDrop',(g,v)=>{if(furnitureLocked(g))throw Error('家具已锁定，请先解锁');Object.assign(g,FurnishProducts.editDryingRackDrop(g,v));});
   num('#fH', (g,v) => {if(g.type==='mirror'&&v<50)throw Error('穿衣镜高度须为 50–20000 mm');Object.assign(g,FurnishDesign.resizeFurniture(g,{h:g.type.startsWith('robot_p20max')?Math.round(v*10)/10:Math.round(v)}));});

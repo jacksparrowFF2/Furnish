@@ -50,11 +50,11 @@ const archived={...lining,productCaptures:[
  {sourceUrl,capturedOn:'2026-11-26',capture:{title:'双开 <面板>',itemCode:'123456',priceFen:0,priceScope:'sku'}},
  {sourceUrl,capturedOn:'2026-11-27',capture:{title:'双开面板',itemCode:'123456',variant:'深空灰',priceFen:12345,priceScope:'default-selection'}}
 ]};
-const views=I.outputs({...index,products:[archived]});
+const views=I.outputs({...index,products:index.products.map(p=>p.id===archived.id?archived:p)});
 assert(views['assets/models/index.html'].includes('双开面板 · 深空灰 · ¥123.45（页面默认选项） · 2026-11-27'));
 assert(views['assets/models/index.html'].includes('sku=123456'));
 assert(!views['assets/models/index.html'].includes('双开 <面板>'));
 assert(views['assets/models/window-lining/README.md'].includes('¥0.00（商品 SKU）'));
 assert(views['assets/models/window-lining/README.md'].includes('[商品页](<'+sourceUrl+'>)'));
-assert.deepEqual(JSON.parse(views['assets/models/index.json']).products[0].productCaptures,archived.productCaptures);
+assert.deepEqual(JSON.parse(views['assets/models/index.json']).products.find(p=>p.id===archived.id).productCaptures,archived.productCaptures);
 console.log('PASS original 39 dossiers plus window lining, '+index.counts.referenceImages+' input hashes, '+index.models.length+' model source identities, dynamic counts, missing records, portable paths, deterministic navigation and rejection cases');

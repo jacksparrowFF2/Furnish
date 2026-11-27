@@ -44,8 +44,9 @@ const libAll = () => store.custom?.length
   : browseLIB;
 const typeColor = t => { for (const c of LIB) for (const i of c.items) if (i[0]===t) return i[4]; return '#d9d2c5'; };
 const libItem = f => { if(['custom','customround'].includes(f.type)){const c=FurnishDesign.catalogSource(f,store.custom||[]);return c?[c.shape==='round'?'customround':'custom',c.name,c.w,c.d,c.color,c.price,c.h,c.id]:null;} return FurnishCatalogData.findItem(f.type,f.name); };
-// 单价：家具上手动填写的优先，其次是同名库存条目，最后按类型估算
-const priceOf = f => f.price ?? f.referencePrice ?? (FurnishProducts.vesselSink(f)?0:libItem(f)?.[5] ?? TYPE_PRICE[f.type]) ?? 0;
+// 手动单价优先，其次为归档的对应规格，其余沿用原参考价。
+const priceOf = (f,archive=FurnishProject.archivedFurniturePrice(f)) =>
+  f.price ?? (archive?archive.priceFen/100:undefined) ?? f.referencePrice ?? (FurnishProducts.vesselSink(f)?0:libItem(f)?.[5] ?? TYPE_PRICE[f.type]) ?? 0;
 
 let _n = 1;
 const uid = () => 'f' + Date.now().toString(36) + (_n++);

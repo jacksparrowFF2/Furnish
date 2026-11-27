@@ -31,7 +31,8 @@ Object.assign(ctx,{$:id=>nodes[id],document:{querySelectorAll:()=>[],querySelect
 ctx.renderPanel=()=>{};ctx.bindFurnPanel(current);
 nodes['#fP'].onchange({target:{value:'0'}});assert.equal(current.price,0);
 nodes['#fP'].onchange({target:{value:''}});assert(!Object.hasOwn(current,'price'));
-current.referencePrice=88;nodes['#fP'].onchange({target:{value:'9'}});nodes['#fP'].onchange({target:{value:''}});
+current.referencePrice=88;nodes['#fP'].onchange({target:{value:'9.58'}});assert.equal(current.price,9.58);
+nodes['#fP'].onchange({target:{value:''}});
 assert.equal(current.referencePrice,88);assert.match(ctx.furniturePriceField(current),/参考价<\/small>[\s\S]*value="88"/);
 for(const value of ['-1','NaN','Infinity'])nodes['#fP'].onchange({target:{value}});
 assert.equal(history.length,4);assert.equal(errors.length,3);assert(!Object.hasOwn(current,'price'));

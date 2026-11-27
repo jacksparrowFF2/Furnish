@@ -103,7 +103,24 @@
  function materialBreakdown(plan,work,materials,priceOf){
   return estimate(plan,work,materials,priceOf).mats.map(m=>({...m,surplusArea:m.procurement.purchased-m.procurement.required,surplusPieces:m.procurement.packs===null||m.procurement.packs===undefined?0:m.procurement.packs*m.procurement.spec.pack-m.procurement.pieces,rooms:plan.rooms.filter(r=>(work.rooms?.[r.id]?.mat||r.mat)===m.m).map(r=>{const a=area(r.poly),required=a*(1+m.procurement.waste/100);return {id:r.id,name:work.rooms?.[r.id]?.name||r.name,area:a,required,...(m.procurement.pieceArea?{pieces:Math.ceil(required/m.procurement.pieceArea-1e-9)}:{})};})}));
  }
- const furniturePriceBasis=(f,value)=>f.price!==undefined?'confirmed':f.referencePrice!==undefined||value>0?'reference':'missing';
+ function archivedFurniturePrice(f){
+  if(!f||f.obj||f.catalogId)return null;
+  const index=root.FurnishArchivedProductPrices||(typeof require==='function'?require('../data/archived-product-prices.js'):null);
+  if(!index||!Object.hasOwn(index,f.type))return null;
+  const products=design().products(),size=[f.w,f.d,products.height(f)];
+  const matches=index[f.type].filter(offer=>{
+   if(offer.fields&&Object.entries(offer.fields).some(([key,value])=>products.value(f,key)!==value))return false;
+   const sameModel=!!f.model&&f.model===offer.model;
+   // Model metadata can predate editable panel variants and DL269 settings.
+   const configured=offer.fields?.panelVariant!==undefined||offer.fields?.downlightWatts!==undefined;
+   if(!configured&&f.model&&offer.model&&!sameModel)return false;
+   if(offer.color&&!sameModel&&f.color?.toLowerCase()!==offer.color)return false;
+   // A fixed model ID stays valid when its geometry was adjusted for layout.
+   return size.every((v,i)=>Number.isFinite(v)&&Math.abs(v-offer.size[i])<.001)||sameModel&&!offer.nominalOnly;
+  });
+  return matches.length===1?matches[0]:null;
+ }
+ const furniturePriceBasis=(f,value)=>f.price!==undefined?'confirmed':f.referencePrice!==undefined||value>0||value===0&&archivedFurniturePrice(f)?.priceFen===0?'reference':'missing';
  function priceBasis(plan,work,materials,priceOf=f=>f.price??f.referencePrice??0){
   const stats=estimate(plan,work,materials,priceOf),items=[];
   for(const f of work.furniture){const value=priceOf(f),status=furniturePriceBasis(f,value);items.push({kind:'furniture',id:f.id,name:f.name,status,amount:value});}
@@ -610,7 +627,7 @@
   for(const [label,work] of [['当前方案',data.current],...data.designs.map(d=>['命名方案「'+d.name+'」',d.work])])if(work.plan!==undefined&&work.plan!==data.planId)fail(label+'：方案户型编号与项目不一致');
   const catalogIds=new Set();for(const c of data.catalog){if(c?.id!==undefined){if(typeof c.id!=='string'||!c.id||c.id.length>200||catalogIds.has(c.id))fail('家具库编号无效或重复');catalogIds.add(c.id);}if(!c||typeof c.name!=='string'||c.name.length>80||![c.w,c.d,c.h,c.price].every(num)||c.w<design().products().catalogMinimum(c,'w')||c.d<design().products().catalogMinimum(c,'d')||c.w>20000||c.d>20000||c.h<=0||c.h>20000||c.price<0)fail('家具库数据无效');validateWork({furniture:[{...c,id:'model',cx:0,cy:0,rot:0}]});}return data;
  }
- root.FurnishProject={dishwasherChecks,roomCeilingHeight,ceilingAt,ceilingHeight,validateBeamCeiling,readiness,pricing,materialQuantity,furniturePriceBasis,priceBasis,estimate,architecture,assertStructure,protectOriginal,changes,quantities,effectivePlan,validatePlanWork,previewPlan,checkFingerprint,review,openingSchedule,purchaseStates,purchaseMoney,procurement,updatePurchaseGroup,csv,historyEntries,recoveryEntry,mergeDesigns,mergeCatalog,extraCosts,remapRooms,remapOpenings,spaceCheck,reviewSteps,parseOBJ,formatVersion,pack,unpack,validateWorkspacePayload,validateWork,copyProject,area,polygon,fitsInRooms,intersects};
+ root.FurnishProject={dishwasherChecks,roomCeilingHeight,ceilingAt,ceilingHeight,validateBeamCeiling,readiness,pricing,materialQuantity,archivedFurniturePrice,furniturePriceBasis,priceBasis,estimate,architecture,assertStructure,protectOriginal,changes,quantities,effectivePlan,validatePlanWork,previewPlan,checkFingerprint,review,openingSchedule,purchaseStates,purchaseMoney,procurement,updatePurchaseGroup,csv,historyEntries,recoveryEntry,mergeDesigns,mergeCatalog,extraCosts,remapRooms,remapOpenings,spaceCheck,reviewSteps,parseOBJ,formatVersion,pack,unpack,validateWorkspacePayload,validateWork,copyProject,area,polygon,fitsInRooms,intersects};
  Object.assign(root.FurnishProject,{materialBreakdown,explainIssue,withDraftCache,furnitureOpeningZones});
  if(typeof module!=='undefined')module.exports=root.FurnishProject;
 })(typeof window==='undefined'?globalThis:window);

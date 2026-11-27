@@ -1204,6 +1204,7 @@ aside.right{scroll-padding-block-start:104px}
 #panel.object-properties .form.property-price-field{align-items:center}
 #panel.object-properties .property-price-field label{font-size:13px;font-weight:700;color:var(--ink)}
 #panel .property-price-field small{display:block;margin-top:2px;font-size:11px}
+#panel [data-archived-price] a{color:var(--accent-ink)}
 #panel.object-properties .project-grid :is(input,select){min-height:35px;padding:5px 10px;border:1px solid var(--line);border-radius:8px;background:var(--soft);font-size:12px}
 #panel.object-properties .project-grid input[type=number]{font-family:var(--mono)}
 #panel.object-properties .project-grid :is(input,select):focus{border-color:var(--accent);background:var(--card)}
