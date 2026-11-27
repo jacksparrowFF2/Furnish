@@ -104,7 +104,7 @@ async (page,V)=>{
   await p.locator('#catalog-collections').selectOption('all');
   await p.evaluate(id=>{drawer('lib',true);drawer('panel',true);selectIds([id]);},added[0].id);
   const oldName=await p.locator('#fName').inputValue();
-  await p.locator('#fName').fill('侧栏 UI 验收柜');await p.locator('#fName').press('Tab');
+  await p.locator('[data-property-fold="identity"] summary').click();await p.locator('#fName').fill('侧栏 UI 验收柜');await p.locator('#fName').press('Tab');
   assert(await p.evaluate(id=>getF(id).name,added[0].id)==='侧栏 UI 验收柜','property name edit');
   await p.getByRole('button',{name:'撤销',exact:true}).first().click();
   assert(await p.locator('#fName').inputValue()===oldName,'property name undo');

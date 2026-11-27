@@ -142,8 +142,6 @@
 .scene-transform-dock[data-side="bottom"] .scene-height-status{bottom:auto;top:calc(100% + 3px)}
 .scene-transform-details .scene-height-row{gap:8px}
 @media(max-width:1100px){#stage.is3d:has(.scene-transform:not([hidden])) #property-peek{display:none}#stage.is3d:has(.scene-transform:not([hidden])) .scene-light{top:12px}}
-.ceiling-height-summary>div{display:flex;justify-content:space-between;gap:16px;margin:9px 0;font-size:12px}
-.ceiling-height-summary dd{margin:0;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
 .ceiling-height-readout{padding:8px 0;font-weight:600}
 .scene-issue-label{border-color:#cc4a24;color:#982f12}.scene-issue-label.pending{border-color:#a07116;color:#705010}
 @media(max-width:1100px){

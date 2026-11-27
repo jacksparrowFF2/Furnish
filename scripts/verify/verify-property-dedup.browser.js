@@ -12,7 +12,16 @@ async(page,V)=>{
    check(await p.locator('#fab [data-act="prop"]').isHidden(),'visible right panel removes the floating properties shortcut');
    await p.locator('#tgPanel').click();await p.locator('#fab [data-act="prop"]').press('Enter');
    check(await p.locator('#panel [data-panel-scope="object"]').evaluate(el=>el===document.activeElement),'floating properties shortcut reopens the panel and moves keyboard focus');
-   check((await p.locator('#panel [data-furniture-dimensions]>small').first().innerText())==='包络高','sidebar shows vertical dimensions only');
+   const dimensions=p.locator('#panel [data-furniture-dimensions]');
+   check((await dimensions.locator('dt').allTextContents()).join('/')==='宽/深/包络高度','sidebar uses labelled, read-only dimensions');
+   check(await p.locator('[data-elevation-fields] #hood-height,[data-elevation-fields] #kitchen-mount').count()===2,'height and bottom elevation are together');
+   check(await p.locator('#panel #fBottomElevation').count()===0,'hood bottom elevation has one editor');
+   const identity=p.locator('[data-property-fold="identity"]');
+   await identity.locator('summary').click();await identity.locator('#fName').fill('更新烟机名称');await identity.locator('#fName').press('Tab');
+   check(await identity.evaluate(el=>el.open),'name and price stays expanded after renaming');
+   check(await p.locator('#panel h2').innerText()==='更新烟机名称','object header updates after an edit');
+   await p.evaluate(()=>undo());
+   check(await identity.evaluate(el=>el.open),'undo preserves the expanded group');
    await p.locator('#fab [data-fab-edit="size"]').click();await p.locator('#fab-width').fill('990');await p.locator('#fab-depth').fill('385');
    await p.getByRole('button',{name:'应用尺寸',exact:true}).click();
    check(await p.evaluate(()=>getF('dedup-hood').w===990&&getF('dedup-hood').d===385),'hood size applies from floating editor');

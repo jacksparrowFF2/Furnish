@@ -476,7 +476,6 @@ tr.click{cursor:pointer}
 .kbd{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;font-size:12px;color:var(--muted);align-items:center}
 .big{font:800 24px var(--mono);letter-spacing:-.8px;color:var(--ink)}
 .big.mid{font-size:15px;letter-spacing:-.3px;white-space:nowrap}
-.big.mid.group-dimensions{white-space:normal}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
 .stats div{background:var(--soft);border-radius:14px;padding:10px 12px}
 .stats small{display:block;color:var(--muted);font-size:11px;font-weight:600;margin-bottom:2px}
@@ -1029,13 +1028,6 @@ button.replacement-product:focus-visible{outline:2px solid var(--accent);outline
 #panel>section.muted{font-size:11px;line-height:1.7;color:var(--muted);background:var(--soft)}
 #panel h3{font-size:12px;font-weight:650;margin:18px 0 12px;line-height:1.5;gap:7px}
 #panel h3:before{width:4px;height:12px;border-radius:2px;box-shadow:none;background:var(--teal)}
-#panel .fhead{align-items:center;gap:10px;margin-bottom:12px}
-#panel .fthumb{width:60px;height:66px;padding:8px;border:1px solid var(--line-soft);border-radius:10px;background:var(--soft)}
-#panel .furniture-identity{min-width:0;flex:1}
-#panel .furniture-kind{display:block;font-size:10px;color:var(--muted);margin-bottom:4px}
-#panel .fhead b{font-size:14px;font-weight:650;line-height:1.5;overflow-wrap:anywhere}
-#panel .fhead [data-furniture-price]{font-size:10px;line-height:1.5;margin-top:5px}
-#panel .furniture-layer-link{font-size:10px;min-height:28px;padding:4px 8px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:7px}
 #panel .furniture-dimensions{padding:12px;border-radius:10px;background:var(--soft);border-color:var(--line-soft);margin:12px 0 16px}
 #panel .furniture-dimensions>b{font-size:18px;letter-spacing:-.03em;font-weight:600;line-height:1.4}
 #panel .furniture-dimensions>small{font-size:10px}
@@ -1051,9 +1043,6 @@ button.replacement-product:focus-visible{outline:2px solid var(--accent);outline
 #panel .form input[readonly]{color:var(--muted);background:var(--paper)}
 #panel .actions{gap:7px}
 #panel .actions .btn{font-size:11px;border-radius:8px;min-height:32px;background:var(--soft);border:1px solid var(--line);box-shadow:none}
-#panel .furniture-property-actions{display:grid;grid-template-columns:1fr 1fr;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
-#panel .furniture-property-actions .btn{white-space:normal;justify-content:center;padding:7px 5px;font-size:10px}
-#panel #replace-furniture{border-color:var(--accent-soft);background:var(--accent-soft);color:var(--accent-ink);font-weight:600}
 #panel details:not(.cab-object-finder)>summary{font-size:11px;color:var(--muted);line-height:1.6;cursor:pointer}
 #panel .swatches{gap:7px}
 #panel .alert{border-radius:9px;font-size:11px;line-height:1.6}
@@ -1177,3 +1166,63 @@ button.replacement-product:focus-visible{outline:2px solid var(--accent);outline
 .wiring-list [data-wire-inspect] small { padding-inline-start:25px; }
 .wiring-list [data-wire-inspect][aria-pressed="true"] { background:var(--action-bg); color:var(--on-action); }
 .wiring-list [data-wire-inspect][aria-pressed="true"] small { color:inherit; }
+
+/* Selected object properties share one identity and one form rhythm. */
+aside.right{scroll-padding-block-start:104px}
+#panel .property-object-header{display:flex;align-items:center;gap:11px;padding:14px 16px 12px}
+#panel .property-object-identity{min-width:0;flex:1}
+#panel .property-object-kind{display:block;color:var(--muted);font-size:11px;line-height:1.4;margin-bottom:3px}
+#panel .property-object-header h2{margin:0;font-size:17px;font-weight:700;line-height:1.35;overflow-wrap:anywhere}
+#panel .property-object-header .fthumb{box-sizing:border-box;width:43px;height:43px;border:1px solid var(--line);border-radius:9px}
+#panel .property-object-meta{display:flex;align-items:center;flex-wrap:wrap;gap:7px;margin-top:6px}
+#panel .property-lock{display:inline-flex;align-items:center;gap:4px;color:var(--muted);font-size:11px;margin:3px 0 0}
+#panel .property-lock .i{width:13px;height:13px}
+#panel .furniture-layer-link{min-height:24px;padding:2px 6px;font-size:11px;color:var(--muted);background:var(--panel);border-radius:6px;white-space:normal}
+#panel.object-properties > :is(.property-object-header,[data-bay-assembly])+section{margin-top:0}
+#panel .furniture-property-card>.alert{margin:0 12px 8px}
+#panel .furniture-property-card>.property-group{margin:0 12px 9px;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+#panel.object-properties section>h3:first-child{margin-top:0}
+#panel.object-properties h3::before{display:none}
+#panel.object-properties h3{font-size:13px;font-weight:700;margin-bottom:9px}
+#panel.object-properties h4{font-size:12px;margin:12px 0 6px}
+#panel .furniture-property-card section section{padding:10px 0;border:0}
+#panel .furniture-property-card section fieldset{min-width:0;margin:8px 0;padding:8px 0;border:0}
+#panel .property-metrics{display:grid;grid-auto-columns:minmax(0,1fr);grid-auto-flow:column;margin:0 0 10px;background:var(--soft);border:1px solid var(--line-soft);border-radius:8px}
+#panel .property-metrics>div{padding:7px 6px 8px;min-width:0}
+#panel .property-metrics>div+div{border-inline-start:1px solid var(--line)}
+#panel .property-metrics dt,#panel .property-facts dt{color:var(--muted);font-size:11px;line-height:1.35;overflow-wrap:anywhere}
+#panel .property-metrics dd,#panel .property-facts dd{margin:3px 0 0;font:600 13px/1.4 var(--mono);overflow-wrap:anywhere}
+#panel .property-metrics dd small{font:500 10px/1.4 var(--sans);color:var(--muted)}
+#panel .property-facts{margin:7px 0;display:grid;gap:0}
+#panel .property-facts div{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-bottom:1px solid var(--line-soft);padding:4px 0}
+#panel .property-facts dd{white-space:nowrap;font-size:11px}
+#panel .property-hint{margin:7px 0;color:var(--muted);font-size:11px;line-height:1.5}
+#panel .property-warning{color:var(--danger);font-weight:650}
+#panel.object-properties :is(.form,.project-grid){grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;align-items:end}
+#panel.object-properties :is(.form,.project-grid)>:is(.full,p,small,fieldset,details){grid-column:1/-1}
+#panel.object-properties :is(.form,.project-grid) label{min-width:0;overflow-wrap:anywhere;font-size:11px;line-height:1.4;color:var(--muted);font-weight:500}
+#panel.object-properties .project-grid :is(input,select){min-height:35px;padding:5px 10px;border:1px solid var(--line);border-radius:8px;background:var(--soft);font-size:12px}
+#panel.object-properties .project-grid input[type=number]{font-family:var(--mono)}
+#panel.object-properties .project-grid :is(input,select):focus{border-color:var(--accent);background:var(--card)}
+#panel.object-properties .project-grid :is(input,select):disabled{opacity:.6}
+#panel.object-properties .form p{margin:0}
+#panel .property-extra-fields,#panel.object-properties .form+.form{margin-top:8px}
+#panel.object-properties :is(.form,.project-grid) select{padding-inline-end:4px}
+#panel.object-properties :is(.form,.project-grid) input[readonly]{border-style:dashed;color:var(--muted)}
+#panel .property-fold>summary{font-weight:650;color:var(--ink)}
+#panel .property-fold>summary small{font-weight:500;color:var(--muted);margin-inline-start:3px;overflow-wrap:anywhere}
+#panel .property-group>details{margin:8px 0 0}
+#panel .property-fold[open]>summary{margin-bottom:8px}
+#panel .property-fold>p{font-size:11px;line-height:1.6;margin:6px 0 0}
+#panel .property-footer{margin:0 12px;padding:2px 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+#panel .property-footer .btn{justify-content:center;white-space:normal}
+#panel .property-colours{display:grid;gap:8px}
+#panel .property-colours label{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:11px;color:var(--muted)}
+#panel .property-colours input{width:40px;height:30px;padding:2px;background:var(--card);border:1px solid var(--line);border-radius:6px;cursor:pointer}
+#panel .property-colours .swatches{margin:0;padding:0}
+#panel.object-properties .actions .btn.primary{color:var(--on-action);background:var(--action-bg);border-color:transparent}
+#panel.object-properties .actions .btn.danger{color:var(--danger)}
+#panel.object-properties button:focus-visible,#panel.object-properties input:focus-visible,#panel.object-properties select:focus-visible,#panel.object-properties summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+#panel.object-properties :is(.project-error,[role=alert]):empty{display:none}
+#panel #electrical-form>.property-object-header{padding-inline:0;padding-top:0}
+#panel #electrical-form .property-metrics{margin-bottom:8px}

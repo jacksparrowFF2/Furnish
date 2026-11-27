@@ -12,8 +12,10 @@ async(page,V)=>{
    for(const type of ['washer','washer_littleswan_tg10k60w']){
     await p.evaluate(type=>{mutate(()=>{const f=getF('name-washer');Object.assign(f,{type,w:type==='washer'?600:595,d:type==='washer'?600:560,name:type==='washer'?'洗衣机':'小天鹅 TG10K60W · 10kg',...FurnishProducts.initial({type})});state.furniture=FurnishDesign.restoreFurniture(state.furniture,{makeId:uid,colorFor:()=> '#fff'});});selectIds(['name-washer']);},type);
     check(await p.locator('#laundry-align').count()===1,type+' has inherited alignment');
+    await p.locator('[data-property-fold="identity"] summary').click();
     check((await p.locator('#fName').locator('..').innerText()).includes('显示名称'),'name label');
-    check(await p.locator('input[readonly][value="洗衣机"]').count()===1,'kind shown independently');
+    const identity=p.locator('#panel .property-object-header');
+    check((await identity.innerText()).includes('洗衣机')&&await p.locator('input[readonly][value="洗衣机"]').count()===0,'kind shown in the object header without a duplicate field');
     if(type!=='washer')check(await p.locator('#fName').inputValue()==='小天鹅洗衣机 TG10K60W · 10kg','old default upgraded');
     const before=await p.evaluate(()=>structuredClone(getF('name-washer')));await p.locator('#laundry-align').click();
     const aligned=await p.evaluate(()=>structuredClone(getF('name-washer')));
