@@ -27,5 +27,21 @@
     "标注底座400×400mm；不等于全架占地。",
     "全架800×470×2400mm及各层高度为外观估算；h仅调顶撑。",
     "原cat_tree绿叶成荫款及正式用户方案保留。"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/10141711472484.html",
+      "capturedOn": "2026-11-27",
+      "note": "京东商品详情显示价，优惠和配送条件以页面为准。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "通天柱猫爬架猫窝猫树一体",
+        "shop": "京喜自营官方店",
+        "itemCode": "10141711472484",
+        "variant": "通天柱 · 套餐二 · 适用房高 2.1–2.75 m",
+        "priceFen": 22390,
+        "priceScope": "sku"
+      }
+    }
   ]
 }

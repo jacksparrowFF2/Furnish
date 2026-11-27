@@ -8,7 +8,8 @@
   "route": "blender",
   "document": "docs/FREEZE-DRY-BUCKET-6L.md",
   "sourceLinks": [
-    "https://item.jd.com/100200386205.html?pcdk=wsD_2RJ9KkDtVYDqtKdQn8HQycFAINoaypt35WlH7RxtriB1DNEezTSqAsqI-vY3.3z6a.aI3x&spmTag=YTAyMTkuYjAwMjM1Ni5jMDAwMDcyMTAua2V5d29yZF9lbnRlciU0MDE3OTM5ODQ1ODk5MzUlMjMxNzc5MjAwODk2ODQ0MTk1MjY0MDYxNiUyMzE5NDcyODI0MzklMkNhMDI0MC5iMDAyNDkzLmMwMDAwNDAyNy4zJTIzc2t1X2NhcmQlNDAxNzk0MDUxOTQ5NjgyJTIzMTc3OTIwMDg5Njg0NDE5NTI2NDA2MTYlMjMxOTY0MDQ1OTkz"
+    "https://item.jd.com/100200386205.html?pcdk=wsD_2RJ9KkDtVYDqtKdQn8HQycFAINoaypt35WlH7RxtriB1DNEezTSqAsqI-vY3.3z6a.aI3x&spmTag=YTAyMTkuYjAwMjM1Ni5jMDAwMDcyMTAua2V5d29yZF9lbnRlciU0MDE3OTM5ODQ1ODk5MzUlMjMxNzc5MjAwODk2ODQ0MTk1MjY0MDYxNiUyMzE5NDcyODI0MzklMkNhMDI0MC5iMDAyNDkzLmMwMDAwNDAyNy4zJTIzc2t1X2NhcmQlNDAxNzk0MDUxOTQ5NjgyJTIzMTc3OTIwMDg5Njg0NDE5NTI2NDA2MTYlMjMxOTY0MDQ1OTkz",
+    "https://item.jd.com/100200386205.html"
   ],
   "references": [
     {
@@ -32,5 +33,21 @@
   ],
   "notes": [
     "两张用户图为本次依据，未读取商品页。316×309×187mm按尺寸图；提手机构、盖面浅槽、材质与字形为外观估算，闭盖静态。"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/100200386205.html",
+      "capturedOn": "2026-11-27",
+      "note": "京东商品详情显示价，优惠和配送条件以页面为准。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "meoof 觅凹燥燥桶",
+        "shop": "meoof京东自营旗舰店",
+        "itemCode": "100200386205",
+        "variant": "6 L 真空冻干桶",
+        "priceFen": 25110,
+        "priceScope": "sku"
+      }
+    }
   ]
 }

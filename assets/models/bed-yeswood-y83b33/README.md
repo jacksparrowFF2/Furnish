@@ -24,10 +24,17 @@
 | [dimensions.jpg](references/dimensions.jpg) | 商品页资料 |
 | [storage-construction.jpg](references/storage-construction.jpg) | 商品页资料 |
 
+## 商品与采集价格
+
+| 日期 | 商品 | 店铺 | 编号／规格 | 价格 | 资料 |
+|---|---|---|---|---|---|
+| 2026-11-27 | 源氏木语 Y83B33 悬浮箱体床 | 源氏木语京东自营旗舰店 | 100044602286 / 原木色 · 红橡木 · 1.8 米床架 | ¥4434.80（商品 SKU） | [商品页](<https://item.jd.com/100044602286.html>) · 京东商品详情显示价，优惠和配送条件以页面为准。原档案对应床架 SKU，床品搭配单列。 |
+
 ## 来源链接
 
 - [来源](https://item.jd.com/100044602286.html?pcdk=MG4r60Y2ibeWxq_vo-JHkagkgWIlqGNJ52dg6jGhCaw%3D.M8AW.sbc1)
 - [来源](https://yeswoodhome.com/products/yws-696045565660)
+- [来源](https://item.jd.com/100044602286.html)
 
 ## 原始来源记录
 

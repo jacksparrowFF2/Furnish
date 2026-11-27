@@ -25,5 +25,21 @@
   ],
   "notes": [
     "外观及尺寸依据分类见型号说明；纸品宽深估算、药箱不透明结构示意，不认证同批次实物复刻。"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/10234345780237.html",
+      "capturedOn": "2026-11-27",
+      "note": "京东商品详情显示价，优惠和配送条件以页面为准。这是原档案的同尺寸采购参考链接。模型外观是通用示意，颜色和结构以商品页为准。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "家用手提双层药箱",
+        "shop": "京喜自营官方店",
+        "itemCode": "10234345780237",
+        "variant": "透茶大号 34×25×20 cm · 同尺寸参考",
+        "priceFen": 4105,
+        "priceScope": "sku"
+      }
+    }
   ]
 }

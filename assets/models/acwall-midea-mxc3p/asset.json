@@ -111,5 +111,21 @@
     "carousel-11为商品评价中的实物近照，标签可见风尊III PRO；用作外观交叉参考，用户未逐张确认版本。",
     "静态近闭合姿态，双导风板/顶部格栅真实分层；不模拟360度扫风、隐藏维修机构、接管及外机。",
     "v1-initial与v1-final保留为过程源，后者的chrome-left/right零法线是发布拒绝真实负例；当前仅v2发布。"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/100328209650.html",
+      "capturedOn": "2026-11-27",
+      "note": "京东商品详情显示价，优惠和配送条件以页面为准。商品页为挂机整机商品，模型表现内机。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "美的风尊三代 PRO 挂机 KFR-35GW/MXC3P",
+        "shop": "美的京东自营旗舰店",
+        "itemCode": "100328209650",
+        "variant": "大 1.5 匹 · KFR-35GW/MXC3P",
+        "priceFen": 245429,
+        "priceScope": "sku"
+      }
+    }
   ]
 }

@@ -25,5 +25,21 @@
   "missingReferences": [],
   "validation": [
     "docs/validation/drying-rack-hotata-y024-visual-20261119/README.md"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/100220349957.html",
+      "capturedOn": "2026-11-27",
+      "note": "京东商品详情显示价，优惠和配送条件以页面为准。商家标杆长 2444 mm，安装服务按当前订单页面核对。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "好太太 Y024 手摇升降晾衣架",
+        "shop": "好太太京东自营旗舰店",
+        "itemCode": "100220349957",
+        "variant": "米粉 · 2.4 米 · 四杆整套",
+        "priceFen": 42636,
+        "priceScope": "sku"
+      }
+    }
   ]
 }

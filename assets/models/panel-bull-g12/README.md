@@ -61,6 +61,12 @@
 | [detail-information-electronic.png](references/user/detail-information-electronic.png) | 用户上传 |
 | [detail-switch-socket.png](references/user/detail-switch-socket.png) | 用户上传 |
 
+## 商品与采集价格
+
+| 日期 | 商品 | 店铺 | 编号／规格 | 价格 | 资料 |
+|---|---|---|---|---|---|
+| 2026-11-27 | 公牛 G12 86 型开关插座面板 G12Z223AS | 公牛家装京东自营旗舰店 | 100071863715 / 暮雪白 · 10 A 斜五孔 · 十只套装 | ¥98.60（商品 SKU） | [商品页](<https://item.jd.com/100071863715.html>) · 京东商品详情显示价，优惠和配送条件以页面为准。按每套十只记录。单只及其余面板、颜色组合另行核价。 |
+
 ## 来源链接
 
 - [来源](https://item.jd.com/100071863715.html)

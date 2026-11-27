@@ -21,9 +21,16 @@
 | [dimensions.png](references/dimensions.png) | 用户上传 |
 | [range.png](references/range.png) | 用户上传 |
 
+## 商品与采集价格
+
+| 日期 | 商品 | 店铺 | 编号／规格 | 价格 | 资料 |
+|---|---|---|---|---|---|
+| 2026-11-27 | meoof 觅凹燥燥桶 | meoof京东自营旗舰店 | 100200386205 / 6 L 真空冻干桶 | ¥251.10（商品 SKU） | [商品页](<https://item.jd.com/100200386205.html>) · 京东商品详情显示价，优惠和配送条件以页面为准。 |
+
 ## 来源链接
 
 - [来源](https://item.jd.com/100200386205.html?pcdk=wsD_2RJ9KkDtVYDqtKdQn8HQycFAINoaypt35WlH7RxtriB1DNEezTSqAsqI-vY3.3z6a.aI3x&spmTag=YTAyMTkuYjAwMjM1Ni5jMDAwMDcyMTAua2V5d29yZF9lbnRlciU0MDE3OTM5ODQ1ODk5MzUlMjMxNzc5MjAwODk2ODQ0MTk1MjY0MDYxNiUyMzE5NDcyODI0MzklMkNhMDI0MC5iMDAyNDkzLmMwMDAwNDAyNy4zJTIzc2t1X2NhcmQlNDAxNzk0MDUxOTQ5NjgyJTIzMTc3OTIwMDg5Njg0NDE5NTI2NDA2MTYlMjMxOTY0MDQ1OTkz)
+- [来源](https://item.jd.com/100200386205.html)
 
 ## 验收入口
 

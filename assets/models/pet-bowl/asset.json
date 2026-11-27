@@ -25,5 +25,21 @@
   ],
   "notes": [
     "尺寸／版本依据与简化见型号文档；不把包装估算和示意水面当作厂家规格。"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/100173178564.html",
+      "capturedOn": "2026-11-27",
+      "note": "京东商品详情显示价，优惠和配送条件以页面为准。价格对应源商品 SKU。模型的 180×65 mm 来自用户尺寸图；京东规格未重列尺寸。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "PETSTAR 宠物不锈钢水碗",
+        "shop": "PETSTAR京东自营旗舰店",
+        "itemCode": "100173178564",
+        "variant": "原建模来源 SKU 100173178564",
+        "priceFen": 4897,
+        "priceScope": "sku"
+      }
+    }
   ]
 }

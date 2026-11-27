@@ -9,7 +9,8 @@
   "document": "docs/BED-YESWOOD-Y83B33.md",
   "sourceLinks": [
     "https://item.jd.com/100044602286.html?pcdk=MG4r60Y2ibeWxq_vo-JHkagkgWIlqGNJ52dg6jGhCaw%3D.M8AW.sbc1",
-    "https://yeswoodhome.com/products/yws-696045565660"
+    "https://yeswoodhome.com/products/yws-696045565660",
+    "https://item.jd.com/100044602286.html"
   ],
   "references": [
     {
@@ -60,5 +61,21 @@
   "missingReferences": [],
   "validation": [
     "docs/validation/1601-bedding-visual-20261124/README.md"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/100044602286.html",
+      "capturedOn": "2026-11-27",
+      "note": "京东商品详情显示价，优惠和配送条件以页面为准。原档案对应床架 SKU，床品搭配单列。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "源氏木语 Y83B33 悬浮箱体床",
+        "shop": "源氏木语京东自营旗舰店",
+        "itemCode": "100044602286",
+        "variant": "原木色 · 红橡木 · 1.8 米床架",
+        "priceFen": 443480,
+        "priceScope": "sku"
+      }
+    }
   ]
 }

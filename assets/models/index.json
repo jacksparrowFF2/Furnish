@@ -6205,6 +6205,22 @@
         "静态近闭合姿态，双导风板/顶部格栅真实分层；不模拟360度扫风、隐藏维修机构、接管及外机。",
         "v1-initial与v1-final保留为过程源，后者的chrome-left/right零法线是发布拒绝真实负例；当前仅v2发布。"
       ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100328209650.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。商品页为挂机整机商品，模型表现内机。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "美的风尊三代 PRO 挂机 KFR-35GW/MXC3P",
+            "shop": "美的京东自营旗舰店",
+            "itemCode": "100328209650",
+            "variant": "大 1.5 匹 · KFR-35GW/MXC3P",
+            "priceFen": 245429,
+            "priceScope": "sku"
+          }
+        }
+      ],
       "manifest": "assets/models/acwall-midea-mxc3p/asset.json",
       "readme": "assets/models/acwall-midea-mxc3p/README.md"
     },
@@ -6653,7 +6669,8 @@
       "document": "docs/BED-YESWOOD-Y83B33.md",
       "sourceLinks": [
         "https://item.jd.com/100044602286.html?pcdk=MG4r60Y2ibeWxq_vo-JHkagkgWIlqGNJ52dg6jGhCaw%3D.M8AW.sbc1",
-        "https://yeswoodhome.com/products/yws-696045565660"
+        "https://yeswoodhome.com/products/yws-696045565660",
+        "https://item.jd.com/100044602286.html"
       ],
       "references": [
         {
@@ -6704,6 +6721,22 @@
       "missingReferences": [],
       "validation": [
         "docs/validation/1601-bedding-visual-20261124/README.md"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100044602286.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。原档案对应床架 SKU，床品搭配单列。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "源氏木语 Y83B33 悬浮箱体床",
+            "shop": "源氏木语京东自营旗舰店",
+            "itemCode": "100044602286",
+            "variant": "原木色 · 红橡木 · 1.8 米床架",
+            "priceFen": 443480,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/bed-yeswood-y83b33/asset.json",
       "readme": "assets/models/bed-yeswood-y83b33/README.md"
@@ -7018,6 +7051,22 @@
         "全架800×470×2400mm及各层高度为外观估算；h仅调顶撑。",
         "原cat_tree绿叶成荫款及正式用户方案保留。"
       ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/10141711472484.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "通天柱猫爬架猫窝猫树一体",
+            "shop": "京喜自营官方店",
+            "itemCode": "10141711472484",
+            "variant": "通天柱 · 套餐二 · 适用房高 2.1–2.75 m",
+            "priceFen": 22390,
+            "priceScope": "sku"
+          }
+        }
+      ],
       "manifest": "assets/models/cat-tower/asset.json",
       "readme": "assets/models/cat-tower/README.md"
     },
@@ -7254,6 +7303,20 @@
             "itemCode": "10115482828125",
             "variant": "白蜡木原木色 0.66 m · 有机皮奶茶色",
             "priceFen": 91370,
+            "priceScope": "sku"
+          }
+        },
+        {
+          "sourceUrl": "https://item.jd.com/10115482828125.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "源氏木语 S05118 书椅",
+            "shop": "源氏木语官方旗舰店",
+            "itemCode": "10115482828125",
+            "variant": "白蜡木原木色 0.66 m · 有机皮奶茶色",
+            "priceFen": 103890,
             "priceScope": "sku"
           }
         }
@@ -7535,6 +7598,22 @@
       "validation": [
         "docs/validation/corner-bookcase-y00y06-20261031/README.md"
       ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100093046007.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "源氏木语 Y00Y06 转角书柜",
+            "shop": "源氏木语京东自营旗舰店",
+            "itemCode": "100093046007",
+            "variant": "原木色 · 0.45 米",
+            "priceFen": 200070,
+            "priceScope": "sku"
+          }
+        }
+      ],
       "manifest": "assets/models/corner-bookcase/asset.json",
       "readme": "assets/models/corner-bookcase/README.md"
     },
@@ -7568,6 +7647,22 @@
       "validation": [
         "docs/validation/corner-bookcase-y00y06058-20261031/source.json",
         "docs/validation/corner-bookcase-y00y06058-20261031/README.md"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100093046001.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "源氏木语 Y00Y06058 转角书柜",
+            "shop": "源氏木语京东自营旗舰店",
+            "itemCode": "100093046001",
+            "variant": "原木色 · 0.58 米",
+            "priceFen": 228150,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/corner-bookcase-580/asset.json",
       "readme": "assets/models/corner-bookcase-580/README.md"
@@ -8154,6 +8249,22 @@
       "validation": [
         "docs/validation/downlight-labot-visual-20261118/README.md"
       ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/10087901407535.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "拉伯塔 IP65 防水筒灯",
+            "shop": "拉伯塔 LABOT灯饰照明旗舰店",
+            "itemCode": "10087901407535",
+            "variant": "7 W · 全白 · 中性光 4000 K",
+            "priceFen": 3498,
+            "priceScope": "sku"
+          }
+        }
+      ],
       "manifest": "assets/models/downlight-labot-ip65/asset.json",
       "readme": "assets/models/downlight-labot-ip65/README.md"
     },
@@ -8185,6 +8296,22 @@
       "validation": [
         "docs/validation/drying-rack-hotata-y024-visual-20261119/README.md"
       ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100220349957.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。商家标杆长 2444 mm，安装服务按当前订单页面核对。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "好太太 Y024 手摇升降晾衣架",
+            "shop": "好太太京东自营旗舰店",
+            "itemCode": "100220349957",
+            "variant": "米粉 · 2.4 米 · 四杆整套",
+            "priceFen": 42636,
+            "priceScope": "sku"
+          }
+        }
+      ],
       "manifest": "assets/models/drying-rack-hotata-y024/asset.json",
       "readme": "assets/models/drying-rack-hotata-y024/README.md"
     },
@@ -8214,6 +8341,22 @@
       "missingReferences": [],
       "validation": [
         "docs/validation/drying-rack-hotata-y024-2m-visual-20261119/README.md"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100294066834.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。商家标杆长 2030 mm，整套包含手摇器，安装服务按当前订单页面核对。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "好太太 Y024 手摇升降晾衣架",
+            "shop": "好太太京东自营旗舰店",
+            "itemCode": "100294066834",
+            "variant": "米粉 · 2 米 · 四杆整套",
+            "priceFen": 40698,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/drying-rack-hotata-y024-2m/asset.json",
       "readme": "assets/models/drying-rack-hotata-y024-2m/README.md"
@@ -8370,6 +8513,22 @@
         "v1历史：静态加高姿态；未实现摇头、俯仰及拆杆。三叶180mm来自京东规格，宣传图9寸为风筒文案，不混作叶径。",
         "v2下方两段立柱可通过高度档增减；552／826mm短档由既有548mm立柱均分估算，不是厂家标注。支持独立底部离地，旧h不改写。"
       ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100324618104.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "艾美特小暴风 PRO 空气循环扇 FA18-X231",
+            "shop": "艾美特京东自营旗舰店",
+            "itemCode": "100324618104",
+            "variant": "FA18-X231 · 40 W",
+            "priceFen": 19900,
+            "priceScope": "sku"
+          }
+        }
+      ],
       "manifest": "assets/models/fan-x231/asset.json",
       "readme": "assets/models/fan-x231/README.md"
     },
@@ -8383,7 +8542,8 @@
       "route": "blender",
       "document": "docs/FREEZE-DRY-BUCKET-6L.md",
       "sourceLinks": [
-        "https://item.jd.com/100200386205.html?pcdk=wsD_2RJ9KkDtVYDqtKdQn8HQycFAINoaypt35WlH7RxtriB1DNEezTSqAsqI-vY3.3z6a.aI3x&spmTag=YTAyMTkuYjAwMjM1Ni5jMDAwMDcyMTAua2V5d29yZF9lbnRlciU0MDE3OTM5ODQ1ODk5MzUlMjMxNzc5MjAwODk2ODQ0MTk1MjY0MDYxNiUyMzE5NDcyODI0MzklMkNhMDI0MC5iMDAyNDkzLmMwMDAwNDAyNy4zJTIzc2t1X2NhcmQlNDAxNzk0MDUxOTQ5NjgyJTIzMTc3OTIwMDg5Njg0NDE5NTI2NDA2MTYlMjMxOTY0MDQ1OTkz"
+        "https://item.jd.com/100200386205.html?pcdk=wsD_2RJ9KkDtVYDqtKdQn8HQycFAINoaypt35WlH7RxtriB1DNEezTSqAsqI-vY3.3z6a.aI3x&spmTag=YTAyMTkuYjAwMjM1Ni5jMDAwMDcyMTAua2V5d29yZF9lbnRlciU0MDE3OTM5ODQ1ODk5MzUlMjMxNzc5MjAwODk2ODQ0MTk1MjY0MDYxNiUyMzE5NDcyODI0MzklMkNhMDI0MC5iMDAyNDkzLmMwMDAwNDAyNy4zJTIzc2t1X2NhcmQlNDAxNzk0MDUxOTQ5NjgyJTIzMTc3OTIwMDg5Njg0NDE5NTI2NDA2MTYlMjMxOTY0MDQ1OTkz",
+        "https://item.jd.com/100200386205.html"
       ],
       "references": [
         {
@@ -8407,6 +8567,22 @@
       ],
       "notes": [
         "两张用户图为本次依据，未读取商品页。316×309×187mm按尺寸图；提手机构、盖面浅槽、材质与字形为外观估算，闭盖静态。"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100200386205.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "meoof 觅凹燥燥桶",
+            "shop": "meoof京东自营旗舰店",
+            "itemCode": "100200386205",
+            "variant": "6 L 真空冻干桶",
+            "priceFen": 25110,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/freeze-dry-bucket-6l/asset.json",
       "readme": "assets/models/freeze-dry-bucket-6l/README.md"
@@ -8530,6 +8706,22 @@
         "京东款号473548/黑色与官方商品图对应；尚未取得该款成衣尺码表。含帽衣架外包650×130×1260mm和厚度130mm均为可编辑布局估算，非厂家标注。",
         "正反两面复用正面参考照片，侧边保留素色采样；背面为布局示意，非实物背照。衣片单独补偿照片亮度。",
         "BG0网页Full/WASM抠图，透明PNG为衍生资料；原图保留，作者读取alpha生成实体轮廓，照片纹理仍来自原图。"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/10177558893420.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。型号与参考图一致，服装模型悬挂包络不用于确认衣尺。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "优衣库无缝羽绒长大衣 473548",
+            "shop": "优衣库UNIQLO",
+            "itemCode": "10177558893420",
+            "variant": "09 黑色 · 女装 L /160/88A",
+            "priceFen": 67900,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/garment-long-down/asset.json",
       "readme": "assets/models/garment-long-down/README.md"
@@ -8823,6 +9015,22 @@
       ],
       "notes": [
         "外观及尺寸依据分类见型号说明；纸品宽深估算、药箱不透明结构示意，不认证同批次实物复刻。"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/10234345780237.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。这是原档案的同尺寸采购参考链接。模型外观是通用示意，颜色和结构以商品页为准。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "家用手提双层药箱",
+            "shop": "京喜自营官方店",
+            "itemCode": "10234345780237",
+            "variant": "透茶大号 34×25×20 cm · 同尺寸参考",
+            "priceFen": 4105,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/medicine-box/asset.json",
       "readme": "assets/models/medicine-box/README.md"
@@ -9282,6 +9490,22 @@
         "用户补充的两张商品详情截图为主要外观依据；40张规格图片有促销遮挡，仅作名称和斜五孔补充证据。",
         "37款静态可见面板，86×86及60mm孔距来自商品参数；10mm可见厚度、孔位及局部结构按图片估算，不含墙内底盒或接线机构。",
         "新建离地0仅为编辑起点；无安装合格、电气性能、发光或传感功能结论。"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100071863715.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。按每套十只记录。单只及其余面板、颜色组合另行核价。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "公牛 G12 86 型开关插座面板 G12Z223AS",
+            "shop": "公牛家装京东自营旗舰店",
+            "itemCode": "100071863715",
+            "variant": "暮雪白 · 10 A 斜五孔 · 十只套装",
+            "priceFen": 9860,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/panel-bull-g12/asset.json",
       "readme": "assets/models/panel-bull-g12/README.md"
@@ -10128,6 +10352,22 @@
       ],
       "notes": [
         "尺寸／版本依据与简化见型号文档；不把包装估算和示意水面当作厂家规格。"
+      ],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100173178564.html",
+          "capturedOn": "2026-11-27",
+          "note": "京东商品详情显示价，优惠和配送条件以页面为准。价格对应源商品 SKU。模型的 180×65 mm 来自用户尺寸图；京东规格未重列尺寸。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "PETSTAR 宠物不锈钢水碗",
+            "shop": "PETSTAR京东自营旗舰店",
+            "itemCode": "100173178564",
+            "variant": "原建模来源 SKU 100173178564",
+            "priceFen": 4897,
+            "priceScope": "sku"
+          }
+        }
       ],
       "manifest": "assets/models/pet-bowl/asset.json",
       "readme": "assets/models/pet-bowl/README.md"

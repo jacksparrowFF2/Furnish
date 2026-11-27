@@ -22,6 +22,12 @@
 | [user-dimensions.png](references/user-dimensions.png) | 用户上传 |
 | [user-pole-joint.png](references/user-pole-joint.png) | 用户上传 |
 
+## 商品与采集价格
+
+| 日期 | 商品 | 店铺 | 编号／规格 | 价格 | 资料 |
+|---|---|---|---|---|---|
+| 2026-11-27 | 艾美特小暴风 PRO 空气循环扇 FA18-X231 | 艾美特京东自营旗舰店 | 100324618104 / FA18-X231 · 40 W | ¥199.00（商品 SKU） | [商品页](<https://item.jd.com/100324618104.html>) · 京东商品详情显示价，优惠和配送条件以页面为准。 |
+
 ## 来源链接
 
 - [来源](https://item.jd.com/100324618104.html)

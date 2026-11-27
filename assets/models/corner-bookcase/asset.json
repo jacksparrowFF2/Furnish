@@ -28,5 +28,21 @@
   "supportingFiles": [],
   "validation": [
     "docs/validation/corner-bookcase-y00y06-20261031/README.md"
+  ],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/100093046007.html",
+      "capturedOn": "2026-11-27",
+      "note": "京东商品详情显示价，优惠和配送条件以页面为准。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "源氏木语 Y00Y06 转角书柜",
+        "shop": "源氏木语京东自营旗舰店",
+        "itemCode": "100093046007",
+        "variant": "原木色 · 0.45 米",
+        "priceFen": 200070,
+        "priceScope": "sku"
+      }
+    }
   ]
 }

@@ -30,6 +30,12 @@
 | [carousel-10.jpg](references/carousel-10.jpg) | 商品页资料 |
 | [carousel-11.jpg](references/carousel-11.jpg) | 商品页资料 |
 
+## 商品与采集价格
+
+| 日期 | 商品 | 店铺 | 编号／规格 | 价格 | 资料 |
+|---|---|---|---|---|---|
+| 2026-11-27 | 美的风尊三代 PRO 挂机 KFR-35GW/MXC3P | 美的京东自营旗舰店 | 100328209650 / 大 1.5 匹 · KFR-35GW/MXC3P | ¥2454.29（商品 SKU） | [商品页](<https://item.jd.com/100328209650.html>) · 京东商品详情显示价，优惠和配送条件以页面为准。商品页为挂机整机商品，模型表现内机。 |
+
 ## 来源链接
 
 - [来源](https://3.cn/3c4-E4Xa?jkl=@F7EltCy2xD@)
