@@ -105,6 +105,8 @@ node scripts/workspace-files.cjs compact-backups "/path/to/workspace" --apply
 
 无所有者记录的旧版空锁，以及不支持硬链接的文件系统使用的兼容锁，需要先保全当前编辑，再在确认没有相关服务写入后移走 `.workspace.lock`。临时文件和锁不入 Git。Git 不参与此锁，编辑期间不要同时切分支或更新文件。
 
+macOS 可用实际桌面包复跑故障恢复。将环境变量 `FURNISH_TEST_PROJECT` 指向要复制的正式工作区文件，然后执行 `node tests/test-desktop-save-crash-recovery.cjs`。桌面程序沿已有本机配置查找，也可通过首个参数指定可执行文件。测试在隔离目录和端口修改一件家具的单价，等后台持锁后强制结束该后台，再重开两次。验收核对自动清锁、恢复及落盘、旧文件备份和源文件校验和。报告与截图留在 `output/desktop-verification/save-crash-recovery-*.noindex`。
+
 普通静态服务没有接口时明确提示文件保存不可用，浏览器仍按原链路缓存。`file://` 保留浏览器缓存及手动导入导出，不访问仓库接口，也不自动加载仓库设计；自动迁移请使用启动脚本。工作区接口上限 64 MB，单项目导出上限仍为 30 MB；附件保留原项目限制。
 
 ## 验证（2026-10-16）
