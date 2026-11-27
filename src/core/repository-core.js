@@ -9,7 +9,12 @@
  function portable(input){const w=clone(input);delete w._repository;delete w.updatedAt;return canonical(w);}
  const works=input=>[...Object.values(input.work||{}),...(input.designs||[]).map(d=>d.work)];
  const version=input=>(root.FurnishProject||require('./project-core.js')).formatVersion(works(input),input.custom);
- const text=input=>JSON.stringify({format:'furnish-workspace',version:version(input),workspace:portable(input)},null,2)+'\n';
+ function text(input,{validated=false}={}){
+  // Validation already owns JSON data. Sorting it directly avoids an extra
+  // full serialization and parse of workspaces with large attachments.
+  const {_repository,updatedAt,...workspace}=input;
+  return JSON.stringify({format:'furnish-workspace',version:version(input),workspace:validated?canonical(workspace):portable(input)},null,2)+'\n';
+ }
  // A read revision belongs to the recorded file, not to a newer program's
  // recalculated minimum format. Otherwise a code-only upgrade looks external.
  // This record comes directly from JSON.parse. Canonicalization already copies it.

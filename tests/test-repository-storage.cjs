@@ -60,6 +60,16 @@ const fingerprint=async w=>S.digest(C.text(w));
  const unknown=setup({revision:revB,workspace:b});await unknown.client.initialize([{...a,updatedAt:9999999999999}]);assert.equal(unknown.writes.length,0);assert.equal(unknown.archives.length,1);assert.match(unknown.client.status.message,/恢复副本/);
  const pending={...b,_repository:{revision:revA,clean:revA}};
  const resume=setup({revision:revA,workspace:a,validatedWorkspace:true});const resumed=await resume.client.initialize([pending]);assert.equal(resumed._repository.revision,revB);assert.equal(resume.writes.length,1);assert.equal(resume.client.loadedValidatedFile,false);
+ let busyAttempts=0;
+ const busyStartup=Client.create({fingerprint,onChange(){},retryDelays:[0],request:async(route,method,body)=>{
+  if(route==='/recoveries')return {id:'copy'};
+  if(method==='GET')return {workspace:a,revision:revA};
+  assert.equal(body.baseRevision,revA);
+  if(++busyAttempts===1)throw Object.assign(Error('busy'),{status:423});
+  return {revision:revB};
+ }});
+ assert.equal((await busyStartup.initialize([pending]))._repository.revision,revB);
+ assert.equal(busyAttempts,2);
  const both=setup({revision:revB,workspace:b});const divergent=clone(pending);divergent.work[plan.id].furniture[0].cy+=456;await both.client.initialize([divergent]);assert.equal(both.writes.length,0);assert.equal(both.archives.length,1);
  // Both browser stores are kept before selecting the newer candidate.
  const two=setup({revision:null,workspace:null});await two.client.initialize([a,{...b,updatedAt:200}]);assert.equal(two.archives.length,2);assert.equal(two.state.revision,revB);

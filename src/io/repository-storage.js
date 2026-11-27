@@ -21,6 +21,15 @@
    throw Object.assign(Error('正式文件包含其他修改，已停止覆盖；请刷新后处理恢复副本'),{status:409});
   }
   async function archive(workspace){return request('/recoveries','POST',{workspace});}
+  async function writeOnStartup(workspace,baseRevision){
+   for(let i=0;;i++){
+    try{return await request('/workspace','PUT',{workspace,baseRevision});}
+    catch(e){
+     if(e.status!==423||i>=retryDelays.length)throw e;
+     await new Promise(resolve=>setTimeout(resolve,retryDelays[i]));
+    }
+   }
+  }
   async function initialize(caches){
    loadedValidatedFile=false;
    await ensureBackend();
@@ -28,9 +37,9 @@
    const candidates=caches.filter(w=>repositoryCore().workspaceVersions.includes(w?.v)&&Object.keys(w.work||{}).length).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
    const cache=candidates[0],seen=new Set();let cacheHash=null;
    for(const c of candidates){const hash=await fingerprint(c);if(c===cache)cacheHash=hash;if(hash!==revision&&!seen.has(hash)){await archive(c);seen.add(hash);}}
-   if(!disk.workspace){if(!cache){publish('ready','本地正式文件自动保存已启用');return null;}publish('pending','正在迁移浏览器设计到本地正式文件…');const result=await request('/workspace','PUT',{workspace:cache,baseRevision:null});revision=result.revision;lastSavedAt=Date.now();publish('saved','设计已保存到本地正式文件');return {...cache,_repository:{revision}};}
+   if(!disk.workspace){if(!cache){publish('ready','本地正式文件自动保存已启用');return null;}publish('pending','正在迁移浏览器设计到本地正式文件…');const result=await writeOnStartup(cache,null);revision=result.revision;lastSavedAt=Date.now();publish('saved','设计已保存到本地正式文件');return {...cache,_repository:{revision}};}
    const action=rootDecision(disk.revision,cache?._repository?.revision,cacheHash,cache?._repository?.clean);
-   if(action==='resume'){publish('pending','正在恢复尚未写入文件的编辑…');const result=await request('/workspace','PUT',{workspace:cache,baseRevision:revision});revision=result.revision;lastSavedAt=Date.now();publish('saved','已恢复本机编辑并保存到本地正式文件');return {...cache,_repository:{revision}};}
+   if(action==='resume'){publish('pending','正在恢复尚未写入文件的编辑…');const result=await writeOnStartup(cache,revision);revision=result.revision;lastSavedAt=Date.now();publish('saved','已恢复本机编辑并保存到本地正式文件');return {...cache,_repository:{revision}};}
    loadedValidatedFile=disk.validatedWorkspace===true;
    publish('saved',action==='conflict'?'已加载本地正式文件；不同的浏览器缓存已保留，可从“本机恢复副本”载入':'已加载本地正式文件；浏览器缓存用于意外恢复');return {...disk.workspace,_repository:{revision}};
   }
