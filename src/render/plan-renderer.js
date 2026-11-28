@@ -52,8 +52,9 @@ const NOLABEL = ['plant','floorlamp','sidetable','barstool','beanbag'];
 let furnitureLabelCache=null;
 const appliedFurnitureLabels=new WeakMap();
 const appliedFurnitureLabelMarkup=new WeakMap();
+const furniturePlanName=f=>nm(FurnishProducts.kind(f));
 function furnitureLabelLayout(scale=view.s,selected=selIds()){
- const items=renderableFurniture().filter(f=>!NOLABEL.includes(f.type)).map(f=>({id:f.id,type:f.type,name:nm(globalThis.FurnishElectrical?.displayName(f)??f.name),w:f.w,d:f.d,cx:f.cx,cy:f.cy,rot:f.rot})),rotation=drawingRotation(),key=JSON.stringify([items,rotation,scale,selected]);
+ const items=renderableFurniture().filter(f=>!NOLABEL.includes(f.type)).map(f=>({id:f.id,type:f.type,name:furniturePlanName(f),w:f.w,d:f.d,cx:f.cx,cy:f.cy,rot:f.rot})),rotation=drawingRotation(),key=JSON.stringify([items,rotation,scale,selected]);
  if(furnitureLabelCache?.key!==key)furnitureLabelCache={key,labels:new Map(FurnishDrawing.furnitureLabels(items,{rotation,scale,selected}).map(v=>[v.id,v]))};return furnitureLabelCache.labels;
 }
 function furnitureLabelPaint(font,palette){
@@ -172,7 +173,8 @@ function renderFurn(){
   g.innerHTML = drawOrder().map(f => {
     try{
     const fs = Math.max(80, Math.min(170, Math.min(f.w,f.d)*.2));
-    const label = labels?furnitureLabelSVG(f,labels.get(f.id)):(Math.min(f.w,f.d)>=380&&!NOLABEL.includes(f.type)?`<text transform="rotate(${-f.rot})" font-size="${fs}" text-anchor="middle" dominant-baseline="central" ${furnitureLabelPaint(fs,PAL)} pointer-events="none">${esc(nm(globalThis.FurnishElectrical?.displayName(f)??f.name))}</text>`:'');
+    const name = esc(furniturePlanName(f));
+    const label = labels?furnitureLabelSVG(f,labels.get(f.id)):(Math.min(f.w,f.d)>=380&&!NOLABEL.includes(f.type)?`<text transform="rotate(${-f.rot})" font-size="${fs}" text-anchor="middle" dominant-baseline="central" ${furnitureLabelPaint(fs,PAL)} pointer-events="none">${name}</text>`:'');
     const body = furnSVG(f.type,f.w,f.d,f.color,f,{furniture:state.furniture,plan:canvasEffectivePlan()}), mirrored = f.flip ? `<g transform="scale(-1 1)">${body}</g>` : body;
     const pipes=!furnitureError(f)&&servicePipes.length&&FurnishProducts.serviceCut(f)?servicePipes.filter(p=>FurnishServices.bodyHit(f,p,0)):[];
     // Service cut masks must contain independent cabinets outside the old host rectangle.
@@ -184,7 +186,7 @@ function renderFurn(){
     // 锁定标记：固定 150mm 的小锁，随家具一起摆放但保持正向
     const lock = (f.locked||FurnishLayers.locked(state,'furniture:'+f.id)) ? `<g data-edit-overlay="lock" transform="translate(${f.w/2-110} ${-f.d/2+110}) rotate(${-f.rot})" pointer-events="none"><circle r="95" fill="${PAL.halo}" stroke="${PAL.ink}" stroke-width="1" vector-effect="non-scaling-stroke"/>
       <rect x="-45" y="-12" width="90" height="62" rx="12" fill="${PAL.ink}"/><path d="M-28 -12v-18a28 28 0 0 1 56 0v18" fill="none" stroke="${PAL.ink}" stroke-width="16"/></g>` : '';
-    return `<g class="furn${furnitureLocked(f) ? ' locked' : ''}" data-fid="${f.id}"${furnitureError(f)?' data-model-error="true"':''} transform="${furnT(f)}"${f.type === 'pendant' ? ' opacity=".6"' : ''}><title>${esc(nm(globalThis.FurnishElectrical?.displayName(f)??f.name))} · ${Number(FurnishProducts.dimensions(f).w.toFixed(2))} × ${Number(FurnishProducts.dimensions(f).d.toFixed(2))} mm</title>${flip}${clash}${label}${lock}</g>`;
+    return `<g class="furn${furnitureLocked(f) ? ' locked' : ''}" data-fid="${f.id}"${furnitureError(f)?' data-model-error="true"':''} transform="${furnT(f)}"${f.type === 'pendant' ? ' opacity=".6"' : ''}><title>${name} · ${Number(FurnishProducts.dimensions(f).w.toFixed(2))} × ${Number(FurnishProducts.dimensions(f).d.toFixed(2))} mm</title>${flip}${clash}${label}${lock}</g>`;
     }catch(e){const message=e.message||String(e);furnitureRenderErrors.set(f.id,message);return `<g class="furn" data-fid="${esc(f.id)}" data-model-error="true" transform="${furnT(f)}">${furnitureFallbackSVG(f,message)}</g>`;}
   }).join('');
   syncTuckedSeatPreview();
