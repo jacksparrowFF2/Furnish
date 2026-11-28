@@ -1,0 +1,7 @@
+{
+  "type": "night_light_mijia_4",
+  "global": "FurnishMijiaNightLight4Asset",
+  "size": [93.4, 93.4, 41.1],
+  "parts": ["front-shell", "center-insert", "center-mark", "rear-diffuser", "electronics-housing", "brightness-button", "mode-track", "mode-slider", "mount-base", "mount-pad"],
+  "notes": "MJYD06YL, white. Xiaomi labels the lamp body Ø93.4 × 38.7 mm. This asset adds an estimated 2.4 mm for the fitted magnetic adhesive base."
+}

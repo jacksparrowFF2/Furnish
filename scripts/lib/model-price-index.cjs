@@ -31,6 +31,7 @@ const fixedOffers=[
   ["mijia-ceiling-d40","D40 · 9290041690 · 单灯"],
   ["mijia-ceiling-l60","L60 · 9290041689 · 单灯"],
   ["mijia-ceiling-l90","L90 单灯 · 原米家吸顶灯套系"],
+  ["night-light-mijia-4","米家夜灯 4"],
   ["panel-light","美的 · 24 W 全光谱长灯 · 300×600×35 mm · IP44 白光"],
   ["pet-bowl","原建模来源 SKU 100173178564"],
   ["pet-feeder-mijia-2","5 L · 标准版 · 非可视版"],

@@ -584,6 +584,7 @@
   <script data-src="src/data/drying-rack-hotata-y024-blender-asset.js" data-asset="FurnishHotataY024Asset"></script>
   <script data-src="src/data/mijia-ceiling-d20-blender-asset.js" data-asset="FurnishMijiaCeilingD20"></script>
   <script data-src="src/data/desk-lamp-mijia-pro-blender-asset.js" data-asset="FurnishMijiaDeskLampAsset"></script>
+  <script data-src="src/data/night-light-mijia-4-blender-asset.js" data-asset="FurnishMijiaNightLight4Asset"></script>
   <script data-src="src/data/mijia-kettle-mjjysh01ym-blender-asset.js" data-asset="FurnishMijiaKettleAsset"></script>
   <script data-src="src/data/joyoung-air-fryer-kl65-v573-blender-asset.js" data-asset="FurnishJoyoungV573Asset"></script>
   <script data-src="src/data/liven-griddle-lr-d3027s-blender-asset.js" data-asset="FurnishLivenD3027SAsset"></script>
@@ -644,6 +645,7 @@
 <script src="src/render/art-glass-model.js"></script>
 <script src="src/render/bath-heater-model.js"></script>
 <script src="src/render/desk-lamp-model.js"></script>
+<script src="src/render/night-light-mijia-4-model.js"></script>
 <script src="src/render/acwall-midea-model.js"></script>
 <script src="src/render/track-socket-bull-gb50k-model.js"></script>
 <script src="src/render/cove-light-model.js"></script>
@@ -1365,6 +1367,7 @@ const syncIdentity=FurnishPartIdentity;
   if(FurnishMideaWallAirconModel.supported(f)){const model=FurnishMideaWallAirconModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(!f.obj&&(FurnishProducts.definition(f)?.dryingCrank||FurnishProducts.dryingRackLayout(f))){const model=FurnishDryingRackModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(FurnishDeskLampModel.supported(f)){const model=FurnishDeskLampModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  if(FurnishMijiaNightLight4Model.supported(f)){const model=FurnishMijiaNightLight4Model.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   const furniture=context.furniture||(typeof state!=='undefined'?state.furniture.filter(item=>typeof furnitureError!=='function'||!furnitureError(item)):[]);
   if(FurnishKitchenCountertopApplianceModel.supported(f)){
     const model=FurnishKitchenCountertopApplianceModel.build(THREE,f,{material:mat});

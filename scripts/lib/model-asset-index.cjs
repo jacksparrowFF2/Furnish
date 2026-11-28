@@ -16,6 +16,7 @@ docs['mattress-y83b33']=docs['pillow-y83b33']=docs['duvet-y83b33']='BED-YESWOOD-
 docs['bed-yeswood-y17b02']=docs['mattress-y17b02']=docs['duvet-y17b02']='BED-YESWOOD-Y17B02.md';
 docs['pillow-atour-pro4']='PILLOW-ATOUR-PRO4.md';
 docs['desk-lamp-mijia-pro']='DESK-LAMP-MIJIA-PRO.md';
+docs['night-light-mijia-4']='NIGHT-LIGHT-MIJIA-4.md';
 docs['acwall-midea-mxc3p']='ACWALL-MIDEA-MXC3P.md';
 docs['curtain-mijia-3-pro-motor']='CURTAIN-MIJIA-3-PRO.md';
 docs['track-socket-bull-gb50k']='TRACK-SOCKET-BULL-GB50K.md';

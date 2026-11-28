@@ -16,6 +16,7 @@ assetTypes['pillow-atour-pro4']='bed_pillow_atour_pro4';
 assetTypes['pillow-y83b33']='bed_pillow_y83b33';
 assetTypes['duvet-y83b33']='bed_duvet_y83b33';
 assetTypes['desk-lamp-mijia-pro']='desk_lamp_mijia_pro';
+assetTypes['night-light-mijia-4']='night_light_mijia_4';
 assetTypes['drying-rack-hotata-y024']='drying_rack_hotata_y024';
 assetTypes['drying-rack-hotata-y024-2m']='drying_rack_hotata_y024_2m';
 assetTypes['crank-hotata-y024-2m']='crank_hotata_y024_2m';
@@ -43,6 +44,7 @@ suites.curtain_mijia_3_pro_sheer=suites['curtain-mijia-3-pro-motor']=['curtain-m
 suites['track-socket-bull-gb50k']=['track-socket-bull-gb50k'];
 suites['toshiba-d232']=['kitchen-countertop-appliance-assets'];
 suites['drying-rack-hotata-y024']=suites['drying-rack-hotata-y024-2m']=['drying-rack-hotata'];
+suites['night-light-mijia-4']=['night-light-mijia-4'];
 suites['desk-lamp-mijia-pro']=['desk-lamp'];suites.cove_light=['cove-light'];
 const mijiaCeilingLights=require('./mijia-ceiling-light-specs.json');
 for(const [id,spec] of Object.entries(mijiaCeilingLights)){assetTypes[id]=spec.type;suites[id]=['lighting-preview'];}

@@ -17,7 +17,7 @@ def publish(source, target, profile='se2', spec=None):
     supply=json.loads((pathlib.Path(__file__).parent/'lib/storage-supply-specs.json').read_text(encoding='utf-8')).get(profile)
     if countertop:
         supply = countertop
-    if profile in ('mattress-y83b33','pillow-y83b33','pillow-atour-pro4','duvet-y83b33','bed-yeswood-y83b33','bed-yeswood-y17b02','mattress-y17b02','duvet-y17b02','desk-lamp-mijia-pro','acwall-midea-mxc3p','downlight-labot-ip65','track-socket-bull-gb50k','panel-xiaomi-wireless','drying-rack-hotata-y024','drying-rack-hotata-y024-2m','crank-hotata-y024-2m','curtain-mijia-3-pro-motor'):supply=json.loads((pathlib.Path(__file__).parent/('lib/'+profile+'-spec.json')).read_text(encoding='utf-8'))
+    if profile in ('mattress-y83b33','pillow-y83b33','pillow-atour-pro4','duvet-y83b33','bed-yeswood-y83b33','bed-yeswood-y17b02','mattress-y17b02','duvet-y17b02','desk-lamp-mijia-pro','night-light-mijia-4','acwall-midea-mxc3p','downlight-labot-ip65','track-socket-bull-gb50k','panel-xiaomi-wireless','drying-rack-hotata-y024','drying-rack-hotata-y024-2m','crank-hotata-y024-2m','curtain-mijia-3-pro-motor'):supply=json.loads((pathlib.Path(__file__).parent/('lib/'+profile+'-spec.json')).read_text(encoding='utf-8'))
     if not supply:
         supply=json.loads((pathlib.Path(__file__).parent/'lib/mijia-ceiling-light-specs.json').read_text()).get(profile)
     if not supply and profile not in ('pet-bowl','litter-bag','se2', 'y52y09', 'fridge', 'dishwasher', 'hood', 'washer', 'washer-tg10k60w', 'side-table', 'armchair', 'armchair-berlin', 'cat-tower', 'fan-x231', 'chair-s05118', 'stack-stool', 'corner-bookcase', 'corner-bookcase-580', 'sofa-bed'):

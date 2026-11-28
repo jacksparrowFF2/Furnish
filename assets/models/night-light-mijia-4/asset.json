@@ -1,0 +1,89 @@
+{
+  "format": 1,
+  "id": "night-light-mijia-4",
+  "name": "米家夜灯 4",
+  "types": [
+    "night_light_mijia_4"
+  ],
+  "route": "blender",
+  "sourceLinks": [
+    "https://item.jd.com/100416720136.html?pcdk=Bu8a3SSBaYEP_fqW0nF3TAdi1wnK3r-U_9bxfvjxT7TdFNNta9wf-HX_fgCppeXL.3z6a.aI3x&spmTag=YTAyMTguYjAwMjQ1NS5jMDAwMDM4OTguc2VhcmNoX2J0biU0MDE3OTU4Mzk3MjQ1OTYlMjMxNzk1MDE2MDE3MDY1ODA2NzUwMDgxJTIzMTQ5NjY4MjQwMCUyQ2EwMjQwLmIwMDI0OTMuYzAwMDA0MDI3LjIlMjNza3VfY2FyZCU0MDE3OTU4NzAxNTIxMDklMjMxNzk1MDE2MDE3MDY1ODA2NzUwMDgxJTIzNjc1OTk5NTI2",
+    "https://m.mi.com/commodity/detail/25436"
+  ],
+  "references": [
+    {
+      "path": "references/product-page/body.jpg",
+      "kind": "product-page",
+      "url": "https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202608281716_c13ebcb33395d1faa99cd15d9be893fc.jpg",
+      "sha256": "483f05d3daeae04b996524571310d8c5e78d72f49ae237db7b616e2bde32cfe5",
+      "bytes": 120408,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/base.jpg",
+      "kind": "product-page",
+      "url": "https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202608281716_20abe49e4e234ad2642fbef5f0270d96.jpg",
+      "sha256": "dafaf45b15889740f162c520ee68166e7b30bcca62b0c700ecb725dd713f1e5b",
+      "bytes": 86987,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/controls.jpg",
+      "kind": "product-page",
+      "url": "https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202608281716_77860ed8992a502f5b3538237a7ba83a.jpg",
+      "sha256": "a52a60527505a1a3bfe15f4097ac15d25b49cd0d20db963a7d2b90e20e00353a",
+      "bytes": 65809,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/wall-light.jpg",
+      "kind": "product-page",
+      "url": "https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202608281716_56cb1d035a24e1d55c0c884a506efc49.jpg",
+      "sha256": "e6683fbc5df07df4ac8c6788b97e14ccbf19cb7870ac71d1c33004318ca6116c",
+      "bytes": 121595,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/dimensions.jpg",
+      "kind": "product-page",
+      "url": "https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202609171011_536cec757863febc1b234a7a972aaa8c.jpg",
+      "sha256": "d2ceac9cfa52d019a0d5322a3caa445260883e1815120ebf0681a065900bfab6",
+      "bytes": 137269,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/photometry.jpg",
+      "kind": "product-page",
+      "url": "https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202609171011_9fbc32454c9295d6e801ce3568369dcf.jpg",
+      "sha256": "f374989eb251c9f1de3cb722a0f81475c62e1ffca08e39b96e29fcb0a04cd42c",
+      "bytes": 143226,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/package.jpg",
+      "kind": "product-page",
+      "url": "https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202609171011_4998e111076ec3929b37687f88c97575.jpg",
+      "sha256": "5c4e73e4a45f8389adf34af5de81b6f4207fd06d5103c607c313ebd8d350aa1c",
+      "bytes": 79461,
+      "legacyPaths": []
+    }
+  ],
+  "missingReferences": [],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/100416720136.html?pcdk=Bu8a3SSBaYEP_fqW0nF3TAdi1wnK3r-U_9bxfvjxT7TdFNNta9wf-HX_fgCppeXL.3z6a.aI3x&spmTag=YTAyMTguYjAwMjQ1NS5jMDAwMDM4OTguc2VhcmNoX2J0biU0MDE3OTU4Mzk3MjQ1OTYlMjMxNzk1MDE2MDE3MDY1ODA2NzUwMDgxJTIzMTQ5NjY4MjQwMCUyQ2EwMjQwLmIwMDI0OTMuYzAwMDA0MDI3LjIlMjNza3VfY2FyZCU0MDE3OTU4NzAxNTIxMDklMjMxNzk1MDE2MDE3MDY1ODA2NzUwMDgxJTIzNjc1OTk5NTI2",
+      "capturedOn": "2026-11-28",
+      "note": "",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "米家小米夜灯4人体感应婴儿喂奶起夜卫生间卧室床头灯磁吸充电灯具",
+        "shop": "小米京东自营旗舰店",
+        "itemCode": "100416720136",
+        "variant": "米家夜灯 4",
+        "priceFen": 6120,
+        "priceScope": "sku"
+      }
+    }
+  ],
+  "document": "docs/NIGHT-LIGHT-MIJIA-4.md"
+}

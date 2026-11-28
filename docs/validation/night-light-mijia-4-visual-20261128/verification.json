@@ -1,0 +1,237 @@
+{
+  "passed": true,
+  "profile": "night-light-mijia-4",
+  "blender": "5.3.0",
+  "sourceHashes": {
+    "assets/models/night-light-mijia-4/v1-final/night-light-mijia-4-v1.blend": "54a8f78c7be6c4a272bbd5ff44de0a7d0eeec905d4898271631401bba751f40c",
+    "assets/models/night-light-mijia-4/v1-final/night-light-mijia-4-v1.glb": "c48a6dbeaca1d8b19988c8f689f9567e8b714d26163b36a6e087c9e1795be04d",
+    "src/data/night-light-mijia-4-blender-asset.js": "44db12106a77b223778bf0d94b8f703379f8dc821dc2be64f0c7d33e5b58b961"
+  },
+  "stages": [
+    {
+      "name": "author-preflight",
+      "passed": true
+    },
+    {
+      "name": "preflight-negative",
+      "passed": true
+    },
+    {
+      "name": "publish",
+      "passed": true
+    },
+    {
+      "name": "geometry-state",
+      "passed": true
+    },
+    {
+      "name": "http-file-production",
+      "passed": true
+    },
+    {
+      "name": "blender-production-readback",
+      "passed": true
+    },
+    {
+      "name": "studio-production-export",
+      "passed": true
+    },
+    {
+      "name": "render-front",
+      "passed": true
+    },
+    {
+      "name": "render-oblique",
+      "passed": true
+    },
+    {
+      "name": "render-back",
+      "passed": true
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "passed": true
+    }
+  ],
+  "spatial": {
+    "passed": true,
+    "results": [
+      {
+        "id": "night-light-mijia-4",
+        "passed": true,
+        "cases": [
+          {
+            "state": "nominal",
+            "rot": 0,
+            "flip": false,
+            "parts": 10,
+            "bottom": 300,
+            "top": 393.4,
+            "externalDistance": 99.99999999999999,
+            "penetration": true,
+            "heightSeparation": true,
+            "projectRoundtrip": true
+          },
+          {
+            "state": "nominal",
+            "rot": 37,
+            "flip": true,
+            "parts": 10,
+            "bottom": 300,
+            "top": 393.4,
+            "externalDistance": 87.5887881306161,
+            "penetration": true,
+            "heightSeparation": true,
+            "projectRoundtrip": true
+          },
+          {
+            "state": "alternate",
+            "rot": 0,
+            "flip": false,
+            "parts": 10,
+            "bottom": 300,
+            "top": 393.4,
+            "externalDistance": 99.99999999999999,
+            "penetration": true,
+            "heightSeparation": true,
+            "projectRoundtrip": true
+          },
+          {
+            "state": "alternate",
+            "rot": 37,
+            "flip": true,
+            "parts": 10,
+            "bottom": 300,
+            "top": 393.4,
+            "externalDistance": 87.5887881306161,
+            "penetration": true,
+            "heightSeparation": true,
+            "projectRoundtrip": true
+          }
+        ]
+      }
+    ]
+  },
+  "production": {
+    "passed": true,
+    "modes": [
+      {
+        "mode": "http",
+        "passed": true,
+        "undoRedo": true,
+        "coreResize": true,
+        "refresh": true,
+        "narrow": null,
+        "offline": false
+      },
+      {
+        "mode": "file",
+        "passed": true,
+        "undoRedo": true,
+        "coreResize": true,
+        "refresh": true,
+        "narrow": null,
+        "offline": true
+      }
+    ],
+    "exports": [
+      {
+        "mode": "http",
+        "state": "nominal",
+        "parts": 10,
+        "bounds": [
+          [
+            -0.04670000076293945,
+            0.3,
+            -0.020549999549984932
+          ],
+          [
+            0.04670000076293945,
+            0.3934000015258789,
+            0.020549999549984932
+          ]
+        ]
+      },
+      {
+        "mode": "http",
+        "state": "resized",
+        "parts": 10,
+        "bounds": [
+          [
+            -0.05230399966239929,
+            0.3,
+            -0.022193999961018562
+          ],
+          [
+            0.05230399966239929,
+            0.4008720025420189,
+            0.022193999961018562
+          ]
+        ]
+      },
+      {
+        "mode": "file",
+        "state": "nominal",
+        "parts": 10,
+        "bounds": [
+          [
+            -0.04670000076293945,
+            0.3,
+            -0.020549999549984932
+          ],
+          [
+            0.04670000076293945,
+            0.3934000015258789,
+            0.020549999549984932
+          ]
+        ]
+      }
+    ]
+  },
+  "readback": {
+    "passed": true,
+    "profile": "night-light-mijia-4",
+    "blender": "5.3.0",
+    "source": "production-glb",
+    "results": [
+      {
+        "case": "http-nominal",
+        "parts": 10,
+        "boundsAndAlpha": true
+      },
+      {
+        "case": "http-resized",
+        "parts": 10,
+        "boundsAndAlpha": true
+      },
+      {
+        "case": "file-nominal",
+        "parts": 10,
+        "boundsAndAlpha": true
+      }
+    ]
+  },
+  "reopen": {
+    "passed": true,
+    "profile": "night-light-mijia-4",
+    "blender": "5.3.0",
+    "source": "downloaded-render-blend",
+    "results": [
+      {
+        "case": "front",
+        "parts": 10,
+        "boundsAndAlpha": true
+      },
+      {
+        "case": "oblique",
+        "parts": 10,
+        "boundsAndAlpha": true
+      },
+      {
+        "case": "back",
+        "parts": 10,
+        "boundsAndAlpha": true
+      }
+    ]
+  }
+}
