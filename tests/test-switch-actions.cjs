@@ -14,6 +14,9 @@ const Work=require('../src/core/work-state.js').create({
 const panel={id:'switch',type:'panel_bull_g12',panelVariant:'xiaomi-2pro-2-white',name:'书房开关',w:86,d:5,h:86,cx:400,cy:500,rot:0,mountHeight:1057,color:'#fff'};
 const lamp={id:'lamp',type:'surface_light',name:'顶灯',w:400,d:400,h:50,cx:500,cy:600,rot:0,mountHeight:2500,color:'#fff'};
 const curtain={id:'curtain',type:'curtain_mijia_3_pro',name:'布帘',w:2400,d:100,h:2400,cx:600,cy:700,rot:0,mountHeight:0,color:'#ccc',curtainOpen:0};
+assert.equal(Electrical.actionTargetLabel({type:'ceiling_light_mijia_d40',brand:'小米/米家',name:'主卧睡眠区 · 米家吸顶灯 D40'},['主卧']),'睡眠区吸顶灯');
+assert.equal(Electrical.actionTargetLabel({type:'curtain_mijia_3_pro_sheer',brand:'米家',name:'主卧飘窗 · 米家智能窗帘 3 Pro · 暖白纱帘'},['主卧']),'飘窗纱帘');
+assert.equal(Electrical.actionTargetLabel({...lamp,name:'镜前补光 · 规划占位'}),'镜前补光');
 const bindings=[
  {key:0,gesture:'press',targetId:lamp.id,action:'toggle'},
  {key:0,gesture:'press',targetId:curtain.id,action:'open'},

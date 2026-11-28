@@ -136,6 +136,18 @@ function purpose(name,roomNames=[]){
  const room=roomNames.filter(Boolean).sort((a,b)=>b.length-a.length).find(name=>label.startsWith(name));
  return room?label.slice(room.length).replace(/^[\s·・:：-]+/,''):label;
 }
+function actionTargetLabel(f,roomNames=[]){
+ const products=P(),kind=products.kind(f);
+ const parts=pointName(f.name).split(/\s*·\s*/).map(part=>purpose(part,roomNames)).filter(Boolean);
+ const label=parts[0]||kind;
+ const branded=(f.brand||'').split(/[/／]/).map(brand=>brand.trim()).some(brand=>brand&&label.startsWith(brand));
+ if(products.panelActionTarget(f)==='covering'){
+  if(branded)return kind;
+  return /帘/.test(label)?label:label+kind;
+ }
+ if(branded&&label.includes(kind))return kind;
+ return !label.includes(kind)&&parts.slice(1).some(part=>part.includes(kind))?label+kind:label;
+}
 function controlPairs(furniture,rooms){
  const panels=furniture.filter(panel),aliases=new Map(),locations=pointLocations(panels,rooms),links=new Map(),references=new Map();
  for(const f of panels){
@@ -295,6 +307,6 @@ function routeGeometry(route,plan,furniture,byId=new Map(furniture.map(f=>[f.id,
  const length=unresolved||reversals.length?null:path.reduce((sum,p,i)=>i?sum+distance(path[i-1],p):0,0);
  return {points,path,length,unresolved,reversals};
 }
-const api={panel,assertEditable,pointName,displayName,renamePoint,purpose,controlPairs,roomFor,pointLocations,points,testPanelActions,surfaces,place,nearest,wireKinds,routeLimits,validateRoutes,boxKind,endpointKind,endpoint,routeGeometry,conduitDiameters,conduitDefault,conduitProfile};
+const api={panel,assertEditable,pointName,displayName,renamePoint,purpose,actionTargetLabel,controlPairs,roomFor,pointLocations,points,testPanelActions,surfaces,place,nearest,wireKinds,routeLimits,validateRoutes,boxKind,endpointKind,endpoint,routeGeometry,conduitDiameters,conduitDefault,conduitProfile};
 root.FurnishElectrical=api;if(typeof module==='object'&&module.exports)module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

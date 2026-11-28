@@ -251,7 +251,8 @@ globalThis.FurnishElectricalUI=(()=>{
   const samePanel=actionsDraft?.work===state&&actionsDraft.id===f.id;
   if(!samePanel||actionsDraft.source!==f.panelActions||actionsDraft.variant!==f.panelVariant){
    actionsDraft={work:state,id:f.id,source:f.panelActions,variant:f.panelVariant,
-    key:samePanel?actionsDraft.key:0,triggers:samePanel?actionsDraft.triggers:new Map(),entries:structuredClone(f.panelActions||[])};
+    key:samePanel?actionsDraft.key:0,triggers:samePanel?actionsDraft.triggers:new Map(),
+    showOtherTargets:samePanel&&actionsDraft.showOtherTargets,entries:structuredClone(f.panelActions||[])};
   }
   return actionsDraft;
  }
@@ -267,18 +268,47 @@ globalThis.FurnishElectricalUI=(()=>{
    <div data-panel-actions></div>
   </details>`:'';
  }
+ function actionTargetGroups(current){
+  const rooms=current?[current,...ROOMS.filter(room=>room!==current)]:ROOMS;
+  const groups=new Map([...rooms,null].map(room=>[room?.id??null,{room,options:[]}]));
+  const targets=state.furniture.filter(FurnishProducts.panelActionTarget)
+   .sort((a,b)=>a.cy-b.cy||a.cx-b.cx||a.id.localeCompare(b.id));
+  for(const target of targets){
+   const room=E.roomFor(ROOMS,target.cx,target.cy);
+   const label=E.actionTargetLabel(target,[room?.name,room&&state.rooms[room.id]?.name]);
+   groups.get(room?.id??null).options.push({id:target.id,label:nm(label),fullName:nm(target.name)});
+  }
+  for(const {options} of groups.values()){
+   const counts=new Map(),next=new Map();
+   for(const {label} of options)counts.set(label,(counts.get(label)||0)+1);
+   for(const option of options){
+    const label=option.label;
+    if(counts.get(label)<2)continue;
+    let number=next.get(label)||0;
+    do{option.label=`${label} ${++number}`;}while(counts.has(option.label));
+    next.set(label,number);
+   }
+  }
+  return [...groups.values()].filter(group=>group.options.length);
+ }
  function bindActions(p,f,locked){
   const host=p.querySelector('[data-panel-actions]');
   if(!host)return;
   if(previewOwner!==state){previewOwner=state;previewStates=new Map();}
   const draft=draftFor(f),entries=draft.entries,keys=FurnishProducts.panelKeys(f),disabled=locked?'disabled':'';
   const finish=/^#(?:[a-f\d]{3}|[a-f\d]{6})$/i.test(f.color)?f.color:'#f5f5f2';
-  const targets=state.furniture.filter(FurnishProducts.panelActionTarget);
-  const targetOption=target=>{
-   const room=E.roomFor(ROOMS,target.cx,target.cy);
-   return {id:target.id,label:`${roomName(room)} · ${nm(target.name)}`};
+  const ownRoom=E.roomFor(ROOMS,f.cx,f.cy),groups=actionTargetGroups(ownRoom);
+  const canLimit=ownRoom&&groups.length>1&&groups[0].room===ownRoom;
+  const targetIds=new Set(groups.flatMap(group=>group.options.map(option=>option.id)));
+  const targetOptions=selected=>{
+   const missing=selected&&!targetIds.has(selected);
+   return `<option value="">请选择设备</option>${missing?`<option value="${esc(selected)}" selected>设备待核对</option>`:''}`+
+    groups.map(({room,options})=>{
+     const visible=!canLimit||draft.showOtherTargets||room===ownRoom?options:options.filter(option=>option.id===selected);
+     return visible.length?`<optgroup label="${esc(roomName(room))}">${visible.map(({id,label,fullName})=>
+      `<option value="${esc(id)}" title="${esc(fullName)}" ${id===selected?'selected':''}>${esc(label)}</option>`).join('')}</optgroup>`:'';
+    }).join('');
   };
-  const targetOptions=targets.map(targetOption);
   const report=message=>{host.querySelector('[data-action-result]').textContent=message;};
   const render=()=>{
    const {key,gestures}=keys[draft.key]||keys[0];
@@ -288,11 +318,11 @@ globalThis.FurnishElectricalUI=(()=>{
    host.innerHTML=`<div class="electrical-switch-face" role="group" aria-label="开关正面" style="--switch-face:${finish};--switch-keys:${keys.length}">
     ${keys.map(item=>`<button type="button" data-action-key="${item.key}" aria-pressed="${item.key===key}"><span>${item.label}</span></button>`).join('')}
    </div><label class="electrical-trigger">触发方式<select data-action-gesture>${gestures.map(option=>`<option value="${option}" ${option===gesture?'selected':''}>${triggerNames[option]}</option>`).join('')}</select></label>
-   <div class="actions"><button class="btn" type="button" data-action-add="${key}:${gesture}" ${locked||!targetOptions.length?'disabled':''}>添加动作</button><button class="btn" type="button" data-action-test="${key}:${gesture}" ${slot.length?'':'disabled'}>试按</button></div>${slot.map(({entry,i})=>{
-     const targetMissing=entry.targetId&&!targetOptions.some(target=>target.id===entry.targetId);
+   <div class="actions"><button class="btn" type="button" data-action-add="${key}:${gesture}" ${locked||!targetIds.size?'disabled':''}>添加动作</button><button class="btn" type="button" data-action-test="${key}:${gesture}" ${slot.length?'':'disabled'}>试按</button></div>
+   ${canLimit&&slot.length?`<label class="electrical-device-scope"><input type="checkbox" data-action-other-rooms ${draft.showOtherTargets?'checked':''} ${disabled}>显示其他区域设备</label>`:''}
+   ${slot.map(({entry,i})=>{
      return `<div class="electrical-action-row" data-action-index="${i}">
-      <label>设备<select data-action-target ${disabled}><option value="">请选择设备</option>${targetMissing?`<option value="${esc(entry.targetId)}" selected>设备待核对</option>`:''}
-      ${targetOptions.map(({id,label})=>`<option value="${esc(id)}" ${id===entry.targetId?'selected':''}>${esc(label)}</option>`).join('')}</select></label>
+      <label>设备<select data-action-target ${disabled}>${targetOptions(entry.targetId)}</select></label>
       <label>动作<select data-action-verb ${disabled}>${actionOptions(entry.targetId,entry.action)}</select></label>
       <button class="btn danger" type="button" data-action-remove aria-label="移除此动作" ${disabled}>移除</button>
      </div>`;
@@ -300,6 +330,11 @@ globalThis.FurnishElectricalUI=(()=>{
   };
   render();
   host.onchange=e=>{
+   if(e.target.matches('[data-action-other-rooms]')){
+    draft.showOtherTargets=e.target.checked;
+    render();host.querySelector('[data-action-other-rooms]').focus({preventScroll:true});
+    return;
+   }
    if(e.target.matches('[data-action-gesture]')){
     draft.triggers.set((keys[draft.key]||keys[0]).key,e.target.value);
     render();host.querySelector('[data-action-gesture]').focus({preventScroll:true});
@@ -310,6 +345,7 @@ globalThis.FurnishElectricalUI=(()=>{
    const entry=entries[Number(row.dataset.actionIndex)];
    if(e.target.matches('[data-action-target]')){
     entry.targetId=e.target.value;
+    e.target.innerHTML=targetOptions(entry.targetId);
     if(!FurnishProducts.panelTargetActions(getF(entry.targetId)).includes(entry.action))entry.action='toggle';
     row.querySelector('[data-action-verb]').innerHTML=actionOptions(entry.targetId,entry.action);
    }else if(e.target.matches('[data-action-verb]'))entry.action=e.target.value;

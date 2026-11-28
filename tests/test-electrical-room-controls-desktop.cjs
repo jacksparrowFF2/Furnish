@@ -61,9 +61,14 @@ async function main(){
     return {position:{x:a[0],y:a[1],z:1600},target:{x:a[0]+500,y:a[1],z:1600}};
    };
    const doorPair=points.filter(r=>['fmwng69uh19','fmwnpyy8h2'].includes(r.id)).map(r=>r.number);
+   const roomOf=f=>FurnishElectrical.roomFor(ROOMS,f.cx,f.cy)?.id;
+   const targets=state.furniture.filter(FurnishProducts.panelActionTarget);
+   const ownTargets=targets.filter(f=>roomOf(f)===button.room.id).map(f=>f.id);
+   const lights=targets.filter(f=>FurnishProducts.panelActionTarget(f)==='light');
+   const otherLamp=lights.find(f=>roomOf(f)!==button.room.id);
    return {switchId:button?.id,point:button?.number,room:button?.room?.id,other:peer?.room.id,otherPoint:peer?.number,doorPair,
     start:button&&camera(button.room),next:peer&&camera(peer.room),total:points.length,
-    lamp:state.furniture.find(f=>FurnishProducts.panelActionTarget(f)==='light')?.id};
+    lamp:(otherLamp||lights[0])?.id,otherLamp:otherLamp?.id,ownTargets,allTargets:targets.length};
   });
   assert(data.switchId&&data.other&&data.lamp,'fixture must contain a smart switch, a light and points in two rooms');
   if(data.doorPair.length===2){
@@ -104,7 +109,29 @@ async function main(){
   await controls.locator('[data-action-gesture]').selectOption('double');
   const savedBefore=await page.evaluate(id=>getF(id).panelActions??null,data.switchId);
   await controls.locator('[data-action-add="1:double"]').click();
-  await controls.locator('[data-action-target]').last().selectOption(data.lamp);
+  const target=controls.locator('[data-action-target]').last();
+  const otherTargets=controls.locator('[data-action-other-rooms]');
+  const values=loc=>loc.evaluateAll(options=>options.map(option=>option.value).sort());
+  if(data.ownTargets.length&&data.allTargets>data.ownTargets.length){
+   assert.equal(await otherTargets.isChecked(),false);
+   assert.equal(await target.locator('optgroup').count(),1);
+   assert.deepEqual(await values(target.locator('optgroup option')),[...data.ownTargets].sort());
+   await otherTargets.check();
+   assert.deepEqual(await values(target.locator('optgroup').first().locator('option')),[...data.ownTargets].sort());
+  }else assert.equal(await otherTargets.count(),0);
+  assert.equal(await target.locator('optgroup option').count(),data.allTargets);
+  for(const [id,label] of [['fmv3wt92611','飘窗纱帘'],['fmv3wtxgq12','飘窗布帘'],['fmwf2mkf13','睡眠区吸顶灯']]){
+   const option=target.locator(`option[value="${id}"]`);
+   if(await option.count())assert.equal(await option.textContent(),label);
+  }
+  const entranceLights=target.locator('option[value="fmvs5p45s1"], option[value="fmvs67k751"], option[value="fmvs67weh2"]');
+  if(await entranceLights.count()===3)assert.deepEqual(await entranceLights.allTextContents(),['筒灯 1','筒灯 2','筒灯 3']);
+  await target.selectOption(data.lamp);
+  if(await otherTargets.count()){
+   await otherTargets.uncheck();
+   assert.equal(await target.inputValue(),data.lamp);
+   assert.equal(await target.locator('optgroup option').count(),data.ownTargets.length+(data.otherLamp?1:0));
+  }
   await controls.locator('[data-action-verb]').last().selectOption('on');
   await controls.locator('[data-action-key="2"]').click();
   assert.equal(await controls.locator('[data-action-add="2:press"]').count(),1);
@@ -156,7 +183,7 @@ async function main(){
   await second.waitFor({state:'attached'});
   assert.deepEqual(errors,[]);
   passed=true;
-  console.log(JSON.stringify({passed,run:job.dir,checks:['room filtering in 2D, 3D and walk','independent collapse','whole-plan export','switch preview, undo/redo and reload']}));
+  console.log(JSON.stringify({passed,run:job.dir,checks:['room filtering in 2D, 3D and walk','independent collapse','whole-plan export','concise device labels and cross-room bindings','switch preview, undo/redo and reload']}));
  }finally{
   if(app){
    if(!passed)await app.evaluate(({app})=>app.exit()).catch(()=>{});
