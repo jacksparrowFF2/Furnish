@@ -18,9 +18,9 @@ globalThis.FurnishObservationLayers=(()=>{
   if(d.wallTiling)return FurnishLayers.faceKey(d.wallTiling);if(d.ceiling?.id)return 'ceiling:'+d.ceiling.id;
   if(d.floorLayer)return 'floor:'+d.floorLayer.roomId;if(d.floor&&d.room)return 'floor:'+d.room;return null;
  }
- function applyScene({furnG,archFloor,archUp,clearanceG,wallLabelG,lampG}){
+ function applyScene({furnG,archFloor,archUp,clearanceG,wallLabelG,lampG,hiddenElectrical}){
   const layers=new Map(FurnishLayers.list(state).map(l=>[l.id,l])),assignments=state.objectLayers?.assignments||{},shown=k=>(layers.get(assignments[k]||'0')||layers.get('0')).visible;
-  for(const group of [furnG,archFloor,archUp,...(lampG?[lampG]:[])])group.traverse(o=>{const k=sceneKey(o);if(k)setVisible(o,shown(k));});
+  for(const group of [furnG,archFloor,archUp,...(lampG?[lampG]:[])])group.traverse(o=>{const k=sceneKey(o);if(k)setVisible(o,shown(k)&&!hiddenElectrical?.has(k));});
   for(const g of clearanceG.children){const show=shown('furniture:'+g.userData.observationOwner);setVisible(g,show);if(!show)g.traverse(o=>{if(o.isCSS2DObject)o.visible=false;});}
   wallLabelG.traverse(o=>{if(o.userData.layerObject&&!shown(o.userData.layerObject)&&o.isCSS2DObject)o.visible=false;});
  }

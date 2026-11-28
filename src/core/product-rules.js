@@ -86,6 +86,26 @@ const g12Colors=Object.freeze([
  ['#f3ecd9','象牙白'],['#c9b58f','香槟金'],['#53565b','星空灰'],['#282a2d','皓钻黑']
 ].map(Object.freeze));
 function panelSpec(f){const key=value(f,'panelVariant');return panelOptions[key];}
+const panelActions=Object.freeze({formatVersion:112,maxActions:48,gestures:Object.freeze(['press','double','hold']),actions:Object.freeze(['toggle','on','off','open','close'])});
+function panelKeys(f){
+ const spec=f&&!f.obj&&panelSpec(f);
+ if(!spec?.gangs)return [];
+ const labels=[[],['单键'],['左键','右键'],['左键','中键','右键'],['键 1','键 2','键 3','键 4']][spec.gangs];
+ return labels.map((label,key)=>({key,label,gestures:spec.control==='smart'?panelActions.gestures:['press']}));
+}
+function retainedPanelActions(f,entries){
+ const keys=panelKeys(f);
+ return entries.filter(entry=>keys[entry.key]?.gestures.includes(entry.gesture));
+}
+function panelActionTarget(f){
+ if(!f||f.obj)return null;
+ return definition(f)?.covering?.motor?'covering':
+  definition(f)?.downlight||definition(f)?.panelLight||supports(f,'lightPreviewLevel')||['floorlamp','pendant'].includes(f.type)?'light':null;
+}
+function panelTargetActions(f){
+ const target=panelActionTarget(f);
+ return target==='light'?['toggle','on','off']:target==='covering'?['toggle','open','close']:[];
+}
 function panelColorPresets(f){return family(f,'wall-panel')&&!f.obj&&!panelSpec(f).series?g12Colors:[];}
 function panelSpatialKey(f){
  const key=value(f,'panelVariant'),spec=panelSpec(f);
@@ -94,13 +114,27 @@ function panelSpatialKey(f){
 }
 function editPanelVariant(f,key){
  key=validateField(f,'panelVariant',key);const old=panelSpec(f),spec=panelOptions[key],stock=old.depth||10;
- if(!old.series&&!spec.series)return {...f,panelVariant:key};
+ if(!old.series&&!spec.series)return keepPanelActions({...f,panelVariant:key});
  const metadata=spec.series?{brand:spec.brand,model:spec.model,sourceUrl:spec.sourceUrl}:{...types.panel_bull_g12.identity};
  // Preserve custom names, width/height, elevation and explicitly customized depths.
- return {...f,panelVariant:key,...metadata,d:Math.abs(f.d-stock)<.001?(spec.depth||10):f.d,color:spec.faceColor??(spec.series?(spec.color==='white'?'#f5f5f3':'#535558'):'#f5f5f2')};
+ const next={...f,panelVariant:key,...metadata,d:Math.abs(f.d-stock)<.001?(spec.depth||10):f.d,color:spec.faceColor??(spec.series?(spec.color==='white'?'#f5f5f3':'#535558'):'#f5f5f2')};
+ return keepPanelActions(next);
+}
+function keepPanelActions(f){
+ if(f.panelActions!==undefined){
+  const kept=retainedPanelActions(f,f.panelActions);
+  if(kept.length)f.panelActions=kept;
+  else delete f.panelActions;
+ }
+ return f;
+}
+function applyPanelEdit(f,next){
+ if(next.panelActions===undefined)delete f.panelActions;
+ return Object.assign(f,next);
 }
 const fields={
  panelVariant:{values:Object.keys(panelOptions),message:'请选择有效的86面板种类'},
+ panelActions:{message:'面板按键配置无效'},
  inventoryArray:{message:'物品阵列参数无效'},
  paperArray:{message:'纸品阵列参数无效'},
  pose3D:{message:'三维姿态须为当前物品支持的单位四元数'},
@@ -568,7 +602,7 @@ function coveringLayout(f){
  }
  return {...spec,open,h,head,hem,drop,bottom,parts};
 }
-const supports=(f,key)=>key==='paperArray'?!!definition(f)?.paperArray&&!f.obj:key==='pose3D'?!!definition(f)?.freeRotation&&!f.obj:key==='groupId'||key==='mountHeight'&&bottomMode(f)==='offset'||definition(f)?.fields?.includes(key)||false;
+const supports=(f,key)=>key==='panelActions'?panelKeys(f).length>0:key==='paperArray'?!!definition(f)?.paperArray&&!f.obj:key==='pose3D'?!!definition(f)?.freeRotation&&!f.obj:key==='groupId'||key==='mountHeight'&&bottomMode(f)==='offset'||definition(f)?.fields?.includes(key)||false;
 const family=(f,name)=>definition(f)?.family===name;
 function value(f,key){
  if(f[key]!=null)return f[key];
@@ -668,6 +702,19 @@ const cabinetBase=f=>f.type==='kitchenwall'?value(f,'mountHeight'):cabinetSpec(f
 const catalogMinimum=(f,key)=>!f.obj&&definition(f)?.footprintMin?.[key]!==undefined?definition(f).footprintMin[key]:!f.obj&&definition(f)?.glass?footprintMinimum(f,key):50;
 function validateField(f,key,v){
  const rule=fields[key];if(!rule||!supports(f,key))throw Error(rule?.message||'不支持的产品参数：'+key);
+ if(key==='panelActions'){
+  if(!Array.isArray(v)||!v.length||v.length>panelActions.maxActions)throw Error(rule.message);
+  const seen=new Set(),keys=panelKeys(f);
+  for(const entry of v){
+   if(!entry||Object.keys(entry).length!==4||!Number.isInteger(entry.key)||!keys[entry.key]?.gestures.includes(entry.gesture)||
+      !panelActions.actions.includes(entry.action)||typeof entry.targetId!=='string'||!entry.targetId.trim()||entry.targetId.length>200||
+      entry.targetId===f.id)throw Error(rule.message);
+   const slot=JSON.stringify([entry.key,entry.gesture,entry.targetId]);
+   if(seen.has(slot))throw Error('同一按键动作只能配置该设备一次');
+   seen.add(slot);
+  }
+  return v.map(entry=>({...entry}));
+ }
  if(key==='inventoryArray'){
   const r=definition(f).inventoryArray,keys=['id','index','columns','rows','gapX','gapZ','gapY','pattern','angle'];
   if(f.obj||!v||typeof v!=='object'||Array.isArray(v)||Object.keys(v).length!==keys.length||Object.keys(v).some(k=>!keys.includes(k))||typeof v.id!=='string'||!v.id||v.id.length>200||!Number.isInteger(v.index)||v.index<0||v.index>=r.maxCount||!['columns','rows'].every(k=>Number.isInteger(v[k])&&v[k]>=1&&v[k]<=r.maxAxis)||!['gapX','gapZ','gapY'].every(k=>Number.isFinite(v[k])&&v[k]>=r.minGap&&v[k]<=r.maxGap)||!r.patterns.includes(v.pattern)||!r.angles.includes(v.angle))throw Error(rule.message);
@@ -1032,6 +1079,7 @@ function replacement(previous,next,candidate){
  if(next.type==='tripleslidingwindow')next.mountHeight=previous.type===next.type?value(previous,'mountHeight'):value({type:next.type},'mountHeight');
  if(next.type==='kitchenwall')next.mountHeight=previous.type===next.type?value(previous,'mountHeight'):value({type:next.type},'mountHeight');
  if(bottomMode(next)==='offset'&&next.mountHeight===undefined)next.mountHeight=bottomHeight(next);
+ keepPanelActions(next);
  if(definition(next)?.dryingRack||definition(next)?.manifold||family(next,'pipe-box')||family(next,'art-glass')||family(next,'window-lining'))validate(next);return next;
 }
 // Shared millimetre track geometry. The leading leaf is furthest from the stack.
@@ -1129,6 +1177,6 @@ function coveLightLayout(f){
  const w=f.w,d=f.d,h=height(f),t=P.wall;if(![w,d,h].every(Number.isFinite)||w<100||d<25||h<P.minHeight)throw Error('反射灯槽至少100×25×20mm');
  return {w,d,h,t,base:value(f,'mountHeight'),innerWidth:w-2*t,stripWidth:P.stripWidth,emitterHeight:P.emitterHeight,emitterZ:0,level:value(f,'lightPreviewLevel')/100,color:P.colors[value(f,'lightKelvin')],candela:w/1000*P.previewCandelaPerM*value(f,'lightPreviewLevel')/100};
 }
-const api={curtainOpening,editCurtainOpening,coveringRetrofit,softCoveringOnly,dryingRackLayout,editDryingRackDrop,styleAppearance,styleRole,cabinetAppearance,coveLightLayout,panelVariants,panelOptions,xiaomiPanelVariants,panelSpec,panelColorPresets,panelSpatialKey,editPanelVariant,cabinetService,cabinetBuilder,inventoryArrayDefaults,inventoryArrayConfig,inventoryArraySpacing,arrayQuantityEdit,clearPaperArray,paperArrayConfig,paperArrayLayout,editPaperArray,cabinetDetail,cabinetTiers,cabinetDrawerBox,cabinetBackPanel,cabinetEntry,bottomMode,bottomHeight,editBottomHeight,elevationOriginal,elevationSource,elevationDelta,elevatedRange,elevatedParts,elevatedZones,circulatorLayout,catalogMinimum,artGlass,artGlassPatterns,gardenLayout,windowLining,stoolStack,cabinetDoorLimits,kind,kinds,matchesSearch,supportsAction,upgradeIdentity,wardrobeHanging,coveringLayout,coverSpecs,pocketLayout,cabinetSideClosure,cabinetTopClosure,cabinetConstruction,slidingGlass,slidingResizeFrame,resizeSliding,slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,planFurnitureInput,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
+const api={curtainOpening,editCurtainOpening,coveringRetrofit,softCoveringOnly,dryingRackLayout,editDryingRackDrop,styleAppearance,styleRole,cabinetAppearance,coveLightLayout,panelVariants,panelOptions,xiaomiPanelVariants,panelSpec,panelColorPresets,panelSpatialKey,panelActions,panelKeys,panelActionTarget,panelTargetActions,editPanelVariant,applyPanelEdit,cabinetService,cabinetBuilder,inventoryArrayDefaults,inventoryArrayConfig,inventoryArraySpacing,arrayQuantityEdit,clearPaperArray,paperArrayConfig,paperArrayLayout,editPaperArray,cabinetDetail,cabinetTiers,cabinetDrawerBox,cabinetBackPanel,cabinetEntry,bottomMode,bottomHeight,editBottomHeight,elevationOriginal,elevationSource,elevationDelta,elevatedRange,elevatedParts,elevatedZones,circulatorLayout,catalogMinimum,artGlass,artGlassPatterns,gardenLayout,windowLining,stoolStack,cabinetDoorLimits,kind,kinds,matchesSearch,supportsAction,upgradeIdentity,wardrobeHanging,coveringLayout,coverSpecs,pocketLayout,cabinetSideClosure,cabinetTopClosure,cabinetConstruction,slidingGlass,slidingResizeFrame,resizeSliding,slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,planFurnitureInput,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishProducts=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

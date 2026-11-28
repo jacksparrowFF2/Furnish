@@ -26,19 +26,35 @@ function areaPrefix(index){
  }
  return prefix;
 }
-function pointLocations(furniture,rooms){
+function roomFor(rooms,x,y){
  const {inPoly}=root.FurnishGeometry||require('./layout-geometry.js');
+ return rooms?.find(room=>inPoly(x,y,room.poly))||null;
+}
+function pointLocations(furniture,rooms){
  const locations=new Map(),counts=new Map(),areas=rooms??[];
  const prefixes=new Map(areas.map((r,i)=>[r.id,areaPrefix(i)]));
  prefixes.set(null,rooms?areaPrefix(areas.length):'E');
  for(const f of furniture){
   if(!panel(f))continue;
-  const room=areas.find(r=>inPoly(f.cx,f.cy,r.poly))||null;
+  const room=roomFor(areas,f.cx,f.cy);
   const key=room?.id??null,sequence=(counts.get(key)??0)+1;
   locations.set(f.id,{room,number:prefixes.get(key)+String(sequence).padStart(2,'0')});
   counts.set(key,sequence);
  }
  return locations;
+}
+function testPanelActions(f,key,gesture,furniture,preview,lamps=false,entries=f.panelActions){
+ const products=P(),byId=new Map(furniture.map(item=>[item.id,item]));
+ const actions=entries?products.validateField(f,'panelActions',entries):[];
+ return actions.filter(entry=>entry.key===key&&entry.gesture===gesture).map(entry=>{
+  const target=byId.get(entry.targetId),kind=products.panelActionTarget(target);
+  if(!products.panelTargetActions(target).includes(entry.action))return {...entry,target,status:'unavailable'};
+  const baseline=kind==='light'?lamps:['curtainOpen',...products.curtainOpening.sideFields].some(field=>products.value(target,field)>0);
+  const current=preview.get(target.id)??baseline;
+  const value=entry.action==='toggle'?!current:entry.action==='on'||entry.action==='open';
+  preview.set(target.id,value);
+  return {...entry,target,status:kind,value};
+ });
 }
 const leadingCode=/^([EN]\d+)(?:\s*[·・:：-]\s*|\s+|(?=[\u3400-\u9fff])|$)/i;
 function pointName(name){
@@ -219,6 +235,6 @@ function routeGeometry(route,plan,furniture,byId=new Map(furniture.map(f=>[f.id,
  const length=unresolved||reversals.length?null:path.reduce((sum,p,i)=>i?sum+distance(path[i-1],p):0,0);
  return {points,path,length,unresolved,reversals};
 }
-const api={panel,assertEditable,pointName,displayName,renamePoint,purpose,controlPairs,pointLocations,points,surfaces,place,nearest,wireKinds,routeLimits,validateRoutes,boxKind,endpointKind,endpoint,routeGeometry,conduitDiameters,conduitDefault,conduitProfile};
+const api={panel,assertEditable,pointName,displayName,renamePoint,purpose,controlPairs,roomFor,pointLocations,points,testPanelActions,surfaces,place,nearest,wireKinds,routeLimits,validateRoutes,boxKind,endpointKind,endpoint,routeGeometry,conduitDiameters,conduitDefault,conduitProfile};
 root.FurnishElectrical=api;if(typeof module==='object'&&module.exports)module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

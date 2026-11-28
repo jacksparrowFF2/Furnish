@@ -1111,7 +1111,17 @@ button.replacement-product:focus-visible{outline:2px solid var(--accent);outline
 .electrical-panel .actions { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
 .electrical-list-groups { display:grid; gap:14px; }
 .electrical-list-group { overflow:hidden; border:1px solid var(--line); border-radius:10px; }
-.electrical-list-group h4 { display:flex; align-items:baseline; gap:8px; margin:0; padding:7px 9px; background:var(--soft); color:var(--ink); font-size:12px; letter-spacing:normal; }
+.electrical-list-group > summary { margin:0; padding:7px 9px; background:var(--soft); color:var(--ink); font-size:12px; font-weight:600; cursor:pointer; }
+.electrical-list-group > summary small { margin-inline-start:6px; }
+.electrical-scope { display:grid; gap:4px; margin-bottom:8px; }
+.electrical-mode [data-electrical-outside] { display:none; }
+.electrical-key { min-width:0; margin:8px 0; padding:6px 9px 9px; border:1px solid var(--line); border-radius:8px; }
+.electrical-key legend { font-weight:600; padding-inline:4px; }
+.electrical-trigger + .electrical-trigger { margin-top:7px; padding-top:7px; border-top:1px solid var(--line); }
+.electrical-trigger .actions { align-items:center; }
+.electrical-action-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:5px 8px; align-items:end; margin:6px 0; }
+.electrical-action-row > label:first-child { grid-column:1/-1; }
+.electrical-action-row select { width:100%; }
 .electrical-list-group ul { list-style:none; margin:0; padding:0; }
 .electrical-list-group li { border-top:1px solid var(--line); }
 .electrical-list-group small { color:var(--muted); font-size:11px; font-weight:400; }

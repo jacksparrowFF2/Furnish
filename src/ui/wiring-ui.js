@@ -37,14 +37,15 @@ globalThis.FurnishWiringUI=(()=>{
   const visibleRoutes=[...saved.filter(r=>r.id!==routeDraft?.id),...(routeDraft?[routeDraft]:[])];
   for(const route of visibleRoutes){
    if(inspected&&route.id!==inspected)continue;
-   const {path}=geometry(route,plan,byId);
+   const {path,points}=geometry(route,plan,byId);
+   if(!routeDraft&&!inspected&&![points[0],points.at(-1)].some(p=>p&&FurnishElectricalUI.visibleAt(p.x,p.y)))continue;
    if(path.length&&path.every(p=>[p.x,p.y,p.z].every(Number.isFinite)))paths.push({kind:route.kind,path,editing:route===routeDraft,diameter:route.conduitDiameter});
   }
   const locations=E.pointLocations(furniture,plan.rooms);
   const markers=[];
   for(const f of furniture){
    const box=E.boxKind(f),label=locations.get(f.id)?.number||(box==='power'?'强':box==='network'?'弱':null);
-   if(!label||!FurnishLayers.visible(state,'furniture:'+f.id))continue;
+   if(!label||!FurnishElectricalUI.visibleAt(f.cx,f.cy)||!FurnishLayers.visible(state,'furniture:'+f.id))continue;
    const p=E.endpoint(f,plan,furniture);
    if(Number.isFinite(p.z))markers.push({...p,label,kind:E.endpointKind(f)});
   }

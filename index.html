@@ -1993,7 +1993,7 @@ function buildLabels(){
     clearObservation();
     document.querySelectorAll('#roomList button').forEach(x => x.classList.toggle('on', x === b));
     if (opt.mode === 'walk') setMode('orbit');
-    b.dataset.room === '__all' ? flyTo(isoWhole()) : flyToRoom(b.dataset.room);
+    flyToRoom(b.dataset.room);
   });
 }
 
@@ -2011,7 +2011,18 @@ function syncReplacementFootprint(work){
 }
 
 // 只重建变化的部分
+let electricalOrbitRoom=null;
+function refreshElectricalRoom(){
+  if(!FurnishElectricalUI.active())return false;
+  const roomAtWorld=p=>FurnishElectrical.roomFor(ROOMS,p.x*1000+OX,p.z*1000+OY)?.id;
+  const selected=observationTarget?.length===1?getF(observationTarget[0]):null;
+  const room=opt.mode==='walk'?roomAtWorld(camera.position):
+    electricalOrbitRoom||(selected&&FurnishElectrical.roomFor(ROOMS,selected.cx,selected.cy)?.id)||
+    (camera.position.y<=H&&roomAtWorld(camera.position));
+  return FurnishElectricalUI.updateCameraRoom(room||null);
+}
 function syncElectrical(){
+  refreshElectricalRoom();
   const overlay=FurnishElectricalUI.active()?FurnishWiringUI.sceneOverlay():null;
   const key=overlay?JSON.stringify([OX,OY,overlay]):'';
   if(key===electricalKey)return;
@@ -2056,7 +2067,7 @@ function syncElectrical(){
 // scene key and compare coordinates only if the model receives a new array.
 const objPositionKeys=new WeakMap();
 let nextObjPositionKey=0;
-function furnitureSceneKey({price,referencePrice,priceDate,purchaseStatus,purchaseNote,sourceUrl,obj,...shape}){
+function furnitureSceneKey({price,referencePrice,priceDate,purchaseStatus,purchaseNote,sourceUrl,panelActions,obj,...shape}){
   if(!Array.isArray(obj?.positions))return {...shape,obj};
   if(!objPositionKeys.has(obj.positions))objPositionKeys.set(obj.positions,++nextObjPositionKey);
   return {...shape,obj:{...obj,positions:objPositionKeys.get(obj.positions)}};
@@ -2246,7 +2257,7 @@ function setPose(P){ orbitRange(P.p.distanceTo(P.t));camera.position.copy(P.p); 
 function flyTo(B, dur = 900){ orbitRange(Math.max(camera.position.distanceTo(orbit.target),B.p.distanceTo(B.t)));fly = {t0:performance.now(), dur, A:curPose(), B}; }
 function flyToRoom(id){
   if(id==='__all'){clearObservation();flyTo(isoWhole());return;}
-  const r = ROOMS.find(r => r.id === id);if(!r)return;clearObservation();flyToBox(bbox(r.poly));
+  const r = ROOMS.find(r => r.id === id);if(!r)return;clearObservation();electricalOrbitRoom=id;flyToBox(bbox(r.poly));
 }
 function flyToBox(box){
   const xs=[box[0],box[2]],ys=[box[1],box[3]];
@@ -2281,6 +2292,7 @@ function observationBounds(){
 }
 function clearObservation(){
  materialObservation=null;
+ electricalOrbitRoom=null;
  ceilingDisplay.clear();
  observationTarget=null;observationSelection='';observationCutaway=true;if(observation.clear())invalidate(true);
  if(orbit)orbit.minDistance=orbitMinDistance;
@@ -2631,7 +2643,12 @@ function pick(e){
 // 屏幕点 → 地面（y = 0）上的户型坐标 mm；s = 该处每 mm 对应的屏幕像素，用于拖放时的幽灵图大小
 const ground0 = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
 function observationLayer(g,key){if(key.startsWith('roomCeiling:'))g.userData.layerObject=key;return g;}
-function applyObservationLayers(){ceilingDisplay.restore();FurnishObservationLayers.applyScene({furnG,archFloor,archUp,clearanceG,elevationG,issueG,wallLabelG,lampG});if(ceilingDisplay.update(archUp,camera,ui.ceilingMode))invalidate(true);}
+function applyObservationLayers(){
+ ceilingDisplay.restore();
+ const hiddenElectrical=FurnishElectricalUI.active()?FurnishElectricalUI.hiddenScenePanels():null;
+ FurnishObservationLayers.applyScene({furnG,archFloor,archUp,clearanceG,elevationG,issueG,wallLabelG,lampG,hiddenElectrical});
+ if(ceilingDisplay.update(archUp,camera,ui.ceilingMode))invalidate(true);
+}
 function refreshObservationLayers(){if(!inited)return;selKey=null;clearSceneIssue();applyObservationLayers();materialEntries=null;globalThis.FurnishMaterialUI?.refreshCurrent();invalidate(true);}
 function sceneObjectShown(o){for(let p=o;p;p=p.parent)if(!p.visible)return false;return true;}
 function refreshTileInspection(){if(!inited)return;const visible=opt.furn&&!globalThis.FurnishTilePresetUI?.inspecting();furnG.visible=visible;clearanceG.visible=visible&&opt.clearances;for(const group of [elevationG,issueG]){group.visible=visible&&opt.mode==='orbit'&&!anim;group.traverse(o=>{if(o.isCSS2DObject)o.visible=group.visible;});}clearanceG.traverse(o=>{if(o.isCSS2DObject)o.visible=visible&&opt.clearances&&!anim;});selKey=null;invalidate(true);}
@@ -3092,6 +3109,7 @@ function loop(){
   if (fly){ const t = clamp01((now - fly.t0)/fly.dur); camTween(fly.A, fly.B, ease(t)); dirty = true; if (t >= 1) fly = null; }
   else if (opt.mode === 'orbit') orbit.update();                 // 镜头有变化时会触发 change → invalidate
   else if (walkCtl.isLocked || touchWalk){ stepWalk(dt); dirty = true; }
+  if(refreshElectricalRoom()){syncElectrical();invalidate();}
   doors.forEach(d => {
     const tg = swingTarget(d); if (d.cur === tg) return;
     d.cur = Math.abs(tg - d.cur) < 1e-3 ? tg : d.cur + (tg - d.cur) * Math.min(1, dt*6);
@@ -3142,6 +3160,7 @@ function blenderScene(options={}, {observationCeilings=false,includeLighting=fal
  if(tvPicturePending)throw Error(tr('请等待电视图片加载完成；若图片损坏，请重新选择图片。','Wait for the TV picture to load; reselect it if the image is damaged.'));
  ceilingDisplay.restore();const display=observationCeilings?FurnishCeilingModel.createDisplay(THREE):null;
  try{
+  if(FurnishElectricalUI.active()&&FurnishElectricalUI.scopedRoom())FurnishObservationLayers.applyScene({furnG,archFloor,archUp,clearanceG,wallLabelG,lampG});
   display?.update(archUp,camera,ui.ceilingMode,{progressive:true});
   const lighting=includeLighting?FurnishLighting.collect(THREE,[archFloor,archUp,furnG,lampG]):null;
   // encode clones synchronously before its asynchronous GLB serialization.
