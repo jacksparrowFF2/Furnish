@@ -237,6 +237,74 @@ function nearest(f,faces,limit=Infinity){
  for(const s of faces){if(n[0]*s.normal[0]+n[1]*s.normal[1]<.99999)continue;const offset=((f.cx-s.a[0])*(s.b[0]-s.a[0])+(f.cy-s.a[1])*(s.b[1]-s.a[1]))/s.length;if(offset<f.w/2||offset>s.length-f.w/2)continue;const position=place(f,s,offset),distance=Math.hypot(position.cx-f.cx,position.cy-f.cy);if(distance<=limit&&(!best||distance<best.distance))best={surface:s,offset,position,distance};}
  return best;
 }
+const panelSpacing=Object.freeze({gap:4,threshold:50});
+const panelPose=['cx','cy','rot','w','d','h','mountHeight'];
+const independentPanel=f=>!f.obj&&P().family(f,'wall-panel');
+const rowTolerance=2,spacingEpsilon=1e-6;
+function panelRow(f,panels,plan){
+ const angle=(f.rot||0)*Math.PI/180,ux=Math.cos(angle),uy=Math.sin(angle),products=P();
+ const datum=o=>products.floorBase(plan,o,panels);
+ const base=datum(f),room=roomFor(plan.rooms,f.cx,f.cy);
+ const level=o=>products.bottomHeight(o)+products.height(o)/2;
+ const row=[{f,at:0}];
+ if(!base.known)return {row,ux,uy};
+ for(const peer of panels){
+  if(peer===f||Math.cos(((peer.rot||0)-(f.rot||0))*Math.PI/180)<.99999)continue;
+  const dx=peer.cx-f.cx,dy=peer.cy-f.cy;
+  const backOffset=-dx*uy+dy*ux-(peer.d-f.d)/2;
+  if(Math.abs(backOffset)>rowTolerance)continue;
+  const peerRoom=roomFor(plan.rooms,peer.cx,peer.cy),peerBase=datum(peer);
+  if((room&&peerRoom&&room!==peerRoom)||!peerBase.known||Math.abs(base.z+level(f)-peerBase.z-level(peer))>rowTolerance)continue;
+  row.push({f:peer,at:dx*ux+dy*uy});
+ }
+ row.sort((a,b)=>a.at-b.at||a.f.id.localeCompare(b.f.id));
+ const gap=(a,b)=>b.at-a.at-(a.f.w+b.f.w)/2;
+ let first=row.findIndex(p=>p.f===f),last=first;
+ while(first>0&&gap(row[first-1],row[first])<panelSpacing.threshold-spacingEpsilon)first--;
+ while(last+1<row.length&&gap(row[last],row[last+1])<panelSpacing.threshold-spacingEpsilon)last++;
+ return {row:row.slice(first,last+1),ux,uy};
+}
+function normalizePanelGaps(before,work,planFor,{locked=f=>!!f.locked}={}){
+ const obstacles=work.furniture.filter(panel),panels=obstacles.filter(independentPanel);
+ if(panels.length<2)return;
+ const old=new Map(before.furniture.map(f=>[f.id,f]));
+ const edited=new Set(panels.filter(f=>!locked(f)&&panelPose.some(key=>f[key]!==old.get(f.id)?.[key])));
+ if(!edited.size)return;
+ const plan=planFor(),G=root.FurnishGeometry||require('./layout-geometry.js');
+ let adjusted=false;
+ for(const f of edited){
+  const {row,ux,uy}=panelRow(f,panels,plan);
+  if(row.length<2)continue;
+  let at=0;
+  const desired=row.map((p,i)=>i?(at+=(row[i-1].f.w+p.f.w)/2+panelSpacing.gap):0);
+  const offsets=row.map((p,i)=>p.at-desired[i]);
+  if(offsets.every(offset=>Math.abs(offset-offsets[0])<=spacingEpsilon))continue;
+  const members=new Set(row.map(p=>p.f));
+  const fixed=row.findIndex(p=>locked(p.f));
+  // A stationary member anchors the row when possible. Try other anchors if
+  // the resulting row would leave an installation face or meet an obstacle.
+  const anchors=fixed>=0?[fixed]:row.map((_,i)=>i).sort((a,b)=>Number(edited.has(row[a].f))-Number(edited.has(row[b].f))||Math.abs(row[a].at)-Math.abs(row[b].at));
+  const mounts=new Map();
+  for(const anchor of anchors){
+   const shifts=offsets.map(offset=>offsets[anchor]-offset);
+   const moves=row.flatMap(({f:member},i)=>Math.abs(shifts[i])<=spacingEpsilon?[]:[{
+    member,next:{...member,cx:member.cx+shifts[i]*ux,cy:member.cy+shifts[i]*uy}
+   }]);
+   const fits=moves.every(({member,next})=>{
+    if(locked(member))return false;
+    if(!mounts.has(member))mounts.set(member,nearest(member,surfaces(plan,work,member),rowTolerance));
+    const mount=mounts.get(member);
+    if(mount&&!nearest(next,[mount.surface],rowTolerance))return false;
+    return !obstacles.some(peer=>!members.has(peer)&&G.volumeOverlap(next,peer,plan,work.furniture));
+   });
+   if(!fits)continue;
+   for(const {member,next} of moves)Object.assign(member,{cx:next.cx,cy:next.cy});
+   adjusted=true;
+   break;
+  }
+ }
+ return adjusted;
+}
 const wireKinds=Object.freeze({power:'电线',network:'网线'});
 const routeLimits=Object.freeze({routes:500,points:100,xy:1000000,z:20000});
 const conduitWalls=Object.freeze({16:1.3,20:1.4,25:1.5,32:1.6});
@@ -328,6 +396,6 @@ function routeGeometry(route,plan,furniture,byId=new Map(furniture.map(f=>[f.id,
  const length=unresolved||reversals.length?null:path.reduce((sum,p,i)=>i?sum+distance(path[i-1],p):0,0);
  return {points,path,length,unresolved,reversals};
 }
-const api={panel,assertEditable,pointName,displayName,renamePoint,purpose,actionTargetLabel,controlPairs,roomFor,pointLocations,points,testPanelActions,surfaces,place,nearest,wireKinds,routeLimits,validateRoutes,boxKind,endpointKind,endpoint,routeGeometry,conduitDiameters,conduitDefault,conduitProfile};
+const api={panel,assertEditable,pointName,displayName,renamePoint,purpose,actionTargetLabel,controlPairs,roomFor,pointLocations,points,testPanelActions,surfaces,place,nearest,normalizePanelGaps,wireKinds,routeLimits,validateRoutes,boxKind,endpointKind,endpoint,routeGeometry,conduitDiameters,conduitDefault,conduitProfile};
 root.FurnishElectrical=api;if(typeof module==='object'&&module.exports)module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

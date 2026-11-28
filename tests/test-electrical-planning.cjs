@@ -19,6 +19,41 @@ const floors={walls:[],furnitureDatum:'finished-floor',rooms:[{id:'low',poly:[[0
 const low={...panel,cx:500,cy:2000,mountHeight:100},high={...low,cx:2000};assert.equal(E.surfaces(floors,work,low).length,0);assert(E.surfaces(floors,work,high).length>0,'moving across floor datums invalidates the face cache');
 const unknown=clone(floors);delete unknown.floorFinish.areas.high.finishedZ;assert.equal(E.surfaces(unknown,work,high).length,0,'unknown floor height must not invent a cabinet mounting face');
 const faces=E.surfaces({walls:[[0,0,1000,200]]},work,panel);assert.equal(faces.filter(s=>s.kind==='wall').length,4);
+{
+ const field={walls:[[0,0,1200,200]]};
+ const place=(id,cx,options={})=>({...panel,id,cx,cy:205,...options});
+ const fit=(before,after,plan=field,options)=>{
+  const next={furniture:clone(after)};
+  E.normalizePanelGaps({furniture:before},next,()=>plan,options);
+  return next.furniture;
+ };
+ const anchor=place('anchor',200);
+ for(const [raw,expected] of [[135,90],[136,136],[140,140],[86,90],[88,90],[90,90],[80,90]]){
+  const peer=place('peer',200+raw);
+  assert.deepEqual(fit([anchor],[anchor,peer]).map(f=>f.cx),[200,200+expected]);
+ }
+ const wider=place('wide',310,{w:120,d:20,cy:210});
+ assert.equal(fit([anchor],[anchor,wider])[1].cx,307);
+ for(const options of [{cy:208},{mountHeight:503},{rot:180},{type:'track_socket_bull_gb50k'}]){
+  const peer=place('peer',310,options);
+  assert.deepEqual(fit([anchor],[anchor,peer]),[anchor,peer]);
+ }
+ const left=place('left',200),center=place('center',310),right=place('right',425);
+ const compact=fit([left,right],[left,center,right]);
+ assert.deepEqual(compact.map(f=>f.cx),[200,290,380]);
+ assert.deepEqual(fit(compact,compact),compact);
+ assert.deepEqual(fit([left,right],[left,center,right],field,{locked:f=>f.id!=='center'}).map(f=>f.cx),[200,310,425]);
+ assert.deepEqual(fit([left,right],[left,center,right],field,{locked:f=>f.id==='right'}).map(f=>f.cx),[245,335,425]);
+ const overlap=place('move',1140),edge=place('edge',1100,{locked:true});
+ assert.deepEqual(fit([edge],[edge,overlap]).map(f=>f.cx),[1100,1140],'cannot push a panel beyond its mounting face');
+ const fixed={...anchor,locked:true},obstacle=place('upright',251,{rot:90}),incoming=place('incoming',333);
+ assert.deepEqual(fit([fixed,obstacle],[fixed,obstacle,incoming]),[fixed,obstacle,incoming],'cannot create a collision with an out-of-row panel');
+ const rotatedA=place('a',195,{cy:200,rot:90}),rotatedB=place('b',195,{cy:320,rot:90,flip:true});
+ const moved=fit([rotatedA],[rotatedA,rotatedB],{walls:[[200,0,400,1200]]})[1];
+ assert(Math.abs(moved.cx-195)<1e-7);
+ assert(Math.abs(moved.cy-290)<1e-7);
+ assert.deepEqual(fit([left,center],[{...left,name:'仅改名'},center]),[{...left,name:'仅改名'},center]);
+}
 assert.equal(E.points(work)[0].number,'E01');assert.equal(E.points(work)[0].center,543);
 assert.equal(E.pointName(' E35 · N3：玄关入户三键 · N3 · 与通道端 E15 双控 '),'玄关入户三键 · 与通道端 E15 双控');
 assert.equal(E.pointName('E35入户三键 · 公牛 G12 / 客厅 L90'),'入户三键 · 公牛 G12 / 客厅 L90');

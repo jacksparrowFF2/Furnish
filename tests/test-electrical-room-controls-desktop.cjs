@@ -221,9 +221,69 @@ async function main(){
   await page.evaluate(async()=>{await View3D.automationCamera({preset:'whole'});});
   await first.waitFor({state:'attached'});
   await second.waitFor({state:'attached'});
+
+  await page.evaluate(async()=>{await setView('2d');});
+  const gapFixture=await page.evaluate(()=>{
+   const E=FurnishElectrical,plan=canvasEffectivePlan();
+   const plate={id:uid(),name:'间距验收点位',type:'panel_bull_g12',panelVariant:'socket5-diagonal',w:86,d:10,h:86,cx:0,cy:0,rot:0,color:'#f5f5f2',mountHeight:1734};
+   const face=E.surfaces(plan,state,plate).find(s=>{
+    if(s.kind!=='wall'||s.length<440)return false;
+    const a=E.place(plate,s,s.length/2-70),b=E.place(plate,s,s.length/2+66);
+    const room=E.roomFor(plan.rooms,a.cx,a.cy);
+    return room&&E.roomFor(plan.rooms,b.cx,b.cy)===room&&FurnishProducts.floorBase(plan,a).known&&FurnishProducts.floorBase(plan,b).known;
+   });
+   const start=face.length/2-70;
+   const a=E.place(plate,face,start),b=E.place({...plate,id:uid()},face,start+136);
+   const raw=E.place(b,face,start+135);
+   mutate(()=>state.furniture.push(a,b));
+   selectIds([b.id]);
+   return {ids:[a.id,b.id],raw:{cx:raw.cx,cy:raw.cy}};
+  });
+  const measureGap=()=>page.evaluate(ids=>{
+   const [a,b]=ids.map(getF);
+   return Math.hypot(a.cx-b.cx,a.cy-b.cy)-(a.w+b.w)/2;
+  },gapFixture.ids);
+  const assertGap=async expected=>assert(Math.abs(await measureGap()-expected)<1e-6);
+  await assertGap(50);
+  const properties=page.locator('#electrical-form');
+  for(const key of ['cx','cy'])await properties.locator(`input[name="${key}"]`).fill(String(gapFixture.raw[key]));
+  await properties.getByRole('button',{name:'应用面板属性'}).click();
+  await assertGap(4);
+  await page.evaluate(()=>undo());
+  await assertGap(50);
+  await page.evaluate(()=>redo());
+  await assertGap(4);
+  await page.evaluate(()=>undo());
+  const drag=await page.evaluate(ids=>{
+   const [a,b]=ids.map(getF);
+   zoomToBox(groupBox([a,b]),430);
+   const screen=(x,y)=>{
+    const point=svg.createSVGPoint();
+    [point.x,point.y]=drawingPoint([x,y]);
+    const p=point.matrixTransform(svg.getScreenCTM());
+    return {x:p.x,y:p.y};
+   };
+   return {from:screen(b.cx,b.cy),to:screen(b.cx+(a.cx-b.cx)*.25,b.cy+(a.cy-b.cy)*.25)};
+  },gapFixture.ids);
+  await page.mouse.move(drag.from.x,drag.from.y);
+  await page.keyboard.down('Alt');
+  try{
+   await page.mouse.down();
+   await page.mouse.move(drag.to.x,drag.to.y,{steps:6});
+   await page.mouse.up();
+  }finally{await page.keyboard.up('Alt');}
+  await assertGap(4);
+  await page.screenshot({path:path.join(job.dir,'panel-spacing.png')});
+  await page.evaluate(async()=>{
+   await FurnishRepository.flush();
+   if(repositoryClient.status.mode!=='saved')throw Error(repositoryClient.status.message);
+  });
+  await page.reload();
+  await page.locator('#repository-loading').waitFor({state:'hidden'});
+  await assertGap(4);
   assert.deepEqual(errors,[]);
   passed=true;
-  console.log(JSON.stringify({passed,run:job.dir,checks:['room filtering in 2D, 3D and walk','independent collapse','whole-plan export','concise device labels and cross-room bindings','switch preview, undo/redo and reload',...(checkCycle?['two-curtain open/stop/close cycle']:[])]}));
+  console.log(JSON.stringify({passed,run:job.dir,checks:['room filtering in 2D, 3D and walk','independent collapse','whole-plan export','concise device labels and cross-room bindings','switch preview, undo/redo and reload','50 mm threshold and 4 mm saved panel spacing',...(checkCycle?['two-curtain open/stop/close cycle']:[])]}));
  }finally{
   if(app){
    if(!passed)await app.evaluate(({app})=>app.exit()).catch(()=>{});

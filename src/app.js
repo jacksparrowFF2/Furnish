@@ -234,7 +234,10 @@ function normalizeFurnitureEdit(work,previous,{furnitureEdit=false}={}){
 }
 function commit(before,checkLayers=false,{sceneFirst=false,furnitureId,furnitureEdit=furnitureId!==undefined,appearanceEdit=false,previous=JSON.parse(before)}={}){
   try{
-    if(!appearanceEdit&&!globalThis.FurnishElectricalUI?.active())normalizeFurnitureEdit(state,previous,{furnitureEdit});
+    if(globalThis.FurnishElectricalUI?.active()){
+      const adjusted=FurnishElectrical.normalizePanelGaps(previous,state,()=>FurnishProject.effectivePlan(PLAN,state),{locked:FurnishElectricalUI.physicalLocked});
+      if(adjusted)furnitureId=undefined;
+    }else if(!appearanceEdit)normalizeFurnitureEdit(state,previous,{furnitureEdit});
     globalThis.FurnishElectricalUI?.assertEditable(previous,state);
     if(checkLayers)FurnishLayers.assertEditable(previous,state);
   }catch(e){
