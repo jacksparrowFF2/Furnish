@@ -21,7 +21,7 @@ if(t==='panel_bull_g12')return `<g data-wall-panel="true">${rc(-w/2,-d/2,w,d,c,'
 if(t==='pet_bowl_petstar_180')return ec(0,0,w/2,d/2,c)+ec(0,0,w*.44,d*.44,'#8db4c2');
 if(t==='cat_litter_yanxuan_25kg')return rc(-w/2,-d/2,w,d,c,'rx="2"')+rc(-w*.48,-d*.475,w*.96,d*.45,'#d8dcd6','data-folded-handle="true"')+rc(-w*.16,-d*.295,w*.32,d*.09,c,`rx="${d*.045}"`)+ln(-w/2,d*.46,w/2,d*.46)+`<text x="0" y="${d*.22}" text-anchor="middle" fill="#0874a6" font-size="${w*.18}">Mix</text>`;
 const products=typeof module==='object'&&module.exports?require('../core/product-rules.js'):root.FurnishProducts;
-if(products.definition(t)?.nightLight){
+if(products.family({type:t},'night-light')){
  const x=w/2,z=d/2;
  return `<g data-night-light="mijia-4">${rc(-x*.68,-z,w*.68,d*.77,shade(c,.97))}${pa(`M${-x} ${z*.33} Q${-x} ${z*.48} ${-x*.95} ${z*.62} Q${-x*.62} ${z*.97} ${-x*.56} ${z} H${x*.56} Q${x*.62} ${z*.97} ${x*.95} ${z*.62} Q${x} ${z*.48} ${x} ${z*.33} H${-x}Z`,c)}</g>`;
 }

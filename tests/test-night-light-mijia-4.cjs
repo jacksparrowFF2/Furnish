@@ -3,6 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs');
 const P=require('../src/core/product-rules.js'),J=require('../src/core/project-core.js');
 const G=require('../src/core/layout-geometry.js'),L=require('../src/core/lighting-core.js');
 const M=require('../src/render/night-light-mijia-4-model.js'),D=require('../src/render/downlight-model.js');
+const SVG=require('../src/render/furniture-svg.js');
 const fixture=require('../scripts/lib/model-profiles.cjs').profiles().find(p=>p.id==='night-light-mijia-4').fixture;
 const near=(a,b,tolerance=.00001)=>assert(Math.abs(a-b)<tolerance,`${a} != ${b}`);
 
@@ -11,6 +12,15 @@ const near=(a,b,tolerance=.00001)=>assert(Math.abs(a-b)<tolerance,`${a} != ${b}`
  const T=await import(imports.three);
  assert.equal(fixture.mountHeight,300);
  assert.equal(fixture.d,41.1);
+ assert(M.supported(fixture));
+ assert(!M.supported({...fixture,obj:{}}));
+ const ink={ink:'#111'};
+ assert.match(SVG.render(fixture.type,fixture.w,fixture.d,fixture.color,ink,fixture),/data-night-light="mijia-4"/);
+ for(const panelVariant of ['socket5-diagonal','nightlight']){
+  const panel=P.editPanelVariant({type:'panel_bull_g12',w:86,d:9,h:86},panelVariant);
+  assert(!M.supported(panel),panelVariant+' must retain the G12 production constructor');
+  assert.match(SVG.render(panel.type,panel.w,panel.d,'#ffffff',ink,panel),/data-wall-panel="true"/);
+ }
  for(const mountHeight of [0,300,630]){
   const f={...fixture,mountHeight,rot:37,flip:true,lightPreviewLevel:20};
   const model=M.build(T,f);

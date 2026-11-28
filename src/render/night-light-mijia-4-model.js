@@ -2,10 +2,10 @@
 (function(root){
 'use strict';
 const products=()=>root.FurnishProducts||require('../core/product-rules.js');
-const supported=f=>!!products().definition(f)?.nightLight&&!f.obj;
+const supported=f=>!f.obj&&products().family(f,'night-light');
 
 function build(T,f){
- const P=products(),spec=P.definition(f).nightLight;
+ const P=products(),spec=P.definition(f).mijiaNightLight;
  const asset=root.FurnishMijiaNightLight4Asset||require('../data/night-light-mijia-4-blender-asset.js');
  const h=P.height(f),base=P.value(f,'mountHeight');
  const g=(root.FurnishStaticAssetModel||require('./static-asset-model.js')).build(T,asset,{...f,h},base);
