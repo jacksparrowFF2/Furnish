@@ -18,6 +18,8 @@ const curtain={id:'curtain',type:'curtain_mijia_3_pro',name:'布帘',w:2400,d:10
 assert.equal(Electrical.actionTargetLabel({type:'ceiling_light_mijia_d40',brand:'小米/米家',name:'主卧睡眠区 · 米家吸顶灯 D40'},['主卧']),'睡眠区吸顶灯');
 assert.equal(Electrical.actionTargetLabel({type:'curtain_mijia_3_pro_sheer',brand:'米家',name:'主卧飘窗 · 米家智能窗帘 3 Pro · 暖白纱帘'},['主卧']),'飘窗纱帘');
 assert.equal(Electrical.actionTargetLabel({...lamp,name:'镜前补光 · 规划占位'}),'镜前补光');
+assert.equal(Electrical.actionTargetLabel({type:'panel_light_300x600',name:'厨房平板灯 · 300×600 · 24W'},['厨房']),'主灯');
+assert.equal(Electrical.actionTargetLabel({type:'panel_light_300x600',name:'厨房备餐平板灯 · 300×600 · 24W'},['厨房']),'备餐平板灯');
 const bindings=[
  {key:0,gesture:'press',targetId:lamp.id,action:'toggle'},
  {key:0,gesture:'press',targetId:curtain.id,action:'open'},
@@ -43,6 +45,18 @@ assert.deepEqual(press(0,'press').map(r=>r.value),[false,true]);
 assert.deepEqual(press(1,'hold').map(r=>r.value),[false]);
 assert.equal(press(1,'double',[configured,curtain])[0].status,'unavailable');
 assert.deepEqual(work,before);
+{
+ const lights=[lamp,{...lamp,id:'lamp-two'},{...lamp,id:'lamp-three'}];
+ const group=lights.map(target=>({key:1,gesture:'press',targetId:target.id,action:'toggle'}));
+ const other={...lamp,id:'other-lamp'};
+ const mixedActions=[...group,{key:1,gesture:'press',targetId:other.id,action:'off'},
+  {key:1,gesture:'press',targetId:curtain.id,action:'toggle'}];
+ const preview=new Map([[lamp.id,true],[other.id,true]]);
+ const press=()=>Electrical.testPanelActions(panel,1,'press',[...lights,other,curtain],preview,false,mixedActions).map(r=>r.value);
+ assert.deepEqual(press(),[true,true,true,false,true]);
+ assert.deepEqual(press(),[false,false,false,false,false]);
+ assert.deepEqual(press(),[true,true,true,false,true]);
+}
 {
  const cloth={...curtain,curtainOpen:1,curtainRightOpen:.5};
  const sheer={...curtain,id:'sheer',type:'curtain_mijia_3_pro_sheer',curtainOpen:1};

@@ -39,6 +39,7 @@ globalThis.FurnishElectricalUI=(()=>{
  function setMode(mode){
   if(!['furniture','ceiling','electrical'].includes(mode))return;
   if(mode==='electrical'&&active())return;
+  if(active())clearActionPreview();
   endDrag(true);closeFabEditor(false);if(!$('#dlg').hidden)closeDialog();
   globalThis.FurnishWiringUI?.leave();
   adding=false;poseHost=null;ui.sceneMove=false;ui.sel=null;ui.tool='select';ui.planMode=mode;saveUI();renderAll();applyView();
@@ -81,6 +82,7 @@ globalThis.FurnishElectricalUI=(()=>{
   }
  }
  function afterRender(){
+  if(previewOwner&&previewOwner!==state)clearActionPreview();
   document.body.classList.toggle('electrical-mode',active());
   if(sceneSwitchView)sceneSwitchView.dirty=true;
   const status=$('#placement-status'),message=active()&&adding&&!is3D()?tr('点击画布放置面板，按 Esc 取消','Click the plan to place the socket. Press Esc to cancel.'):'';
@@ -249,7 +251,16 @@ globalThis.FurnishElectricalUI=(()=>{
  const triggerNames={press:'单击',double:'双击',hold:'长按'};
  const actionNames={toggle:'切换',on:'开灯',off:'关灯',open:'打开窗帘',close:'关闭窗帘',cycle:'开／停／关循环'};
  const curtainCommands={open:'开始开帘',stop:'已暂停',close:'开始关帘'};
- let actionsDraft=null,previewOwner=null,previewStates=new Map();
+ let actionsDraft=null,previewOwner=null;
+ const previewStates=new Map(),previewLights=new Map();
+ function clearActionPreview(){
+  previewOwner=null;
+  previewStates.clear();
+  if(!previewLights.size)return;
+  previewLights.clear();
+  window.View3D?.refreshSwitchLights();
+ }
+ function lightPreview(){return active()&&previewOwner===state&&previewLights.size?previewLights:null;}
  function draftFor(f){
   const samePanel=actionsDraft?.work===state&&actionsDraft.id===f.id;
   if(!samePanel||actionsDraft.source!==f.panelActions||actionsDraft.variant!==f.panelVariant){
@@ -275,8 +286,9 @@ globalThis.FurnishElectricalUI=(()=>{
    .sort((a,b)=>a.cy-b.cy||a.cx-b.cx||a.id.localeCompare(b.id));
   for(const target of targets){
    const {room}=target;
-   const label=target.label??E.actionTargetLabel(target.source,[room?.name,room&&state.rooms[room.id]?.name]);
-   groups.get(room?.id??null).options.push({id:target.id,label:nm(label),fullName:nm(target.name),actions:target.actions});
+   const shortName=nm(target.label??E.actionTargetLabel(target.source,[room?.name,room&&state.rooms[room.id]?.name]));
+   const label=target.kind==='light'?purposeTargetName(shortName,room):shortName;
+   groups.get(room?.id??null).options.push({id:target.id,label,fullName:nm(target.name),actions:target.actions});
   }
   for(const {options} of groups.values()){
    const counts=new Map(),next=new Map();
@@ -325,10 +337,19 @@ globalThis.FurnishElectricalUI=(()=>{
  const describeActions=row=>row.actions.map(({action,names})=>`${action} ${names.join('、')}`).join('；');
  const switchFinish=f=>/^#(?:[a-f\d]{3}|[a-f\d]{6})$/i.test(f.color)?f.color:'#f5f5f2';
  function previewActions(f,key,gesture,entries,targets){
-  if(previewOwner!==state){previewOwner=state;previewStates=new Map();}
+  if(previewOwner!==state){clearActionPreview();previewOwner=state;}
   const actions=entries.filter(entry=>entry.key===key&&entry.gesture===gesture);
   const lamps=FurnishDesign.sceneSettings(state.scene3d).lamps;
-  return E.testPanelActions(f,key,gesture,state,previewStates,lamps,actions).map(({targetId,status,value,command})=>{
+  const results=E.testPanelActions(f,key,gesture,state,previewStates,lamps,actions);
+  let redraw=false;
+  for(const {targetId,target,status,value} of results){
+   const product=target?.type&&FurnishProducts.definition(target);
+   if(status!=='light'||!(product?.downlight||product?.panelLight)||previewLights.get(targetId)===value)continue;
+   previewLights.set(targetId,value);
+   redraw=true;
+  }
+  if(redraw)window.View3D?.refreshSwitchLights();
+  return results.map(({targetId,status,value,command})=>{
    const device=targets.get(targetId),name=device?.label||'设备';
    const outcome=command?curtainCommands[command]:status==='unavailable'?(device?.pending?'待接入':'待核对'):status==='light'?(value?'已开灯':'已关灯'):(value?'已打开':'已关闭');
    return name+' · '+outcome;
@@ -413,7 +434,6 @@ globalThis.FurnishElectricalUI=(()=>{
   if(purpose.innerHTML!==summary)purpose.innerHTML=summary;
  }
  function bindActions(host,f,locked,resized=()=>{}){
-  if(previewOwner!==state){previewOwner=state;previewStates=new Map();}
   const draft=draftFor(f),entries=draft.entries,keys=FurnishProducts.panelKeys(f),disabled=locked?'disabled':'';
   const finish=switchFinish(f),ownRoom=E.roomFor(ROOMS,f.cx,f.cy),catalog=actionCatalog();
   const local=ownRoom&&catalog.groups.find(group=>group.room===ownRoom);
@@ -488,7 +508,7 @@ globalThis.FurnishElectricalUI=(()=>{
      report(previewActions(f,Number(key),gesture,entries,targets));
      return;
     }
-    if(btn.hasAttribute('data-actions-reset')){previewStates.clear();report('已重置模拟状态');return;}
+    if(btn.hasAttribute('data-actions-reset')){clearActionPreview();report('已重置模拟状态');return;}
     if(locked||physicalLocked(getF(f.id)))return;
     if(actionAdd){
      if(entries.length>=FurnishProducts.panelActions.maxActions)throw Error('已达到此面板的动作数量上限');
@@ -652,5 +672,5 @@ globalThis.FurnishElectricalUI=(()=>{
   if(!repositoryBooting){refreshRelations();afterRender();if(active())renderPanel();}
  });
  document.addEventListener('keydown',e=>{if(active()&&e.key==='Escape'&&adding){adding=false;renderPanel();afterRender();}},true);
- return {active,blocked,physicalLocked,assertEditable,setMode,selection,selectionChanged,draw,refreshRelations,relatedIds,pairedOverlay,afterRender,pointer,panel,scopedRoom,visibleAt,updateCameraRoom,hiddenScenePanels,sceneSwitchSelection,positionSceneSwitch};
+ return {active,blocked,physicalLocked,assertEditable,setMode,selection,selectionChanged,draw,refreshRelations,relatedIds,pairedOverlay,afterRender,pointer,panel,scopedRoom,visibleAt,updateCameraRoom,hiddenScenePanels,sceneSwitchSelection,positionSceneSwitch,lightPreview};
 })();

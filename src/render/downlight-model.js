@@ -56,6 +56,32 @@ function setLights(group,on,{night=false,nightLights=on}={}){
   if(emission?.pathLightEmitter)material.emissiveIntensity=pathOn?.8:0;
  });
 }
+// Trial presses affect the raster frame only. Exports and scene settings keep
+// the original lighting state, including when the renderer throws.
+function withPreviewLights(group,overrides,draw){
+ const restore=[];
+ try{
+  for(const fixture of group.children){
+   const enabled=overrides.get(fixture.userData.fid);
+   if(enabled===undefined)continue;
+   fixture.traverse(o=>{
+    const flags=o.userData,material=o.material,emission=material?.userData;
+    if(flags.downlightLight||flags.ceilingPanelLight){
+     const {visible,castShadow}=o,previous=flags.previewLightEnabled;
+     restore.push(()=>{o.visible=visible;o.castShadow=castShadow;if(previous===undefined)delete flags.previewLightEnabled;else flags.previewLightEnabled=previous;});
+     flags.previewLightEnabled=enabled;
+     o.visible=enabled&&flags.panelSample!=='tile';
+    }
+    if(emission?.downlightEmitter||emission?.ceilingPanelEmitter){
+     const previous=material.emissiveIntensity;
+     restore.push(()=>{material.emissiveIntensity=previous;});
+     material.emissiveIntensity=enabled?(emission.emissionOn??1.5):0;
+    }
+   });
+  }
+  return draw();
+ }finally{for(let i=restore.length-1;i>=0;i--)restore[i]();}
+}
 // WebGL forward lighting compiles every enabled light into each material. Keep
 // a bounded local preview; emissive faces and all production geometry remain.
 function limitLights(scene,camera,{lights=24,shadows=6,maxFragmentUniforms=1024,maxTextures=16}={},panelRoom){
@@ -98,5 +124,5 @@ function limitLights(scene,camera,{lights=24,shadows=6,maxFragmentUniforms=1024,
  }
  return {candidates:candidates.length,lights:active.length,shadows:shadowCount,coveShadowAdded,panelShadowAdded};
 }
-const api={supported,build,setLights,limitLights};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishDownlightModel=api;
+const api={supported,build,setLights,withPreviewLights,limitLights};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishDownlightModel=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

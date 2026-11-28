@@ -134,12 +134,12 @@ async function main(){
    assert.deepEqual(await values(target.locator('optgroup').first().locator('option')),[...data.ownTargets].sort());
   }else assert.equal(await otherTargets.count(),0);
   assert.equal(await target.locator('optgroup option').count(),data.allTargets);
-  for(const [id,label] of [['fmv3wt92611','飘窗纱帘'],['fmv3wtxgq12','飘窗布帘'],['fmwf2mkf13','睡眠区吸顶灯']]){
+  for(const [id,label] of [['fmv3wt92611','飘窗纱帘'],['fmv3wtxgq12','飘窗布帘'],['fmwf2mkf13','主卧睡眠区吸顶灯']]){
    const option=target.locator(`option[value="${id}"]`);
    if(await option.count())assert.equal(await option.textContent(),label);
   }
   const entranceLights=target.locator('option[value="fmvs5p45s1"], option[value="fmvs67k751"], option[value="fmvs67weh2"]');
-  if(await entranceLights.count()===3)assert.deepEqual(await entranceLights.allTextContents(),['筒灯 1','筒灯 2','筒灯 3']);
+  if(await entranceLights.count()===3)assert.deepEqual(await entranceLights.allTextContents(),['玄关筒灯 1','玄关筒灯 2','玄关筒灯 3']);
   await target.selectOption(data.lamp);
   if(await otherTargets.count()){
    await otherTargets.uncheck();
@@ -169,7 +169,8 @@ async function main(){
   assert.equal(await switchPurpose.getByText('按键配置待应用').count(),1);
   assert.equal(await listPurpose.textContent(),savedListPurpose);
   await controls.locator('[data-action-test="1:double"]').click();
-  assert((await result.textContent()).split('　').includes(`${lampLabel} · 已开灯`));
+  const singleResult=await result.textContent();
+  assert(singleResult.split('　').includes(`${lampLabel} · 已开灯`),`Expected ${lampLabel} to switch on, got ${singleResult}`);
   const checkCycle=hasCurtainPair&&!savedBefore.some(a=>a.key===1&&a.gesture==='press');
   if(checkCycle){
    await controls.locator('[data-action-gesture]').selectOption('press');
@@ -252,6 +253,62 @@ async function main(){
    await controls.locator(`[data-action-key="${key}"]`).click();
    await controls.locator('[data-action-gesture]').selectOption('press');
   };
+  const entranceId='fmwng69uh26',kitchenId='fmvqr5qlt1';
+  const entranceGroup=await page.evaluate(id=>{
+   const right=getF(id)?.panelActions?.filter(a=>a.key===2&&a.gesture==='press'&&a.action==='toggle');
+   return right?.length===3&&right.every(a=>FurnishProducts.definition(getF(a.targetId))?.downlight)?right.map(a=>a.targetId):null;
+  },entranceId);
+  if(entranceGroup){
+   const floating=page.getByRole('region',{name:'场景开关操作'});
+   await page.evaluate(async ({id,lightIds})=>{
+    mutate(()=>{state.scene3d=FurnishDesign.patchSceneSettings(state.scene3d,{lamps:false});});
+    await setView('3d');
+    const f=getF(id),target=FurnishElectrical.endpoint(f,canvasEffectivePlan(),state.furniture),a=f.rot*Math.PI/180;
+    await View3D.automationCamera({mode:'orbit',position:{x:target.x-1700*Math.sin(a),y:target.y+1700*Math.cos(a),z:target.z+180},target:{x:target.x,y:target.y,z:target.z}});
+    selectIds([id]);
+    const limit=FurnishDownlightModel.limitLights,targets=new Set(lightIds);
+    window.entranceFrames=[];
+    FurnishDownlightModel.limitLights=(scene,...args)=>{
+     const result=limit(scene,...args),sample={};
+     scene.traverse(model=>{
+      if(!targets.has(model.userData.fid))return;
+      const values={light:false,emission:false};
+      model.traverse(node=>{
+       if(node.userData.downlightLight)values.light||=node.visible&&node.userData.previewLightEnabled;
+       if(node.material?.userData?.downlightEmitter)values.emission||=node.material.emissiveIntensity>0;
+      });
+      sample[model.userData.fid]=values;
+     });
+     window.entranceFrames.push(sample);
+     return result;
+    };
+    window.restoreEntranceProbe=()=>{FurnishDownlightModel.limitLights=limit;};
+   },{id:entranceId,lightIds:entranceGroup});
+   await floating.waitFor({state:'visible'});
+   assert.equal(await floating.locator(`[data-action-target] option[value="${kitchenId}"]:checked`).textContent(),'厨房主灯');
+   assert.match(await switchPurpose.textContent(),/厨房主灯/);
+   await floating.getByRole('button',{name:'左键',exact:true}).click();
+   await floating.locator('[data-action-test="0:press"]').click();
+   assert.equal(await floating.getByRole('status').textContent(),'厨房主灯 · 已开灯');
+   await floating.getByRole('button',{name:'右键',exact:true}).click();
+   const selected=floating.locator('[data-action-target] option:checked');
+   const labels=await selected.allTextContents();
+   assert.deepEqual([...labels].sort(),['玄关筒灯 1','玄关筒灯 2','玄关筒灯 3']);
+   const beforeTrial=await page.evaluate(()=>snap());
+   for(const on of [true,false,true]){
+    await page.evaluate(()=>{window.entranceFrames.length=0;});
+    await floating.locator('[data-action-test="2:press"]').click();
+    assert.deepEqual((await floating.getByRole('status').textContent()).split('　'),labels.map(label=>`${label} · ${on?'已开灯':'已关灯'}`));
+    await page.waitForFunction(({ids,on})=>window.entranceFrames.some(frame=>ids.every(id=>frame[id]?.light===on&&frame[id]?.emission===on)),{ids:entranceGroup,on});
+   }
+   await floating.getByRole('status').scrollIntoViewIfNeeded();
+   await page.screenshot({path:path.join(job.dir,'entrance-group-trial.png')});
+   await page.evaluate(()=>{window.entranceFrames.length=0;});
+   await floating.locator('[data-actions-reset]').click();
+   await page.waitForFunction(ids=>window.entranceFrames.some(frame=>ids.every(id=>frame[id]?.light===false&&frame[id]?.emission===false)),entranceGroup);
+   assert.equal(await page.evaluate(()=>snap()),beforeTrial);
+   await page.evaluate(async()=>{window.restoreEntranceProbe();await setView('2d');});
+  }
   if(data.livingStrip){
    for(const [id,key] of stripSwitches){
     await selectStripKey([id,key]);
@@ -461,7 +518,7 @@ async function main(){
   }
   assert.deepEqual(errors,[]);
   passed=true;
-  console.log(JSON.stringify({passed,run:job.dir,checks:['room filtering in 2D, 3D and walk','independent collapse','whole-plan export','concise device labels and cross-room bindings','switch preview, undo/redo and reload','aligned properties and shared purposes','50 mm threshold and 4 mm saved panel spacing','in-place replacement, obstruction, undo/redo and saved style',...(data.livingStrip?['existing ceiling strip shared by two switches','full 3D switch editor and preview']:[]),...(checkCycle?['two-curtain open/stop/close cycle']:[]),...(reserved?['north window reservation, motorized lift, retained binding, v114 save and reload']:[])]}));
+  console.log(JSON.stringify({passed,run:job.dir,checks:['room filtering in 2D, 3D and walk','independent collapse','whole-plan export','concise device labels and cross-room bindings','switch preview, undo/redo and reload','aligned properties and shared purposes','50 mm threshold and 4 mm saved panel spacing','in-place replacement, obstruction, undo/redo and saved style',...(entranceGroup?['entrance 3D grouped switching, reset and kitchen main light labels']:[]),...(data.livingStrip?['existing ceiling strip shared by two switches','full 3D switch editor and preview']:[]),...(checkCycle?['two-curtain open/stop/close cycle']:[]),...(reserved?['north window reservation, motorized lift, retained binding, v114 save and reload']:[])]}));
  }finally{
   if(app){
    if(!passed)await app.evaluate(({app})=>app.exit()).catch(()=>{});

@@ -806,6 +806,7 @@ window.View3D = {
   materialCatalog:() => impl?.materialCatalog()??[], locateMaterial:target => impl?.locateMaterial(target),
   furnitureScreenPoint:f => impl?.furnitureScreenPoint(f)??null,
   highlightIssue:(item,volumes) => impl?.highlightIssue(item,volumes),
+  refreshSwitchLights:() => impl?.refreshSwitchLights(),
   tileRoomAt:(x,y) => impl?.tileRoomAt(x,y)??null, refreshTileInspection:()=>impl?.refreshTileInspection(), refreshFloorStepLabels:()=>impl?.refreshFloorStepLabels(), refreshObservationLayers:()=>impl?.refreshObservationLayers(),
   ceilingPreview:(host,data,options) => load().then(() => impl.ceilingPreview(host,data,options)),
   tileLayoutPreview:(host,options) => load().then(() => impl.tileLayoutPreview(host,options)),
@@ -3094,6 +3095,11 @@ function collectSunPreviewDetails(){
   });
 }
 function renderScene(onlySun=false){
+  const preview=FurnishElectricalUI.lightPreview();
+  if(preview)return FurnishDownlightModel.withPreviewLights(furnG,preview,()=>drawRasterScene(false));
+  return drawRasterScene(onlySun);
+}
+function drawRasterScene(onlySun){
   if(!onlySun)prepareRasterScene();
   const sunScrubbing=!!opt.sunPreview;
   const qualityChanged=sunMapPreview!==sunScrubbing;
@@ -3314,7 +3320,8 @@ function cabinetPreview(host,f,actions){
 
 function ceilingPreview(host,data,options){return FurnishCeilingModel.preview({THREE,OrbitControls,host,data,...options});}
 function tileLayoutPreview(host,options){return FurnishTileLayoutPreview.create({THREE,OrbitControls,host,...options});}
-return {automationCamera,materialCatalog,locateMaterial,resetPreviewObservation:clearObservation,automationReady,furnitureScreenPoint,blenderScene,blenderSyncSignature,highQualityScene,highQualitySignature,progressiveState,progressiveScene,refreshObservationLayers,tileLayoutPreview,tileRoomAt,refreshTileInspection,refreshFloorStepLabels,ceilingPreview,cabinetPreview, enter, exit, relang, sync:() => sync(), shot, image, focusSelection, highlightIssue, groundAt, flyToRoom:id => active && !anim && flyToRoom(id), walking:() => active && opt.mode === 'walk', interacting:() => active && !!(viewportPointer || anim || fly), replan, retheme};
+function refreshSwitchLights(){bloomRevision++;invalidate(true);}
+return {automationCamera,materialCatalog,locateMaterial,resetPreviewObservation:clearObservation,automationReady,furnitureScreenPoint,blenderScene,blenderSyncSignature,highQualityScene,highQualitySignature,progressiveState,progressiveScene,refreshSwitchLights,refreshObservationLayers,tileLayoutPreview,tileRoomAt,refreshTileInspection,refreshFloorStepLabels,ceilingPreview,cabinetPreview, enter, exit, relang, sync:() => sync(), shot, image, focusSelection, highlightIssue, groundAt, flyToRoom:id => active && !anim && flyToRoom(id), walking:() => active && opt.mode === 'walk', interacting:() => active && !!(viewportPointer || anim || fly), replan, retheme};
 }
 </script>
 </body>

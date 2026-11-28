@@ -51,6 +51,26 @@ assert.equal(R.initial({type:f.type}).mountHeight,2500);assert.equal(R.vertical(
  o.traverse(v=>{if(v.isMesh)for(const k of ['position','normal'])assert(v.geometry.attributes[k].array.every(Number.isFinite));});
  const lamp=o.getObjectByProperty('isSpotLight',true);assert(lamp);near(lamp.angle,50*Math.PI/180);near(lamp.intensity*683*2*Math.PI*(1-Math.cos(lamp.angle)),380);assert(lamp.target.position.y<lamp.position.y);
  Model.setLights(o,false);assert.equal(lamp.visible,false);Model.setLights(o,true);assert.equal(lamp.visible,true);
+ const fixtures=new T.Group(),other=Model.build(T,{...f,id:'other'});
+ o.userData.fid=f.id;other.userData.fid='other';fixtures.add(o,other);
+ const emitter=o.getObjectByName('recessed-diffuser').material,neighbor=other.getObjectByProperty('isSpotLight',true);
+ assert.equal(Model.withPreviewLights(fixtures,new Map([[f.id,false]]),()=>{
+  assert(!lamp.visible&&!lamp.userData.previewLightEnabled);
+  assert.equal(emitter.emissiveIntensity,0);
+  assert(neighbor.visible);
+  return 'frame';
+ }),'frame');
+ assert(lamp.visible&&lamp.userData.previewLightEnabled);
+ assert.equal(emitter.emissiveIntensity,1.5);
+ Model.setLights(o,false);
+ assert.throws(()=>Model.withPreviewLights(fixtures,new Map([[f.id,true]]),()=>{
+  assert(lamp.visible&&lamp.userData.previewLightEnabled);
+  assert.equal(emitter.emissiveIntensity,1.5);
+  throw Error('render failed');
+ }),/render failed/);
+ assert(!lamp.visible&&!lamp.userData.previewLightEnabled);
+ assert.equal(emitter.emissiveIntensity,0);
+ Model.setLights(o,true);o.removeFromParent();
  const E=require('../src/io/blender-export.js');o.position.set(1,2,3);o.rotation.y=.7;o.updateMatrixWorld(true);const snapshot=E.snapshot(T,{groups:[o],camera:new T.PerspectiveCamera(45,1,.1,20)});const exported=snapshot.scene.getObjectByProperty('isSpotLight',true);assert(exported,'actual spotlight exported');exported.updateWorldMatrix(true,true);const lightAt=exported.getWorldPosition(new T.Vector3()),targetAt=exported.target.getWorldPosition(new T.Vector3());assert(targetAt.y<lightAt.y-.9);near(exported.intensity,lamp.intensity*683);snapshot.dispose();
  const ceiling=Ceiling.build(T,plan.ceilings,{bodies:[body(f)]});ceiling.updateMatrixWorld(true);
  const ray=(x,z)=>new T.Raycaster(new T.Vector3(x,2.4,z),new T.Vector3(0,1,0)).intersectObject(ceiling,true);

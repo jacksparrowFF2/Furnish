@@ -8,6 +8,7 @@ const ctx=vm.createContext({selectionTransform:null,sceneMeasure:null,active:tru
 // The initializer contains a semicolon inside the arrow body.
 const start=html.indexOf('const invalidate = '),end=html.indexOf('\n',start);
 ctx.syncViewportPixelRatio=()=>{};ctx.queueCeilingWash=()=>{};
+ctx.refreshElectricalRoom=()=>false;ctx.updateElectricalSwitch=()=>{};
 vm.runInContext('let dirty=false;'+html.slice(start,end)+html.slice(html.indexOf('function animateCurtains(dt){'),html.indexOf('function buildFurniture('))+html.slice(html.indexOf('function loop(){'),html.indexOf('function shot(){')),ctx);
 function frame(){ctx.loop();}
 vm.runInContext('invalidate()',ctx);frame();assert.equal(shadowPasses,1);

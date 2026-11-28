@@ -144,6 +144,8 @@ function testPanelActions(f,key,gesture,work,preview,lamps=false,entries=f.panel
  const curtains=slot.filter(({covering,entry})=>covering&&entry.action==='toggle');
  // One group command: a mixed or partly open group goes to fully open first.
  const groupOpens=curtains.length>1?!curtains.every(fullyOpen):null;
+ const lightGroupTurnsOn=slot.some(({available,kind,entry})=>
+  available&&kind==='light'&&entry.action==='toggle'&&!(preview.get(entry.targetId)??lamps));
  const cycle=slot.filter(({covering,entry})=>covering&&entry.action==='cycle');
  const pausedOpening=cycle.some(({covering})=>covering.direction==='open'&&covering.levels.some(level=>level>0));
  const cycleCommand=cycle.some(({covering})=>covering.moving)?'stop':
@@ -156,8 +158,8 @@ function testPanelActions(f,key,gesture,work,preview,lamps=false,entries=f.panel
    preview.set(target.id,next);
    return {...entry,target,status:kind,command:cycleCommand};
   }
-  const current=covering?covering.levels.some(level=>level>0):preview.get(entry.targetId)??lamps;
-  const value=entry.action==='toggle'?(kind==='covering'&&groupOpens!==null?groupOpens:!current):entry.action==='on'||entry.action==='open';
+  const value=entry.action==='toggle'?(kind==='light'?lightGroupTurnsOn:groupOpens??!covering.levels.some(level=>level>0)):
+   entry.action==='on'||entry.action==='open';
   preview.set(entry.targetId,value);
   return {...entry,target,status:kind,value};
  });
@@ -185,13 +187,16 @@ function purpose(name,roomNames=[]){
 }
 function actionTargetLabel(f,roomNames=[]){
  const products=P(),kind=products.kind(f);
- const parts=pointName(f.name).split(/\s*·\s*/).map(part=>purpose(part,roomNames)).filter(Boolean);
+ const segments=pointName(f.name).split(/\s*·\s*/);
+ const parts=segments.map(part=>purpose(part,roomNames)).filter(Boolean);
  const label=parts[0]||kind;
  const branded=(f.brand||'').split(/[/／]/).map(brand=>brand.trim()).some(brand=>brand&&label.startsWith(brand));
  if(products.panelActionTarget(f)==='covering'){
   if(branded)return kind;
   return /帘/.test(label)?label:label+kind;
  }
+ if(kind==='平板灯'&&segments[0]==='厨房平板灯'&&roomNames.includes('厨房'))return '主灯';
+ if(label==='主灯')return label;
  if(branded&&label.includes(kind))return kind;
  return !label.includes(kind)&&parts.slice(1).some(part=>part.includes(kind))?label+kind:label;
 }
