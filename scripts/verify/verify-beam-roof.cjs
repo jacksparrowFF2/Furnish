@@ -3,7 +3,7 @@ if(!process.env.FURNISH_VERIFY_ROOT){require('../verify-browser.cjs').main(['bea
 const fs=require('fs'),path=require('path'),assert=require('assert/strict'),P=require('../../src/core/project-core.js');
 const verification=require('../lib/browser-verification.cjs').configuration();
 (async()=>{
- const browser=await require('../lib/browser-verification.cjs').launch(),root=verification.root,out=path.join(root,'output/playwright/beam-roof');fs.mkdirSync(out,{recursive:true});
+ const browser=await require('../lib/browser-verification.cjs').launch(),root=verification.root,out=path.join(root,'verification.noindex/playwright/beam-roof');fs.mkdirSync(out,{recursive:true});
  const data=P.unpack(JSON.parse(fs.readFileSync(verification.fixture('imported.furnish.json'),'utf8')));data.current.ceilingHeight=3200;
  for(const b of data.current.architecture.draft.beams){delete b.bottomHeight;delete b.topHeight;delete b.ceilingThickness;}
  data.current.furniture=[{id:'test-bed',name:'验收床',type:'bed',cx:3000,cy:3000,w:1800,d:2000,rot:37}];const fixture=path.join(out,'fixture.json');fs.writeFileSync(fixture,JSON.stringify(P.pack(data)));const id=data.current.architecture.draft.beams[0].id;

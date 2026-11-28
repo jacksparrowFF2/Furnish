@@ -3,7 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const {_electron}=require('playwright'),root=path.resolve(__dirname,'..'),A=require('../scripts/lib/test-artifacts.cjs');
 (async()=>{
  const source=path.resolve(process.env.FURNISH_TEST_PROJECT||path.join(root,'projects/workspace.furnish.json')),hash=()=>crypto.createHash('sha256').update(fs.readFileSync(source)).digest('hex'),before=hash();
- const job=A.createRun({parent:path.join(root,'output/desktop-verification'),prefix:'project-transfer-'}),run=job.dir;
+ const job=A.createRun({parent:path.join(root,'verification.noindex/desktop-verification'),prefix:'project-transfer-'}),run=job.dir;
  const isolated=job.workspace('workspace',root,{directories:['src','styles','vendor','assets'],files:['index.html','manifest.webmanifest']});
  job.copy(source,'workspace/projects/workspace.furnish.json',{disposable:false});
  for(const name of require('../scripts/package-desktop.cjs').runtimeFiles)job.copy(path.join(root,'scripts',name),path.join('workspace/scripts',name));

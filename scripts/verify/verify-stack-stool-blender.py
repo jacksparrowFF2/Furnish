@@ -1,6 +1,6 @@
 """Independent source, production roundtrip and failed-publication preservation checks."""
 import bpy, bmesh, pathlib, sys, json, math, importlib.util
-root=pathlib.Path(__file__).resolve().parents[2];run=root/'output/stack-stool-validation';source_file=root/'assets/models/stack-stool/v4/stack-stool-v1.glb'
+root=pathlib.Path(__file__).resolve().parents[2];run=root/'verification.noindex/stack-stool-validation';source_file=root/'assets/models/stack-stool/v4/stack-stool-v1.glb'
 def clear():
     bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False)
 def bounds(points):return [[min(p[k] for p in points),max(p[k] for p in points)] for k in range(3)]

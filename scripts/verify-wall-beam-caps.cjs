@@ -5,7 +5,7 @@ const {_electron}=require('playwright'),{runtimeFiles}=require('./package-deskto
 const root=path.resolve(__dirname,'..'),hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
 async function main(){
  const source=path.resolve(process.argv[2]||'projects/workspace.furnish.json'),original=hash(source);
- const run=path.join(root,'output/playwright/wall-beam-caps',new Date().toISOString().replace(/[:.]/g,'-')),isolated=path.join(run,'workspace');
+ const run=path.join(root,'verification.noindex/playwright/wall-beam-caps',new Date().toISOString().replace(/[:.]/g,'-')),isolated=path.join(run,'workspace');
  fs.mkdirSync(isolated,{recursive:true});
  for(const n of ['index.html','manifest.webmanifest','src','styles','vendor','assets'])fs.cpSync(path.join(root,n),path.join(isolated,n),{recursive:true});
  fs.mkdirSync(path.join(isolated,'scripts'));for(const n of runtimeFiles)fs.copyFileSync(path.join(root,'scripts',n),path.join(isolated,'scripts',n));

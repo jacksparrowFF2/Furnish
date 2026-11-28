@@ -2,7 +2,7 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict'),crypto=require('node:crypto'),{_electron}=require('playwright');
 async function main(workspace){
- const root=path.resolve(__dirname,'../..'),isolated=path.resolve(workspace);assert(isolated.startsWith(path.join(root,'output')+path.sep));
+ const root=path.resolve(__dirname,'../..'),isolated=path.resolve(workspace);assert(isolated.startsWith(path.join(root,'verification.noindex')+path.sep));
  const run=path.join(isolated,'../cat-tower-desktop');fs.mkdirSync(run,{recursive:true});
  const source=path.join(root,'projects/workspace.furnish.json'),hash=()=>crypto.createHash('sha256').update(fs.readFileSync(source)).digest('hex'),before=hash();
  const server=http.createServer();await new Promise(r=>server.listen(0,'127.0.0.1',r));const port=server.address().port;await new Promise(r=>server.close(r));

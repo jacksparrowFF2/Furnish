@@ -17,13 +17,13 @@
 | `generate-previews.cjs`、`preview-*.cjs` | 预览生成入口和生成器，独立于浏览器验收用例 |
 | `inspect-*`、`validate-*`、`make-*` 等 | 图纸检查、固定合成输入及维护工具 |
 
-`node scripts/inspect-toolbar-workspace.cjs projects/workspace.furnish.json` 显式读取指定工作区的当前实际户型，在独立源码副本与浏览器缓存中检查浮条、尺寸及四向面板。服务只读且屏蔽外部网络，不连接日常浏览器；检查图纸内容与源文件哈希前后一致，结果和截图写到 `output/playwright/real-toolbar-*`。涵盖五种桌面／窄屏／横屏视口，出现遮挡或越界返回非零。不会隐式读取当前设计，也不列入 `--all`，避免通用回归依赖个人方案。
+`node scripts/inspect-toolbar-workspace.cjs projects/workspace.furnish.json` 显式读取指定工作区的当前实际户型，在独立源码副本与浏览器缓存中检查浮条、尺寸及四向面板。服务只读且屏蔽外部网络，不连接日常浏览器；检查图纸内容与源文件哈希前后一致，结果和截图写到 `verification.noindex/playwright/real-toolbar-*`。涵盖五种桌面／窄屏／横屏视口，出现遮挡或越界返回非零。不会隐式读取当前设计，也不列入 `--all`，避免通用回归依赖个人方案。
 
 稳定命令：
 
-`inspect-canvas-performance.cjs <工作区.json> <修改前源码目录>` 在隔离浏览器中显式读取指定工作区，交替运行旧／新画布函数，每项预热4对后分别取40个样本；结果写到 `output/performance-paired.json`。只通过离线文件读取应用，不连接日常浏览器或写回设计，保持原工作区字节。可用 `FURNISH_BROWSER_CHANNEL=chrome` 选择已安装浏览器；默认沿用验收浏览器配置。比较前源码目录须另行准备，脚本不覆盖当前工作树。同步函数耗时不代表真实FPS，冷启动、实际触屏与3D须另测。
+`inspect-canvas-performance.cjs <工作区.json> <修改前源码目录>` 在隔离浏览器中显式读取指定工作区，交替运行旧／新画布函数，每项预热4对后分别取40个样本；结果写到 `verification.noindex/performance-paired.json`。只通过离线文件读取应用，不连接日常浏览器或写回设计，保持原工作区字节。可用 `FURNISH_BROWSER_CHANNEL=chrome` 选择已安装浏览器；默认沿用验收浏览器配置。比较前源码目录须另行准备，脚本不覆盖当前工作树。同步函数耗时不代表真实FPS，冷启动、实际触屏与3D须另测。
 
-`inspect-scene-performance.cjs <工作区.json>` 在 `output/scene-performance` 生成带临时观测接口的应用副本，用隔离浏览器离线打开指定方案；同一镜头位置交替比较自动阴影与缓存阴影，各预热4次后取20个样本。结果与截图保存在该目录，使用相同验收浏览器配置。计时包含 `gl.finish()` 等待GPU完成，不是整页FPS；脚本不修改生产入口或源设计。
+`inspect-scene-performance.cjs <工作区.json>` 在 `verification.noindex/scene-performance` 生成带临时观测接口的应用副本，用隔离浏览器离线打开指定方案；同一镜头位置交替比较自动阴影与缓存阴影，各预热4次后取20个样本。结果与截图保存在该目录，使用相同验收浏览器配置。计时包含 `gl.finish()` 等待GPU完成，不是整页FPS；脚本不修改生产入口或源设计。
 
 ```sh
 node scripts/check.cjs

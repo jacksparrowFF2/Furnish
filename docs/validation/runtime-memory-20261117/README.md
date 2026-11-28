@@ -12,7 +12,7 @@
 
 ## 指标与条件
 
-使用正式已打包 Electron 45，固定1601输入，独立源码／项目／缓存／端口。基准输入在 `output/runtime-memory-input.noindex/workspace.furnish.json`，不跟随其它聊天对正式方案的后续编辑。每个阶段采样三次；二维旧版及最终版各运行两次。旧版取 `f076ba37` 的 server-runtime.cjs／serve.cjs，其余代码与候选相同。
+使用正式已打包 Electron 45，固定1601输入，独立源码／项目／缓存／端口。基准输入在 `verification.noindex/runtime-memory-input.noindex/workspace.furnish.json`，不跟随其它聊天对正式方案的后续编辑。每个阶段采样三次；二维旧版及最终版各运行两次。旧版取 `f076ba37` 的 server-runtime.cjs／serve.cjs，其余代码与候选相同。
 
 采集整个应用自建进程组：Electron 主进程、renderer、GPU／Utility、自建 Node 后台。RSS 用 `ps` 独立保存；physical footprint 用 macOS `footprint` 对同组 PID 的总输出，不用页面堆替代整应用指标。它不包括其它应用和全系统 WindowServer 的未归属开销，不是跨平台测量公式。
 
@@ -35,8 +35,8 @@
 
 摘要见 [results.json](results.json)。本机原始数据：
 
-- 完整旧版：`output/tauri-comparison/compare-4oknPj.noindex/runtime-memory.json`。
-- 最终候选完整流程：`output/tauri-comparison/compare-mnZSRd.noindex/runtime-memory.json`。
+- 完整旧版：`verification.noindex/tauri-comparison/compare-4oknPj.noindex/runtime-memory.json`。
+- 最终候选完整流程：`verification.noindex/tauri-comparison/compare-mnZSRd.noindex/runtime-memory.json`。
 - 二维复测：旧版 `compare-NNy3UW.noindex`，最终版 `compare-A6Eb2g.noindex`。
 - 早期候选 `compare-JOIatY.noindex` 未含无 require 文件的解码预筛，不混入最终二维均值；仍保留原始结果供审计。
 
@@ -50,7 +50,7 @@
 - `tests/test-static-stream.cjs`：8 MiB 二进制 SHA256、Unicode／空格／# URL、MIME／no-store、HEAD、空文件、目录／缺失／隐藏路径及请求中断后服务存活。
 - `tests/test-server-startup.cjs`：服务新建／复用／代码更新、同源身份和授权边界、无关服务和超时。
 - `tests/test-backend-auto-update.cjs`：模型／资产指纹、修改时间恢复、并发鉴权接替、同源与数据、旧页面重试和最新 pending 编辑、owner 继承与退出。
-- `verify-desktop.cjs` 使用本机 Chrome 完成正式桌面恢复、修改、真实键盘撤销重做、保存刷新、下载／导入、390px窄屏、WebGL、打印 PDF、HTTP共享、断网 file:// 二维／三维、退出关闭自建服务、重启恢复，冻结输入哈希未变。报告 `output/desktop-verification/verification-Qmeoyo.noindex/results.json`。
+- `verify-desktop.cjs` 使用本机 Chrome 完成正式桌面恢复、修改、真实键盘撤销重做、保存刷新、下载／导入、390px窄屏、WebGL、打印 PDF、HTTP共享、断网 file:// 二维／三维、退出关闭自建服务、重启恢复，冻结输入哈希未变。报告 `verification.noindex/desktop-verification/verification-Qmeoyo.noindex/results.json`。
 - 新增脚本语法及 Git 差异检查。
 
 没有修改几何／碰撞模块或渲染器，故没有重跑无关全部型号 Blender 回读或全量回归；也未做 Windows/Linux、Tauri、长时间泄漏、全部显卡或真实打印机验收。静态流传输中途发生文件／连接错误时会中断响应，客户端应按原加载失败流程处理，不返回截断的成功文件。

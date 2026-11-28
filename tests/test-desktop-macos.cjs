@@ -2,7 +2,7 @@
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const {applicationRoot,workspaceRoot}=require('../desktop/policy.cjs'),{desktopExecutable}=require('../scripts/launch-desktop.cjs');
 const {build,macArchitecture}=require('../scripts/package-desktop.cjs');
-const job=require('../scripts/lib/test-artifacts.cjs').createRun({parent:path.resolve(__dirname,'../output/desktop-verification'),prefix:'macos-layout-'});
+const job=require('../scripts/lib/test-artifacts.cjs').createRun({parent:path.resolve(__dirname,'../verification.noindex/desktop-verification'),prefix:'macos-layout-'});
 let passed=false;
 try{
  const out=path.join(job.dir,'bundle space #'),runtime=path.join(job.dir,'runtime');job.discard('runtime');job.discard('bundle space #');

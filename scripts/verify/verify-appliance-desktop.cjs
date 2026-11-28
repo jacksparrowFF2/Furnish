@@ -2,7 +2,7 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict'),{_electron}=require(process.env.FURNISH_PLAYWRIGHT||'playwright'),F=require('../lib/model-browser-fixture.cjs');
 async function main(executable,id='washer-tg10k60w'){
- const root=path.resolve(__dirname,'../..'),run=fs.mkdtempSync(path.join(root,'output/appliance-desktop-')),isolated=path.join(run,'workspace');fs.mkdirSync(isolated);
+ const root=path.resolve(__dirname,'../..'),run=require('../lib/test-artifacts.cjs').scratchDirectory(path.join(root,'verification.noindex/appliance-desktop-')),isolated=path.join(run,'workspace');fs.mkdirSync(isolated);
  for(const name of ['index.html','src','styles','vendor','assets'])fs.cpSync(path.join(root,name),path.join(isolated,name),{recursive:true});fs.mkdirSync(path.join(isolated,'scripts'));for(const name of require('../package-desktop.cjs').runtimeFiles)fs.copyFileSync(path.join(root,'scripts',name),path.join(isolated,'scripts',name));fs.mkdirSync(path.join(isolated,'projects'));fs.copyFileSync(path.join(root,'projects/workspace.furnish.json'),path.join(isolated,'projects/workspace.furnish.json'));
  const server=http.createServer();await new Promise(r=>server.listen(0,'127.0.0.1',r));const port=server.address().port;await new Promise(r=>server.close(r));const env={...process.env,FURNISH_DESKTOP_ROOT:isolated,FURNISH_DESKTOP_PROFILE:path.join(run,'cache'),FURNISH_PORT:String(port)};delete env.ELECTRON_RUN_AS_NODE;
  const desktop=await _electron.launch({executablePath:path.resolve(executable),env,timeout:60000}),errors=[];

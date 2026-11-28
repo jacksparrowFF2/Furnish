@@ -7,6 +7,7 @@ const V=require('../scripts/lib/browser-verification.cjs'),R=require('../scripts
   const root=path.join(temp,'中文 # clone'),config=V.configuration({FURNISH_VERIFY_ROOT:root,FURNISH_VERIFY_URL:'http://127.0.0.1:19223/'});
   assert(config.fileBase.includes('%23'));assert(config.fileBase.includes('%20'));assert.equal(require('node:url').fileURLToPath(config.fileBase),root+path.sep);
   assert.equal(config.baseURL,'http://127.0.0.1:19223/');assert.equal(config.launchOptions.headless,true);
+  assert.equal(path.normalize(config.output('playwright/evidence.png')),path.join(root,'verification.noindex','playwright','evidence.png'));
   assert.throws(()=>config.output('../outside.png'));assert.throws(()=>V.configuration({FURNISH_VERIFY_URL:'https://example.com/'}));assert.throws(()=>V.configuration({FURNISH_VERIFY_URL:'http://127.0.0.1:9000/index.html'}));
   assert.deepEqual(V.configuration({FURNISH_BROWSER_CHANNEL:'msedge',FURNISH_VERIFY_HEADED:'1'}).launchOptions,{headless:false,channel:'msedge'});
   assert.deepEqual(R.plan(['purchase-relink','drawing']),['workflow-reimport','room-net','purchase-orders','purchase-relink','drawing']);assert.throws(()=>R.plan(['does-not-exist']));assert(R.failed([{status:'FAIL'}]));assert(!R.failed([{status:'PASS'}]));

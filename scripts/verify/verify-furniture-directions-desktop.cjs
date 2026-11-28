@@ -3,7 +3,7 @@
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict'),crypto=require('node:crypto'),{_electron,chromium}=require('playwright');
 const root=path.resolve(__dirname,'../..'),hash=f=>crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
 async function main(){
- const source=path.join(root,'projects/workspace.furnish.json'),before=hash(source),run=fs.mkdtempSync(path.join(root,'output/playwright/directions-')),isolated=path.join(run,'workspace');fs.mkdirSync(isolated);
+ const source=path.join(root,'projects/workspace.furnish.json'),before=hash(source),run=require('../lib/test-artifacts.cjs').scratchDirectory(path.join(root,'verification.noindex/playwright/directions-')),isolated=path.join(run,'workspace');fs.mkdirSync(isolated);
  for(const name of ['index.html','src','styles','vendor','assets'])fs.cpSync(path.join(root,name),path.join(isolated,name),{recursive:true});
  fs.mkdirSync(path.join(isolated,'scripts'));for(const name of require('../package-desktop.cjs').runtimeFiles)fs.copyFileSync(path.join(root,'scripts',name),path.join(isolated,'scripts',name));
  fs.mkdirSync(path.join(isolated,'projects'));fs.copyFileSync(source,path.join(isolated,'projects/workspace.furnish.json'));

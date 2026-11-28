@@ -10,7 +10,8 @@ function previewFiles(directory){
  if(!fs.existsSync(directory))return [];
  // Test evidence may retain generated HTML after its disposable runtime was
  // archived. These batches are validated by their own run, not as assets.
- if(path.basename(path.dirname(directory))==='output'&&['playwright','desktop-verification','model-pipeline'].includes(path.basename(directory)))return [];
+ if(path.basename(directory)==='verification.noindex')return [];
+ if(path.basename(path.dirname(directory))==='output'&&['playwright','desktop-verification','desktop-verification.noindex','model-pipeline'].includes(path.basename(directory)))return [];
  const checkout=['index.html','src/app.js','scripts/check.cjs'].every(name=>fs.existsSync(path.join(directory,name)));
  if(checkout)return [];
  return fs.readdirSync(directory,{withFileTypes:true}).flatMap(entry=>{

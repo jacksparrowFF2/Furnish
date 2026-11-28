@@ -1,5 +1,5 @@
 async (page,verification)=>{
- const context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[],dir='output/playwright/hob-openings/';p.on('pageerror',e=>errors.push(e.message));
+ const context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[],dir='verification.noindex/playwright/hob-openings/';p.on('pageerror',e=>errors.push(e.message));
  const check=(ok,msg)=>{if(!ok)throw Error(msg);},edit=async(id,n)=>verification.editFurnitureField(p,id,n);
  try{
   await p.goto(verification.baseURL);await p.waitForFunction(()=>!repositoryBooting);await p.locator('#drawing-compass').waitFor();

@@ -1,5 +1,5 @@
 async(page,verification)=>{
- const context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[],dir='output/playwright/drag-feature-snapping/';
+ const context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[],dir='verification.noindex/playwright/drag-feature-snapping/';
  p.on('pageerror',e=>errors.push(e.message));const check=(v,m)=>{if(!v)throw Error(m);};
  const screen=async(x,y)=>p.evaluate(([x,y])=>{const a=drawingPoint([x,y]),pt=svg.createSVGPoint();pt.x=a[0];pt.y=a[1];const q=pt.matrixTransform(svg.getScreenCTM());return {x:q.x,y:q.y};},[x,y]);
  const dragTo=async(start,end,kind,shot)=>{const a=await screen(...start),b=await screen(...end);await p.mouse.move(a.x,a.y);await p.mouse.down();await p.mouse.move(b.x,b.y,{steps:8});await p.waitForFunction(()=>!canvasPointerFrame);check(await p.locator(`[data-drag-snap="${kind}"]`).count()===1,'visible '+kind+' magnet');if(shot)await p.screenshot({path:dir+shot});

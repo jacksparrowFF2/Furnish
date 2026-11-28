@@ -5,7 +5,7 @@ const {spawn}=require('node:child_process');
 const root=path.resolve(__dirname,'../..'),plugin=path.resolve(process.env.FURNISH_CODEX_PLUGIN_ROOT||path.join(root,'plugins/furnish-blender'));
 const {Client,request}=require(path.join(plugin,'mcp/client.cjs'));
 async function main(){
- const parent=path.join(root,'output/codex-blender');fs.mkdirSync(parent,{recursive:true});
+ const parent=path.join(root,'verification.noindex/codex-blender');fs.mkdirSync(parent,{recursive:true});
  const data=fs.mkdtempSync(path.join(parent,'verify-'));
  process.env.FURNISH_BLENDER=require('../blender-server.cjs').findBlender();if(!process.env.FURNISH_BLENDER)throw Error('Blender not found');
  const {start}=require(path.join(plugin,'mcp/gateway.cjs'));

@@ -31,9 +31,9 @@ def inspect(label,expected):
 
 for name in ['desktop.glb','file.glb']:
  bpy.ops.wm.read_factory_settings(use_empty=True)
- bpy.ops.import_scene.gltf(filepath=str(root/'output/art-glass-verification'/name))
+ bpy.ops.import_scene.gltf(filepath=str(root/'verification.noindex/art-glass-verification'/name))
  inspect(name,1)
-bpy.ops.wm.open_mainfile(filepath=str(root/'output/art-glass-verification/api-download.blend'))
+bpy.ops.wm.open_mainfile(filepath=str(root/'verification.noindex/art-glass-verification/api-download.blend'))
 inspect('api-download.blend',9)
 
 for version in ['before','after']:

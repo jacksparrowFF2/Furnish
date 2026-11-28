@@ -3,6 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const T=require('../scripts/lib/test-artifacts.cjs'),helper=require.resolve('../scripts/lib/test-artifacts.cjs');
 (async()=>{
  const suite=T.createRun({prefix:'artifact-contract-',removeEntire:true}),root=suite.dir;
+ assert.equal(path.dirname(root),path.join(__dirname,'../verification.noindex/playwright'));
  const make=options=>T.createRun({root,parent:path.join(root,'jobs'),prefix:'case-',...options});
  let passed=false,child;
  try{

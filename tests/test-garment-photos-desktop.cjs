@@ -5,7 +5,7 @@ const root=path.resolve(__dirname,'..'),F=require('../scripts/lib/model-browser-
 const sha=f=>crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
 (async()=>{
 const executable=require('../scripts/launch-desktop.cjs').desktopExecutable(root);
-const source=process.env.FURNISH_GARMENT_VERIFY_WORKSPACE||path.join(root,'projects/workspace.furnish.json'),before=sha(source),job=Artifacts.createRun({parent:path.join(root,'output/desktop-verification'),prefix:'garment-'}),run=job.dir;
+const source=process.env.FURNISH_GARMENT_VERIFY_WORKSPACE||path.join(root,'projects/workspace.furnish.json'),before=sha(source),job=Artifacts.createRun({parent:path.join(root,'verification.noindex/desktop-verification'),prefix:'garment-'}),run=job.dir;
 let desktop,passed=false;try{
  const isolated=job.workspace('workspace',root,{directories:['src','styles','vendor'],files:['index.html','manifest.webmanifest']});fs.mkdirSync(path.join(isolated,'scripts'),{recursive:true});for(const name of require('../scripts/package-desktop.cjs').runtimeFiles)fs.copyFileSync(path.join(root,'scripts',name),path.join(isolated,'scripts',name));fs.mkdirSync(path.join(isolated,'projects'),{recursive:true});fs.copyFileSync(source,path.join(isolated,'projects/workspace.furnish.json'));job.discard('cache');
  const server=http.createServer();await new Promise(r=>server.listen(0,'127.0.0.1',r));const port=server.address().port;await new Promise(r=>server.close(r));

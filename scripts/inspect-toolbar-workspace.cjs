@@ -2,7 +2,7 @@ const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypt
 const repo=path.resolve(__dirname,'..'),V=require('./lib/browser-verification.cjs'),C=require('../src/core/repository-core.js');
 if(!process.argv[2])throw Error('Usage: node scripts/inspect-toolbar-workspace.cjs <workspace.furnish.json>');
 const input=path.resolve(process.argv[2]),bytes=fs.readFileSync(input),hash=b=>crypto.createHash('sha256').update(b).digest('hex');
-const output=path.join(repo,'output/playwright');fs.mkdirSync(output,{recursive:true});
+const output=path.join(repo,'verification.noindex/playwright');fs.mkdirSync(output,{recursive:true});
 const data=C.parse(JSON.parse(bytes)),run=fs.mkdtempSync(path.join(output,'real-toolbar-')),root=path.join(run,'workspace');fs.mkdirSync(root);
 for(const name of ['src','styles','assets','vendor'])fs.cpSync(path.join(repo,name),path.join(root,name),{recursive:true});fs.copyFileSync(path.join(repo,'index.html'),path.join(root,'index.html'));
 process.env.FURNISH_VERIFY_ROOT=root;

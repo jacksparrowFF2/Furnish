@@ -45,7 +45,7 @@ async function scenario(page,run,mode,desktop){
  assert.deepEqual(errors,[]);return {mode,passed:true,editing:true,real2D3DCapture:true,viewRecall:true,reorderDeleteUndo:true,saveReload:true,portableProject:true,ownerContractor:true,staleImageOmitted:true,confirmationInvalidation:true,narrow:true,mcp:mode==='desktop',errors};
 }
 async function main(){
- const job=Artifacts.createRun({parent:path.join(root,'output/presentation-verification'),prefix:'presentation-'}),run=job.dir;let passed=false,server,browser,desktop;
+ const job=Artifacts.createRun({parent:path.join(root,'verification.noindex/presentation-verification'),prefix:'presentation-'}),run=job.dir;let passed=false,server,browser,desktop;
  const storageFile=path.join(root,'.local/storage.json'),storage=fs.existsSync(storageFile)?JSON.parse(fs.readFileSync(storageFile,'utf8')):{},source=path.resolve(process.env.FURNISH_TEST_PROJECT||storage.file||(storage.directory?path.join(storage.directory,'workspace.furnish.json'):path.join(root,'projects/workspace.furnish.json'))),before=hash(source);console.log('Presentation results: '+run);
  try{
   const isolated=job.workspace('workspace',root,{directories:['src','styles','vendor','assets','scripts'],files:['index.html','manifest.webmanifest']});job.copy(source,'workspace/projects/workspace.furnish.json',{disposable:false});

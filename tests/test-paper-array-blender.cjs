@@ -7,7 +7,7 @@ if(!target){
  assert.equal(made.status,0,made.error?.message||made.stdout+made.stderr);
  const report=made.stdout.match(/Report (.+report\.json)/);assert(report,'Paper-array UI must report its owned export directory');target=path.dirname(report[1].trim());
 }
-const run=path.resolve(target);assert(run.startsWith(path.join(root,'output')+path.sep),'Pass the owned paper-array UI evidence directory');
+const run=path.resolve(target);assert(run.startsWith(path.join(root,'verification.noindex')+path.sep),'Pass the owned paper-array UI evidence directory');
 const file=path.join(run,'arrays.glb'),source=fs.readFileSync(file),expected=require('../scripts/lib/glb-model-evidence.cjs').inspect(source,['array-0','array-1']),executable=require('../scripts/blender-server.cjs').findBlender();assert(executable,'Installed Blender required');
 fs.writeFileSync(path.join(run,'blender-expected.json'),JSON.stringify({parts:expected.parts,sha256:crypto.createHash('sha256').update(source).digest('hex'),executable}));
 const script=path.join(run,'readback.py');fs.writeFileSync(script,`

@@ -3,7 +3,7 @@ if(!process.env.FURNISH_VERIFY_ROOT){require('../verify-browser.cjs').main(['pip
 const fs=require('fs'),path=require('path'),assert=require('assert/strict'),P=require('../../src/core/project-core.js'),C=require('../../src/core/cabinet-core.js');
 const verification=require('../lib/browser-verification.cjs').configuration();
 (async()=>{
- const browser=await require('../lib/browser-verification.cjs').launch(),root=verification.root,out=path.join(root,'output/playwright/pipe-collisions');fs.mkdirSync(out,{recursive:true});
+ const browser=await require('../lib/browser-verification.cjs').launch(),root=verification.root,out=path.join(root,'verification.noindex/playwright/pipe-collisions');fs.mkdirSync(out,{recursive:true});
  const data=P.unpack(JSON.parse(fs.readFileSync(verification.fixture('imported.furnish.json'),'utf8'))),draft=data.current.architecture.draft;
  const marker=draft.markers[0],center=marker.at.map(v=>v*draft.scale);marker.pipeDiameter=200;
  const cabinet={id:'test-cab',name:'管道避让柜',type:'cabinet',...C.preset('sideboard-drawers'),cx:center[0],cy:center[1],rot:0};

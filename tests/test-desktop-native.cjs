@@ -3,7 +3,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),os=require('node:os'),http=require('node:http'),{spawn}=require('node:child_process');
 const root=path.resolve(__dirname,'..');
 async function main(){
- const run=fs.mkdtempSync(path.join(root,'output/playwright/desktop-lifecycle-'));
+ const run=require('../scripts/lib/test-artifacts.cjs').scratchDirectory(path.join(root,'verification.noindex/playwright/desktop-lifecycle-'));
  const runtime=fs.mkdtempSync(path.join(os.tmpdir(),'Furnish-lifecycle-runtime-'));fs.cpSync(path.dirname(require('electron')),runtime,{recursive:true});
  const executable=path.join(runtime,'electron.exe');require('../scripts/windows-integrity.cjs').assertDesktopIntegrity(executable);
  const log=path.join(run,'events.jsonl'),closeRequest=path.join(run,'close'),entry=path.join(run,'entry.cjs');
@@ -59,4 +59,4 @@ async function main(){
   }
  }
 }
-fs.mkdirSync(path.join(root,'output/playwright'),{recursive:true});main().catch(e=>{console.error(e);process.exitCode=1;});
+fs.mkdirSync(path.join(root,'verification.noindex/playwright'),{recursive:true});main().catch(e=>{console.error(e);process.exitCode=1;});

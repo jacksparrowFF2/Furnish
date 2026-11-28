@@ -48,7 +48,7 @@ async(page,verification)=>{
    const csvPath=verification.output('playwright/tile-takeoff/'+mode+'-quantities.csv');
    await csv.saveAs(csvPath);
    const book=await context.newPage();
-   await book.goto(verification.fileBase+'output/playwright/tile-takeoff/'+mode+'-book.html');
+   await book.goto(verification.fileBase+'verification.noindex/playwright/tile-takeoff/'+mode+'-book.html');
    check(await book.locator('svg').count()>1,'offline printed floor and elevation figures');
    check(await book.locator('[data-takeoff-piece^="F01"]').count()>10,'floor piece IDs');
    check(await book.locator('[data-takeoff-piece^="W"]').count()>10,'wall piece IDs');

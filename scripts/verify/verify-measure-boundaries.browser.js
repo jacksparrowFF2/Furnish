@@ -1,6 +1,6 @@
 async (page,verification)=>{
  const context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[];
- p.on('pageerror',e=>errors.push(e.message));const check=(v,m)=>{if(!v)throw Error(m);},dir='output/playwright/measure-boundaries/';
+ p.on('pageerror',e=>errors.push(e.message));const check=(v,m)=>{if(!v)throw Error(m);},dir='verification.noindex/playwright/measure-boundaries/';
  const screen=async(x,y)=>{await p.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));return p.evaluate(([x,y])=>{const at=drawingPoint([x,y]),pt=svg.createSVGPoint();pt.x=at[0];pt.y=at[1];const q=pt.matrixTransform(svg.getScreenCTM());return {x:q.x,y:q.y};},[x,y]);};
  const move=async(x,y)=>{await p.mouse.move(x,y);await p.evaluate(()=>new Promise(requestAnimationFrame));};
  const click=async(x,y)=>{const q=await screen(x,y);await p.mouse.click(q.x,q.y);};

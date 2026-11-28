@@ -4,7 +4,7 @@ const fs=require('fs'),path=require('path'),assert=require('assert/strict');
 const verification=require('../lib/browser-verification.cjs').configuration();
 const P=require('../../src/core/project-core.js');
 (async()=>{
- const browser=await require('../lib/browser-verification.cjs').launch(),root=verification.root,out=path.join(root,'output/playwright/dxf-supplement');fs.mkdirSync(out,{recursive:true});
+ const browser=await require('../lib/browser-verification.cjs').launch(),root=verification.root,out=path.join(root,'verification.noindex/playwright/dxf-supplement');fs.mkdirSync(out,{recursive:true});
  const sourcePath=verification.fixture('1601-source.dxf');
  const data=P.unpack(JSON.parse(fs.readFileSync(verification.fixture('zone-vertices-verified.furnish.json'),'utf8')));
  // Deliberately reproduce a missed beam layer using a copy of the saved 1601.

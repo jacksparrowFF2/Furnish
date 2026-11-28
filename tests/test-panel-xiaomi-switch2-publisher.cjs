@@ -1,6 +1,6 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),assert=require('node:assert/strict');
-const root=path.resolve(__dirname,'..'),job=require('../scripts/lib/test-artifacts.cjs').createRun({parent:path.join(root,'output/model-pipeline'),prefix:'panel-publisher-negative-'});let passed=false;
+const root=path.resolve(__dirname,'..'),job=require('../scripts/lib/test-artifacts.cjs').createRun({parent:path.join(root,'verification.noindex/model-pipeline'),prefix:'panel-publisher-negative-'});let passed=false;
 try{
  const source=path.dirname(path.join(root,require('../scripts/lib/model-profiles.cjs').sourceFiles('panel-xiaomi-switch2').glb)),input=path.join(job.dir,'input');job.discard('input');fs.mkdirSync(input);
  const variants=require('../src/core/product-rules.js').xiaomiPanelVariants,keys=Object.keys(variants);for(const key of keys)fs.copyFileSync(path.join(source,key+'.glb'),path.join(input,key+'.glb'));

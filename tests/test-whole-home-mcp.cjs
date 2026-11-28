@@ -10,7 +10,7 @@ async function port(){
  const value=server.address().port;await new Promise(resolve=>server.close(resolve));return value;
 }
 async function main(){
- const job=A.createRun({parent:path.join(root,'output/desktop-verification'),prefix:'whole-home-mcp-'}),errors=[],results=[];
+ const job=A.createRun({parent:path.join(root,'verification.noindex/desktop-verification'),prefix:'whole-home-mcp-'}),errors=[],results=[];
  let app,browser,success=false;
  try{
   const work=job.workspace('workspace.noindex',root,{directories:['src','assets','vendor','styles'],files:['index.html','manifest.webmanifest']});

@@ -16,7 +16,7 @@ async function nativeMcp(data,port){
  }finally{if(child.exitCode===null&&child.signalCode===null){const closed=new Promise(r=>child.once('close',r));const timer=setTimeout(()=>child.kill(),5000);child.stdin.end();await closed;clearTimeout(timer);}}
 }
 async function main(){
- const parent=path.join(root,'output/codex-blender-autostart');fs.mkdirSync(parent,{recursive:true});const data=fs.mkdtempSync(path.join(parent,'verify-'));
+ const parent=path.join(root,'verification.noindex/codex-blender-autostart');fs.mkdirSync(parent,{recursive:true});const data=fs.mkdtempSync(path.join(parent,'verify-'));
  process.env.FURNISH_BLENDER=require('../blender-server.cjs').findBlender();
  const gateway=await require(path.join(plugin,'mcp/gateway.cjs')).start({data,port:0});const port=gateway.identity.port;
  const a=new Client({data,port,session:'auto-one'}),b=new Client({data,port,session:'auto-two'}),report={passed:false,data,plugin,checks:[]};

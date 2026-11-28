@@ -398,15 +398,20 @@ Furnish/
 │   ├── render/             # 家具 SVG 图例与 2D 画布图层
 │   └── data/               # 户型、家具、材料、语言、风格与 DXF 模板
 ├── styles/                 # 主界面、户型编辑器与项目工作台样式
-├── assets/icons/           # 应用图标
+├── assets/                 # 应用图标、生产模型与型号档案
 ├── examples/               # DXF、PDF、OBJ 导入示例
 ├── templates/              # DXF 模板、历史夹具及独立预览源模板
 ├── vendor/pdfjs/           # PDF.js 及其离线资源
-├── tests/                  # 回归脚本，helpers/ 提供统一路径入口
+├── desktop/、desktop-tauri/ # 正式 Electron 桌面壳与 Tauri 对照壳
+├── plugins/                # Furnish Blender 等集成
+├── projects/               # 项目数据及默认工作区
+├── tests/                  # 回归脚本、夹具与共享验收辅助
 ├── scripts/                # check.cjs、serve.cjs、validate-plans.mjs
 ├── docs/                   # 测试说明、改进记录、参考图与精选验收证据
 ├── skills/furnish-modeling/ # 可复用建模技能源文件
-├── output/                 # 本地生成物和完整验收结果，不入 Git
+├── output/                 # 本机桌面包、独立模型预览及设计交付
+├── verification.noindex/   # 本机验证批次、证据及测试归档
+├── .local/                 # 本机运行配置、恢复与 MCP 暂存
 └── README.md
 ```
 
@@ -414,7 +419,7 @@ Furnish/
 
 开发验证运行 `node scripts/check.cjs`，包含递归脚本语法检查、入口资源路径检查、全部回归与内置户型校验。单个测试可运行 `node tests/test-project.cjs`；脚本与测试根据自身位置解析项目路径，不依赖调用时的工作目录。本地服务运行 `node scripts/serve.cjs` 或双击 `start-furnish.cmd`。示例从 `examples/` 选择，模板原文件在 `templates/`。
 
-全新克隆后运行 `node scripts/generate-previews.cjs` 重建独立模型预览。`output/` 不提交；产品资料、技能文件及长期验收证据见 [生成物与资料约定](docs/OUTPUT-ARTIFACTS.md)。
+全新克隆后运行 `node scripts/generate-previews.cjs` 重建独立模型预览。`output/` 与 `verification.noindex/` 均不入 Git。产品资料、技能文件及长期验收证据见 [生成物与资料约定](docs/OUTPUT-ARTIFACTS.md)。
 
 ## 如何新增一套户型
 

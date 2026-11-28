@@ -18,7 +18,7 @@ async function main(){
  if(path.extname(bundle)!=='.app'||!fs.statSync(bundle).isDirectory())throw Error('Expected a macOS .app bundle');
  // Retain this signed runtime and screenshots as evidence; never sweep bundles
  // containing framework symlinks with the generic disposable-file cleaner.
- const job=A.createRun({parent:path.join(root,'output/desktop-verification'),prefix:'native-startup-',env:{...process.env,FURNISH_KEEP_TEST_WORKSPACES:'1'}});
+ const job=A.createRun({parent:path.join(root,'verification.noindex/desktop-verification'),prefix:'native-startup-',env:{...process.env,FURNISH_KEEP_TEST_WORKSPACES:'1'}});
  let passed=false,desktop;
  try{
   const isolated=job.workspace('workspace',root),out=job.workspace('bundle space #',root);

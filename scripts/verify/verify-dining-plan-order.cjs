@@ -4,7 +4,7 @@ const fs=require('node:fs'),path=require('node:path'),assert=require('node:asser
 const verification=require('../lib/browser-verification.cjs').configuration();
 const W=require('../../src/core/work-state.js'),catalog=require('../../src/data/catalog.js'),plans=require('../../src/data/plans.js');
 (async()=>{
- const root=verification.root,out=path.join(root,'output/playwright/dining-plan-order');fs.mkdirSync(out,{recursive:true});
+ const root=verification.root,out=path.join(root,'verification.noindex/playwright/dining-plan-order');fs.mkdirSync(out,{recursive:true});
  const plan=plans[0],work=W.create({makeId:()=> 'unused',colorFor:()=> '#ddd',materials:catalog.materials}).fresh(plan);
  const table={id:'dining',type:'table',name:'餐桌',cx:30000,cy:30000,w:900,d:1400,rot:0,color:'#dfc9a4'};
  const chairs=[-1,1].flatMap(side=>[-1,1].map(row=>({id:`chair${side}${row}`,type:'chair',name:'餐椅',cx:30000+side*500,cy:30000+row*310,w:450,d:550,rot:side*90,flip:side===1,color:'#b8b1a2'})));

@@ -12,7 +12,7 @@ async function main(){
  if(positionals.length>1)throw Error('用法：node scripts/verify-desktop.cjs [--narrow] [桌面程序路径]');
  const [executablePath]=positionals;
  const source=path.resolve(process.env.FURNISH_TEST_PROJECT||path.join(root,'projects/workspace.furnish.json')),before=hash(source);
- const job=Artifacts.createRun({parent:path.join(root,'output/desktop-verification'),prefix:'verification-'}),run=job.dir;let passed=false;
+ const job=Artifacts.createRun({parent:path.join(root,'verification.noindex/desktop-verification'),prefix:'verification-'}),run=job.dir;let passed=false;
  try{
  const isolated=job.workspace('workspace',root,{directories:['src','styles','vendor','assets'],files:['index.html','manifest.webmanifest']});
  job.copy(source,'workspace/projects/workspace.furnish.json',{disposable:false});

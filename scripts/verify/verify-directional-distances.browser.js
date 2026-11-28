@@ -1,5 +1,5 @@
 async (page,verification)=>{
- const context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[],dir='output/playwright/measure-boundaries/';
+ const context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[],dir='verification.noindex/playwright/measure-boundaries/';
  p.on('pageerror',e=>errors.push(e.message));const check=(v,m)=>{if(!v)throw Error(m);};
  const showDistances=async()=>{if(!await p.locator('#fab-editor [data-distance-save]').count())await p.locator('#fab [data-fab-edit="distance"]').click();};
  try{

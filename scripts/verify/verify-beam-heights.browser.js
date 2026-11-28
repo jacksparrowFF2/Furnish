@@ -20,14 +20,14 @@ async (page,verification)=>{
   await p.getByRole('button',{name:'撤销',exact:true}).first().click();check((await issues()).some(v=>v.id==='peg'&&!v.pending),'undo beam');await p.getByRole('button',{name:'重做',exact:true}).first().click();check(!(await issues()).some(v=>v.id==='peg'),'redo beam');
   await structure();await p.locator('#beam-bottom-0').fill('500');await p.locator('[data-beam-cancel="0"]').click();check(await p.locator('#beam-bottom-0').inputValue()==='3900','cancel input');
   await heights(0,'','');check(await p.evaluate(()=>state.architecture.draft.beams[0].bottomHeight===undefined&&state.architecture.draft.beams[0].topHeight===undefined),'clear removes both heights');check((await p.locator('[data-beam-form="beam-door"] [data-beam-status]').innerText()).includes('待核对'),'clear unknown');await heights(0,1850,2200);
-  await p.screenshot({path:root+'output/playwright/beam-heights/'+mode+'-heights.png'});await p.locator('#dlgClose').click();
+  await p.screenshot({path:root+'verification.noindex/playwright/beam-heights/'+mode+'-heights.png'});await p.locator('#dlgClose').click();
   await p.locator('[data-view="3d"]').click();await p.waitForFunction(()=>document.querySelector('#stage').classList.contains('is3d')&&!document.querySelector('#stage').classList.contains('animating'));
   check(await p.locator('#view3d canvas').count()>0,'3D canvas');
-  await p.screenshot({path:root+'output/playwright/beam-heights/'+mode+'-3d.png'});
+  await p.screenshot({path:root+'verification.noindex/playwright/beam-heights/'+mode+'-3d.png'});
   await p.locator('[data-view="2d"]').click();await p.waitForFunction(()=>!document.querySelector('#stage').classList.contains('is3d')&&!document.querySelector('#stage').classList.contains('animating'));
-  await backup();const downloading=p.waitForEvent('download');await p.locator('#pr-export').click();const file=await downloading,path=root+'output/playwright/beam-heights/'+mode+'.json';await file.saveAs(path);await p.locator('#pr-file').setInputFiles(path);await p.locator('#pr-restore-confirm').click();await p.waitForTimeout(800);await p.reload();
+  await backup();const downloading=p.waitForEvent('download');await p.locator('#pr-export').click();const file=await downloading,path=root+'verification.noindex/playwright/beam-heights/'+mode+'.json';await file.saveAs(path);await p.locator('#pr-file').setInputFiles(path);await p.locator('#pr-restore-confirm').click();await p.waitForTimeout(800);await p.reload();
   check(await p.evaluate(()=>state.architecture.draft.beams[0].bottomHeight===1850&&state.architecture.draft.beams[2].topHeight===3500),'download reimport reload');check((await issues()).some(v=>v.id==='side'&&!v.pending),'reload conflict');
-  await p.setViewportSize({width:390,height:844});await structure();await p.screenshot({path:root+'output/playwright/beam-heights/'+mode+'-mobile.png'});check(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'mobile overflow');
+  await p.setViewportSize({width:390,height:844});await structure();await p.screenshot({path:root+'verification.noindex/playwright/beam-heights/'+mode+'-mobile.png'});check(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'mobile overflow');
   check(errors.length===0,errors.join('\n'));check(external.length===0,'external network');results.push({mode,passed:true,pageErrors:errors,externalRequests:external.length});await context.close();
  }
  return {passed:true,results};

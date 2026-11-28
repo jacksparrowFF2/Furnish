@@ -3,7 +3,7 @@
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http');
 const B=require('../blender-server.cjs');
 async function main(){
- const root=path.resolve(__dirname,'../..'),input=path.resolve(process.argv[2]||'output/playwright/blender/http-scene.glb'),output=path.join(root,'output/playwright/blender');fs.mkdirSync(output,{recursive:true});
+ const root=path.resolve(__dirname,'../..'),input=path.resolve(process.argv[2]||'verification.noindex/playwright/blender/http-scene.glb'),output=path.join(root,'verification.noindex/playwright/blender');fs.mkdirSync(output,{recursive:true});
  const scene=B.validateGLB(fs.readFileSync(input));console.log('Input meshes: '+scene.meshes.length+'; extensions: '+(scene.extensionsUsed||[]).join(', '));
  console.log('Blender: '+B.findBlender());const bridge=B.create(root),server=http.createServer((req,res)=>bridge.handle(req,res));
  await new Promise(r=>server.listen(0,'127.0.0.1',r));const base='http://127.0.0.1:'+server.address().port;

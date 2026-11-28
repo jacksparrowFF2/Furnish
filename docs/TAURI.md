@@ -13,7 +13,7 @@ npm run tauri
 
 可用 `FURNISH_CARGO` 指定 Cargo 可执行文件。原生构建输出为 `output/tauri-build.noindex/release/furnish-tauri`（Windows 加 `.exe`）；macOS 另生成按二进制哈希隔离、本机签名的 `.app`，用 `current-app.json` 指向当前包。启动器通过 LaunchServices 打开 `.app`，保持系统对 WebKit 服务的正确归属。包由启动器注入本机服务地址，目前依赖本机 Node 与源码，不能直接双击或作为独立便携安装包。不会替换 `~/Applications/Furnish.app`。
 
-每次不带 `--workspace` 的启动创建新的 `output/tauri-comparison/compare-*.noindex/`，复制代码和工作区，保留源文件哈希；不复制 `.local/storage.json`，不连接正式保存目录。默认通过原 `workspace-files.info({inspect:false})` 只读定位本机当前正式文件，支持已有外置保存目录；可用 `FURNISH_TEST_PROJECT=/绝对路径/workspace.furnish.json` 指定其它源文件。所有编辑只写副本。副本保留，不能把它当作原方案的自动同步。
+每次不带 `--workspace` 的启动创建新的 `verification.noindex/tauri-comparison/compare-*.noindex/`，复制代码和工作区，保留源文件哈希；不复制 `.local/storage.json`，不连接正式保存目录。默认通过原 `workspace-files.info({inspect:false})` 只读定位本机当前正式文件，支持已有外置保存目录；可用 `FURNISH_TEST_PROJECT=/绝对路径/workspace.furnish.json` 指定其它源文件。所有编辑只写副本。副本保留，不能把它当作原方案的自动同步。
 
 控制台和 `<engine>-launch.json` 给出实际工作目录、进程、端口及缓存信息。复用同一个副本启动另一种壳：
 

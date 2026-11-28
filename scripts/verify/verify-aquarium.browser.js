@@ -22,12 +22,12 @@ async (page,verification)=>{
   // Real project download/upload includes one named design as well as current work.
   await p.evaluate(()=>{store.designs.push({id:'aquarium-check',name:'鱼缸验收',planId:PLAN.id,ts:Date.now(),work:JSON.parse(JSON.stringify(state))});});
   await p.locator('#projectWorkspace').click();await p.getByRole('button',{name:'备份／加载项目',exact:true}).click();
-  const downloaded=p.waitForEvent('download');await p.locator('#pr-export').click();const file=root+'output/playwright/aquarium/'+mode+'.furnish.json';await(await downloaded).saveAs(file);await p.locator('#pr-file').setInputFiles(file);await p.locator('#pr-restore-confirm').click();
+  const downloaded=p.waitForEvent('download');await p.locator('#pr-export').click();const file=root+'verification.noindex/playwright/aquarium/'+mode+'.furnish.json';await(await downloaded).saveAs(file);await p.locator('#pr-file').setInputFiles(file);await p.locator('#pr-restore-confirm').click();
   check(await p.evaluate(id=>JSON.stringify(getF(id)),id)===before,'download/reimport');check(await p.evaluate(()=>store.designs.some(d=>d.id==='aquarium-check'&&d.work.furniture.some(f=>f.type==='aquarium_mijia_2pro'&&f.mountHeight===750))),'named design');
-  await p.evaluate(id=>{selectIds([id]);zoomSel();},id);await p.getByRole('button',{name:'3D 场景',exact:true}).click();await p.waitForFunction(()=>is3D()&&!switching);await p.waitForTimeout(600);await p.screenshot({path:root+'output/playwright/aquarium/'+mode+'-app-3d.png'});
+  await p.evaluate(id=>{selectIds([id]);zoomSel();},id);await p.getByRole('button',{name:'3D 场景',exact:true}).click();await p.waitForFunction(()=>is3D()&&!switching);await p.waitForTimeout(600);await p.screenshot({path:root+'verification.noindex/playwright/aquarium/'+mode+'-app-3d.png'});
   check(await p.evaluate(id=>!furnitureError(getF(id)),id),'3D render');
   await p.getByRole('button',{name:'2D 平面',exact:true}).click();await p.waitForFunction(()=>!is3D()&&!switching);await p.evaluate(id=>selectIds([id]),id);await p.setViewportSize({width:390,height:844});await p.locator('#tgPanel').click();await p.waitForTimeout(300);
-  check(await p.locator('#fMountHeight').isVisible(),'narrow height field');check(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'narrow overflow');await p.screenshot({path:root+'output/playwright/aquarium/'+mode+'-mobile.png'});
+  check(await p.locator('#fMountHeight').isVisible(),'narrow height field');check(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'narrow overflow');await p.screenshot({path:root+'verification.noindex/playwright/aquarium/'+mode+'-mobile.png'});
   check(!errors.length,errors.join(';'));check(!external.length,'external dependencies');results.push({mode,passed:true,errors,externalRequests:external.length});await context.close();
  }
  return results;

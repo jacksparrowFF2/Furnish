@@ -33,7 +33,7 @@ function listen(server){return new Promise((resolve,reject)=>{server.once('error
   assert.equal(first.child.exitCode,null,'Original server must stay running');
  }finally{first.child.kill();await first.closed;}
  // Exercise real disk changes in an isolated checkout, never the user's sources/data.
- const output=path.join(root,'output');fs.mkdirSync(output,{recursive:true});
+ const output=path.join(root,'verification.noindex');fs.mkdirSync(output,{recursive:true});
  const isolated=fs.mkdtempSync(path.join(output,'server-startup-'));
  let active;
  try{

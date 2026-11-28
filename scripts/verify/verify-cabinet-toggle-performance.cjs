@@ -1,7 +1,7 @@
 'use strict';
 // Fresh browser profiles and GET-only server; the real workspace is read only.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{pathToFileURL}=require('node:url');
-const V=require('../lib/browser-verification.cjs'),root=V.projectRoot,out=path.join(root,'output/playwright/cabinet-toggle');
+const V=require('../lib/browser-verification.cjs'),root=V.projectRoot,out=path.join(root,'verification.noindex/playwright/cabinet-toggle');
 (async()=>{
  fs.mkdirSync(out,{recursive:true});const inputIndex=process.argv.indexOf('--workspace'),input=inputIndex<0?path.join(root,'projects/workspace.furnish.json'):path.resolve(process.argv[inputIndex+1]),source=fs.readFileSync(input),workspace=JSON.parse(source).workspace;
  // Keep the current design in the fresh browser cache; unrelated plans can exceed its quota.

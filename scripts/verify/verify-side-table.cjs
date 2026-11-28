@@ -1,7 +1,7 @@
 /* Private workspace only. Real WebGL, offline file and static HTTP. */
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),assert=require('node:assert/strict'),V=require('../lib/browser-verification.cjs');
-async function main(){const project=path.resolve(__dirname,'../..'),run=path.join(project,'output/side-table-validation'),root=path.join(run,'workspace');fs.mkdirSync(root,{recursive:true});
+async function main(){const project=path.resolve(__dirname,'../..'),run=path.join(project,'verification.noindex/side-table-validation'),root=path.join(run,'workspace');fs.mkdirSync(root,{recursive:true});
  for(const name of ['src','styles','assets','vendor','templates'])fs.cpSync(path.join(project,name),path.join(root,name),{recursive:true});fs.copyFileSync(path.join(project,'index.html'),path.join(root,'index.html'));fs.mkdirSync(path.join(root,'projects'),{recursive:true});fs.copyFileSync(path.join(project,'projects/workspace.furnish.json'),path.join(root,'projects/workspace.furnish.json'));
  const result=cp.spawnSync(process.execPath,[path.join(project,'scripts/preview-side-table.cjs')],{env:{...process.env,FURNISH_VERIFY_ROOT:root},encoding:'utf8',windowsHide:true});assert.equal(result.status,0,result.stderr);
  const server=await V.staticServer(root);process.env.FURNISH_VERIFY_ROOT=root;process.env.FURNISH_VERIFY_URL=server.baseURL;const config=V.configuration(),results=[];let browser;

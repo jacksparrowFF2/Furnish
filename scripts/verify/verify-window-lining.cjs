@@ -1,7 +1,7 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),http=require('node:http'),crypto=require('node:crypto');
 const {pathToFileURL}=require('node:url'),{_electron,chromium}=require('playwright');
-const root=path.resolve(__dirname,'../..'),run=path.join(root,'output/window-lining-verification'),isolated=path.join(run,'workspace'),{runtimeFiles}=require('../package-desktop.cjs');
+const root=path.resolve(__dirname,'../..'),run=path.join(root,'verification.noindex/window-lining-verification'),isolated=path.join(run,'workspace'),{runtimeFiles}=require('../package-desktop.cjs');
 const source=path.resolve(process.argv[2]||path.join(root,'projects/workspace.furnish.json')),hash=f=>crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
 async function main(){
  console.log('START');

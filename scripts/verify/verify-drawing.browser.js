@@ -1,6 +1,6 @@
 /* Playwright CLI run-code --filename; synthetic data, isolated contexts. */
 async (page,verification)=>{
- const root=verification.root,dir=root+'output/playwright/workflow-tools/',url=(verification.baseURL+'index.html'),check=(v,m)=>{if(!v)throw Error(m);};
+ const root=verification.root,dir=root+'verification.noindex/playwright/workflow-tools/',url=(verification.baseURL+'index.html'),check=(v,m)=>{if(!v)throw Error(m);};
  const context=await page.context().browser().newContext({viewport:{width:1500,height:950}}),p=await context.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));
  const saved=()=>p.evaluate(()=>({drawing:state.drawing,furniture:state.furniture,architecture:state.architecture,rooms:state.rooms,pricing:state.pricing}));
  async function importUI(tab,file){await tab.getByRole('button',{name:'工作台',exact:true}).click();await tab.getByRole('button',{name:'备份／加载项目',exact:true}).click();await tab.locator('#pr-file').setInputFiles(file);await tab.locator('#pr-restore-confirm').waitFor();await tab.locator('#pr-restore-confirm').click();await tab.locator('#dlg').waitFor({state:'hidden'});}

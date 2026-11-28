@@ -13,7 +13,7 @@ async function main(){
  const expected=require('../../plugins/furnish-blender/mcp/server.cjs').tools.map(t=>t.name);
  assert.deepEqual([...names].sort(),expected.sort());
  const report={passed:true,checked:new Date().toISOString(),transport:{command:transport.command,args:transport.args,cwd:transport.cwd},tools:names};
- const target=path.resolve(__dirname,'../../output/codex-blender-registration.json');fs.mkdirSync(path.dirname(target),{recursive:true});fs.writeFileSync(target,JSON.stringify(report,null,2)+'\n');
+ const target=path.resolve(__dirname,'../../verification.noindex/codex-blender-registration.json');fs.mkdirSync(path.dirname(target),{recursive:true});fs.writeFileSync(target,JSON.stringify(report,null,2)+'\n');
  console.log(JSON.stringify(report,null,2));return report;
 }
 if(require.main===module)main().catch(e=>{console.error(e);process.exitCode=1;});

@@ -35,7 +35,7 @@ async function main(args=process.argv.slice(2)){
  const selected=plan(names.includes('--all')?[...registry.keys()]:names.length?names:['portable-smoke']);
  // Validate dependency installation and URL before copying or starting work.
  const engine=V.loadPlaywright(),config=V.configuration();if(!config.launchOptions.channel){const executable=config.launchOptions.executablePath||engine.chromium.executablePath();if(!fs.existsSync(executable))throw Error('Browser executable missing: '+executable+'. Install the matching Playwright browser or configure PLAYWRIGHT_BROWSERS_PATH / FURNISH_BROWSER_PATH before running acceptance.');}
- const output=path.join(V.projectRoot,'output/playwright');fs.mkdirSync(output,{recursive:true});
+ const output=path.join(V.projectRoot,'verification.noindex/playwright');fs.mkdirSync(output,{recursive:true});
  const job=Artifacts.createRun({parent:output,prefix:'verification-'}),run=job.dir;
  let server,passed=false;const results=[];
  try{
@@ -44,10 +44,11 @@ async function main(args=process.argv.slice(2)){
  const fixtureDir=path.join(root,'tests/fixtures/browser');
  if(selected.includes('current-bays'))fs.copyFileSync(path.join(V.projectRoot,'projects/workspace.furnish.json'),path.join(fixtureDir,'current-bay-workspace.json'));
  if(selected.includes('tv-floor-overlay'))fs.copyFileSync(path.join(V.projectRoot,'projects/workspace.furnish.json'),path.join(fixtureDir,'tv-floor-workspace.json'));
- fs.mkdirSync(path.join(root,'output/playwright/workflow-tools'),{recursive:true});fs.copyFileSync(path.join(fixtureDir,'reimport-input.furnish.json'),path.join(root,'output/playwright/workflow-tools/reimport-input.furnish.json'));
- fs.cpSync(fixtureDir,path.join(root,'output/playwright/real-drawing'),{recursive:true});
+ fs.mkdirSync(path.join(root,'verification.noindex/playwright/workflow-tools'),{recursive:true});fs.copyFileSync(path.join(fixtureDir,'reimport-input.furnish.json'),path.join(root,'verification.noindex/playwright/workflow-tools/reimport-input.furnish.json'));
+ fs.cpSync(fixtureDir,path.join(root,'verification.noindex/playwright/real-drawing'),{recursive:true});
  const prepared=await child([path.join(root,'scripts/generate-previews.cjs')]);fs.writeFileSync(path.join(run,'previews.log'),prepared.output);if(prepared.code!==0)throw Error('Preview preparation failed: '+prepared.output);
  job.generated(path.join(root,'output'));
+ job.generated(path.join(root,'verification.noindex'));
  server=await V.staticServer(root,process.env.FURNISH_VERIFY_URL);const env={...process.env,FURNISH_VERIFY_ROOT:root,FURNISH_VERIFY_URL:server.baseURL};
  console.log('Isolated browser verification: '+run+'\nStatic service: '+server.baseURL);
  try{for(const name of selected){console.log('RUN '+name);const started=Date.now(),result=await child([__filename,'--worker',name],{env});fs.writeFileSync(path.join(run,name+'.log'),result.output);results.push({name,status:result.code===0?'PASS':'FAIL',seconds:Math.round((Date.now()-started)/100)/10,log:name+'.log'});fs.writeFileSync(path.join(run,'results.json'),JSON.stringify({selected,results,notRun:selected.slice(results.length)},null,2));console.log(results.at(-1).status+' '+name);if(result.code!==0){console.error(result.output.slice(-6000));if(!keepGoing)break;}}}

@@ -20,7 +20,7 @@ async function freePort() {
 }
 
 async function main() {
-  const job = createRun({ parent: path.join(root, 'output/desktop-verification'), prefix: 'orbit-drag-' });
+  const job = createRun({ parent: path.join(root, 'verification.noindex/desktop-verification'), prefix: 'orbit-drag-' });
   let app, passed = false;
   const errors = [];
   try {

@@ -18,7 +18,7 @@ async function freePort(){
 async function main(){
  const {positionals:[executable],values}=parseArgs({options:{'save-only':{type:'boolean'}},allowPositionals:true});
  const source=path.resolve(process.env.FURNISH_TEST_PROJECT||path.join(root,'projects/workspace.furnish.json')),before=hash(source);
- const job=createRun({parent:path.join(root,'output/desktop-verification'),prefix:'unload-'});
+ const job=createRun({parent:path.join(root,'verification.noindex/desktop-verification'),prefix:'unload-'});
  const profile=job.discard('profile'),report={checks:[],dialogs:[]};
  let desktop,passed=false,held;
  try{

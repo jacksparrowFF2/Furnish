@@ -2,7 +2,7 @@
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict'),crypto=require('node:crypto');
 const {_electron,chromium}=require('playwright'),{pathToFileURL}=require('node:url');
 const root=path.resolve(__dirname,'../..'),{runtimeFiles}=require('../package-desktop.cjs'),source=path.resolve(process.argv[2]||path.join(root,'projects/workspace.furnish.json'));
-const run=path.join(root,'output/bay-upper-walls-verification',new Date().toISOString().replace(/[:.]/g,'-')),workspace=path.join(run,'workspace');
+const run=path.join(root,'verification.noindex/bay-upper-walls-verification',new Date().toISOString().replace(/[:.]/g,'-')),workspace=path.join(run,'workspace');
 const hash=file=>crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
 async function main(){
  const before=hash(source),snapshot=require('../../src/core/repository-core.js').parse(JSON.parse(fs.readFileSync(source,'utf8')));fs.mkdirSync(workspace,{recursive:true});

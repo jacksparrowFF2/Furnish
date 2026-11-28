@@ -1,7 +1,7 @@
 /* Exercise the real render/download API with the embedded production sample GLB. */
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict');
-const root=path.resolve(__dirname,'../..'),run=path.join(root,'output/art-glass-verification');
+const root=path.resolve(__dirname,'../..'),run=path.join(root,'verification.noindex/art-glass-verification');
 async function main(){
  const api=require('../blender-server.cjs').create(path.join(run,'workspace'));
  const server=http.createServer((req,res)=>api.handle(req,res));await new Promise(r=>server.listen(0,'127.0.0.1',r));

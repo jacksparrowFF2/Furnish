@@ -1,5 +1,5 @@
 async (page,verification)=>{
- const context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[],dir='output/playwright/stove-boundaries/';
+ const context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[],dir='verification.noindex/playwright/stove-boundaries/';
  const check=(v,m)=>{if(!v)throw Error(m);};p.on('pageerror',e=>errors.push(e.stack));
  try{
   await p.goto(verification.baseURL);await p.waitForFunction(()=>!repositoryBooting);await p.locator('#drawing-compass').waitFor();

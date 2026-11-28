@@ -6,7 +6,7 @@ let links=0;
 for(const file of docs)for(const [,raw] of fs.readFileSync(file,'utf8').matchAll(/\[[^\]]*\]\(([^)]+)\)/g)){
  const target=decodeURIComponent(raw.split('#')[0].replace(/^<|>$/g,''));if(!target||/^[a-z][a-z0-9+.-]*:/i.test(target))continue;
  const resolved=path.resolve(path.dirname(file),target);
- assert.ok(!resolved.startsWith(path.join(root,'output')+path.sep),'Tracked documentation must not link to ignored output: '+path.relative(root,file)+' → '+target);
+ for(const directory of ['output','verification.noindex'])assert.ok(!resolved.startsWith(path.join(root,directory)+path.sep),'Tracked documentation must not link to local artifacts: '+path.relative(root,file)+' → '+target);
  assert.ok(fs.existsSync(resolved),'Broken documentation link: '+path.relative(root,file)+' → '+target);links++;
 }
 const archive=JSON.parse(fs.readFileSync(path.join(root,'docs/validation/output-cleanup-20261016.json'),'utf8'));

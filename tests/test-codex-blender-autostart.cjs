@@ -2,7 +2,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),{EventEmitter}=require('node:events');
 const Gui=require('../plugins/furnish-blender/mcp/gui.cjs'),{Client}=require('../plugins/furnish-blender/mcp/client.cjs');
 async function main(){
- const parent=path.resolve(__dirname,'../output/codex-blender-autostart-unit');fs.mkdirSync(parent,{recursive:true});const data=fs.mkdtempSync(path.join(parent,'run-'));
+ const parent=path.resolve(__dirname,'../verification.noindex/codex-blender-autostart-unit');fs.mkdirSync(parent,{recursive:true});const data=fs.mkdtempSync(path.join(parent,'run-'));
  const headers={'x-dsh-host-id':'codex','x-dsh-session-id':'test'},id=Gui.callerId(headers);let list=[{instanceId:'user-existing',ready:true}],count=0,options,tick=0;
  const manager=Gui.create({data,port:()=>43210,blender:'fixture-blender',instances:()=>list,now:()=>tick,delay:async()=>{tick+=200;list.push({instanceId:id,ready:true});},spawnImpl:(_exe,argv,opts)=>{count++;options={argv,opts};const child=new EventEmitter();child.pid=process.pid;child.unref=()=>{};return child;}});
  const [a,b]=await Promise.all([manager.ensure(headers),manager.ensure(headers)]);assert.equal(count,1);assert.equal(a.instance.instanceId,id);assert.equal(b.instance.instanceId,id);assert.notEqual(id,'user-existing');

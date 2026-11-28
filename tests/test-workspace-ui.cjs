@@ -8,7 +8,7 @@ const {values,positionals}=parseArgs({options:{narrow:{type:'boolean'}},allowPos
 const source=path.resolve(positionals[0]||path.join(root,'projects/workspace.furnish.json'));
 const hash=f=>crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
 async function main(){
- const before=hash(source),job=createRun({parent:path.join(root,'output/workspace-ui'),prefix:'verification-'}),run=job.dir;
+ const before=hash(source),job=createRun({parent:path.join(root,'verification.noindex/workspace-ui'),prefix:'verification-'}),run=job.dir;
  let desktop,browser,passed=false;const errors=[],checks=[];
  const pass=s=>{checks.push(s);console.log('PASS '+s);};
  try{

@@ -1,7 +1,7 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const Files=require('../scripts/workspace-files.cjs'),C=require('../src/core/repository-core.js');
-const root=path.resolve(__dirname,'../output/workspace-files-tests');fs.mkdirSync(root,{recursive:true});
+const root=path.resolve(__dirname,'../verification.noindex/workspace-files-tests');fs.mkdirSync(root,{recursive:true});
 const run=fs.mkdtempSync(path.join(root,'run-')),repo=path.join(run,'repo');fs.mkdirSync(repo);
 const plan=require('../src/data/plans.js')[0];let uid=0,time=Date.UTC(2026,9,1);
 const W=require('../src/core/work-state.js').create({makeId:()=> 'file'+ ++uid,colorFor:()=> '#aabbcc',materials:require('../src/data/catalog.js').materials});

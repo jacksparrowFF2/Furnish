@@ -1,7 +1,7 @@
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),V=require('../lib/browser-verification.cjs'),F=require('../lib/model-browser-fixture.cjs');
 const source=path.resolve(__dirname,'../..');
 async function main(){
- const run=path.join(source,process.env.FURNISH_ELEVATION_FILE==='1'?'output/elevation-offline':'output/elevation-audit'),root=path.join(run,'workspace');fs.mkdirSync(root,{recursive:true});
+ const run=path.join(source,process.env.FURNISH_ELEVATION_FILE==='1'?'verification.noindex/elevation-offline':'verification.noindex/elevation-audit'),root=path.join(run,'workspace');fs.mkdirSync(root,{recursive:true});
  for(const name of ['index.html','manifest.webmanifest','src','styles','vendor'])fs.cpSync(path.join(source,name),path.join(root,name),{recursive:true});
  const server=await V.staticServer(root);process.env.FURNISH_VERIFY_ROOT=root;process.env.FURNISH_VERIFY_URL=server.baseURL;let browser;const selected=process.env.FURNISH_ELEVATION_INDICES?.split(',').map(Number),start=Number(process.env.FURNISH_ELEVATION_START||0),previous=(start||selected)&&fs.existsSync(path.join(run,'report.json'))?JSON.parse(fs.readFileSync(path.join(run,'report.json'))):null;const report={passed:false,protocol:process.env.FURNISH_ELEVATION_FILE==='1'?'file':'http',generatedAt:new Date().toISOString(),rows:previous?previous.rows.filter(r=>selected?!selected.includes(r.index):r.index<start):[],errors:[]};
  try{

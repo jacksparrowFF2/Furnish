@@ -16,7 +16,7 @@ async function loopbackPort(){
  return port;
 }
 async function main(){
- const original=hash(source),job=Artifacts.createRun({parent:path.join(root,'output/desktop-verification.noindex'),prefix:'electrical-room-controls-'});
+ const original=hash(source),job=Artifacts.createRun({parent:path.join(root,'verification.noindex/desktop-verification'),prefix:'electrical-room-controls-'});
  let app,passed=false;
  try{
   const work=job.workspace('workspace',root,{directories:['src','styles','vendor'],files:['index.html','manifest.webmanifest']});

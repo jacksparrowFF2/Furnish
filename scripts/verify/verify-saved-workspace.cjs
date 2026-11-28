@@ -6,7 +6,7 @@ const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
 (async()=>{
  const project=path.resolve(__dirname,'../..'),file=path.join(project,'projects/workspace.furnish.json'),raw=fs.readFileSync(file),saved=C.parse(JSON.parse(raw)),work=saved.work[saved.planId];
  if(C.text(saved)!==C.text(C.parse(JSON.parse(C.text(saved)))))throw Error('Workspace restore drift');
- const run=fs.mkdtempSync(path.join(project,'output/playwright/saved-workspace-')),root=path.join(run,'workspace 迁移 #');fs.mkdirSync(root);
+ const run=require('../lib/test-artifacts.cjs').scratchDirectory(path.join(project,'verification.noindex/playwright/saved-workspace-')),root=path.join(run,'workspace 迁移 #');fs.mkdirSync(root);
  for(const name of ['src','styles','assets','vendor','scripts','projects','index.html'])fs.cpSync(path.join(project,name),path.join(root,name),{recursive:true});
  const storeKey=fs.readFileSync(path.join(root,'src/app.js'),'utf8').match(/let STORE\s*=\s*'([^']+)'/)[1],server=await V.staticServer(root);
  process.env.FURNISH_VERIFY_ROOT=root;process.env.FURNISH_VERIFY_URL=server.baseURL;

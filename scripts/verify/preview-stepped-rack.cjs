@@ -1,7 +1,7 @@
 /* Controlled production-model visual review; no project file writes. */
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),{pathToFileURL}=require('node:url'),{chromium}=require('playwright');
-const root=path.resolve(__dirname,'../..'),out=path.join(root,'output/playwright/stepped-rack');fs.mkdirSync(out,{recursive:true});
+const root=path.resolve(__dirname,'../..'),out=path.join(root,'verification.noindex/playwright/stepped-rack');fs.mkdirSync(out,{recursive:true});
 const html=fs.readFileSync(path.join(root,'index.html'),'utf8'),imports=html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1];
 const absolute=name=>pathToFileURL(path.join(root,name)).href;
 const source=`<!doctype html><html><body style="margin:0;background:#eee9df"><script type="importmap">${imports}</script><script src="${absolute('src/core/product-rules.js')}"></script><script src="${absolute('src/core/part-identity.js')}"></script><script src="${absolute('src/render/balcony-garden-model.js')}"></script><script type="module">

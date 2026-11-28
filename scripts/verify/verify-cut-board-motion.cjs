@@ -4,7 +4,7 @@ if(!process.env.FURNISH_VERIFY_ROOT){require('../verify-browser.cjs').main(['cut
 const fs=require('fs'),path=require('path'),assert=require('assert/strict'),P=require('../../src/core/project-core.js'),C=require('../../src/core/cabinet-core.js'),M=require('../../src/core/cabinet-motion.js');
 const verification=require('../lib/browser-verification.cjs').configuration();
 (async()=>{
- const browser=await require('../lib/browser-verification.cjs').launch(),root=verification.root,out=path.join(root,'output/playwright/cut-board-motion');fs.mkdirSync(out,{recursive:true});
+ const browser=await require('../lib/browser-verification.cjs').launch(),root=verification.root,out=path.join(root,'verification.noindex/playwright/cut-board-motion');fs.mkdirSync(out,{recursive:true});
  const data=P.unpack(JSON.parse(fs.readFileSync(verification.fixture('imported.furnish.json'),'utf8'))),draft=data.current.architecture.draft,marker=draft.markers[0],center=marker.at.map(v=>v*draft.scale);
  const f={id:'motion-cabinet',name:'切孔连续开启验收',type:'cabinet',...C.preset('pantry500'),cx:center[0],cy:center[1],rot:0};f.cabinet.columns[0].handle='none';
  const board=M.boards(f).find(b=>b.motion.axis==='y'),hinge=[board.motion.pivot[0]+center[0],board.motion.pivot[2]+center[1]];marker.at=hinge.map(v=>v/draft.scale);marker.pipeDiameter=100;data.current.furniture=[f];

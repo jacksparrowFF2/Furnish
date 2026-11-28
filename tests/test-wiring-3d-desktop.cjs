@@ -15,7 +15,7 @@ const source=process.env.FURNISH_TEST_PROJECT||path.join(root,'projects/workspac
 const hash=()=>crypto.createHash('sha256').update(fs.readFileSync(source)).digest('hex');
 
 async function main(){
- const before=hash(),job=Artifacts.createRun({parent:path.join(root,'output/desktop-verification.noindex'),prefix:'wiring-3d-'});
+ const before=hash(),job=Artifacts.createRun({parent:path.join(root,'verification.noindex/desktop-verification'),prefix:'wiring-3d-'});
  let app,browser,passed=false;
  try{
   const work=job.workspace('workspace',root,{directories:['src','styles','vendor'],files:['index.html','manifest.webmanifest']});

@@ -163,7 +163,7 @@ async function run(){
   [file,execFileSync('git',['show',baseline+':'+file],{cwd:root,maxBuffer:8*1024*1024})]));
  if(execFileSync('git',['ls-tree',baseline,'--',daylightFile],{cwd:root}).length)
   before[daylightFile]=execFileSync('git',['show',baseline+':'+daylightFile],{cwd:root});
- const job=artifacts.createRun({parent:path.join(root,'output/desktop-verification.noindex'),prefix:rooms||customTargets?'room-raster-':'living-furniture-'});
+ const job=artifacts.createRun({parent:path.join(root,'verification.noindex/desktop-verification'),prefix:rooms||customTargets?'room-raster-':'living-furniture-'});
  const cases=rooms||[{camera,targets,secondCamera}];
  const report={sourceHash:hash(source),baseline,trialGTAO,trialBloom,trialSMAA,revisionRound,scenePreset,...(gestureCamera?{gestureCamera}:{}),
   ...(captureTrajectory?{trajectory:{anglesRadians:trackAngles,crops:trackCrops},gtao:false,bloom:false}:{}),

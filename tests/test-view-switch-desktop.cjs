@@ -4,7 +4,7 @@ const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),
 const root=path.resolve(__dirname,'..'),A=require('../scripts/lib/test-artifacts.cjs');
 const sha=f=>crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
 (async()=>{
- const baseline=process.argv.includes('--baseline'),source=process.env.FURNISH_SWITCH_SOURCE||path.join(root,'projects/workspace.furnish.json'),before=sha(source),job=A.createRun({parent:path.join(root,'output/desktop-verification'),prefix:baseline?'view-baseline-':'view-switch-'});
+ const baseline=process.argv.includes('--baseline'),source=process.env.FURNISH_SWITCH_SOURCE||path.join(root,'projects/workspace.furnish.json'),before=sha(source),job=A.createRun({parent:path.join(root,'verification.noindex/desktop-verification'),prefix:baseline?'view-baseline-':'view-switch-'});
  let app,browser,passed=false;const errors=[],report={baseline,source,sourceSha256:before,samples:[]};
  try{
   const work=job.workspace('workspace',root,{directories:['src','styles','vendor','assets'],files:['index.html','manifest.webmanifest']});fs.copyFileSync(source,path.join(work,'projects/workspace.furnish.json'));

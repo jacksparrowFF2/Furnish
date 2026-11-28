@@ -3,7 +3,7 @@ const fs=require('node:fs'),path=require('node:path'),os=require('node:os'),http
 const root=path.resolve(__dirname,'..'),A=require('../scripts/lib/test-artifacts.cjs'),{runtimeFiles}=require('../scripts/package-desktop.cjs');
 const hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
 (async()=>{
- const source=process.env.FURNISH_SOAK_SOURCE||path.join(root,'projects/workspace.furnish.json'),before=hash(source),job=A.createRun({parent:path.join(root,'output/desktop-verification'),prefix:'3d-soak-'});
+ const source=process.env.FURNISH_SOAK_SOURCE||path.join(root,'projects/workspace.furnish.json'),before=hash(source),job=A.createRun({parent:path.join(root,'verification.noindex/desktop-verification'),prefix:'3d-soak-'});
  const runtime=fs.mkdtempSync(path.join(os.tmpdir(),'Furnish-desktop-soak-')),runtimeRoot=path.dirname(require('electron')),installed=path.dirname(require('../scripts/launch-desktop.cjs').desktopExecutable(root));
  let app,passed=false;const records=[],errors=[];const started=Date.now();
  try{

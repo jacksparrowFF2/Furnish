@@ -5,7 +5,7 @@ const {_electron,chromium}=require('playwright'),root=path.resolve(__dirname,'..
 const hash=file=>crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
 const freePort=async()=>{const s=http.createServer();await new Promise(r=>s.listen(0,'127.0.0.1',r));const port=s.address().port;await new Promise(r=>s.close(r));return port;};
 (async()=>{
- const run=fs.mkdtempSync(path.join(root,'output/mcp-desktop-')),workspace=path.join(run,'workspace');fs.mkdirSync(workspace);
+ const run=require('../scripts/lib/test-artifacts.cjs').scratchDirectory(path.join(root,'verification.noindex/mcp-desktop-')),workspace=path.join(run,'workspace');fs.mkdirSync(workspace);
  const originalFile=Files.create(root).info().file,before=hash(originalFile),repoFile=path.join(root,'projects/workspace.furnish.json'),repoBefore=hash(repoFile),initial=Files.create(root).read().workspace;
  for(const name of ['src','styles','assets','vendor'])fs.cpSync(path.join(root,name),path.join(workspace,name),{recursive:true});
  fs.copyFileSync(path.join(root,'index.html'),path.join(workspace,'index.html'));fs.mkdirSync(path.join(workspace,'scripts'));

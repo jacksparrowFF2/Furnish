@@ -58,7 +58,7 @@ Chrome／Edge 的缓存不由桌面版直接读取。如果尚有仅存在浏览
 
 源码启动脚本与MCP启动探针共用`scripts/launch-desktop.cjs`的路径选择：显式路径优先，其次`FURNISH_DESKTOP_EXE`，其次本机`.local/desktop-executable.json`的绝对`executable`，再使用原标准打包位置。损坏或不存在的本机配置明确失败，不静默启动另一个包。配置只在本机保存，不进入项目JSON；源码cmd入口使用本机Node，整包EXE仍不需要Node。打包文件清单包含新脚本。可移动程序目录，但必须保留整个运行时并确认`furnish-desktop.json`仍指向正确源码；不把本机D盘路径提交为其它电脑默认值。
 
-增量检查：`test-desktop-executable`、`test-codex-mcp-registration`通过；`test-entry-structural-drag-desktop`使用迁移后的原45.0.0包、隔离源码／缓存／项目通过，确认sandbox=true、contextIsolation=true、nodeIntegration=false及真实鼠标／保存／刷新。报告`output/desktop-verification/entry-structure-mXxHRO/result.json`。未运行全量桌面验收或系统权限修复。
+增量检查：`test-desktop-executable`、`test-codex-mcp-registration`通过；`test-entry-structural-drag-desktop`使用迁移后的原45.0.0包、隔离源码／缓存／项目通过，确认sandbox=true、contextIsolation=true、nodeIntegration=false及真实鼠标／保存／刷新。报告`verification.noindex/desktop-verification/entry-structure-mXxHRO/result.json`。未运行全量桌面验收或系统权限修复。
 
 ## 浏览器入口保留
 
@@ -105,13 +105,13 @@ node scripts/package-desktop.cjs --portable --out output/desktop/Furnish-portabl
 
 ## 验证与边界
 
-`node tests/test-desktop.cjs` 检查目录解析、导航限制、服务复用／关闭、端口冲突及拒绝覆盖打包。`npm run verify:desktop` 启动真实打包 EXE，在 `output/desktop-verification/` 创建独立源码／设计／缓存副本，验收恢复、编辑、键盘撤销重做、保存、导出、WebGL、打印、HTTP 浏览器共享、直接 file:// 与退出重启。可通过 `node scripts/verify-desktop.cjs <EXE路径>` 指定其他包。 默认跳过窄屏检查。使用 `npm run verify:desktop -- --narrow` 开启 390 px 内容宽度的溢出检查和截图，也可用 `node scripts/verify-desktop.cjs --narrow <EXE路径>` 同时指定程序。脚本检查源设计哈希，绝不把验收编辑写回原工作区。
+`node tests/test-desktop.cjs` 检查目录解析、导航限制、服务复用／关闭、端口冲突及拒绝覆盖打包。`npm run verify:desktop` 启动真实打包 EXE，在 `verification.noindex/desktop-verification/` 创建独立源码／设计／缓存副本，验收恢复、编辑、键盘撤销重做、保存、导出、WebGL、打印、HTTP 浏览器共享、直接 file:// 与退出重启。可通过 `node scripts/verify-desktop.cjs <EXE路径>` 指定其他包。 默认跳过窄屏检查。使用 `npm run verify:desktop -- --narrow` 开启 390 px 内容宽度的溢出检查和截图，也可用 `node scripts/verify-desktop.cjs --narrow <EXE路径>` 同时指定程序。脚本检查源设计哈希，绝不把验收编辑写回原工作区。
 
 页面使用隔离上下文和渲染器沙箱，不启用 Node；网页继续通过原同源 HTTP 接口读写。外链交给系统浏览器，阻止 file/javascript 等外部导航。本机页面请求直连，不依赖系统代理。桌面壳不暴露任意文件读写或执行命令的桥接接口。依据 [Electron 安全说明](https://www.electronjs.org/docs/latest/tutorial/security) 和[手动分发方式](https://www.electronjs.org/docs/latest/tutorial/application-distribution)。
 
 当前交付为未签名的便携文件夹，未提供安装器、自动更新或文件关联。不能保证系统不会对未签名程序显示来源提示。只验证实际执行的流程；物理打印机、完整 Blender 渲染、所有模型编辑器和其他 Windows 架构不属于本次桌面专项的全量验证。
 
-2026-10-28 窗口生命周期专项：`node tests/test-desktop-lifecycle.cjs` 覆盖生产监听器的销毁／异步加载竞态；`node tests/test-desktop-native.cjs` 使用独立缓存与临时页面，以可控的后端延迟验证真实 Electron 单实例激活、关闭期间重复启动及原生 relaunch。后者需要本机 Electron 和回环连接；结果存于 `output/playwright/desktop-lifecycle-*/`。详见 [验收记录](validation/desktop-lifecycle-20261028/README.md)。
+2026-10-28 窗口生命周期专项：`node tests/test-desktop-lifecycle.cjs` 覆盖生产监听器的销毁／异步加载竞态；`node tests/test-desktop-native.cjs` 使用独立缓存与临时页面，以可控的后端延迟验证真实 Electron 单实例激活、关闭期间重复启动及原生 relaunch。后者需要本机 Electron 和回环连接；结果存于 `verification.noindex/playwright/desktop-lifecycle-*/`。详见 [验收记录](validation/desktop-lifecycle-20261028/README.md)。
 
 
 ## 2026-11-17：聚焦搜索中的测试应用副本

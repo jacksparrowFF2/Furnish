@@ -61,6 +61,8 @@
 
 ## 验证与交付
 
+- `output/` 存放 Furnish 桌面包、独立模型预览及设计交付。自动和手动验证的隔离副本、测试截图、日志、报告及归档统一写入仓库根目录的 `verification.noindex/`；新验证入口复用 `scripts/lib/test-artifacts.cjs`。精选长期验收证据归档到 `docs/validation/`。见 [生成物与资料约定](docs/OUTPUT-ARTIFACTS.md)。
+
 - 用户要求读取或调整当前装修方案时，优先使用 Furnish 专用 MCP（见 `docs/MCP.md`）：先读取当前窗口的 planId／revision，修改携带唯一 requestId；方案、家具编辑及空间核对沿已有接口，不直接改正式 JSON。探索性设计先复制方案，用户明确要求修改当前方案时按其范围执行；自动化测试仍在隔离副本进行。保存回执为 applied:true／persisted:false 时须报告未保存，不换请求 ID 盲目重试。
 - 默认优先使用桌面快捷方式启动的 Furnish 复现界面问题和做最终目视验收，核对其工作目录、当前方案和正式保存位置；浏览器作为补充验证。正式窗口以只读检查为主，修改布置、保存、导入、恢复等测试先复制当前正式文件，在同一打包 EXE 的独立工作目录、缓存和端口下执行，不直接改用户方案。桌面与浏览器缓存独立，不以其中一端缓存覆盖另一端未保存编辑。操作方式见 `docs/DESKTOP.md`。
 - macOS 测试应用、临时打包及应用备份放在 `.noindex` 后缀目录中，避免进入聚焦搜索；复用 test-artifacts 新建隔离运行目录。清理前核对 `~/Applications/Furnish.app` 的真实目标和运行进程，不将正式应用的符号链接目标误当作闲置副本。显式打包 `--out` 也遵守此约定。

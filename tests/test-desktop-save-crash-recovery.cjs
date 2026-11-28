@@ -31,7 +31,7 @@ async function main(){
  const {_electron}=require('playwright');
  const source=fs.realpathSync(process.env.FURNISH_TEST_PROJECT);
  const executable=fs.realpathSync(desktopExecutable(root,{executable:process.argv[2]&&path.resolve(process.argv[2])}));
- const initialHash=hash(source),job=createRun({parent:path.join(root,'output/desktop-verification'),prefix:'save-crash-recovery-'});
+ const initialHash=hash(source),job=createRun({parent:path.join(root,'verification.noindex/desktop-verification'),prefix:'save-crash-recovery-'});
  const result={executable,source,initialHash,executableSha256:hash(executable),checks:[],responses:[],rendererErrors:[]};
  console.log('EVIDENCE '+job.dir);
  const resultFile=path.join(job.dir,'result.json');

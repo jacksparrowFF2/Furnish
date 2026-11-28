@@ -1,7 +1,7 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict'),crypto=require('node:crypto');
 const {connect}=require('../desktop/backend.cjs'),Runtime=require('../scripts/server-runtime.cjs'),C=require('../src/core/repository-core.js'),Client=require('../src/io/repository-storage.js');
-const root=path.resolve(__dirname,'..'),out=path.join(root,'output');fs.mkdirSync(out,{recursive:true});const isolated=fs.mkdtempSync(path.join(out,'auto-backend-'));
+const root=path.resolve(__dirname,'..'),out=path.join(root,'verification.noindex');fs.mkdirSync(out,{recursive:true});const isolated=fs.mkdtempSync(path.join(out,'auto-backend-'));
 const hash=file=>crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex'),sleep=ms=>new Promise(r=>setTimeout(r,ms));
 async function freePort(){const s=http.createServer();await new Promise(r=>s.listen(0,'127.0.0.1',r));const n=s.address().port;await new Promise(r=>s.close(r));return n;}
 async function until(fn){const end=Date.now()+30000;while(Date.now()<end){const value=await fn();if(value)return value;await sleep(100);}throw Error('Timed out waiting for automatic backend replacement');}

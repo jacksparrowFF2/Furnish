@@ -8,6 +8,7 @@ try{
  for(const name of ['index.html','src/app.js','scripts/check.cjs','output/model/preview.html'])put('verification/workspace/'+name);
  put('output/playwright/pruned-batch/workspace/output/model/preview.html');put('output/desktop-verification/pruned-batch/workspace/output/model/preview.html');
  put('output/model-pipeline/pruned-batch/workspace/docs/validation/model/preview.html');
+ put('verification.noindex/playwright/pruned-batch/workspace/output/model/preview.html');
  assert.deepEqual(previewFiles(root).sort(),[model,history].sort());
  assert.deepEqual(previewFiles(path.join(root,'missing')),[]);
  const script=put('中文 空格 #/rules.js');

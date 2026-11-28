@@ -1,3 +1,5 @@
+2026-11-28（本机文件布局）。`output/` 存桌面包、独立预览和设计交付。`verification.noindex/` 存测试工作区和验证证据，由公共验证模块管理。`projects/`、`.local/` 和正式桌面入口继续沿现有存储与加载路径。见 [目录与长期资料](OUTPUT-ARTIFACTS.md)。
+
 2026-11-18（问卷衣柜候选）：wardrobe-questionnaire-core共享离线答卷契约，wardrobe-planner-core从需求与区域派生三种v2组件柜并复用生产实体和spaceCheck；独立UI支持导入、区域定位、比较及只读房间预览，明确采用后沿原mutate保存。公共三维previewIds复用局部观察遮挡，不更改工作区或选择；无新项目字段／格式，旧实例不迁移。见[流程、范围与验证](WARDROBE-QUESTIONNAIRE-PLANNER.md)。
 
 2026-11-17（插座布置视图）：electrical-core在原mutate／commit及撤销入口保护家具布局，仅允许面板编辑和柜体开合；electrical-planning在原平面增加编号、完成地面高度与实际板面定位。面板沿原家具记录与项目保存，无新持久字段／版本；详见[ELECTRICAL-PLANNING.md](ELECTRICAL-PLANNING.md)。

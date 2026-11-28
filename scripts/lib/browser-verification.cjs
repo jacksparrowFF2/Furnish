@@ -1,6 +1,7 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http');
 const {pathToFileURL}=require('node:url');
+const {verificationDirectory}=require('./test-artifacts.cjs');
 const projectRoot=path.resolve(__dirname,'../..');
 async function editFurnitureField(page,selector,value){
  if(selector!=='#fW'&&selector!=='#fD'){await page.locator(selector).fill(String(value));await page.locator(selector).press('Tab');return;}
@@ -53,7 +54,8 @@ function configuration(env=process.env){
  const root=path.resolve(env.FURNISH_VERIFY_ROOT||projectRoot);
  const url=new URL(env.FURNISH_VERIFY_URL||'http://127.0.0.1:8765/');
  if(url.protocol!=='http:'||!['127.0.0.1','localhost','[::1]'].includes(url.hostname)||url.username||url.password||url.pathname!=='/'||url.search||url.hash)throw Error('FURNISH_VERIFY_URL must be a loopback HTTP origin, for example http://127.0.0.1:9000/');
- const output=relative=>{const target=path.resolve(root,'output',relative);if(!target.startsWith(path.join(root,'output')+path.sep))throw Error('Output path escapes output/');fs.mkdirSync(path.dirname(target),{recursive:true});return target.replaceAll('\\','/');};
+ const evidenceRoot=path.join(root,verificationDirectory);
+ const output=relative=>{const target=path.resolve(evidenceRoot,relative);if(!target.startsWith(evidenceRoot+path.sep))throw Error('Output path escapes verification directory');fs.mkdirSync(path.dirname(target),{recursive:true});return target.replaceAll('\\','/');};
  return {root:root.replaceAll('\\','/')+'/',baseURL:url.href,fileBase:pathToFileURL(root+path.sep).href,output,editFurnitureField,openDistanceControls,clickCanvasTool,cabinetSpace,setCabinetOverall,canvasResizeGrip,fillCeilingField,setCeilingStyle,
   waitForDialogAction:page=>page.waitForFunction(()=>!document.querySelector('#dlg .dlg-box[aria-busy="true"]')),
   waitForCache:async page=>{try{await page.waitForFunction(()=>{try{const sorted=v=>v&&typeof v==='object'?Array.isArray(v)?v.map(sorted):Object.fromEntries(Object.keys(v).sort().map(k=>[k,sorted(v[k])])):v,cached=JSON.parse(localStorage.getItem(STORE));return !savePending&&!saveErr&&savedAt>0&&JSON.stringify(sorted(cached.work[PLAN.id]))===JSON.stringify(sorted(state));}catch{return false;}});}catch(error){const detail=await page.evaluate(()=>{const cached=JSON.parse(localStorage.getItem(STORE)||'null')?.work?.[PLAN.id];return {savePending,saveErr,savedAt,planId:PLAN.id,differences:[...new Set([...Object.keys(cached||{}),...Object.keys(state)])].filter(k=>JSON.stringify(cached?.[k])!==JSON.stringify(state[k])).map(k=>({key:k,cachedBytes:JSON.stringify(cached?.[k])?.length,currentBytes:JSON.stringify(state[k])?.length}))};});throw Error(error.message+'\nCache detail: '+JSON.stringify(detail));}},

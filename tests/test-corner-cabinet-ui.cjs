@@ -3,7 +3,7 @@
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),crypto=require('node:crypto'),assert=require('node:assert/strict');
 const root=path.resolve(__dirname,'..'),V=require('../scripts/lib/browser-verification.cjs'),A=require('../scripts/lib/test-artifacts.cjs'),hash=f=>crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
 (async()=>{
- const job=A.createRun({parent:path.join(root,'output/playwright'),prefix:'corner90-ui-'});let server,browser,app,passed=false,source,before;console.log('evidence',job.dir);
+ const job=A.createRun({parent:path.join(root,'verification.noindex/playwright'),prefix:'corner90-ui-'});let server,browser,app,passed=false,source,before;console.log('evidence',job.dir);
  try{
   const isolated=job.workspace('workspace',root);const config=V.configuration({...process.env,FURNISH_VERIFY_ROOT:isolated});
   if(!process.argv.includes('--desktop')){

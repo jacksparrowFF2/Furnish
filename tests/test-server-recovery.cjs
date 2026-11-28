@@ -2,7 +2,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),http=require('node:http');
 const {spawn}=require('node:child_process');
 const runtime=require('../scripts/server-runtime.cjs'),recovery=require('../scripts/server-recovery.cjs');
-const root=path.resolve(__dirname,'..'),output=path.join(root,'output');
+const root=path.resolve(__dirname,'..'),output=path.join(root,'verification.noindex');
 const children=new Set();
 function run(cwd,port){
  const child=spawn(process.execPath,['scripts/serve.cjs'],{cwd,env:{...process.env,FURNISH_PORT:String(port)},stdio:['ignore','pipe','pipe']});

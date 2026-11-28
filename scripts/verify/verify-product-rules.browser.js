@@ -43,17 +43,17 @@ async (page,verification)=>{
   // Real download/upload exercises the full serialized current and named versions.
   await p.locator('#projectWorkspace').click();await p.getByRole('button',{name:'备份／加载项目',exact:true}).click();
   const downloadPromise=p.waitForEvent('download');await p.locator('#pr-export').click();
-  const download=await downloadPromise,path=root+'output/playwright/product-rules/'+mode+'.furnish.json';await download.saveAs(path);
+  const download=await downloadPromise,path=root+'verification.noindex/playwright/product-rules/'+mode+'.furnish.json';await download.saveAs(path);
   await p.locator('#pr-file').setInputFiles(path);await p.locator('#pr-restore-confirm').click();
   check(await p.evaluate(()=>getF('legacy-shower').showerMixerHeight)===1100,'download and reimport');
   await p.locator('[data-view="3d"]').click();await p.waitForFunction(()=>document.querySelector('#view3d canvas')?.width>0&&document.querySelector('#stage').classList.contains('is3d')&&!document.querySelector('#stage').classList.contains('animating'));
-  await p.screenshot({path:root+'output/playwright/product-rules/'+mode+'-3d.png'});
+  await p.screenshot({path:root+'verification.noindex/playwright/product-rules/'+mode+'-3d.png'});
   await p.locator('[data-view="2d"]').click();await p.waitForFunction(()=>!document.querySelector('#stage').classList.contains('is3d')&&!document.querySelector('#stage').classList.contains('animating'));await p.waitForTimeout(800);await p.reload();
   check(await p.evaluate(()=>getF('legacy-wash').h===900&&getF('legacy-wash').stackHeight===0&&getF('legacy-shower').showerMixerHeight===1100&&getF('legacy-shower').showerRise===500&&getF('legacy-shower').showerHandAngle===0),'refresh persistence');
   await p.setViewportSize({width:390,height:844});await p.waitForTimeout(400);await p.evaluate(()=>selectIds(['legacy-shower']));
   await p.locator('#tgPanel').click();
   await p.waitForTimeout(400);
-  await p.screenshot({path:root+'output/playwright/product-rules/'+mode+'-mobile.png'});
+  await p.screenshot({path:root+'verification.noindex/playwright/product-rules/'+mode+'-mobile.png'});
   check(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'narrow screen horizontal overflow');
   check(await p.evaluate(()=>{const r=document.querySelector('aside.right').getBoundingClientRect();return r.left>=0&&r.right<=innerWidth;}),'property drawer visible inside viewport');
   check(errors.length===0,errors.join('\n'));check(external.length===0,'external network dependency');
@@ -66,7 +66,7 @@ async (page,verification)=>{
   await p.waitForFunction(()=>[...document.querySelectorAll('canvas')].some(c=>c.width>300&&c.height>150));
   if(name==='fridges')await p.locator('#front').click();
   if(name==='telescopic'){await p.locator('#door').click();await p.locator('#track').selectOption('true');}
-  await p.screenshot({path:root+'output/playwright/product-rules/preview-'+name+'.png'});
+  await p.screenshot({path:root+'verification.noindex/playwright/product-rules/preview-'+name+'.png'});
   if(errors.length)throw Error(name+': '+errors.join('\n'));previews.push({name,passed:true,errors});await p.close();
  }
  await previewContext.close();

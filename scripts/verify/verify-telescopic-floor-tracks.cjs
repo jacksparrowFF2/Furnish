@@ -3,7 +3,7 @@
 const fs=require('node:fs'),path=require('node:path'),{pathToFileURL}=require('node:url'),V=require('../lib/browser-verification.cjs');
 (async()=>{
  const root=V.configuration().root,out=path.join(root,'docs/validation/telescopic-floor-tracks-20261025');fs.mkdirSync(out,{recursive:true});require('../preview-telescopic.cjs');
- const run=fs.mkdtempSync(path.join(root,'output/playwright/telescopic-floor-')),workspace=path.join(run,'workspace 迁移 #');fs.mkdirSync(workspace);
+ const run=require('../lib/test-artifacts.cjs').scratchDirectory(path.join(root,'verification.noindex/playwright/telescopic-floor-')),workspace=path.join(run,'workspace 迁移 #');fs.mkdirSync(workspace);
  for(const name of ['src','styles','assets','vendor'])if(fs.existsSync(path.join(root,name)))fs.cpSync(path.join(root,name),path.join(workspace,name),{recursive:true});
  fs.copyFileSync(path.join(root,'index.html'),path.join(workspace,'index.html'));fs.mkdirSync(path.join(workspace,'output/telescopic'),{recursive:true});fs.copyFileSync(path.join(root,'output/telescopic/preview.html'),path.join(workspace,'output/telescopic/preview.html'));
  const server=await V.staticServer(workspace),browser=await V.loadPlaywright().chromium.launch(V.configuration().launchOptions).catch(async e=>{await server.close();throw e;}),results=[];

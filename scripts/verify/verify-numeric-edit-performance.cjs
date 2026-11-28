@@ -1,7 +1,7 @@
 /* Isolated profiles and GET-only server: benchmark edits never save the workspace file. */
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),crypto=require('node:crypto'),{pathToFileURL}=require('node:url'),V=require('../lib/browser-verification.cjs');
-const root=V.projectRoot,args=process.argv.slice(2),arg=name=>args.includes(name)?path.resolve(args[args.indexOf(name)+1]):null,baseline=arg('--baseline-dir'),source=fs.readFileSync(arg('--workspace')||path.join(root,'projects/workspace.furnish.json')),workspace=JSON.parse(source).workspace,out=path.join(root,'output/playwright/numeric-edit');
+const root=V.projectRoot,args=process.argv.slice(2),arg=name=>args.includes(name)?path.resolve(args[args.indexOf(name)+1]):null,baseline=arg('--baseline-dir'),source=fs.readFileSync(arg('--workspace')||path.join(root,'projects/workspace.furnish.json')),workspace=JSON.parse(source).workspace,out=path.join(root,'verification.noindex/playwright/numeric-edit');
 const hash=v=>crypto.createHash('sha256').update(typeof v==='string'||Buffer.isBuffer(v)?v:JSON.stringify(v)).digest('hex');
 (async()=>{fs.mkdirSync(out,{recursive:true});const server=await V.staticServer(root),browser=await V.loadPlaywright().chromium.launch({headless:true,channel:process.env.FURNISH_BROWSER_CHANNEL||'chrome'}),results=[];try{
  for(const mode of [...(baseline?['before-http']:[]),'after-http','after-file']){

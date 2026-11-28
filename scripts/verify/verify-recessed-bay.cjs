@@ -3,7 +3,7 @@ if(!process.env.FURNISH_VERIFY_ROOT){require('../verify-browser.cjs').main(['rec
 // Optional real-browser acceptance check; uses the same local Playwright runtime as other verification scripts.
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const verification=require('../lib/browser-verification.cjs').configuration();
-const P=require('../../src/core/project-core.js'),root=verification.root,output=path.join(root,'output/playwright');
+const P=require('../../src/core/project-core.js'),root=verification.root,output=path.join(root,'verification.noindex/playwright');
 fs.mkdirSync(output,{recursive:true});
 const points=[[100,100],[200,100],[200,40],[400,40],[400,100],[500,100],[500,500],[100,500]];
 const draft={version:1,id:'custom_recess_browser',name:'凹口飘窗验证',source:'dxf',image:'',scale:10,width:600,height:600,

@@ -1,6 +1,6 @@
 /* CLI run-code; separate storage context and synthetic project. */
 async (page,verification)=>{
- const context=await page.context().browser().newContext({viewport:{width:1500,height:950}}),p=await context.newPage(),errors=[],dir=(verification.root+'output/playwright/workflow-tools/'),check=(v,m)=>{if(!v)throw Error(m);};p.on('pageerror',e=>errors.push(e.message));
+ const context=await page.context().browser().newContext({viewport:{width:1500,height:950}}),p=await context.newPage(),errors=[],dir=(verification.root+'verification.noindex/playwright/workflow-tools/'),check=(v,m)=>{if(!v)throw Error(m);};p.on('pageerror',e=>errors.push(e.message));
  try{
   await p.goto((verification.baseURL+'index.html'));await p.waitForFunction(()=>!repositoryBooting);await p.locator('#drawing-compass').waitFor();
   await p.screenshot({animations:'disabled',path:dir+'readability-default.png'});

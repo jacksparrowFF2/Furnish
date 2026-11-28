@@ -4,14 +4,14 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),crypto=require('node:crypto');
 const {pathToFileURL}=require('node:url'),{chromium}=require('playwright');
-const root=path.resolve(__dirname,'../..'),run=path.join(root,'output/art-glass-garden-20261108');
+const root=path.resolve(__dirname,'../..'),run=path.join(root,'verification.noindex/art-glass-garden-20261108');
 async function main(){
  const before=fs.readFileSync(path.resolve(process.argv[2]),'utf8'),after=fs.readFileSync(path.join(root,'src/render/art-glass-model.js'),'utf8');
  fs.mkdirSync(run,{recursive:true});
  const browser=await chromium.launch({headless:true,channel:process.env.FURNISH_BROWSER_CHANNEL||'chrome'}),errors=[];
  try{
   const page=await browser.newPage({viewport:{width:1200,height:1100}});page.on('pageerror',e=>errors.push(e.message));
-  await page.context().setOffline(true);await page.goto(pathToFileURL(path.join(root,'output/art-glass-verification/workspace/index.html')).href);
+  await page.context().setOffline(true);await page.goto(pathToFileURL(path.join(root,'verification.noindex/art-glass-verification/workspace/index.html')).href);
   await page.locator('#repository-loading').waitFor({state:'hidden'});
   const report={sources:{before:crypto.createHash('sha256').update(before).digest('hex'),after:crypto.createHash('sha256').update(after).digest('hex')},views:[]};
   for(const [version,source] of [['before',before],['after',after]]){

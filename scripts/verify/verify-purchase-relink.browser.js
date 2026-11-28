@@ -1,5 +1,5 @@
 async (page,verification)=>{
- const context=await page.context().browser().newContext({viewport:{width:1500,height:950}}),p=await context.newPage(),dir='output/playwright/workflow-tools/',errors=[],check=(v,m)=>{if(!v)throw Error(m);};p.on('pageerror',e=>errors.push(e.message));
+ const context=await page.context().browser().newContext({viewport:{width:1500,height:950}}),p=await context.newPage(),dir='verification.noindex/playwright/workflow-tools/',errors=[],check=(v,m)=>{if(!v)throw Error(m);};p.on('pageerror',e=>errors.push(e.message));
  const importUI=async(tab,file)=>{await tab.getByRole('button',{name:'工作台',exact:true}).click();await tab.getByRole('button',{name:'备份／加载项目',exact:true}).click();await tab.locator('#pr-file').setInputFiles(file);await tab.locator('#pr-restore-confirm').click();await tab.locator('#dlg').waitFor({state:'hidden'});};
  try{await p.goto((verification.baseURL+'index.html'));await p.waitForFunction(()=>!repositoryBooting);await importUI(p,dir+'purchase-orders-project.furnish.json');
   await p.locator('[data-fid="outside_chair"]').click();await p.locator('#fab [data-act="dup"]').click();const copy=await p.evaluate(()=>state.furniture.find(f=>f.id!=='outside_chair').id);

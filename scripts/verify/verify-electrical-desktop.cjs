@@ -4,7 +4,7 @@ const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypt
 const {_electron,chromium}=require('playwright'),{pathToFileURL}=require('node:url'),root=path.resolve(__dirname,'../..'),Artifacts=require('../lib/test-artifacts.cjs'),{runtimeFiles}=require('../package-desktop.cjs');
 const hash=f=>crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
 async function main(){
- const source=process.env.FURNISH_TEST_PROJECT||path.join(root,'projects/workspace.furnish.json'),before=hash(source),job=Artifacts.createRun({parent:path.join(root,'output/desktop-verification.noindex'),prefix:'electrical-'}),run=job.dir;let app,browser,passed=false;const checks=[],errors=[];
+ const source=process.env.FURNISH_TEST_PROJECT||path.join(root,'projects/workspace.furnish.json'),before=hash(source),job=Artifacts.createRun({parent:path.join(root,'verification.noindex/desktop-verification'),prefix:'electrical-'}),run=job.dir;let app,browser,passed=false;const checks=[],errors=[];
  try{
   const isolated=job.workspace('workspace',root,{directories:['src','styles','vendor'],files:['index.html','manifest.webmanifest']});job.copy(source,'workspace/projects/workspace.furnish.json',{disposable:false});for(const name of runtimeFiles)job.copy(path.join(root,'scripts',name),path.join('workspace/scripts',name));job.discard('profile');
   const server=http.createServer();await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(0,'127.0.0.1',resolve);});const port=server.address().port;await new Promise(r=>server.close(r));

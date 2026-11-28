@@ -3,7 +3,7 @@
 const fs=require('node:fs'),path=require('node:path'),net=require('node:net'),cp=require('node:child_process');
 const V=require('../lib/browser-verification.cjs');
 async function main(){
- const project=path.resolve(__dirname,'../..'),run=fs.mkdtempSync(path.join(project,'output/playwright/blender-live-')),root=path.join(run,'workspace 迁移 #');fs.mkdirSync(root);
+ const project=path.resolve(__dirname,'../..'),run=require('../lib/test-artifacts.cjs').scratchDirectory(path.join(project,'verification.noindex/playwright/blender-live-')),root=path.join(run,'workspace 迁移 #');fs.mkdirSync(root);
  for(const name of ['src','styles','vendor','scripts','assets'])if(fs.existsSync(path.join(project,name)))fs.cpSync(path.join(project,name),path.join(root,name),{recursive:true});fs.copyFileSync(path.join(project,'index.html'),path.join(root,'index.html'));
  const probe=net.createServer();await new Promise(r=>probe.listen(0,'127.0.0.1',r));const port=probe.address().port;await new Promise(r=>probe.close(r));
  const base='http://127.0.0.1:'+port,server=cp.spawn(process.execPath,[path.join(root,'scripts/serve.cjs')],{cwd:root,env:{...process.env,FURNISH_PORT:String(port)},windowsHide:true,stdio:['ignore','pipe','pipe']});let logs='';for(const stream of [server.stdout,server.stderr])stream.on('data',b=>{logs+=b;});

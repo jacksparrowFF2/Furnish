@@ -6,7 +6,7 @@ const root=path.resolve(__dirname,'..'),C=require('../src/core/repository-core.j
 const hash=f=>crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
 async function freePort(){const s=http.createServer();await new Promise(r=>s.listen(0,'127.0.0.1',r));const p=s.address().port;await new Promise(r=>s.close(r));return p;}
 async function main(){
- const source=path.join(root,'projects/workspace.furnish.json'),before=hash(source),run=path.join(root,'output/backend-auto-update',new Date().toISOString().replace(/[:.]/g,'-')),isolated=path.join(run,'workspace');fs.mkdirSync(isolated,{recursive:true});
+ const source=path.join(root,'projects/workspace.furnish.json'),before=hash(source),run=path.join(root,'verification.noindex/backend-auto-update',new Date().toISOString().replace(/[:.]/g,'-')),isolated=path.join(run,'workspace');fs.mkdirSync(isolated,{recursive:true});
  for(const name of ['index.html','manifest.webmanifest','src','styles','vendor','assets'])fs.cpSync(path.join(root,name),path.join(isolated,name),{recursive:true});fs.mkdirSync(path.join(isolated,'scripts'));for(const name of runtimeFiles)fs.copyFileSync(path.join(root,'scripts',name),path.join(isolated,'scripts',name));
  const plan=require('../src/data/plans.js')[0],work=require('../src/core/work-state.js').create({makeId:()=> 'fixture',colorFor:()=> '#eee',materials:{}}).fresh(plan),at=plan.rooms[0].at;
  work.furniture=[{id:'fixture',name:'Update fixture',type:'table',w:1000,d:600,h:750,cx:at[0],cy:at[1],rot:0,color:'#c1a17c'}];const seed={v:40,planId:plan.id,work:{[plan.id]:work},designs:[],customPlans:[]};fs.mkdirSync(path.join(isolated,'projects'));const file=path.join(isolated,'projects/workspace.furnish.json');fs.writeFileSync(file,C.text(seed));

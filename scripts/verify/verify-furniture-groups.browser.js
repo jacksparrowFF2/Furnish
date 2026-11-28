@@ -22,8 +22,8 @@ async (page,verification)=>{
   await p.evaluate(ids=>selectIds([ids[0]]),ids);
   const roundtrip=await p.evaluate(()=>{const project=FurnishProject.unpack(JSON.parse(JSON.stringify(FurnishProject.pack({planId:PLAN.id,current:state,designs:[{name:'打组方案',work:state}],catalog:[]}))));return project.current.furniture.every(f=>f.groupId===state.furniture[0].groupId)&&project.designs[0].work.furniture.every(f=>f.groupId===state.furniture[0].groupId);});check(roundtrip,'project pack/unpack');
   await p.reload();await p.locator('#lib').waitFor();check(await p.evaluate(group=>state.furniture.length===5&&state.furniture.every(f=>f.groupId===group),group),'refresh persistence');await p.evaluate(ids=>{selectIds([ids[0]]);zoomSel();},ids);
-  await p.screenshot({path:root+'output/playwright/furniture-groups/'+mode+'-group.png'});
-  await p.setViewportSize({width:390,height:844});await p.evaluate(()=>{closeDrawers();});check(await p.locator('#fab [data-act="ungroup"]').isVisible(),'narrow ungroup');await p.screenshot({path:root+'output/playwright/furniture-groups/'+mode+'-mobile.png'});
+  await p.screenshot({path:root+'verification.noindex/playwright/furniture-groups/'+mode+'-group.png'});
+  await p.setViewportSize({width:390,height:844});await p.evaluate(()=>{closeDrawers();});check(await p.locator('#fab [data-act="ungroup"]').isVisible(),'narrow ungroup');await p.screenshot({path:root+'verification.noindex/playwright/furniture-groups/'+mode+'-mobile.png'});
   await p.locator('#fab [data-act="ungroup"]').click();check(await p.evaluate(()=>state.furniture.every(f=>!f.groupId)),'ungroup');await p.evaluate(()=>select(null));await p.evaluate(ids=>selectIds([ids[1]]),ids);check(await p.evaluate(()=>selIds().length)===1,'individual selection restored');
   check(errors.length===0,'page errors: '+errors.join(';'));results.push({mode,passed:true});await context.close();
  }

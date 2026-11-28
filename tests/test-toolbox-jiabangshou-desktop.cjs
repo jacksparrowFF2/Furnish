@@ -3,7 +3,7 @@ const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),
 const root=path.resolve(__dirname,'..'),A=require('../scripts/lib/test-artifacts.cjs'),F=require('../scripts/lib/model-browser-fixture.cjs'),{runtimeFiles}=require('../scripts/package-desktop.cjs'),{desktopExecutable}=require('../scripts/launch-desktop.cjs');
 const profile=process.argv[2]||'toolbox-jiabangshou-390',spec=require('../scripts/lib/storage-supply-specs.json')[profile];if(!spec)throw Error('Unknown toolbox profile');
 const hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
-(async()=>{const source=path.join(root,'projects/workspace.furnish.json'),before=hash(source),job=A.createRun({parent:path.join(root,'output/desktop-verification'),prefix:'toolbox-'});let app,passed=false;
+(async()=>{const source=path.join(root,'projects/workspace.furnish.json'),before=hash(source),job=A.createRun({parent:path.join(root,'verification.noindex/desktop-verification'),prefix:'toolbox-'});let app,passed=false;
 try{
  const work=job.workspace('workspace',root,{directories:['src','styles','vendor','templates'],files:['index.html','manifest.webmanifest']});for(const name of runtimeFiles)job.copy(path.join(root,'scripts',name),path.join('workspace/scripts',name));job.discard('profile');
  const server=http.createServer();await new Promise(r=>server.listen(0,'127.0.0.1',r));const port=server.address().port;await new Promise(r=>server.close(r));const executable=desktopExecutable(root),env={...process.env,FURNISH_DESKTOP_ROOT:work,FURNISH_DESKTOP_PROFILE:path.join(job.dir,'profile'),FURNISH_PORT:String(port)};delete env.ELECTRON_RUN_AS_NODE;

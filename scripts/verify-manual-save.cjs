@@ -6,7 +6,7 @@ const root=path.resolve(__dirname,'..'),hash=file=>crypto.createHash('sha256').u
 async function freePort(){const server=http.createServer();await new Promise(r=>server.listen(0,'127.0.0.1',r));const port=server.address().port;await new Promise(r=>server.close(r));return port;}
 async function main(){
  const source=path.resolve(process.argv[2]||path.join(root,'projects/workspace.furnish.json')),repositoryFile=path.join(root,'projects/workspace.furnish.json'),originals=[...new Set([source,repositoryFile])].map(file=>({file,sha256:hash(file)}));
- const run=path.join(root,'output/manual-save-verification',new Date().toISOString().replace(/[:.]/g,'-')),isolated=path.join(run,'workspace');fs.mkdirSync(isolated,{recursive:true});
+ const run=path.join(root,'verification.noindex/manual-save-verification',new Date().toISOString().replace(/[:.]/g,'-')),isolated=path.join(run,'workspace');fs.mkdirSync(isolated,{recursive:true});
  for(const name of ['index.html','manifest.webmanifest','src','styles','vendor','assets'])fs.cpSync(path.join(root,name),path.join(isolated,name),{recursive:true});
  fs.mkdirSync(path.join(isolated,'scripts'));for(const name of runtimeFiles)fs.copyFileSync(path.join(root,'scripts',name),path.join(isolated,'scripts',name));
  fs.mkdirSync(path.join(isolated,'projects'));const file=path.join(isolated,'projects/workspace.furnish.json');fs.copyFileSync(source,file);

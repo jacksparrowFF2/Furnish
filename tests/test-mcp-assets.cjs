@@ -1,7 +1,7 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const A=require('../scripts/lib/test-artifacts.cjs'),C=require('../src/core/mcp-core.js'),R=require('../scripts/mcp-references.cjs'),E=require('../scripts/mcp-artifacts.cjs');
-const job=A.createRun({parent:path.resolve('output/desktop-verification'),prefix:'mcp-assets-'});let passed=false;
+const job=A.createRun({parent:path.resolve('verification.noindex/desktop-verification'),prefix:'mcp-assets-'});let passed=false;
 try{
  const root=path.join(job.dir,'root');job.discard('root');fs.mkdirSync(path.join(root,'assets/models/example'),{recursive:true});
  const file=path.join(root,'assets/models/example/asset.json');fs.writeFileSync(file,JSON.stringify({format:1,id:'example',references:[],sourceLinks:[]}));

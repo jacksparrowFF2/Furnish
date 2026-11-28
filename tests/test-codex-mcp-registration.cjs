@@ -2,7 +2,7 @@
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),{execFileSync}=require('node:child_process');
 const Setup=require('../scripts/register-codex-mcp.cjs'),root=path.resolve(__dirname,'..');
 (async()=>{
- const cli=Setup.findCodex(),run=fs.mkdtempSync(path.join(root,'output/codex-mcp-registration-')),workspace=path.join(run,'workspace space #'),home=path.join(run,'codex-home');fs.mkdirSync(home,{recursive:true});
+ const cli=Setup.findCodex(),run=require('../scripts/lib/test-artifacts.cjs').scratchDirectory(path.join(root,'verification.noindex/codex-mcp-registration-')),workspace=path.join(run,'workspace space #'),home=path.join(run,'codex-home');fs.mkdirSync(home,{recursive:true});
  for(const name of ['scripts/furnish-mcp.cjs','src/core/mcp-core.js']){fs.mkdirSync(path.dirname(path.join(workspace,name)),{recursive:true});fs.copyFileSync(path.join(root,name),path.join(workspace,name));}
  const env={...process.env,CODEX_HOME:home},config=path.join(home,'config.toml'),base='model = "preserved-model"\n[mcp_servers.other]\ncommand = "unrelated"\nargs = ["--literal"]\ntool_timeout_sec = 17\n';
  const packageRoot=path.join(run,'packaged');fs.mkdirSync(packageRoot);fs.writeFileSync(path.join(packageRoot,'furnish-desktop.json'),JSON.stringify({root:workspace}));assert.equal(Setup.defaultRoot({base:packageRoot,env:{}}),fs.realpathSync(workspace));assert.equal(Setup.defaultRoot({base:packageRoot,env:{FURNISH_DESKTOP_ROOT:home}}),fs.realpathSync(home));

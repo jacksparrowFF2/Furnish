@@ -1,7 +1,7 @@
 async (page,verification)=>{
  const root=verification.root,results=[];
  for(const mode of ['http','file']){
-  const context=await page.context().browser().newContext({viewport:{width:1500,height:1000},offline:mode==='file'}),p=await context.newPage(),errors=[],check=(ok,msg)=>{if(!ok)throw Error(mode+': '+msg);},dir=root+'output/playwright/sink-surface/';
+  const context=await page.context().browser().newContext({viewport:{width:1500,height:1000},offline:mode==='file'}),p=await context.newPage(),errors=[],check=(ok,msg)=>{if(!ok)throw Error(mode+': '+msg);},dir=root+'verification.noindex/playwright/sink-surface/';
   p.on('pageerror',e=>errors.push(e.message));
   try{
    await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.waitForFunction(()=>!repositoryBooting);await p.locator('#drawing-compass').waitFor();

@@ -4,7 +4,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const {pathToFileURL}=require('node:url'),V=require('../scripts/lib/browser-verification.cjs');
 (async()=>{
  const server=await V.staticServer(V.projectRoot),browser=await V.loadPlaywright().chromium.launch(V.configuration().launchOptions);
- const output=path.join(V.projectRoot,'output/playwright/file-menu');fs.mkdirSync(output,{recursive:true});
+ const output=path.join(V.projectRoot,'verification.noindex/playwright/file-menu');fs.mkdirSync(output,{recursive:true});
  try{for(const protocol of ['http','file']){
   const context=await browser.newContext({viewport:{width:1440,height:1000},acceptDownloads:true}),page=await context.newPage(),errors=[];let requests=0;
   page.on('pageerror',e=>errors.push(e.message));

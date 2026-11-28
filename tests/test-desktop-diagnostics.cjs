@@ -1,6 +1,6 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),{EventEmitter}=require('node:events'),A=require('../scripts/lib/test-artifacts.cjs'),D=require('../desktop/diagnostics.cjs');
-const job=A.createRun({parent:path.resolve(__dirname,'../output/desktop-verification'),prefix:'diagnostics-'}),root=job.discard('workspace');let passed=false;
+const job=A.createRun({parent:path.resolve(__dirname,'../verification.noindex/desktop-verification'),prefix:'diagnostics-'}),root=job.discard('workspace');let passed=false;
 try{
  const app=new EventEmitter(),proc=new EventEmitter();Object.assign(proc,{pid:123,versions:{electron:'fixture',node:'fixture'}});app.getAppMetrics=()=>[{pid:123,type:'Browser',name:'private name',cpu:{percentCPUUsage:1},memory:{workingSetSize:2048,privateBytes:1024}}];
  const d=D.start({root,app,proc}),win=new EventEmitter();win.webContents=new EventEmitter();d.window(win);d.heartbeat();win.emit('unresponsive');win.emit('responsive');win.webContents.emit('render-process-gone',{}, {reason:'oom',exitCode:-1});app.emit('child-process-gone',{}, {type:'GPU',reason:'crashed',exitCode:7});win.emit('close');win.emit('closed');app.emit('before-quit');app.emit('will-quit');app.emit('quit',{},0);proc.emit('exit',0);

@@ -2,7 +2,7 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict'),{pathToFileURL}=require('node:url');
 const root=path.resolve(__dirname,'..'),V=require('../scripts/lib/browser-verification.cjs'),C=require('../src/core/repository-core.js');
-const output=path.join(root,'output/playwright',process.env.FURNISH_STORAGE_FIXTURE?'local-archive-large':'local-archive');fs.mkdirSync(output,{recursive:true});
+const output=path.join(root,'verification.noindex/playwright',process.env.FURNISH_STORAGE_FIXTURE?'local-archive-large':'local-archive');fs.mkdirSync(output,{recursive:true});
 const run=fs.mkdtempSync(path.join(output,'run-')),api=require('../scripts/repository-server.cjs').create(run),builtInPlan=require('../src/data/plans.js')[0];
 let uid=0;const W=require('../src/core/work-state.js').create({makeId:()=> 'browser'+ ++uid,colorFor:()=> '#aabbcc',materials:require('../src/data/catalog.js').materials}),work=W.fresh(builtInPlan);
 const seed=process.env.FURNISH_STORAGE_FIXTURE?JSON.parse(fs.readFileSync(process.env.FURNISH_STORAGE_FIXTURE,'utf8')).workspace:{v:Math.max(2,require('../src/core/project-core.js').formatVersion([work])),planId:builtInPlan.id,work:{[builtInPlan.id]:work},designs:[],customPlans:[]},plan={id:seed.planId};

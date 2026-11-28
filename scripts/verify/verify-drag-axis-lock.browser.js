@@ -1,5 +1,5 @@
 async(page,verification)=>{
- const context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[],dir='output/playwright/drag-axis-lock/';p.on('pageerror',e=>errors.push(e.message));const check=(v,m)=>{if(!v)throw Error(m);};
+ const context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[],dir='verification.noindex/playwright/drag-axis-lock/';p.on('pageerror',e=>errors.push(e.message));const check=(v,m)=>{if(!v)throw Error(m);};
  const screen=async(x,y)=>p.evaluate(([x,y])=>{const a=drawingPoint([x,y]),pt=svg.createSVGPoint();pt.x=a[0];pt.y=a[1];const q=pt.matrixTransform(svg.getScreenCTM());return {x:q.x,y:q.y};},[x,y]);
  const move=async(x,y)=>{const q=await screen(x,y);await p.mouse.move(q.x,q.y,{steps:5});await p.waitForFunction(()=>!canvasPointerFrame);};
  const at=async(id,x,y)=>{const actual=await p.evaluate(id=>[getF(id).cx,getF(id).cy],id);check(Math.hypot(actual[0]-x,actual[1]-y)<.1,id+' expected '+[x,y]+' actual '+actual);};

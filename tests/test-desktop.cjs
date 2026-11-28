@@ -24,7 +24,7 @@ async function port(){const server=http.createServer();await new Promise(r=>serv
  }finally{await first.close();}
  await assert.rejects(fetch(first.url));
  // Upgrade through the same production restart protocol, with no source/data mutation.
- const output=path.join(root,'output');fs.mkdirSync(output,{recursive:true});
+ const output=path.join(root,'verification.noindex');fs.mkdirSync(output,{recursive:true});
  const isolated=fs.mkdtempSync(path.join(output,'desktop-backend-'));
  let prior,updated;
  try{

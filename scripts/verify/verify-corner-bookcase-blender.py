@@ -1,6 +1,6 @@
 """Independent source, production roundtrip and failed-publication preservation checks."""
 import bpy, bmesh, pathlib, sys, json, math, importlib.util, os
-root=pathlib.Path(__file__).resolve().parents[2];wide=os.environ.get('FURNISH_CORNER_PROFILE')=='580';profile='corner-bookcase-580' if wide else 'corner-bookcase';run=root/('output/playwright/'+profile+'-validation');source_file=root/('assets/models/'+profile+'/v1/'+profile+'-v1.glb')
+root=pathlib.Path(__file__).resolve().parents[2];wide=os.environ.get('FURNISH_CORNER_PROFILE')=='580';profile='corner-bookcase-580' if wide else 'corner-bookcase';run=root/('verification.noindex/playwright/'+profile+'-validation');source_file=root/('assets/models/'+profile+'/v1/'+profile+'-v1.glb')
 spec=json.loads((run/'spec.json').read_text())
 def clear():
     bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False)

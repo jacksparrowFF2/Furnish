@@ -2,7 +2,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),http=require('node:http'),crypto=require('node:crypto');
 const root=path.resolve(__dirname,'..'),Artifacts=require('../scripts/lib/test-artifacts.cjs'),{connect}=require('../desktop/backend.cjs');
 (async()=>{
- const job=Artifacts.createRun({parent:path.join(root,'output/server-verification'),prefix:'static-stream-'}),workspace=path.join(job.dir,'workspace');let backend,passed=false;
+ const job=Artifacts.createRun({parent:path.join(root,'verification.noindex/server-verification'),prefix:'static-stream-'}),workspace=path.join(job.dir,'workspace');let backend,passed=false;
  try{
   fs.mkdirSync(workspace);job.copy(path.join(root,'src'),'workspace/src');for(const name of require('../scripts/package-desktop.cjs').runtimeFiles)job.copy(path.join(root,'scripts',name),path.join('workspace/scripts',name));
   const folder=path.join(workspace,'public');fs.mkdirSync(folder);const name='测试 # asset.bin',data=Buffer.alloc(8*1024*1024);for(let i=0;i<data.length;i++)data[i]=i%251;fs.writeFileSync(path.join(folder,name),data);fs.writeFileSync(path.join(folder,'empty.js'),'');fs.writeFileSync(path.join(folder,'mime.js'),'const streamed=true;');

@@ -2,7 +2,7 @@
  * This checks HTTP startup without external network, then offline editing and import.
  * It deliberately does not claim file:// startup verification. */
 async (page,verification)=>{
- const root=verification.root,url=(verification.baseURL+'index.html'),dir=root+'output/playwright/workflow-tools/',results=[];
+ const root=verification.root,url=(verification.baseURL+'index.html'),dir=root+'verification.noindex/playwright/workflow-tools/',results=[];
  const check=(value,label)=>{if(!value)throw Error(label);};
  const stable=v=>JSON.stringify(v,(_,x)=>x&&typeof x==='object'&&!Array.isArray(x)?Object.fromEntries(Object.entries(x).sort(([a],[b])=>a.localeCompare(b))):x);
  const diff=(a,b,path='')=>{if(stable(a)===stable(b))return [];if(a&&b&&typeof a==='object'&&typeof b==='object')return [...new Set([...Object.keys(a),...Object.keys(b)])].flatMap(k=>diff(a[k],b[k],path+'.'+k));return [{path,before:a,after:b}];};

@@ -1,7 +1,8 @@
 /* Explicitly owned test directories only. Never sweep output by age or name. */
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
-const outputRoot=path.resolve(__dirname,'../../output'),marker='.furnish-test-run.json',lock='.furnish-test-lock.json';
+const verificationDirectory='verification.noindex';
+const verificationRoot=path.resolve(__dirname,'../..',verificationDirectory),marker='.furnish-test-run.json',lock='.furnish-test-lock.json';
 const sha=file=>crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
 function inside(root,file){const rel=path.relative(root,path.resolve(file));if(!rel||rel==='..'||rel.startsWith('..'+path.sep)||path.isAbsolute(rel))throw Error('Test path escapes owned directory: '+file);return path.resolve(file);}
 function noLinks(file){
@@ -11,7 +12,7 @@ function noLinks(file){
 }
 const profileCaches=['Cache','Code Cache','GPUCache','DawnGraphiteCache','GraphiteDawnCache','GPUPersistentCache','DawnWebGPUCache','ShaderCache','GrShaderCache'];
 function write(file,data){const temp=file+'.'+crypto.randomUUID()+'.tmp';fs.writeFileSync(temp,JSON.stringify(data,null,2));fs.renameSync(temp,file);}
-function openRun(directory,{root=outputRoot,removeEntire=false,env=process.env,existing=false}={}){
+function openRun(directory,{root=verificationRoot,removeEntire=false,env=process.env,existing=false}={}){
  const dir=inside(path.resolve(root),directory);if(fs.lstatSync(path.resolve(root)).isSymbolicLink())throw Error('Linked output root');
  // Check ancestors, not just the leaf (a redirected parent must not authorize deletion).
  for(let p=dir;;p=path.dirname(p)){if(fs.lstatSync(p).isSymbolicLink())throw Error('Linked test parent: '+p);if(p===path.parse(p).root)break;}
@@ -72,7 +73,7 @@ function openRun(directory,{root=outputRoot,removeEntire=false,env=process.env,e
  }
  return {dir,discard,copy,workspace,generated,finish};
 }
-function createRun({parent=path.join(outputRoot,'playwright'),prefix='verification-',root=outputRoot,...options}={}){
+function createRun({parent=path.join(verificationRoot,'playwright'),prefix='verification-',root=verificationRoot,...options}={}){
  parent=path.resolve(parent);if(parent!==path.resolve(root))inside(path.resolve(root),parent);
  if(path.basename(prefix)!==prefix||!prefix)throw Error('Invalid test prefix');
  // Do not enumerate unrelated historical output trees.
@@ -89,4 +90,9 @@ function temporaryDirectory(prefix){
  if(!hooked){hooked=true;process.on('uncaughtExceptionMonitor',()=>{crashed=true;});process.once('exit',code=>{for(const f of fixtures)if(fs.existsSync(f.dir))f.finish(code===0&&!crashed);});}
  return run.dir;
 }
-module.exports={createRun,openRun,temporaryDirectory};
+// Legacy standalone checks still own their teardown, but can start from a fresh checkout.
+function scratchDirectory(prefix){
+ fs.mkdirSync(path.dirname(prefix),{recursive:true});
+ return fs.mkdtempSync(prefix);
+}
+module.exports={createRun,openRun,temporaryDirectory,scratchDirectory,verificationDirectory};

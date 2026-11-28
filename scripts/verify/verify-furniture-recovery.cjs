@@ -4,7 +4,7 @@ const fs=require('node:fs'),path=require('node:path'),assert=require('node:asser
 const verification=require('../lib/browser-verification.cjs').configuration();
 const K=require('../../src/core/kitchen-core.js'),W=require('../../src/core/work-state.js'),catalog=require('../../src/data/catalog.js'),plans=require('../../src/data/plans.js');
 (async()=>{
- const root=verification.root,out=path.join(root,'output/playwright/furniture-recovery');fs.mkdirSync(out,{recursive:true});
+ const root=verification.root,out=path.join(root,'verification.noindex/playwright/furniture-recovery');fs.mkdirSync(out,{recursive:true});
  const plan=plans[0],work=W.create({makeId:()=> 'unused',colorFor:()=> '#ddd',materials:catalog.materials}).fresh(plan);
  const kitchen={id:'broken-kitchen',type:'counter',name:'异常厨房',cx:6000,cy:6500,w:2200,d:650,rot:37,flip:true,color:'#ddd',price:321,brand:'保留品牌',purchaseStatus:'ordered',kitchen:K.defaults({w:1800,d:600})};kitchen.kitchen.modules[0].role='sink';
  const device={id:'linked-sink',type:'ksink',name:'关联水槽',cx:5300,cy:6200,w:500,d:400,rot:37,flip:true,color:'#ddd',counterLink:{hostId:kitchen.id,module:0},counterElevation:860};

@@ -58,7 +58,7 @@ async function run(label,workspace,directory,source){
  }finally{if(peakTimer)clearInterval(peakTimer);await app.close();}
 }
 (async()=>{
- const A=require('./lib/test-artifacts.cjs'),job=A.createRun({parent:path.join(root,'output/runtime-memory'),prefix:'profile-'});let passed=false;
+ const A=require('./lib/test-artifacts.cjs'),job=A.createRun({parent:path.join(root,'verification.noindex/runtime-memory'),prefix:'profile-'});let passed=false;
  try{
   const sourceRoot=path.resolve(process.env.FURNISH_RUNTIME_SOURCE_ROOT||root),file=path.resolve(process.env.FURNISH_TEST_PROJECT||require('./workspace-files.cjs').create(sourceRoot).info({inspect:false}).file),source={source:file,sourceHash:crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex')},options={directories:['src','styles','vendor','assets','scripts'],files:['index.html','manifest.webmanifest']};
   // Freeze all shared code once, before any variant starts. Only explicit files

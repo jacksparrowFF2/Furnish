@@ -10,7 +10,7 @@
 
 现有引擎区分直接／间接radiance clamp，MuTracer是单一clamping接口，因此本轮两边统一关闭clamp，避免把不同偏置算成速度。此处是共同控制设置，不冒称原生产默认的间接clamp=10。
 
-MuTracer 0.3.1 npm包，下载未执行安装脚本；归档包及UMD SHA256见[results.json](results.json)。在忽略的output/mutracer-study中解包，UMD、Worker和权重全部经本机路由提供；最终验证记录没有运行时CDN请求。未更改package.json或引入项目构建工具。MuTracer官方转换器使用OpenPBR，现有引擎使用glTF compliant材质，不能预先假定两套BRDF完全一致。
+MuTracer 0.3.1 npm包，下载未执行安装脚本；归档包及UMD SHA256见[results.json](results.json)。在忽略的verification.noindex/mutracer-study中解包，UMD、Worker和权重全部经本机路由提供；最终验证记录没有运行时CDN请求。未更改package.json或引入项目构建工具。MuTracer官方转换器使用OpenPBR，现有引擎使用glTF compliant材质，不能预先假定两套BRDF完全一致。
 
 ## 时间口径
 
@@ -52,9 +52,9 @@ MuTracer最后PNG编码及传输后通知52.209秒。最终约慢10.8%，但因�
 ## 复现与检查
 
 ```sh
-mkdir -p output/mutracer-study
-npm pack @meimu/mutracer@0.3.1 --pack-destination output/mutracer-study --ignore-scripts
-tar -xzf output/mutracer-study/meimu-mutracer-0.3.1.tgz -C output/mutracer-study
+mkdir -p verification.noindex/mutracer-study
+npm pack @meimu/mutracer@0.3.1 --pack-destination verification.noindex/mutracer-study --ignore-scripts
+tar -xzf verification.noindex/mutracer-study/meimu-mutracer-0.3.1.tgz -C verification.noindex/mutracer-study
 node tests/test-mutracer-comparison-ui.cjs --desktop-only
 ```
 

@@ -5,7 +5,7 @@ const {_electron}=require('playwright'),root=path.resolve(__dirname,'../..'),Art
 const sha=f=>crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
 async function main(){
  const source=process.argv[2]||'D:/1601装修/Furnish项目/workspace.furnish.json',executable='D:/1601装修/Furnish程序/Furnish-win32-x64/Furnish.exe',before=sha(source),localSource=path.join(root,'projects/workspace.furnish.json'),localHash=sha(localSource);
- const job=Artifacts.createRun({parent:path.join(root,'output/desktop-verification'),prefix:'panel-xiaomi-'}),run=job.dir,checks=[];let desktop,passed=false;
+ const job=Artifacts.createRun({parent:path.join(root,'verification.noindex/desktop-verification'),prefix:'panel-xiaomi-'}),run=job.dir,checks=[];let desktop,passed=false;
  try{
   const isolated=job.workspace('workspace',root,{directories:['src','styles','vendor','assets'],files:['index.html','manifest.webmanifest']});
   fs.copyFileSync(source,path.join(isolated,'projects/workspace.furnish.json'));

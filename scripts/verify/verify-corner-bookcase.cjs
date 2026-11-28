@@ -1,7 +1,7 @@
 // Private workspace only: production app, HTTP and offline file, no user saves.
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),assert=require('node:assert/strict'),V=require('../lib/browser-verification.cjs');
-async function main(){const project=path.resolve(__dirname,'../..'),wide=process.env.FURNISH_CORNER_PROFILE==='580',profile=wide?'corner-bookcase-580':'corner-bookcase',run=path.join(project,'output/playwright/'+profile+'-validation'),root=path.join(run,'workspace');fs.mkdirSync(root,{recursive:true});
+async function main(){const project=path.resolve(__dirname,'../..'),wide=process.env.FURNISH_CORNER_PROFILE==='580',profile=wide?'corner-bookcase-580':'corner-bookcase',run=path.join(project,'verification.noindex/playwright/'+profile+'-validation'),root=path.join(run,'workspace');fs.mkdirSync(root,{recursive:true});
  for(const name of ['src','styles','assets','vendor','templates'])if(fs.existsSync(path.join(project,name)))fs.cpSync(path.join(project,name),path.join(root,name),{recursive:true});fs.copyFileSync(path.join(project,'index.html'),path.join(root,'index.html'));fs.mkdirSync(path.join(root,'projects'),{recursive:true});fs.copyFileSync(path.join(project,'projects/workspace.furnish.json'),path.join(root,'projects/workspace.furnish.json'));
  const gen=cp.spawnSync(process.execPath,[path.join(project,'scripts/preview-corner-bookcase.cjs')],{env:{...process.env,FURNISH_VERIFY_ROOT:root},encoding:'utf8',windowsHide:true});assert.equal(gen.status,0,gen.stderr);
  const server=await V.staticServer(root);process.env.FURNISH_VERIFY_ROOT=root;process.env.FURNISH_VERIFY_URL=server.baseURL;const config=V.configuration();let browser;const results=[];

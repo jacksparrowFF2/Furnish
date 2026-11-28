@@ -2,7 +2,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),{PassThrough}=require('node:stream');
 const Core=require('../src/core/mcp-core.js'),Bridge=require('../scripts/desktop-mcp.cjs'),Mcp=require('../scripts/furnish-mcp.cjs');
 (async()=>{
- const root=fs.mkdtempSync(path.resolve(__dirname,'../output/mcp-unit-')),input=new PassThrough(),output=new PassThrough();
+ const root=require('../scripts/lib/test-artifacts.cjs').scratchDirectory(path.resolve(__dirname,'../verification.noindex/mcp-unit-')),input=new PassThrough(),output=new PassThrough();
  let text='';output.on('data',c=>text+=c);const session=Mcp.serve({root,input,output});
  const message=async(method,params={},id=1)=>{text='';input.write(JSON.stringify({jsonrpc:'2.0',id,method,params})+'\n');await session.idle();return JSON.parse(text);};
  assert.equal((await message('tools/list')).error.code,-32002);

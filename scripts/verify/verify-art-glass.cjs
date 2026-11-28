@@ -2,7 +2,7 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),http=require('node:http'),crypto=require('node:crypto');
 const {pathToFileURL}=require('node:url'),{_electron,chromium}=require('playwright');
-const root=path.resolve(__dirname,'../..'),run=path.join(root,'output/art-glass-verification'),isolated=path.join(run,'workspace'),{runtimeFiles}=require('../package-desktop.cjs');
+const root=path.resolve(__dirname,'../..'),run=path.join(root,'verification.noindex/art-glass-verification'),isolated=path.join(run,'workspace'),{runtimeFiles}=require('../package-desktop.cjs');
 const hash=f=>crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
 async function main(){
  const source=path.join(root,'projects/workspace.furnish.json'),before=hash(source);fs.mkdirSync(isolated,{recursive:true});

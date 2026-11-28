@@ -26,7 +26,7 @@ async function main(){
  assert(messages.find(m=>m.id===3).result.isError);assert(messages.some(m=>m.error?.code===-32700));
  input.end();await new Promise(r=>setImmediate(r));assert(released);
  const p=await F.execute({action:'profiles',root:path.resolve(__dirname,'..')});assert(p.profiles.length>90);
- const parent=path.resolve(__dirname,'../output/codex-blender-unit');fs.mkdirSync(parent,{recursive:true});const bindingData=fs.mkdtempSync(path.join(parent,'binding-'));
+ const parent=path.resolve(__dirname,'../verification.noindex/codex-blender-unit');fs.mkdirSync(parent,{recursive:true});const bindingData=fs.mkdtempSync(path.join(parent,'binding-'));
  const bound=await F.execute({action:'bind',root:path.resolve(__dirname,'..')},{data:bindingData});assert.equal(bound.bound,true);
  assert.equal((await F.execute({action:'doctor'},{data:bindingData})).root,bound.root);
  // Launch the declaration itself, including its cwd, rather than substituting a known script path.

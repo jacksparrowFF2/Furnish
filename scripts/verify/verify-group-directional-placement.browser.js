@@ -1,5 +1,5 @@
 async (page,verification)=>{
- const context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[],dir='output/playwright/measure-boundaries/';
+ const context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[],dir='verification.noindex/playwright/measure-boundaries/';
  p.on('pageerror',e=>errors.push(e.message));const check=(v,m)=>{if(!v)throw Error(m);},close=(a,b)=>check(Math.abs(a-b)<1e-6,`${a} != ${b}`),value=()=>p.locator('#directional-gap-input');
  const members=()=>p.evaluate(()=>state.furniture.filter(f=>f.id.startsWith('group-')).map(f=>structuredClone(f))),snapshot=()=>p.evaluate(()=>JSON.stringify(state)),open=async d=>{await p.locator('#plan [data-distance-edit="'+d+'"]').first().click();await value().waitFor();};
  const showDistances=async()=>{if(!await p.locator('#fab-editor [data-distance-save]').count())await p.locator('#fab [data-fab-edit="distance"]').click();};

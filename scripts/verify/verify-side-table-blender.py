@@ -1,6 +1,6 @@
 """Reimport production exports, measure rigid travel; reject a false closed pivot."""
 import bpy, sys, pathlib, json, math, importlib.util, hashlib, traceback
-args=sys.argv[sys.argv.index('--')+1:];root=pathlib.Path(args[0]);result=pathlib.Path(args[1]);run=root/'output/side-table-validation'
+args=sys.argv[sys.argv.index('--')+1:];root=pathlib.Path(args[0]);result=pathlib.Path(args[1]);run=root/'verification.noindex/side-table-validation'
 def read(path):
     bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False);bpy.ops.import_scene.gltf(filepath=str(path))
     return {o.get('furnishPartKey'): [o.matrix_world@v.co for v in o.data.vertices] for o in bpy.context.scene.objects if o.type=='MESH' and o.get('furnishId')=='table-validation'}

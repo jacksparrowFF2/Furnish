@@ -5,7 +5,7 @@ const root=path.resolve(__dirname,'..'),marker='.furnish-tauri-workspace.json';
 const hash=file=>crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
 async function freePort(){const s=net.createServer();await new Promise((r,j)=>s.once('error',j).listen(0,'127.0.0.1',r));const p=s.address().port;await new Promise(r=>s.close(r));return p;}
 function prepare({sourceRoot=root,source=process.env.FURNISH_TEST_PROJECT||require('./workspace-files.cjs').create(sourceRoot).info({inspect:false}).file}={}){
- const job=require('./lib/test-artifacts.cjs').createRun({parent:path.join(root,'output/tauri-comparison'),prefix:'compare-',env:{...process.env,FURNISH_KEEP_TEST_WORKSPACES:'1'}});
+ const job=require('./lib/test-artifacts.cjs').createRun({parent:path.join(root,'verification.noindex/tauri-comparison'),prefix:'compare-',env:{...process.env,FURNISH_KEEP_TEST_WORKSPACES:'1'}});
  const before=hash(source),workspace=path.join(job.dir,'workspace');fs.mkdirSync(workspace,{recursive:true});
  for(const name of ['src','styles','vendor','assets','index.html','manifest.webmanifest'])if(fs.existsSync(path.join(sourceRoot,name)))job.copy(path.join(sourceRoot,name),path.join('workspace',name));
  job.copy(source,'workspace/projects/workspace.furnish.json',{disposable:false});
@@ -44,7 +44,8 @@ async function launch({workspace,engine='tauri',probe,executable}={}){
   const port=metadata.port||await freePort();
   if(!metadata.port){metadata.port=port;fs.writeFileSync(path.join(workspace,marker),JSON.stringify(metadata,null,2));}
   const profile=path.join(run,'profile-'+engine);fs.mkdirSync(profile,{recursive:true});
-  const env={...process.env,FURNISH_DESKTOP_ROOT:workspace,FURNISH_DESKTOP_PROFILE:profile,FURNISH_PORT:String(port),FURNISH_MCP_DISABLE:'1',FURNISH_TAURI_URL:`http://127.0.0.1:${port}/`,FURNISH_TAURI_PROFILE:profile,FURNISH_TAURI_PROFILE_ID:crypto.createHash('sha256').update(profile).digest('hex').slice(0,32)};
+  const profileIdentity=metadata.legacyProfileRoot?path.join(metadata.legacyProfileRoot,'profile-'+engine):profile;
+  const env={...process.env,FURNISH_DESKTOP_ROOT:workspace,FURNISH_DESKTOP_PROFILE:profile,FURNISH_PORT:String(port),FURNISH_MCP_DISABLE:'1',FURNISH_TAURI_URL:`http://127.0.0.1:${port}/`,FURNISH_TAURI_PROFILE:profile,FURNISH_TAURI_PROFILE_ID:crypto.createHash('sha256').update(profileIdentity).digest('hex').slice(0,32)};
   if(probe){env.FURNISH_TAURI_PROBE=path.resolve(probe);env.FURNISH_TAURI_PROBE_SOURCE=fs.readFileSync(path.resolve(probe),'utf8');}else{delete env.FURNISH_TAURI_PROBE;delete env.FURNISH_TAURI_PROBE_SOURCE;}
   if(engine==='tauri'){exportsDirectory=fs.mkdtempSync(path.join(require('node:os').tmpdir(),'furnish-tauri-exports-'));env.FURNISH_TAURI_EXPORTS=exportsDirectory;}
   delete env.ELECTRON_RUN_AS_NODE;
