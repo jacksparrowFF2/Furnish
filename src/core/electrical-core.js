@@ -92,24 +92,45 @@ function pointLocations(furniture,rooms){
  });
  return locations;
 }
-function testPanelActions(f,key,gesture,furniture,preview,lamps=false,entries=f.panelActions){
+const curtainPreviewTravelMs=4000;
+function curtainPreviewState(target,saved,now){
+ if(typeof saved==='boolean')return {levels:[Number(saved)]};
+ if(!saved){
+  const products=P(),sides=products.curtainOpening.sideFields.filter(field=>products.supports(target,field));
+  return {levels:(sides.length?sides:['curtainOpen']).map(field=>products.value(target,field))};
+ }
+ if(saved.startedAt===undefined)return saved;
+ const goal=saved.direction==='open'?1:0;
+ const travel=Math.max(0,now-saved.startedAt)/curtainPreviewTravelMs;
+ const levels=saved.levels.map(level=>goal?Math.min(goal,level+travel):Math.max(goal,level-travel));
+ return levels.every(level=>level===goal)?{levels}:{levels,direction:saved.direction,moving:true};
+}
+function testPanelActions(f,key,gesture,furniture,preview,lamps=false,entries=f.panelActions,now=Date.now()){
  const products=P(),byId=new Map(furniture.map(item=>[item.id,item]));
  const actions=entries?products.validateField(f,'panelActions',entries):[];
  const slot=actions.filter(entry=>entry.key===key&&entry.gesture===gesture).map(entry=>{
   const target=byId.get(entry.targetId);
-  return {entry,target,kind:products.panelActionTarget(target)};
+  const kind=products.panelActionTarget(target);
+  const covering=kind==='covering'?curtainPreviewState(target,preview.get(target.id),now):null;
+  return {entry,target,kind,covering};
  });
- const coveringLevels=target=>{
-  const sides=products.curtainOpening.sideFields.filter(field=>products.supports(target,field));
-  return (sides.length?sides:['curtainOpen']).map(field=>products.value(target,field));
- };
- const curtains=slot.filter(({kind,entry})=>kind==='covering'&&entry.action==='toggle');
+ const fullyOpen=({covering})=>covering.levels.every(level=>level>=1);
+ const curtains=slot.filter(({covering,entry})=>covering&&entry.action==='toggle');
  // One group command: a mixed or partly open group goes to fully open first.
- const groupOpens=curtains.length>1?!curtains.every(({target})=>preview.get(target.id)??coveringLevels(target).every(level=>level>=1)):null;
- return slot.map(({entry,target,kind})=>{
+ const groupOpens=curtains.length>1?!curtains.every(fullyOpen):null;
+ const cycle=slot.filter(({covering,entry})=>covering&&entry.action==='cycle');
+ const pausedOpening=cycle.some(({covering})=>covering.direction==='open'&&covering.levels.some(level=>level>0));
+ const cycleCommand=cycle.some(({covering})=>covering.moving)?'stop':
+  cycle.every(fullyOpen)||pausedOpening?'close':'open';
+ return slot.map(({entry,target,kind,covering})=>{
   if(!products.panelTargetActions(target).includes(entry.action))return {...entry,target,status:'unavailable'};
-  const baseline=kind==='light'?lamps:coveringLevels(target).some(level=>level>0);
-  const current=preview.get(target.id)??baseline;
+  if(entry.action==='cycle'){
+   const {levels,direction}=covering;
+   const next=cycleCommand==='stop'?{levels,direction}:{levels,direction:cycleCommand,startedAt:now};
+   preview.set(target.id,next);
+   return {...entry,target,status:kind,command:cycleCommand};
+  }
+  const current=covering?covering.levels.some(level=>level>0):preview.get(target.id)??lamps;
   const value=entry.action==='toggle'?(kind==='covering'&&groupOpens!==null?groupOpens:!current):entry.action==='on'||entry.action==='open';
   preview.set(target.id,value);
   return {...entry,target,status:kind,value};

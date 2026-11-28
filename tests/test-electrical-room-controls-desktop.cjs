@@ -139,7 +139,8 @@ async function main(){
   assert.equal(await controls.locator('[data-action-add="2:press"]').count(),1);
   const curtainIds=['fmv3wtxgq12','fmv3wt92611'];
   const selectedOptions=controls.locator('[data-action-target] option:checked');
-  if(curtainIds.every(id=>savedBefore?.some(a=>a.key===2&&a.gesture==='press'&&a.targetId===id))){
+  const hasCurtainPair=curtainIds.every(id=>savedBefore?.some(a=>a.key===2&&a.gesture==='press'&&a.targetId===id));
+  if(hasCurtainPair){
    const curtainLabels=await selectedOptions.evaluateAll((options,ids)=>options.filter(o=>ids.includes(o.value)).map(o=>o.textContent),curtainIds);
    assert.equal(curtainLabels.length,2);
    await controls.locator('[data-action-test="2:press"]').click();
@@ -152,10 +153,37 @@ async function main(){
   const lampLabel=await target.locator('option:checked').textContent();
   await controls.locator('[data-action-test="1:double"]').click();
   assert((await result.textContent()).split('　').includes(`${lampLabel} · 已开灯`));
+  const checkCycle=hasCurtainPair&&!savedBefore.some(a=>a.key===1&&a.gesture==='press');
+  if(checkCycle){
+   await controls.locator('[data-action-gesture]').selectOption('press');
+   for(const id of curtainIds){
+    await controls.locator('[data-action-add="1:press"]').click();
+    await target.selectOption(id);
+    await controls.locator('[data-action-verb]').last().selectOption('cycle');
+   }
+   await controls.locator('[data-actions-reset]').click();
+   const messages=await controls.locator('[data-action-test="1:press"]').evaluate(button=>{
+    const original=Date.now;
+    try{
+     return [1000,1500,2000,2250].map(now=>{
+      Date.now=()=>now;
+      button.click();
+      return button.closest('[data-panel-actions]').querySelector('[data-action-result]').textContent.split('　');
+     });
+    }finally{Date.now=original;}
+   });
+   const labels=await selectedOptions.allTextContents(),firstOpen=messages[0][0].endsWith('开始开帘');
+   const outcomes=firstOpen?['开始开帘','已暂停','开始关帘','已暂停']:['开始关帘','已暂停','开始开帘','已暂停'];
+   assert.deepEqual(labels,['飘窗布帘','飘窗纱帘']);
+   assert.deepEqual(messages,outcomes.map(outcome=>labels.map(label=>`${label} · ${outcome}`)));
+   await controls.locator('.electrical-switch-face').scrollIntoViewIfNeeded();
+   await page.screenshot({path:path.join(job.dir,'curtain-cycle.png')});
+  }
   assert.deepEqual(await page.evaluate(id=>getF(id).panelActions??null,data.switchId),savedBefore);
   await controls.locator('[data-actions-save]').click();
   const stored=await page.evaluate(id=>getF(id).panelActions,data.switchId);
   assert(stored.some(a=>a.key===1&&a.gesture==='double'&&a.targetId===data.lamp&&a.action==='on'));
+  if(checkCycle)assert.deepEqual(stored.filter(a=>a.key===1&&a.gesture==='press').map(a=>[a.targetId,a.action]),curtainIds.map(id=>[id,'cycle']));
   assert.equal(await controls.locator('[data-action-key="1"]').getAttribute('aria-pressed'),'true');
   await page.evaluate(()=>undo());
   assert.deepEqual(await page.evaluate(id=>getF(id).panelActions??null,data.switchId),savedBefore);
@@ -170,7 +198,7 @@ async function main(){
   await controls.locator('[data-action-test="1:double"]').click();
   await controls.locator('.electrical-switch-face').scrollIntoViewIfNeeded();
   await page.screenshot({path:path.join(job.dir,'switch-actions.png')});
-  assert.equal(JSON.parse(fs.readFileSync(path.join(work,'projects/workspace.furnish.json'),'utf8')).version,112);
+  assert.equal(JSON.parse(fs.readFileSync(path.join(work,'projects/workspace.furnish.json'),'utf8')).version,stored.some(a=>a.action==='cycle')?113:112);
   await page.reload();
   await page.locator('#repository-loading').waitFor({state:'hidden'});
   assert.deepEqual(await page.evaluate(id=>getF(id).panelActions,data.switchId),stored);
@@ -195,7 +223,7 @@ async function main(){
   await second.waitFor({state:'attached'});
   assert.deepEqual(errors,[]);
   passed=true;
-  console.log(JSON.stringify({passed,run:job.dir,checks:['room filtering in 2D, 3D and walk','independent collapse','whole-plan export','concise device labels and cross-room bindings','switch preview, undo/redo and reload']}));
+  console.log(JSON.stringify({passed,run:job.dir,checks:['room filtering in 2D, 3D and walk','independent collapse','whole-plan export','concise device labels and cross-room bindings','switch preview, undo/redo and reload',...(checkCycle?['two-curtain open/stop/close cycle']:[])]}));
  }finally{
   if(app){
    if(!passed)await app.evaluate(({app})=>app.exit()).catch(()=>{});

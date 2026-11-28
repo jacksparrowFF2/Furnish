@@ -245,7 +245,8 @@ globalThis.FurnishElectricalUI=(()=>{
   bindList(host);
  }
  const triggerNames={press:'单击',double:'双击',hold:'长按'};
- const actionNames={toggle:'切换',on:'开灯',off:'关灯',open:'打开窗帘',close:'关闭窗帘'};
+ const actionNames={toggle:'切换',on:'开灯',off:'关灯',open:'打开窗帘',close:'关闭窗帘',cycle:'开／停／关循环'};
+ const curtainCommands={open:'开始开帘',stop:'已暂停',close:'开始关帘'};
  let actionsDraft=null,previewOwner=null,previewStates=new Map();
  function draftFor(f){
   const samePanel=actionsDraft?.work===state&&actionsDraft.id===f.id;
@@ -365,9 +366,10 @@ globalThis.FurnishElectricalUI=(()=>{
      const actions=entries.filter(entry=>entry.key===Number(key)&&entry.gesture===gesture);
      const lamps=FurnishDesign.sceneSettings(state.scene3d).lamps;
      const results=E.testPanelActions(f,Number(key),gesture,state.furniture,previewStates,lamps,actions);
-     report(results.map(({targetId,status,value})=>{
+     report(results.map(({targetId,status,value,command})=>{
       const name=targetLabels.get(targetId)||'设备';
-      return name+' · '+(status==='unavailable'?'待核对':status==='light'?(value?'已开灯':'已关灯'):(value?'已打开':'已关闭'));
+      const outcome=command?curtainCommands[command]:status==='unavailable'?'待核对':status==='light'?(value?'已开灯':'已关灯'):(value?'已打开':'已关闭');
+      return name+' · '+outcome;
      }).join('　'));
      return;
     }
