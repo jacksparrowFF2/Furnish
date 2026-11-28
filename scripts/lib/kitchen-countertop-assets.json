@@ -463,5 +463,78 @@
       "White rear cover",
       "Wraparound chassis"
     ]
+  },
+  "mijia-xhqb10mj103": {
+    "global": "FurnishMijiaXHQB10MJ103Asset",
+    "size": [
+      530,
+      410,
+      371
+    ],
+    "product": {
+      "brand": "米家",
+      "model": "XHQB10MJ103",
+      "sourceUrl": "https://item.jd.com/100359230878.html"
+    },
+    "nativeAxes": true,
+    "parts": [
+      "Left lid",
+      "Left lid seam",
+      "Lower skirt",
+      "Rear control deck",
+      "Recessed display strip",
+      "Right lid",
+      "Right lid seam",
+      "Rounded white housing"
+    ]
+  },
+  "haier-ec8fa": {
+    "global": "FurnishHaierEC8FAAsset",
+    "size": [
+      248,
+      345,
+      257
+    ],
+    "product": {
+      "brand": "海尔",
+      "model": "EC8FA",
+      "sourceUrl": "https://item.jd.com/100257356702.html"
+    },
+    "nativeAxes": true,
+    "parts": [
+      "Cold inlet collar",
+      "Cold inlet fitting",
+      "Control surround",
+      "Hot outlet collar",
+      "Hot outlet fitting",
+      "Indicator lens",
+      "Temperature dial",
+      "White tank enclosure"
+    ]
+  },
+  "panasonic-ni-m150np-p": {
+    "global": "FurnishPanasonicNIM150NPPAsset",
+    "size": [
+      113,
+      126,
+      255
+    ],
+    "product": {
+      "brand": "松下",
+      "model": "NI-M150NP-P",
+      "sourceUrl": "https://item.jd.com/100413373716.html"
+    },
+    "nativeAxes": true,
+    "parts": [
+      "Cord strain relief",
+      "Front grip support",
+      "Lower pink housing",
+      "Open bridge handle",
+      "Pointed soleplate",
+      "Rear grip support",
+      "Steam and spray triggers",
+      "Temperature wheel",
+      "Water reservoir"
+    ]
   }
 }

@@ -29,6 +29,12 @@ const countertop=products.definition(t)?.countertop;
 if(countertop){
  const lid='#b8bcbf',dark='#242627';
  switch(countertop.plan){
+  case 'twin-washer':
+   return rc(-w/2,-d/2,w,d,c,'rx="36"')+[-.465,.013].map(x=>rc(x*w,-d*.25,w*.452,d*.70,'#fafaf8','rx="26"')).join('')+rc(-w*.43,-d*.275,w*.86,d*.049,dark,'rx="8"');
+  case 'top-ports':
+   return rc(-w/2,-d/2,w,d*.965,c,'rx="26"')+ec(-50,0,17,17,'#b63c32')+ec(50,0,17,17,'#357fa9')+rc(-21,d*.45,42,d*.05,lid,'rx="6"');
+  case 'steam-iron':
+   return pa(`M 0 ${d/2} Q ${w*.52} ${d*.30} ${w/2} ${-d*.20} Q ${w*.37} ${-d/2} 0 ${-d/2} Q ${-w*.37} ${-d/2} ${-w/2} ${-d*.20} Q ${-w*.52} ${d*.30} 0 ${d/2} Z`,c)+rc(-w*.16,-d*.31,w*.32,d*.49,'#f3c8ca','rx="15"');
   case 'kettle':
    return rc(-w*.5,-d*.19,w,d*.38,c,`rx="${d*.19}"`)+ec(0,0,d/2,d/2,c)+ec(0,0,d*.36,d*.36,'#e1dfda')+ec(0,0,d*.11,d*.11,dark);
   case 'microwave':

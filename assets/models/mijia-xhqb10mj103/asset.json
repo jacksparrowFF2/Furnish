@@ -1,0 +1,53 @@
+{
+  "format": 1,
+  "id": "mijia-xhqb10mj103",
+  "name": "米家双区洗烘机 1 kg · XHQB10MJ103",
+  "types": [
+    "mini_washer_mijia_xhqb10mj103"
+  ],
+  "route": "blender",
+  "document": "docs/BALCONY-APPLIANCES-24.md",
+  "sourceLinks": [
+    "https://item.jd.com/100359230878.html",
+    "https://www.mimacau.com/en/products/xiaomi-mijia-mini-dual-zone-washer-dryer-1kg"
+  ],
+  "references": [
+    {
+      "path": "references/product-page/mijia-jd.jpg",
+      "kind": "product-page",
+      "url": "https://img14.360buyimg.com/pop/jfs/t1/435327/22/18989/146987/6a0e9404Fac259f89/00833203209e07a7.jpg",
+      "sha256": "7121450e9ec07d4e0f2966a0e777e8e3bd17300b9931bbd26030fffb2ccfc559",
+      "bytes": 240365,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/mijia-main.jpg",
+      "kind": "product-page",
+      "url": "https://img.myshopline.com/image/store/1752378447082/431339ACD15E48DA50F5EFE2CBA78C0F.jpg?h=1600&w=1600",
+      "sha256": "3738ccc5fd9c686219c4a34d6a7a66fe9224d6e16328c9477e681dc904d9517c",
+      "bytes": 188048,
+      "legacyPaths": []
+    }
+  ],
+  "missingReferences": [],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/100359230878.html",
+      "capturedOn": "2026-11-28",
+      "note": "京东同款商品页显示价。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "米家小米双区洗衣机洗烘1kg 小型全自动家用分区洗衣机 迷你内衣洗烘一体机 专业除菌螨 XHQB10MJ103",
+        "shop": "小米京东自营旗舰店",
+        "itemCode": "100359230878",
+        "variant": "XHQB10MJ103 · 白色 · 1 kg",
+        "priceFen": 127415,
+        "priceScope": "sku"
+      },
+      "image": "references/product-page/mijia-jd.jpg"
+    }
+  ],
+  "validation": [
+    "docs/validation/balcony-appliances-20261129/README.md"
+  ]
+}

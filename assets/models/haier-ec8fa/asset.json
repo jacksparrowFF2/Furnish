@@ -1,0 +1,54 @@
+{
+  "format": 1,
+  "id": "haier-ec8fa",
+  "name": "海尔 8 L 小厨宝 · EC8FA",
+  "types": [
+    "water_heater_haier_ec8fa"
+  ],
+  "route": "blender",
+  "document": "docs/BALCONY-APPLIANCES-24.md",
+  "sourceLinks": [
+    "https://item.jd.com/100257356702.html",
+    "https://www.haier.com/water_heaters/mini/20250715_268150.shtml",
+    "https://dms.haier.net/app/haier/WAT/?productCode=GA0UAD002_D"
+  ],
+  "references": [
+    {
+      "path": "references/product-page/ec8fa-jd.jpg",
+      "kind": "product-page",
+      "url": "https://img12.360buyimg.com/n1/s720x720_jfs/t1/387900/19/12039/29910/6971fa23Fdee0fbb6/0083320320b61481.jpg",
+      "sha256": "2a05b32fc6870d46c45d43d125b3e14686be4f35d392b099f87da964be2af1d2",
+      "bytes": 66025,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/ec8fa-drawing.png",
+      "kind": "product-page",
+      "url": "https://dms.haier.net/app/haier/WAT/?productCode=GA0UAD002_D",
+      "sha256": "4831d17b0adb6805b64b3ee0d8261af57b708bfba26607224deeede0b5b774e2",
+      "bytes": 933550,
+      "legacyPaths": []
+    }
+  ],
+  "missingReferences": [],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/100257356702.html",
+      "capturedOn": "2026-11-28",
+      "note": "同 SKU 价格未读到。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "海尔国家补贴8升小厨宝电热水器EC8FA 一级能效京东自营2200W速热大水量家用厨房台下小型储水式热水宝",
+        "shop": "京东自营（标题标注，店名未显示）",
+        "itemCode": "100257356702",
+        "variant": "EC8FA · 8 L · 上接口",
+        "priceFen": null,
+        "priceScope": "unknown"
+      },
+      "image": "references/product-page/ec8fa-jd.jpg"
+    }
+  ],
+  "validation": [
+    "docs/validation/balcony-appliances-20261129/README.md"
+  ]
+}

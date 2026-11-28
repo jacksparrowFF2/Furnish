@@ -24,6 +24,9 @@ assetTypes['acwall-midea-mxc3p']='acwall_midea_mxc3p';
 assetTypes['curtain-mijia-3-pro-motor']='curtain_mijia_3_pro';
 assetTypes['track-socket-bull-gb50k']='track_socket_bull_gb50k';
 assetTypes['toshiba-d232']='oven_toshiba_d232';
+assetTypes['mijia-xhqb10mj103']='mini_washer_mijia_xhqb10mj103';
+assetTypes['haier-ec8fa']='water_heater_haier_ec8fa';
+assetTypes['panasonic-ni-m150np-p']='iron_panasonic_ni_m150np_p';
 const suites={
  pet_feeding_insert:['pet-feeding-frame'],
  'pet-bowl':['pet-supplies'],'litter-bag':['pet-supplies'],
@@ -43,6 +46,7 @@ suites['acwall-midea-mxc3p']=['acwall-midea'];
 suites.curtain_mijia_3_pro_sheer=suites['curtain-mijia-3-pro-motor']=['curtain-mijia-3-pro','window-coverings'];
 suites['track-socket-bull-gb50k']=['track-socket-bull-gb50k'];
 suites['toshiba-d232']=['kitchen-countertop-appliance-assets'];
+for(const id of ['mijia-xhqb10mj103','haier-ec8fa','panasonic-ni-m150np-p'])suites[id]=suites['toshiba-d232'];
 suites['drying-rack-hotata-y024']=suites['drying-rack-hotata-y024-2m']=['drying-rack-hotata'];
 suites['night-light-mijia-4']=['night-light-mijia-4'];
 suites['desk-lamp-mijia-pro']=['desk-lamp'];suites.cove_light=['cove-light'];

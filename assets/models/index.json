@@ -2,13 +2,13 @@
   "format": 2,
   "description": "Generated repository index; paths relative to repository root. This is metadata, not the application loading manifest.",
   "counts": {
-    "blenderModels": 70,
+    "blenderModels": 73,
     "parametricVerificationConfigurations": 101,
-    "verificationConfigurations": 171,
-    "catalogEntries": 214,
-    "catalogTypes": 183,
-    "productDossiers": 97,
-    "referenceImages": 391,
+    "verificationConfigurations": 174,
+    "catalogEntries": 217,
+    "catalogTypes": 186,
+    "productDossiers": 100,
+    "referenceImages": 397,
     "missingReferences": 20
   },
   "models": [
@@ -1907,6 +1907,138 @@
         "assets/models/toshiba-d232/references/product-page/jd-main.jpg",
         "assets/models/toshiba-d232/references/product-page/jd-third.jpg",
         "assets/models/toshiba-d232/references/product-page/jd-fourth.jpg"
+      ]
+    },
+    {
+      "profile": "mijia-xhqb10mj103",
+      "type": "mini_washer_mijia_xhqb10mj103",
+      "name": "米家双区洗烘机 1 kg · XHQB10MJ103",
+      "sizeMm": [
+        530,
+        371,
+        410
+      ],
+      "parts": 8,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/mijia-xhqb10mj103-blender-asset.js",
+        "sha256": "0ab9746e3d4a72fa2fc4aeb9e0f8652e97c36957c6613ccac1a6be190991f7e2",
+        "normalization": "utf8-lf"
+      },
+      "sourceSha256": "959253eac6b9878d3f50ba50d96852d3b792c84a5a683351db27af218ab1c9fc",
+      "current": {
+        "blend": "assets/models/mijia-xhqb10mj103/v1/mijia-xhqb10mj103-v1.blend",
+        "glb": "assets/models/mijia-xhqb10mj103/v1/mijia-xhqb10mj103-v1.glb"
+      },
+      "document": "docs/BALCONY-APPLIANCES-24.md",
+      "constructor": "src/render/kitchen-countertop-appliance-model.js",
+      "author": "scripts/blender-model-balcony-appliance.py",
+      "files": [
+        {
+          "path": "assets/models/mijia-xhqb10mj103/v1/mijia-xhqb10mj103-v1.blend",
+          "role": "published-source",
+          "sha256": "2971af07bf644ae15166a70155bbfc19d980bd2efca6dbe5afde3c9c6b5dff5b",
+          "bytes": 104506
+        },
+        {
+          "path": "assets/models/mijia-xhqb10mj103/v1/mijia-xhqb10mj103-v1.glb",
+          "role": "published-source",
+          "sha256": "959253eac6b9878d3f50ba50d96852d3b792c84a5a683351db27af218ab1c9fc",
+          "bytes": 47404
+        }
+      ],
+      "dossier": "assets/models/mijia-xhqb10mj103/asset.json",
+      "references": [
+        "assets/models/mijia-xhqb10mj103/references/product-page/mijia-jd.jpg",
+        "assets/models/mijia-xhqb10mj103/references/product-page/mijia-main.jpg"
+      ]
+    },
+    {
+      "profile": "haier-ec8fa",
+      "type": "water_heater_haier_ec8fa",
+      "name": "海尔 8 L 小厨宝 · EC8FA",
+      "sizeMm": [
+        248,
+        257,
+        345
+      ],
+      "parts": 8,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/haier-ec8fa-blender-asset.js",
+        "sha256": "d8615c7f844685bee05156e809024f55639ba39ddad7a1e0ff26ebe2e225aed3",
+        "normalization": "utf8-lf"
+      },
+      "sourceSha256": "bbfd77dc53f9c829b5c27b1fbfb3b18564dcaeb6549042dfb9200344cdef54ee",
+      "current": {
+        "blend": "assets/models/haier-ec8fa/v1/haier-ec8fa-v1.blend",
+        "glb": "assets/models/haier-ec8fa/v1/haier-ec8fa-v1.glb"
+      },
+      "document": "docs/BALCONY-APPLIANCES-24.md",
+      "constructor": "src/render/kitchen-countertop-appliance-model.js",
+      "author": "scripts/blender-model-balcony-appliance.py",
+      "files": [
+        {
+          "path": "assets/models/haier-ec8fa/v1/haier-ec8fa-v1.blend",
+          "role": "published-source",
+          "sha256": "d310a213716331adbb1e3c83c248e402beee5dc6dc146108047bc2f77328b012",
+          "bytes": 119918
+        },
+        {
+          "path": "assets/models/haier-ec8fa/v1/haier-ec8fa-v1.glb",
+          "role": "published-source",
+          "sha256": "bbfd77dc53f9c829b5c27b1fbfb3b18564dcaeb6549042dfb9200344cdef54ee",
+          "bytes": 80880
+        }
+      ],
+      "dossier": "assets/models/haier-ec8fa/asset.json",
+      "references": [
+        "assets/models/haier-ec8fa/references/product-page/ec8fa-jd.jpg",
+        "assets/models/haier-ec8fa/references/product-page/ec8fa-drawing.png"
+      ]
+    },
+    {
+      "profile": "panasonic-ni-m150np-p",
+      "type": "iron_panasonic_ni_m150np_p",
+      "name": "松下有绳电熨斗 · NI-M150NP-P",
+      "sizeMm": [
+        113,
+        255,
+        126
+      ],
+      "parts": 9,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/panasonic-ni-m150np-p-blender-asset.js",
+        "sha256": "fb4c11e9c53a9c3f3ecd1ef88a8601a0da5885ab1190017b7542d8bb4c482587",
+        "normalization": "utf8-lf"
+      },
+      "sourceSha256": "ecf77eeb7a454f7e570849c9ec217c4cd0d8c06fbc45a352785acf8cdbca3bf6",
+      "current": {
+        "blend": "assets/models/panasonic-ni-m150np-p/v1/panasonic-ni-m150np-p-v1.blend",
+        "glb": "assets/models/panasonic-ni-m150np-p/v1/panasonic-ni-m150np-p-v1.glb"
+      },
+      "document": "docs/BALCONY-APPLIANCES-24.md",
+      "constructor": "src/render/kitchen-countertop-appliance-model.js",
+      "author": "scripts/blender-model-balcony-appliance.py",
+      "files": [
+        {
+          "path": "assets/models/panasonic-ni-m150np-p/v1/panasonic-ni-m150np-p-v1.blend",
+          "role": "published-source",
+          "sha256": "4651603dabe6fd359c8a93b1630a7789cbccfcc80e82041725ea0c2f62c0c2b0",
+          "bytes": 115716
+        },
+        {
+          "path": "assets/models/panasonic-ni-m150np-p/v1/panasonic-ni-m150np-p-v1.glb",
+          "role": "published-source",
+          "sha256": "ecf77eeb7a454f7e570849c9ec217c4cd0d8c06fbc45a352785acf8cdbca3bf6",
+          "bytes": 77372
+        }
+      ],
+      "dossier": "assets/models/panasonic-ni-m150np-p/asset.json",
+      "references": [
+        "assets/models/panasonic-ni-m150np-p/references/product-page/iron-jd.jpg",
+        "assets/models/panasonic-ni-m150np-p/references/product-page/iron-series.jpg"
       ]
     },
     {
@@ -8993,6 +9125,62 @@
     },
     {
       "format": 1,
+      "id": "haier-ec8fa",
+      "name": "海尔 8 L 小厨宝 · EC8FA",
+      "types": [
+        "water_heater_haier_ec8fa"
+      ],
+      "route": "blender",
+      "document": "docs/BALCONY-APPLIANCES-24.md",
+      "sourceLinks": [
+        "https://item.jd.com/100257356702.html",
+        "https://www.haier.com/water_heaters/mini/20250715_268150.shtml",
+        "https://dms.haier.net/app/haier/WAT/?productCode=GA0UAD002_D"
+      ],
+      "references": [
+        {
+          "path": "references/product-page/ec8fa-jd.jpg",
+          "kind": "product-page",
+          "url": "https://img12.360buyimg.com/n1/s720x720_jfs/t1/387900/19/12039/29910/6971fa23Fdee0fbb6/0083320320b61481.jpg",
+          "sha256": "2a05b32fc6870d46c45d43d125b3e14686be4f35d392b099f87da964be2af1d2",
+          "bytes": 66025,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/product-page/ec8fa-drawing.png",
+          "kind": "product-page",
+          "url": "https://dms.haier.net/app/haier/WAT/?productCode=GA0UAD002_D",
+          "sha256": "4831d17b0adb6805b64b3ee0d8261af57b708bfba26607224deeede0b5b774e2",
+          "bytes": 933550,
+          "legacyPaths": []
+        }
+      ],
+      "missingReferences": [],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100257356702.html",
+          "capturedOn": "2026-11-28",
+          "note": "同 SKU 价格未读到。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "海尔国家补贴8升小厨宝电热水器EC8FA 一级能效京东自营2200W速热大水量家用厨房台下小型储水式热水宝",
+            "shop": "京东自营（标题标注，店名未显示）",
+            "itemCode": "100257356702",
+            "variant": "EC8FA · 8 L · 上接口",
+            "priceFen": null,
+            "priceScope": "unknown"
+          },
+          "image": "references/product-page/ec8fa-jd.jpg"
+        }
+      ],
+      "validation": [
+        "docs/validation/balcony-appliances-20261129/README.md"
+      ],
+      "manifest": "assets/models/haier-ec8fa/asset.json",
+      "readme": "assets/models/haier-ec8fa/README.md"
+    },
+    {
+      "format": 1,
       "id": "heartlink-roll-layer",
       "name": "心相印卷纸 · 9卷层（3层27卷）",
       "types": [
@@ -9509,6 +9697,61 @@
     },
     {
       "format": 1,
+      "id": "mijia-xhqb10mj103",
+      "name": "米家双区洗烘机 1 kg · XHQB10MJ103",
+      "types": [
+        "mini_washer_mijia_xhqb10mj103"
+      ],
+      "route": "blender",
+      "document": "docs/BALCONY-APPLIANCES-24.md",
+      "sourceLinks": [
+        "https://item.jd.com/100359230878.html",
+        "https://www.mimacau.com/en/products/xiaomi-mijia-mini-dual-zone-washer-dryer-1kg"
+      ],
+      "references": [
+        {
+          "path": "references/product-page/mijia-jd.jpg",
+          "kind": "product-page",
+          "url": "https://img14.360buyimg.com/pop/jfs/t1/435327/22/18989/146987/6a0e9404Fac259f89/00833203209e07a7.jpg",
+          "sha256": "7121450e9ec07d4e0f2966a0e777e8e3bd17300b9931bbd26030fffb2ccfc559",
+          "bytes": 240365,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/product-page/mijia-main.jpg",
+          "kind": "product-page",
+          "url": "https://img.myshopline.com/image/store/1752378447082/431339ACD15E48DA50F5EFE2CBA78C0F.jpg?h=1600&w=1600",
+          "sha256": "3738ccc5fd9c686219c4a34d6a7a66fe9224d6e16328c9477e681dc904d9517c",
+          "bytes": 188048,
+          "legacyPaths": []
+        }
+      ],
+      "missingReferences": [],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100359230878.html",
+          "capturedOn": "2026-11-28",
+          "note": "京东同款商品页显示价。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "米家小米双区洗衣机洗烘1kg 小型全自动家用分区洗衣机 迷你内衣洗烘一体机 专业除菌螨 XHQB10MJ103",
+            "shop": "小米京东自营旗舰店",
+            "itemCode": "100359230878",
+            "variant": "XHQB10MJ103 · 白色 · 1 kg",
+            "priceFen": 127415,
+            "priceScope": "sku"
+          },
+          "image": "references/product-page/mijia-jd.jpg"
+        }
+      ],
+      "validation": [
+        "docs/validation/balcony-appliances-20261129/README.md"
+      ],
+      "manifest": "assets/models/mijia-xhqb10mj103/asset.json",
+      "readme": "assets/models/mijia-xhqb10mj103/README.md"
+    },
+    {
+      "format": 1,
       "id": "night-light-mijia-4",
       "name": "米家夜灯 4",
       "types": [
@@ -9597,6 +9840,63 @@
       "document": "docs/NIGHT-LIGHT-MIJIA-4.md",
       "manifest": "assets/models/night-light-mijia-4/asset.json",
       "readme": "assets/models/night-light-mijia-4/README.md"
+    },
+    {
+      "format": 1,
+      "id": "panasonic-ni-m150np-p",
+      "name": "松下有绳电熨斗 · NI-M150NP-P",
+      "types": [
+        "iron_panasonic_ni_m150np_p"
+      ],
+      "route": "blender",
+      "document": "docs/BALCONY-APPLIANCES-24.md",
+      "sourceLinks": [
+        "https://item.jd.com/100413373716.html",
+        "https://www.jd.com/jiage/7377310f6a5ccb6c036.html",
+        "https://consumer.panasonic.cn/product/video/home/3678.html",
+        "https://shop.price.com.hk/kai/product/2348355"
+      ],
+      "references": [
+        {
+          "path": "references/product-page/iron-jd.jpg",
+          "kind": "product-page",
+          "url": "https://img30.360buyimg.com/n1/jfs/t1/591184/37/6282/93408/6b07f3f5F8d233185/0083320320f47b8b.jpg",
+          "sha256": "123ece9f730d2a890f60d214b85ed8745eb5c3469adfbf6c0fe9878cd686968d",
+          "bytes": 50479,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/product-page/iron-series.jpg",
+          "kind": "product-page",
+          "url": "https://gw.alicdn.com/imgextra/i1/2200877014436/O1CN01BGymZw1idjrPmTVuF_%21%212200877014436.jpg",
+          "sha256": "35dfcb305a9a58323f10054a17d3f1fcd180e97c508ce6430aa24bcdd3da6cf7",
+          "bytes": 31336,
+          "legacyPaths": []
+        }
+      ],
+      "missingReferences": [],
+      "productCaptures": [
+        {
+          "sourceUrl": "https://item.jd.com/100413373716.html",
+          "capturedOn": "2026-11-29",
+          "note": "京东同 SKU 主图标注补贴后到手价预估 ¥109。商品列表价格栏为空，实际售价未核实。",
+          "status": "recorded-not-independently-verified",
+          "capture": {
+            "title": "松下（Panasonic）【有钛熨护】大功率手持挂烫机97g/min大蒸汽0.21升水箱家用小型电熨斗便携熨烫机除皱NI-M150NP-P",
+            "shop": "",
+            "itemCode": "100413373716",
+            "variant": "NI-M150NP-P · 粉色 · 含钛底板",
+            "priceFen": null,
+            "priceScope": "unknown"
+          },
+          "image": "references/product-page/iron-jd.jpg"
+        }
+      ],
+      "validation": [
+        "docs/validation/balcony-appliances-20261129/README.md"
+      ],
+      "manifest": "assets/models/panasonic-ni-m150np-p/asset.json",
+      "readme": "assets/models/panasonic-ni-m150np-p/README.md"
     },
     {
       "format": 1,
@@ -14099,6 +14399,33 @@
       "w": 420,
       "d": 399,
       "h": 337,
+      "module": "kitchen-countertop-appliance"
+    },
+    {
+      "category": "电器",
+      "type": "mini_washer_mijia_xhqb10mj103",
+      "name": "米家双区洗烘机 1 kg · XHQB10MJ103",
+      "w": 530,
+      "d": 371,
+      "h": 410,
+      "module": "kitchen-countertop-appliance"
+    },
+    {
+      "category": "电器",
+      "type": "water_heater_haier_ec8fa",
+      "name": "海尔 8 L 小厨宝 · EC8FA",
+      "w": 248,
+      "d": 257,
+      "h": 345,
+      "module": "kitchen-countertop-appliance"
+    },
+    {
+      "category": "电器",
+      "type": "iron_panasonic_ni_m150np_p",
+      "name": "松下有绳电熨斗 · NI-M150NP-P",
+      "w": 113,
+      "d": 255,
+      "h": 126,
       "module": "kitchen-countertop-appliance"
     },
     {

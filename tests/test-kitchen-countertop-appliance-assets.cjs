@@ -11,6 +11,11 @@ const SVG=require('../src/render/furniture-svg.js');
 const specs=require('../scripts/lib/kitchen-countertop-assets.json');
 const M=require('../src/render/kitchen-countertop-appliance-model.js');
 const sourceFiles=['kettle','air','griddle','rice','wok','pot','insert','micro-pm20m2'];
+const balconyCategories={
+ 'mijia-xhqb10mj103':'appliances/laundry',
+ 'haier-ec8fa':'appliances/climate',
+ 'panasonic-ni-m150np-p':'appliances/laundry'
+};
 const near=(a,b)=>assert(Math.abs(a-b)<.001,`${a} != ${b}`);
 
 (async()=>{
@@ -88,8 +93,8 @@ const near=(a,b)=>assert(Math.abs(a-b)<.001,`${a} != ${b}`);
   assert.deepEqual([width,C.itemHeight(item),depth],spec.size);
   assert.deepEqual(C.itemIdentity(item),spec.product);
   assert.equal(price,undefined);
-  assert(C.matches(item,{query:spec.product.model,use:'kitchen'}));
-  const category=rule.countertop.cookware?'other/cookware':'appliances/cooking';
+  assert(C.matches(item,{query:spec.product.model,use:balconyCategories[id]?'laundry':'kitchen'}));
+  const category=balconyCategories[id]||(rule.countertop.cookware?'other/cookware':'appliances/cooking');
   assert(navigation.find(g=>g.id===category).items.includes(item));
   assert(SVG.render(type,width,depth,color,{ink:'#333'}).includes('<rect'));
   const native={id:'catalog-product',type,name,cx:438,cy:752,w,d,h,rot:0,color,...R.initial({type,w,d,h})};

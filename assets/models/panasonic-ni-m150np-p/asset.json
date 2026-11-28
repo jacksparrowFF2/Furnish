@@ -1,0 +1,55 @@
+{
+  "format": 1,
+  "id": "panasonic-ni-m150np-p",
+  "name": "松下有绳电熨斗 · NI-M150NP-P",
+  "types": [
+    "iron_panasonic_ni_m150np_p"
+  ],
+  "route": "blender",
+  "document": "docs/BALCONY-APPLIANCES-24.md",
+  "sourceLinks": [
+    "https://item.jd.com/100413373716.html",
+    "https://www.jd.com/jiage/7377310f6a5ccb6c036.html",
+    "https://consumer.panasonic.cn/product/video/home/3678.html",
+    "https://shop.price.com.hk/kai/product/2348355"
+  ],
+  "references": [
+    {
+      "path": "references/product-page/iron-jd.jpg",
+      "kind": "product-page",
+      "url": "https://img30.360buyimg.com/n1/jfs/t1/591184/37/6282/93408/6b07f3f5F8d233185/0083320320f47b8b.jpg",
+      "sha256": "123ece9f730d2a890f60d214b85ed8745eb5c3469adfbf6c0fe9878cd686968d",
+      "bytes": 50479,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/iron-series.jpg",
+      "kind": "product-page",
+      "url": "https://gw.alicdn.com/imgextra/i1/2200877014436/O1CN01BGymZw1idjrPmTVuF_%21%212200877014436.jpg",
+      "sha256": "35dfcb305a9a58323f10054a17d3f1fcd180e97c508ce6430aa24bcdd3da6cf7",
+      "bytes": 31336,
+      "legacyPaths": []
+    }
+  ],
+  "missingReferences": [],
+  "productCaptures": [
+    {
+      "sourceUrl": "https://item.jd.com/100413373716.html",
+      "capturedOn": "2026-11-29",
+      "note": "京东同 SKU 主图标注补贴后到手价预估 ¥109。商品列表价格栏为空，实际售价未核实。",
+      "status": "recorded-not-independently-verified",
+      "capture": {
+        "title": "松下（Panasonic）【有钛熨护】大功率手持挂烫机97g/min大蒸汽0.21升水箱家用小型电熨斗便携熨烫机除皱NI-M150NP-P",
+        "shop": "",
+        "itemCode": "100413373716",
+        "variant": "NI-M150NP-P · 粉色 · 含钛底板",
+        "priceFen": null,
+        "priceScope": "unknown"
+      },
+      "image": "references/product-page/iron-jd.jpg"
+    }
+  ],
+  "validation": [
+    "docs/validation/balcony-appliances-20261129/README.md"
+  ]
+}

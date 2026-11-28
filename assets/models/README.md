@@ -6,7 +6,7 @@
 
 更新：`node scripts/index-model-assets.cjs --write`；核对：`node scripts/index-model-assets.cjs --check`。
 
-97份产品／设计档案，391张参考图，20张历史原图待补；70组Blender模型。参数化验证配置101组，全部家具库214条目／183种类型。
+100份产品／设计档案，397张参考图，20张历史原图待补；73组Blender模型。参数化验证配置101组，全部家具库217条目／186种类型。
 
 | 产品／设计资料 | 参考图 | 输出／构造 | 待补原图 |
 |---|---|---|---|
@@ -51,6 +51,7 @@
 | [秋季夹克 · 优衣库照片厚片](garment-autumn-jacket/README.md) | 3 | [BLEND](garment-autumn-jacket/v5/garment-autumn-jacket-v1.blend) · [GLB](garment-autumn-jacket/v5/garment-autumn-jacket-v1.glb) | 0 |
 | [长款羽绒服 · 优衣库照片厚片](garment-long-down/README.md) | 3 | [BLEND](garment-long-down/v5/garment-long-down-v1.blend) · [GLB](garment-long-down/v5/garment-long-down-v1.glb) | 0 |
 | [短款羽绒服 · 优衣库照片厚片](garment-short-down/README.md) | 3 | [BLEND](garment-short-down/v5/garment-short-down-v1.blend) · [GLB](garment-short-down/v5/garment-short-down-v1.glb) | 0 |
+| [海尔 8 L 小厨宝 · EC8FA](haier-ec8fa/README.md) | 2 | [BLEND](haier-ec8fa/v1/haier-ec8fa-v1.blend) · [GLB](haier-ec8fa/v1/haier-ec8fa-v1.glb) | 0 |
 | [心相印卷纸 · 9卷层（3层27卷）](heartlink-roll-layer/README.md) | 0 | [BLEND](storage-supplies/heartlink-roll-layer/v2/heartlink-roll-layer-v1.blend) · [GLB](storage-supplies/heartlink-roll-layer/v2/heartlink-roll-layer-v1.glb) | 0 |
 | [心相印抽纸 · 6包层（4层24包）](heartlink-tissue-layer/README.md) | 0 | [BLEND](storage-supplies/heartlink-tissue-layer/v1/heartlink-tissue-layer-v1.blend) · [GLB](storage-supplies/heartlink-tissue-layer/v1/heartlink-tissue-layer-v1.glb) | 0 |
 | [方太抽油烟机 JCD10TA](hood/README.md) | 0 | [BLEND](hood/v2/hood-v1.blend) · [GLB](hood/v2/hood-v1.glb) | 0 |
@@ -64,7 +65,9 @@
 | [米家吸顶灯 D40](mijia-ceiling-d40/README.md) | 1 | [BLEND](mijia-ceiling-d40/v1/mijia-ceiling-d40-v1.blend) · [GLB](mijia-ceiling-d40/v1/mijia-ceiling-d40-v1.glb) | 1 |
 | [米家吸顶灯 L60](mijia-ceiling-l60/README.md) | 1 | [BLEND](mijia-ceiling-l60/v1/mijia-ceiling-l60-v1.blend) · [GLB](mijia-ceiling-l60/v1/mijia-ceiling-l60-v1.glb) | 1 |
 | [米家吸顶灯 L90](mijia-ceiling-l90/README.md) | 0 | [BLEND](mijia-ceiling-l90/v1/mijia-ceiling-l90-v1.blend) · [GLB](mijia-ceiling-l90/v1/mijia-ceiling-l90-v1.glb) | 1 |
+| [米家双区洗烘机 1 kg · XHQB10MJ103](mijia-xhqb10mj103/README.md) | 2 | [BLEND](mijia-xhqb10mj103/v1/mijia-xhqb10mj103-v1.blend) · [GLB](mijia-xhqb10mj103/v1/mijia-xhqb10mj103-v1.glb) | 0 |
 | [米家夜灯 4](night-light-mijia-4/README.md) | 7 | [BLEND](night-light-mijia-4/v1-final/night-light-mijia-4-v1.blend) · [GLB](night-light-mijia-4/v1-final/night-light-mijia-4-v1.glb) | 0 |
+| [松下有绳电熨斗 · NI-M150NP-P](panasonic-ni-m150np-p/README.md) | 2 | [BLEND](panasonic-ni-m150np-p/v1/panasonic-ni-m150np-p-v1.blend) · [GLB](panasonic-ni-m150np-p/v1/panasonic-ni-m150np-p-v1.glb) | 0 |
 | [公牛G12 86开关插座面板](panel-bull-g12/README.md) | 42 | [BLEND](panel-bull-g12/v8/panel-bull-g12-v1.blend) · [GLB](panel-bull-g12/v8/panel-bull-g12-v1.glb) | 0 |
 | [厨房平板灯-300×600-24W](panel-light/README.md) | 1 | 参数化 | 0 |
 | [小米智能开关2与2 Pro · 86面板](panel-xiaomi-switch2/README.md) | 69 | [BLEND](panel-xiaomi-switch2/v2/panel-xiaomi-switch2-v1.blend) · [GLB](panel-xiaomi-switch2/v2/panel-xiaomi-switch2-v1.glb) | 0 |

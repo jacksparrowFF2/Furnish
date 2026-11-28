@@ -337,7 +337,7 @@ const navigationTypeGroups={
 function navigationCategory(it,cat){
  if(it[7])return 'other/custom';
  const countertop=products.definition(it[0])?.countertop;
- if(countertop)return countertop.cookware?'other/cookware':'appliances/cooking';
+ if(countertop)return countertop.category||(countertop.cookware?'other/cookware':'appliances/cooking');
  if(it[0]==='block')return 'auxiliary/blocks';
  if(['pipebox','quartz_sill','window_surround','art_glass_partition'].includes(it[0]))return 'cabinetry/enclosures';
  if(it[0]==='vanity')return 'cabinetry/vanity';
@@ -358,8 +358,8 @@ const useTypes={
  bedroom:['quartz_sill','window_surround','bed_yeswood_y83b33','bed_yeswood_y17b02','bed_mattress_y83b33','bed_mattress_y17b02','bed_pillow_atour_pro4','bed_pillow_y83b33','bed_duvet_y83b33','bed_duvet_y17b02','bed','crib','nightstand','wardrobe','chest','dresser','curtain','curtain_mijia_3_pro','curtain_mijia_3_pro_sheer','curtain_sheer','blind_venetian','blind_honeycomb','blind_zebra','blind_bamboo','blind_roller','mirror','acwall','acwall_midea_mxc3p'],
  dining:['chair_ikea_vihals','table','table_folding_1100','table_folding_1200','table_folding_1300','roundtable','chair','barstool','island','cabinet','pendant'],
  study:['chair_ikea_vihals','quartz_sill','window_surround','chair_yeswood_s05118','stool_citylong_370','desk','chair','officechair','bookshelf','bookshelf_yeswood_y52y09','bookshelf_yeswood_y00y06','bookshelf_yeswood_y00y06058','armchair','floorlamp'],
- kitchen:[...countertopItems.map(([type])=>type),'panel_light_300x600','stove','stove_fotile_th36b','rangehood_fotile_jcd10ta','fridge','fridge_french_drawer','dishwasher','dishwasher_mijia_countertop','water_purifier_mijia_1200g','ksink','sink_arrow_680','sink_arrow_750','ovencol','kitchenwall','island'],
- laundry:['washer_littleswan_tg10k60w','washer','dryer','dryingrack','drying_rack_hotata_y024','drying_rack_hotata_y024_2m','crank_hotata_y024_2m','robot_p20max','robot_p20max_tank','robot_p20max_plumbed'],
+ kitchen:[...countertopItems.filter(([,rule])=>!rule.countertop.category).map(([type])=>type),'panel_light_300x600','stove','stove_fotile_th36b','rangehood_fotile_jcd10ta','fridge','fridge_french_drawer','dishwasher','dishwasher_mijia_countertop','water_purifier_mijia_1200g','ksink','sink_arrow_680','sink_arrow_750','ovencol','kitchenwall','island'],
+ laundry:['mini_washer_mijia_xhqb10mj103','water_heater_haier_ec8fa','iron_panasonic_ni_m150np_p','washer_littleswan_tg10k60w','washer','dryer','dryingrack','drying_rack_hotata_y024','drying_rack_hotata_y024_2m','crank_hotata_y024_2m','robot_p20max','robot_p20max_tank','robot_p20max_plumbed'],
  bathroom:['bath_heater_aopu_se2','bath_heater_300x600','vanity','toilet','shower','shower_arrow_cream','bathtub','waterheater','waterheater_flat'],
  entry:['electrical_box_strong','electrical_box_weak','shoecab','bench_yeswood_oak','bench','mirror'],pet:[...petTypes]
 };
