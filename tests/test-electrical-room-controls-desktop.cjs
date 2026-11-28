@@ -414,16 +414,62 @@ async function main(){
     assert(actions.some(a=>a.key===key&&a.gesture==='press'&&a.action==='toggle'&&a.targetId===data.livingStrip));
    }
   }
+  const northSwitch='fmwng69uh20',northBlind='f1601_north_zebra';
+  const reserved=await page.evaluate(([switchId,blindId])=>getF(blindId)?.type==='blind_zebra'&&getF(switchId)?.panelActions?.some(a=>a.key===1&&a.gesture==='press'&&a.targetId===blindId&&a.action==='cycle'),[northSwitch,northBlind]);
+  if(reserved){
+   await page.evaluate(id=>selectIds([id]),northSwitch);
+   await controls.getByRole('button',{name:'右键',exact:true}).click();
+   const rightTarget=controls.locator('[data-action-target]');
+   assert.equal(await rightTarget.inputValue(),northBlind);
+   assert.match(await rightTarget.locator('option:checked').textContent(),/北窗斑马帘（待接入）$/);
+   assert.equal(await rightTarget.locator(`optgroup option[value="${northBlind}"]`).count(),0);
+   await controls.locator('[data-action-test="1:press"]').click();
+   assert.match(await result.textContent(),/北窗斑马帘 · 待接入$/);
+   await page.evaluate(id=>{
+    FurnishElectricalUI.setMode('furniture');
+    const old=getF(id),candidate={...old,type:'blind_venetian',name:'主卧北窗百叶帘',id:undefined};
+    mutate(()=>{state.furniture[state.furniture.indexOf(old)]=FurnishDesign.replaceFurniture(old,candidate,{anchor:'back'});});
+    selectIds([id]);
+   },northBlind);
+   const lift=page.getByLabel('升降方式');
+   assert.equal(await lift.inputValue(),'manual');
+   await lift.selectOption('motorized');
+   assert.equal(await lift.inputValue(),'motorized');
+   await page.evaluate(()=>undo());
+   assert.equal(await lift.inputValue(),'manual');
+   await page.evaluate(()=>redo());
+   assert.equal(await lift.inputValue(),'motorized');
+   await page.evaluate(id=>{FurnishElectricalUI.setMode('electrical');selectIds([id]);},northSwitch);
+   await controls.getByRole('button',{name:'右键',exact:true}).click();
+   assert.equal(await rightTarget.locator(`optgroup option[value="${northBlind}"]:checked`).textContent(),'北窗百叶帘');
+   const tryRight=controls.locator('[data-action-test="1:press"]');
+   await tryRight.click();
+   assert.match(await result.textContent(),/^北窗百叶帘 · 开始[开关]帘$/);
+   await tryRight.click();
+   assert.equal(await result.textContent(),'北窗百叶帘 · 已暂停');
+   await controls.locator('.electrical-switch-face').scrollIntoViewIfNeeded();
+   await page.screenshot({path:path.join(job.dir,'north-blind-control.png')});
+   await page.evaluate(async()=>{
+    await FurnishRepository.flush();
+    if(repositoryClient.status.mode!=='saved')throw Error(repositoryClient.status.message);
+   });
+   assert.equal(JSON.parse(fs.readFileSync(path.join(work,'projects/workspace.furnish.json'),'utf8')).version,114);
+   await page.reload();
+   await page.locator('#repository-loading').waitFor({state:'hidden'});
+   assert.equal(await page.evaluate(id=>getF(id).coveringMotorized,northBlind),true);
+   assert.equal(await page.evaluate(id=>getF(id).panelActions.find(a=>a.key===1).targetId,northSwitch),northBlind);
+  }
   assert.deepEqual(errors,[]);
   passed=true;
-  console.log(JSON.stringify({passed,run:job.dir,checks:['room filtering in 2D, 3D and walk','independent collapse','whole-plan export','concise device labels and cross-room bindings','switch preview, undo/redo and reload','aligned properties and shared purposes','50 mm threshold and 4 mm saved panel spacing','in-place replacement, obstruction, undo/redo and saved style',...(data.livingStrip?['existing ceiling strip shared by two switches','full 3D switch editor and preview']:[]),...(checkCycle?['two-curtain open/stop/close cycle']:[])]}));
+  console.log(JSON.stringify({passed,run:job.dir,checks:['room filtering in 2D, 3D and walk','independent collapse','whole-plan export','concise device labels and cross-room bindings','switch preview, undo/redo and reload','aligned properties and shared purposes','50 mm threshold and 4 mm saved panel spacing','in-place replacement, obstruction, undo/redo and saved style',...(data.livingStrip?['existing ceiling strip shared by two switches','full 3D switch editor and preview']:[]),...(checkCycle?['two-curtain open/stop/close cycle']:[]),...(reserved?['north window reservation, motorized lift, retained binding, v114 save and reload']:[])]}));
  }finally{
   if(app){
    if(!passed)await app.evaluate(({app})=>app.exit()).catch(()=>{});
    await app.close().catch(()=>{});
   }
-  assert.equal(hash(source),original);
-  job.finish(passed);
+  const unchanged=hash(source)===original;
+  job.finish(passed&&unchanged);
+  assert(unchanged,'The source workspace changed during desktop verification');
  }
 }
 main().catch(error=>{console.error(error);process.exitCode=1;});

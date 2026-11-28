@@ -99,8 +99,9 @@ function retainedPanelActions(f,entries){
 }
 function panelActionTarget(f){
  if(!f||f.obj)return null;
- return definition(f)?.covering?.motor?'covering':
-  definition(f)?.downlight||definition(f)?.panelLight||supports(f,'lightPreviewLevel')||['floorlamp','pendant'].includes(f.type)?'light':null;
+ const def=definition(f);
+ if(def?.covering?.motor||supports(f,'coveringMotorized')&&value(f,'coveringMotorized')===true)return 'covering';
+ return def?.downlight||def?.panelLight||supports(f,'lightPreviewLevel')||['floorlamp','pendant'].includes(f.type)?'light':null;
 }
 function panelTargetActions(f){
  const target=panelActionTarget(f);
@@ -199,6 +200,7 @@ const fields={
  curtainLeftOpen:numeric(0,1,'左帘收起比例须为 0–1'),
  curtainRightOpen:numeric(0,1,'右帘收起比例须为 0–1'),
  blindAngle:numeric(0,85,'百叶角度须为 0–85°'),
+ coveringMotorized:{boolean:true,formatVersion:114,message:'电动升降设置无效'},
  shadeMode:{values:['day','night'],message:'柔纱帘调光须为日间或夜间'},
  slidingStackSide:{values:['left','right'],message:'收门方向须为左侧或右侧'},
  slidingOpen:{boolean:true,message:'门扇开合设置无效'},
@@ -297,7 +299,7 @@ const types={
  curtain_mijia_3_pro:mijiaCurtain('布帘','cloth'),
  curtain_mijia_3_pro_sheer:mijiaCurtain('纱帘','sheer'),
  curtain_sheer:{...covering,height:2400,defaults:{mountHeight:0,curtainOpen:0,curtainStyle:'double'},fields:[...covering.fields,'curtainStyle'],create:[...covering.create,'curtainStyle'],solidModel:undefined,covering:{kind:'sheer',soft:true}},
- blind_venetian:{...covering,defaults:{...covering.defaults,blindAngle:85},fields:[...covering.fields,'blindAngle'],create:[...covering.create,'blindAngle'],covering:{kind:'venetian'}},
+ blind_venetian:{...covering,defaults:{...covering.defaults,blindAngle:85,coveringMotorized:false},fields:[...covering.fields,'blindAngle','coveringMotorized'],create:[...covering.create,'blindAngle'],covering:{kind:'venetian'}},
  blind_honeycomb:{...covering,covering:{kind:'honeycomb'}},
  blind_zebra:{...covering,defaults:{...covering.defaults,shadeMode:'day'},fields:[...covering.fields,'shadeMode'],create:[...covering.create,'shadeMode'],covering:{kind:'zebra'}},
  blind_bamboo:{...covering,covering:{kind:'bamboo'}},
@@ -1069,7 +1071,7 @@ function replacement(previous,next,candidate){
  if(family(next,'window-covering'))next.frontClearance=candidate.frontClearance??definition(next).defaultFrontClearance;
  if(family(next,'window-lining')||family(next,'art-glass'))next.frontClearance=candidate.frontClearance??definition(next).defaultFrontClearance;
  if(family(next,'window-covering'))for(const key of definition(next).fields){
-  if(curtainOpening.sideFields.includes(key)){
+  if(key==='coveringMotorized'||curtainOpening.sideFields.includes(key)){
    if(candidate[key]!==undefined)next[key]=candidate[key];
   }else if(key==='curtainOpen'&&previous.type===next.type&&curtainOpening.sideFields.some(k=>next[k]!==undefined)){
    next[key]=value(previous,key);
