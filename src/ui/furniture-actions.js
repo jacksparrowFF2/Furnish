@@ -132,13 +132,18 @@ function copySel(cut, quiet){
   clip = {cx:(x0+x1)/2, cy:(y0+y1)/2, items:JSON.parse(JSON.stringify(items)),cut:!!cut,layerPlan:PLAN.id,layerIds:items.map(f=>FurnishLayers.layerId(state,'furniture:'+f.id))};
   if(cut){const ids=new Set(items.map(f=>f.id));ui.sel=null;mutate(()=>{state.furniture=state.furniture.filter(f=>!ids.has(f.id));if(state.objectLayers)for(const id of ids)delete state.objectLayers.assignments['furniture:'+id];});}else if (!quiet) toast(tr(`已复制 ${items.length} 件 · Ctrl+V 粘贴`, `Copied ${items.length} · Ctrl+V to paste`));
 }
-function paste(at){
+function paste(at,{preservePanelPosition=false}={}){
   if(globalThis.FurnishElectricalUI?.active()&&clip?.items.some(f=>!FurnishElectrical.panel(f)))return toast('插座布置视图只能粘贴面板');
   if (!clip) return toast(tr('剪贴板为空：先选中家具按 Ctrl+C', 'Clipboard is empty — select items and press Ctrl+C'));
   const step=(clip.pastes||0)+1,p=at||{x:clip.cx+300*step,y:clip.cy+300*step};
   let result;try{result=FurnishDesign.pasteFurniture(clip,p,BOUNDS,uid,2000-state.furniture.length,state.furniture.map(f=>f.id),state.furniture.map(f=>f.groupId).filter(Boolean));}catch(e){return toast(e.message);}
+  if(preservePanelPosition&&result.adjusted)return toast(tr('附近没有合适的面板复制位置','No suitable spot nearby for the panel copy'));
   const news=result.items;
-  mutate(() => {state.furniture.push(...news);if(clip.layerPlan===PLAN.id&&clip.layerIds){state.objectLayers=FurnishLayers.copyAssignments(state,clip.items.map(f=>'furniture:'+f.id),news.map(f=>'furniture:'+f.id),{layerIds:clip.layerIds}).objectLayers;}});
+  mutate(() => {
+    if(preservePanelPosition)news[0].rot=at.rot;
+    state.furniture.push(...news);
+    if(clip.layerPlan===PLAN.id&&clip.layerIds){state.objectLayers=FurnishLayers.copyAssignments(state,clip.items.map(f=>'furniture:'+f.id),news.map(f=>'furniture:'+f.id),{layerIds:clip.layerIds}).objectLayers;}
+  },{preservePanelPosition});
   if(clip.cut)clip.cutMoved=true;if(result.moved)clip.movePlan=PLAN.id;
   if(!at)clip.pastes=step;
   selectIds(news.map(f => f.id));
@@ -147,7 +152,21 @@ function paste(at){
   else if(result.adjusted)toast(pasted+' '+tr('已将整组移入户型范围，保留相对位置；请核对墙体和房间边界。','Group moved within plan bounds without changing its layout; check walls and room boundaries.'));
   else toast(pasted);
 }
-function duplicateSel(){ if (!selIds().length) return; const keep = clip; copySel(false, true); paste(); clip = keep; }
+function duplicateSel(){
+  const items=selItems();
+  if(!items.length)return;
+  const f=items.length===1&&items[0],panel=FurnishElectrical.panel(f);
+  let at;
+  try{
+    if(panel){
+      const next=FurnishElectrical.nearbyPanelCopy(f,FurnishProject.effectivePlan(PLAN,state),state);
+      if(!next)return toast(tr('附近没有合适的面板复制位置','No suitable spot nearby for the panel copy'));
+      at={x:next.cx,y:next.cy,rot:next.rot};
+    }
+  }catch(error){return toast(error.message);}
+  const keep=clip;
+  try{copySel(false,true);paste(at,{preservePanelPosition:panel});}finally{clip=keep;}
+}
 function zoomToBox([x0,y0,x1,y1], pad = 700, height = svg.clientHeight){
   if (is3D()) return;
   if(globalThis.FurnishDrawing){const b=FurnishDrawing.bounds({x:x0,y:y0,w:x1-x0,h:y1-y0},drawingRotation());[x0,y0,x1,y1]=[b.x,b.y,b.x+b.w,b.y+b.h];}

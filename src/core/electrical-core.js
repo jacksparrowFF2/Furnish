@@ -345,6 +345,54 @@ function panelRow(f,panels,plan){
  while(last+1<row.length&&gap(row[last],row[last+1])<panelSpacing.threshold-spacingEpsilon)last++;
  return {row:row.slice(first,last+1),ux,uy};
 }
+function nearbyPanelCopy(f,plan,work){
+ const G=root.FurnishGeometry||require('./layout-geometry.js'),Z=root.FurnishZoneGeometry||require('./zone-geometry.js');
+ const D=root.FurnishDesign||require('./design-core.js');
+ const products=P(),items=work.furniture,walls=mountingWalls(plan),range=products.vertical(f),rooms=plan.rooms||[];
+ if(!range)return null;
+ const roomAt=({cx,cy})=>rooms.find(r=>(r.polys||[r.poly]).some(p=>G.inPoly(cx,cy,p)));
+ const home=roomAt(f),base=products.floorBase(plan,f,items);
+ const {row,ux,uy}=panelRow(f,items.filter(panel),plan),spacing=f.w+panelSpacing.gap;
+ const fits=next=>{
+  const room=roomAt(next);
+  if(!room||home&&room!==home)return false;
+  const outline=G.corners(next),roomPolys=room.polys||[room.poly];
+  if(Z.area(Z.decompose([outline,...roomPolys],p=>Z.inside(p,outline)&&!roomPolys.some(q=>Z.inside(p,q))))>1e-6)return false;
+  const floor=products.floorBase(plan,next,items);
+  if(walls.some(w=>(!floor.known||w.top>range.bottom+floor.z+1e-6&&w.bottom<range.top+floor.z-1e-6)&&G.polygonOverlap(outline,w.poly,1e-6)))return false;
+  const vertical=D.furnitureVerticalBounds(next,plan,items);
+  const clearanceOutline=G.corners({...next,w:next.w+2*panelSpacing.gap});
+  return !items.some(peer=>{
+   if(!panel(peer))return G.volumeOverlap(next,peer,plan,items);
+   if(!G.verticalOverlap(next,peer,[vertical,D.furnitureVerticalBounds(peer,plan,items)]))return false;
+   const aligned=Math.cos(((peer.rot||0)-(next.rot||0))*Math.PI/180)>.99999;
+   const backOffset=-(peer.cx-next.cx)*uy+(peer.cy-next.cy)*ux-(peer.d-next.d)/2;
+   return G.polygonOverlap(aligned&&Math.abs(backOffset)<=rowTolerance?clearanceOutline:outline,G.corners(peer),1e-6);
+  });
+ };
+ const left=row[0],right=row.at(-1);
+ const offsets=[spacing,-spacing,right.at+(right.f.w+f.w)/2+panelSpacing.gap,left.at-(left.f.w+f.w)/2-panelSpacing.gap];
+ const shift=(along,front=0)=>({...f,cx:f.cx+along*ux-front*uy,cy:f.cy+along*uy+front*ux});
+ const mount=base.known&&nearest(f,surfaces(plan,work,f),rowTolerance);
+ if(mount){
+  for(const offset of new Set(offsets)){
+   if(Math.abs(offset)>Math.max(400,3*spacing))continue;
+   const hit=nearest(shift(offset),[mount.surface],rowTolerance);
+   if(!hit||!fits(hit.position))continue;
+   const floor=products.floorBase(plan,hit.position,items);
+   if(floor.known&&floor.z===base.z)return hit.position;
+  }
+ }
+ // Keep the fallback local even beside a corner or a full mounting face.
+ const depth=f.d+Math.max(30,Math.min(f.w/2,100));
+ for(const step of [1,2,3]){
+  const side=step*spacing,front=step*depth;
+  for(const next of [shift(side),shift(-side),shift(0,front),shift(0,-front),shift(side,front),shift(-side,front)]){
+   if(fits(next))return next;
+  }
+ }
+ return null;
+}
 function normalizePanelGaps(before,work,planFor,{locked=f=>!!f.locked}={}){
  const obstacles=work.furniture.filter(panel),panels=obstacles.filter(independentPanel);
  if(panels.length<2)return;
@@ -477,6 +525,6 @@ function routeGeometry(route,plan,furniture,byId=new Map(furniture.map(f=>[f.id,
  const length=unresolved||reversals.length?null:path.reduce((sum,p,i)=>i?sum+distance(path[i-1],p):0,0);
  return {points,path,length,unresolved,reversals};
 }
-const api={panel,assertEditable,pointName,displayName,renamePoint,purpose,actionTargetLabel,panelActionTargets,controlPairs,roomFor,pointLocations,points,testPanelActions,surfaces,place,nearest,snapMount,replacePanel,normalizePanelGaps,wireKinds,routeLimits,validateRoutes,boxKind,endpointKind,endpoint,routeGeometry,conduitDiameters,conduitDefault,conduitProfile};
+const api={panel,assertEditable,pointName,displayName,renamePoint,purpose,actionTargetLabel,panelActionTargets,controlPairs,roomFor,pointLocations,points,testPanelActions,surfaces,place,nearest,snapMount,replacePanel,nearbyPanelCopy,normalizePanelGaps,wireKinds,routeLimits,validateRoutes,boxKind,endpointKind,endpoint,routeGeometry,conduitDiameters,conduitDefault,conduitProfile};
 root.FurnishElectrical=api;if(typeof module==='object'&&module.exports)module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

@@ -20,6 +20,29 @@ const low={...panel,cx:500,cy:2000,mountHeight:100},high={...low,cx:2000};assert
 const unknown=clone(floors);delete unknown.floorFinish.areas.high.finishedZ;assert.equal(E.surfaces(unknown,work,high).length,0,'unknown floor height must not invent a cabinet mounting face');
 const faces=E.surfaces({walls:[[0,0,1000,200]]},work,panel);assert.equal(faces.filter(s=>s.kind==='wall').length,4);
 {
+ const rect=(x,y,X,Y)=>[[x,y],[X,y],[X,Y],[x,Y]];
+ const plan={walls:[[1000,0,1100,1000]],rooms:[{id:'home',poly:rect(0,0,1000,1000)},{id:'other',poly:rect(1100,0,2000,1000)}]};
+ const source={...panel,cx:995,cy:50,rot:90},copy=(items=[source],f=source,p=plan)=>E.nearbyPanelCopy(f,p,{furniture:items});
+ assert.equal(E.roomFor(plan.rooms,source.cx+300,source.cy+300).id,'other','generic duplication crosses the wall');
+ assert.deepEqual(copy(),{...source,cy:140},'same mounting face with 4 mm edge gap');
+ const neighbor={...source,id:'peer',cy:140,locked:true};
+ assert.deepEqual(copy([source,neighbor]),{...source,cy:230},'extend an occupied row without moving its members');
+ const close={...source,id:'close',cy:227},clear=copy([source,close]);
+ assert(clear&&(Math.abs(close.cx-clear.cx)>=source.d||Math.abs(close.cy-clear.cy)>=90),'avoid slipping a new panel into a 1 mm gap');
+ assert.deepEqual(copy([{...source,cy:950}],{...source,cy:950}),{...source,cy:860},'reverse direction at the end of the face');
+ const narrow={walls:[[1000,0,1100,100]],rooms:[{id:'small',poly:rect(900,0,1000,100)}]},center={...source,cy:50};
+ assert.deepEqual(copy([center],center,narrow),{...center,cx:942},'use a nearby position in the same room when both sides are blocked');
+ assert.equal(copy([center],center,{...narrow,rooms:[{id:'tight',poly:rect(990,0,1000,100)}]}),null,'no room for a safe copy');
+ const c={...cabinet,rot:37,flip:true},cabinetPlan={walls:[],rooms:[{id:'room',poly:rect(0,0,4000,4000)}]};
+ const side=E.surfaces(cabinetPlan,{furniture:[c]},panel).find(s=>s.label.includes('侧板'));
+ const attached=E.place(panel,side,side.length/2),next=copy([attached,c],attached,cabinetPlan);
+ assert(next&&E.nearest(next,[side],1e-6),'copy stays mounted on a rotated and mirrored cabinet');
+ assert(Math.abs(Math.hypot(attached.cx-next.cx,attached.cy-next.cy)-90)<1e-6);
+ const rail={...source,type:'track_socket_bull_gb50k',w:500,d:36,h:94,cx:982,cy:300};
+ const longer={walls:[[1000,0,1100,1500]],rooms:[{id:'home',poly:rect(0,0,1000,1500)}]};
+ assert.deepEqual(copy([rail],rail,longer),{...rail,cy:804},'use the actual width of the track socket');
+}
+{
  const plan={walls:[[0,0,1000,200,'low']],wallFinish:{solids:[{rect:[0,200,1000,215],bottom:0,top:1000}]}};
  const f={...panel,cx:500,cy:232,rot:90},items=[f];
  const faces=E.surfaces(plan,{furniture:items},f);
