@@ -299,9 +299,9 @@ globalThis.FurnishElectricalUI=(()=>{
   const finish=/^#(?:[a-f\d]{3}|[a-f\d]{6})$/i.test(f.color)?f.color:'#f5f5f2';
   const ownRoom=E.roomFor(ROOMS,f.cx,f.cy),groups=actionTargetGroups(ownRoom);
   const canLimit=ownRoom&&groups.length>1&&groups[0].room===ownRoom;
-  const targetIds=new Set(groups.flatMap(group=>group.options.map(option=>option.id)));
+  const targetLabels=new Map(groups.flatMap(group=>group.options.map(({id,label})=>[id,label])));
   const targetOptions=selected=>{
-   const missing=selected&&!targetIds.has(selected);
+   const missing=selected&&!targetLabels.has(selected);
    return `<option value="">请选择设备</option>${missing?`<option value="${esc(selected)}" selected>设备待核对</option>`:''}`+
     groups.map(({room,options})=>{
      const visible=!canLimit||draft.showOtherTargets||room===ownRoom?options:options.filter(option=>option.id===selected);
@@ -318,7 +318,7 @@ globalThis.FurnishElectricalUI=(()=>{
    host.innerHTML=`<div class="electrical-switch-face" role="group" aria-label="开关正面" style="--switch-face:${finish};--switch-keys:${keys.length}">
     ${keys.map(item=>`<button type="button" data-action-key="${item.key}" aria-pressed="${item.key===key}"><span>${item.label}</span></button>`).join('')}
    </div><label class="electrical-trigger">触发方式<select data-action-gesture>${gestures.map(option=>`<option value="${option}" ${option===gesture?'selected':''}>${triggerNames[option]}</option>`).join('')}</select></label>
-   <div class="actions"><button class="btn" type="button" data-action-add="${key}:${gesture}" ${locked||!targetIds.size?'disabled':''}>添加动作</button><button class="btn" type="button" data-action-test="${key}:${gesture}" ${slot.length?'':'disabled'}>试按</button></div>
+   <div class="actions"><button class="btn" type="button" data-action-add="${key}:${gesture}" ${locked||!targetLabels.size?'disabled':''}>添加动作</button><button class="btn" type="button" data-action-test="${key}:${gesture}" ${slot.length?'':'disabled'}>试按</button></div>
    ${canLimit&&slot.length?`<label class="electrical-device-scope"><input type="checkbox" data-action-other-rooms ${draft.showOtherTargets?'checked':''} ${disabled}>显示其他区域设备</label>`:''}
    ${slot.map(({entry,i})=>{
      return `<div class="electrical-action-row" data-action-index="${i}">
@@ -365,8 +365,8 @@ globalThis.FurnishElectricalUI=(()=>{
      const actions=entries.filter(entry=>entry.key===Number(key)&&entry.gesture===gesture);
      const lamps=FurnishDesign.sceneSettings(state.scene3d).lamps;
      const results=E.testPanelActions(f,Number(key),gesture,state.furniture,previewStates,lamps,actions);
-     report(results.map(({target,status,value})=>{
-      const name=target?nm(target.name):'设备';
+     report(results.map(({targetId,status,value})=>{
+      const name=targetLabels.get(targetId)||'设备';
       return name+' · '+(status==='unavailable'?'待核对':status==='light'?(value?'已开灯':'已关灯'):(value?'已打开':'已关闭'));
      }).join('　'));
      return;

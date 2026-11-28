@@ -65,7 +65,8 @@ async function main(){
    const targets=state.furniture.filter(FurnishProducts.panelActionTarget);
    const ownTargets=targets.filter(f=>roomOf(f)===button.room.id).map(f=>f.id);
    const lights=targets.filter(f=>FurnishProducts.panelActionTarget(f)==='light');
-   const otherLamp=lights.find(f=>roomOf(f)!==button.room.id);
+   const otherLights=lights.filter(f=>roomOf(f)!==button.room.id);
+   const otherLamp=otherLights.find(f=>f.id==='fmvs5p45s1')||otherLights[0];
    return {switchId:button?.id,point:button?.number,room:button?.room?.id,other:peer?.room.id,otherPoint:peer?.number,doorPair,
     start:button&&camera(button.room),next:peer&&camera(peer.room),total:points.length,
     lamp:(otherLamp||lights[0])?.id,otherLamp:otherLamp?.id,ownTargets,allTargets:targets.length};
@@ -108,6 +109,7 @@ async function main(){
   assert.equal(await controls.locator('[data-action-key="1"]').getAttribute('aria-pressed'),'true');
   await controls.locator('[data-action-gesture]').selectOption('double');
   const savedBefore=await page.evaluate(id=>getF(id).panelActions??null,data.switchId);
+  const result=controls.locator('[data-action-result]');
   await controls.locator('[data-action-add="1:double"]').click();
   const target=controls.locator('[data-action-target]').last();
   const otherTargets=controls.locator('[data-action-other-rooms]');
@@ -135,11 +137,21 @@ async function main(){
   await controls.locator('[data-action-verb]').last().selectOption('on');
   await controls.locator('[data-action-key="2"]').click();
   assert.equal(await controls.locator('[data-action-add="2:press"]').count(),1);
+  const curtainIds=['fmv3wtxgq12','fmv3wt92611'];
+  const selectedOptions=controls.locator('[data-action-target] option:checked');
+  if(curtainIds.every(id=>savedBefore?.some(a=>a.key===2&&a.gesture==='press'&&a.targetId===id))){
+   const curtainLabels=await selectedOptions.evaluateAll((options,ids)=>options.filter(o=>ids.includes(o.value)).map(o=>o.textContent),curtainIds);
+   assert.equal(curtainLabels.length,2);
+   await controls.locator('[data-action-test="2:press"]').click();
+   const messages=(await result.textContent()).split('　');
+   for(const label of curtainLabels)assert(messages.some(message=>[`${label} · 已打开`,`${label} · 已关闭`].includes(message)));
+  }
   await controls.locator('[data-action-key="1"]').click();
   assert.equal(await controls.locator('[data-action-gesture]').inputValue(),'double');
   assert.equal(await controls.locator('[data-action-target]').last().inputValue(),data.lamp);
+  const lampLabel=await target.locator('option:checked').textContent();
   await controls.locator('[data-action-test="1:double"]').click();
-  assert.match(await controls.locator('[data-action-result]').textContent(),/已开灯/);
+  assert((await result.textContent()).split('　').includes(`${lampLabel} · 已开灯`));
   assert.deepEqual(await page.evaluate(id=>getF(id).panelActions??null,data.switchId),savedBefore);
   await controls.locator('[data-actions-save]').click();
   const stored=await page.evaluate(id=>getF(id).panelActions,data.switchId);
