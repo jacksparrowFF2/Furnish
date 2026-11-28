@@ -209,13 +209,16 @@ function controlPairs(furniture,rooms){
  for(const f of panels){
   if(!P().panelSpec(f)?.gangs)continue;
   for(const clause of purpose(f.name).split(/[，,。；;、\n]/)){
-   if(!/双控|两地控制|两地联动|两处控制|米家(?:场景)?联动/i.test(clause))continue;
+   if(!/双控|两地控制|两地联动|两处控制|米家(?:场景)?联动|无线联动/i.test(clause))continue;
    if(/不做|不与|不跟|不接|不联动|不可|取消|待定|待确认|待核/.test(clause))continue;
    const codes=[...new Set(clause.match(/(?<![A-Z0-9])E\d+(?![A-Z0-9])/gi)?.map(v=>v.toUpperCase()))];
    if(codes.length!==1)continue;
    const [code]=codes,other=aliases.get(code);
    if(!other||other.id===f.id||!P().panelSpec(other)?.gangs)continue;
-   const methods=[...(/有线|物理/.test(clause)?['wired']:[]),...(/米家/.test(clause)?['mijia']:[])];
+   const methods=[
+    ...(/有线|物理|双控\s*[（(]\s*电路\s*[）)]/.test(clause)?['wired']:[]),
+    ...(/米家|无线|双控\s*[（(]\s*智能\s*[）)]/.test(clause)?['mijia']:[])
+   ];
    for(const [a,b] of [[f.id,other.id],[other.id,f.id]]){
     if(!links.has(a))links.set(a,new Map());
     const peers=links.get(a);

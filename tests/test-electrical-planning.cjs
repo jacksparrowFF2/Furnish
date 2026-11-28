@@ -185,6 +185,12 @@ assert(!E.controlPairs([wired,{...wiredPeer,panelVariant:'socket5-diagonal'}]).l
 assert(!E.controlPairs([{...wired,name:'E29 · 不与 E67 双控'},wiredPeer]).links.size);
 assert.deepEqual(E.controlPairs([smart,{...smartPeer,name:'E28 · 与 E27 两地控制'}]).links.get(smartPeer.id).get(smart.id),new Set(['mijia']));
 assert.deepEqual(E.controlPairs([smart,{...smartPeer,name:'E28 · 与 E27 有线双控'}]).links.get(smartPeer.id).get(smart.id),new Set(['mijia','wired']));
+for(const [description,methods] of [
+ ['双控（电路）',['wired']],['双控(智能)',['mijia']],['无线联动',['mijia']],['双控',[]]
+]){
+ const source={...wired,name:'E29 · 与 E67 '+description};
+ assert.deepEqual(E.controlPairs([source,wiredPeer]).links.get(wiredPeer.id).get(source.id),new Set(methods));
+}
 const plan=require('../src/data/plans.js')[0],W=require('../src/core/work-state.js').create({makeId:()=> 'fixture',colorFor:()=> '#fff',materials:require('../src/data/catalog.js').materials}),full={...W.fresh(plan),furniture:[cabinet,panel]},payload={planId:plan.id,current:full,designs:[{name:'插座布置',work:clone(full)}],catalog:[]};
 assert.deepEqual(J.unpack(J.pack(payload)),payload);let restored=clone(full);for(let i=0;i<3;i++)restored=W.restore(clone(restored),plan);assert.deepEqual(restored.furniture,full.furniture);P.validate(panel);
 console.log('electrical planning: protected layout, opening exception, actual inner/outer board faces, rotated/mirrored contact, height limits and project round trip passed');

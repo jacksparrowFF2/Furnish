@@ -3,7 +3,7 @@ globalThis.FurnishElectricalUI=(()=>{
  const height=v=>v===null?'待核对':Number(v.toFixed(1));
  const E=FurnishElectrical,NS='http://www.w3.org/2000/svg';
  const controlLabels={smart:['智能','Smart'],conventional:['常规','Conventional'],sensor:['感应','Sensor']};
- const linkLabels={wired:['有线双控','Wired two-way'],mijia:['米家联动','Mijia automation']};
+ const linkLabels={wired:['双控（电路）','Two-way (wired)'],mijia:['双控（智能）','Two-way (smart)'],unknown:['双控','Two-way']};
  const gangLabels=[null,['单开','1 gang'],['双开','2 gang'],['三开','3 gang'],['四开','4 gang']];
  let adding=false,poseHost=null,relations=E.controlPairs([]);
  let contextPlan,planRoom=null,cameraRoom=null,roomScope='auto';
@@ -108,7 +108,7 @@ globalThis.FurnishElectricalUI=(()=>{
   const links=relations.links.get(id);
   if(!links)return '';
   return `<div class="electrical-row-links">${[...links].map(([peerId,methods])=>{
-   const method=methods.size===1?linkLabels[[...methods][0]]:['双控','Two-way'];
+   const method=methods.has('mijia')?linkLabels.mijia:methods.has('wired')?linkLabels.wired:linkLabels.unknown;
    const label=`${tr(...method)} · ${relatedLabel(peerId,room)}`;
    return `<button type="button" class="electrical-control electrical-link-tag" data-electrical-jump="${esc(peerId)}" aria-label="${esc(tr('定位 ','Locate ')+label)}">${esc(label)} <span aria-hidden="true">↗</span></button>`;
   }).join('')}</div>`;

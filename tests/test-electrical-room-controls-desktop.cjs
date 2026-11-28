@@ -521,6 +521,31 @@ async function main(){
    assert.equal(await page.evaluate(id=>getF(id).coveringMotorized,northBlind),true);
    assert.equal(await page.evaluate(id=>getF(id).panelActions.find(a=>a.key===1).targetId,northSwitch),northBlind);
   }
+  const labelFixture=await page.evaluate(({switchId,other})=>{
+   FurnishElectricalUI.setMode('electrical');
+   const start=getF(switchId),end=FurnishElectrical.points(state,canvasEffectivePlan()).find(row=>row.room?.id===other);
+   const target=getF(end.id);
+   const point=(at,name)=>({id:uid(),name,type:'panel_bull_g12',panelVariant:'switch1-double',
+    cx:at.cx,cy:at.cy,rot:at.rot,w:86,d:10,h:86,color:'#f5f5f2',mountHeight:900});
+   const source=point(start,'E9900 · 验收开关，与 E9901 有线双控，与 E9902 米家联动，与 E9903 双控');
+   const wired=point(target,'E9901 · 电路端'),smart=point(target,'E9902 · 智能端，与 E9900 有线双控');
+   const unknown=point(target,'E9903 · 方式未注明');
+   mutate(()=>state.furniture.push(source,wired,smart,unknown));
+   return {source:source.id,wired:wired.id,smart:smart.id,unknown:unknown.id};
+  },data);
+  if(await page.locator('#electrical-list').getAttribute('aria-expanded')!=='true')await page.locator('#electrical-list').click();
+  await scope.selectOption(data.room);
+  const sourceRow=dock.locator(`[data-electrical-id="${labelFixture.source}"]`).locator('..');
+  const tag=id=>sourceRow.locator(`[data-electrical-jump="${id}"]`);
+  assert.match(await tag(labelFixture.wired).textContent(),/^双控（电路） · .+ ↗$/);
+  assert.match(await tag(labelFixture.smart).textContent(),/^双控（智能） · .+ ↗$/);
+  assert.match(await tag(labelFixture.unknown).textContent(),/^双控 · .+ ↗$/);
+  await tag(labelFixture.smart).scrollIntoViewIfNeeded();
+  await page.screenshot({path:path.join(job.dir,'two-way-labels.png')});
+  await tag(labelFixture.smart).click();
+  const smartRow=dock.locator(`[data-electrical-id="${labelFixture.smart}"]`);
+  assert.equal(await smartRow.getAttribute('aria-current'),'true');
+  assert.match(await smartRow.locator('..').locator(`[data-electrical-jump="${labelFixture.source}"]`).textContent(),/^双控（智能） · .+ ↗$/);
   assert.deepEqual(errors,[]);
   passed=true;
   console.log(JSON.stringify({passed,run:job.dir,checks:['room filtering in 2D, 3D and walk','independent collapse','whole-plan export','concise device labels and cross-room bindings','switch preview, undo/redo and reload','aligned properties and shared purposes','50 mm threshold and 4 mm saved panel spacing','in-place replacement, obstruction, undo/redo and saved style',...(entranceGroup?['entrance 3D grouped switching, reset and kitchen main light labels']:[]),...(data.livingStrip?['existing ceiling strip shared by two switches','full 3D switch editor and preview']:[]),...(checkCycle?['two-curtain open/stop/close cycle']:[]),...(reserved?['north window reservation, motorized lift, retained binding, v114 save and reload']:[])]}));
