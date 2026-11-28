@@ -884,7 +884,7 @@ const gtaoButton=$('#viewport-gtao'),bloomButton=$('#viewport-bloom'),smaaButton
 let gtaoEnabled=false,bloomEnabled=false,smaaEnabled=false,bloomNight=false,bloomRevision=0;
 let materialLook=false,materialLookSettling=false,materialLookTimer=0,materialLighting;
 const floorSky={value:new THREE.Vector4()};
-let viewportPointer=null,viewportRestoreAt=0;
+let viewportPointer=null,viewportRestoreAt=0,panelBodyDragging=false,cancelPanelDrag=()=>false;
 function cancelOrbitMouseDrag(){
   if(!viewportPointer?.orbitMouseDrag)return false;
   // OrbitControls r160 clears its active pointers through pointerup or pointercancel.
@@ -1087,7 +1087,7 @@ function init(){
   sceneMeasure=FurnishSceneMeasure.create({THREE,stage,canvas:cv,camera,tr,invalidate,
     navigationHeld:()=>spaceDown,
     available:()=>active&&!anim&&opt.mode==='orbit'&&!globalThis.FurnishTilePresetUI?.inspecting()&&!globalThis.FurnishMaterialUI?.active(),
-    onStart:()=>{cancelElevationGesture();selectionTransform?.update(false);fly=null;},hitAt:measurementHit});
+    onStart:()=>{cancelPanelDrag();cancelElevationGesture();selectionTransform?.update(false);fly=null;},hitAt:measurementHit});
   cv.addEventListener('pointerdown',()=>{orbit.mouseButtons.LEFT=spaceDown?THREE.MOUSE.PAN:THREE.MOUSE.ROTATE;},true);
   let downAt = null, tapMoved = false, look = null;
   cv.addEventListener('pointerdown', e => {
@@ -1101,24 +1101,57 @@ function init(){
   });
   cv.addEventListener('pointercancel', e => { downAt=null;if (look?.id === e.pointerId) look = null; });
 
-  // 按住已选中的家具拖动：沿地面摆放（与 2D 共用网格和贴墙吸附）。
+  // 按住已选中的物体拖动。单个面板沿当前安装高度移动并可贴合安装面。
   // 在父元素上用捕获阶段监听，赶在 OrbitControls 之前关掉它，避免同时旋转镜头
   let fdrag = null;
   // 多选时按住其中任一件可整组移动；锁定的家具不能拖
   host.addEventListener('pointerdown', e => {
-    if (globalThis.FurnishMaterialUI?.active() || !ui.sceneMove || sceneMeasure?.active() || e.target !== cv || !e.isPrimary || anim || opt.mode !== 'orbit' || e.shiftKey || spaceDown || e.button!==0) return;
-    const ids = selIds(), h = pick(e), f = h?.fid && ids.includes(h.fid) && getF(h.fid), g = f && groundAt(e.clientX, e.clientY);
+    if (fdrag || globalThis.FurnishMaterialUI?.active() || !ui.sceneMove || sceneMeasure?.active() || e.target !== cv || !e.isPrimary || anim || opt.mode !== 'orbit' || e.shiftKey || spaceDown || e.button!==0) return;
+    const ids = selIds(), h = pick(e), f = h?.fid && ids.includes(h.fid) && getF(h.fid);
+    if (!f || FurnishElectricalUI.active() && ids.length!==1) return;
+    const mounting = ids.length===1 && FurnishElectrical.panel(f) && h.point;
+    const g = mounting ? panelDragPoint(e, h.point.y) : groundAt(e.clientX, e.clientY);
     if (!g) return;
     const items = selItems();
     if (items.some(x => furnitureLocked(x))){ toast(tr('已锁定的家具不能移动', 'Locked items cannot be moved')); return; }
-    fdrag = {id:f.id, ids, skip:new Set(ids), start:Object.fromEntries(items.map(x => [x.id, [x.cx, x.cy]])), pid:e.pointerId, sx:e.clientX, sy:e.clientY, ox:g.x - f.cx, oy:g.y - f.cy, scale:g.s>0?g.s:view.s, before:snap(), moved:false};
+    if (mounting&&furnitureError(f))return;
+    const panel = mounting ? {
+      work:state, plan:FurnishProject.effectivePlan(PLAN,state), height:h.point.y, faces:new Map(),
+      model:furnG.children.find(o=>o.userData.fid===f.id)
+    } : null;
+    if(panel)panel.nativeY=panel.model.position.y-M(FurnishProducts.floorBase(panel.plan,f,state.furniture).z);
+    fdrag = {id:f.id, ids, panel, skip:new Set(ids), start:Object.fromEntries(items.map(x => [x.id, [x.cx, x.cy]])), pid:e.pointerId, sx:e.clientX, sy:e.clientY, ox:g.x - f.cx, oy:g.y - f.cy, scale:g.s>0?g.s:view.s, before:panel?null:snap(), moved:false};
     orbit.enabled = false; fly = null; cv.setPointerCapture(e.pointerId);
   }, true);
   cv.addEventListener('pointermove', e => {
     if (!fdrag || e.pointerId !== fdrag.pid) return;
     if (!fdrag.moved && Math.hypot(e.clientX - fdrag.sx, e.clientY - fdrag.sy) < TAP) return;
-    const f = getF(fdrag.id), g = groundAt(e.clientX, e.clientY); if (!f || !g) return;
+    const {panel}=fdrag, f=getF(fdrag.id);
+    if(panel && (e.pointerType==='mouse' && !(e.buttons&1) || !panelDragActive(fdrag))){
+      endF(e,true);return;
+    }
+    const g = panel ? panelDragPoint(e,panel.height) : groundAt(e.clientX, e.clientY); if (!f || !g) return;
     fdrag.moved = true; cv.style.cursor = 'grabbing';
+    if(panel){
+      downAt=null;
+      panelBodyDragging=true;
+      const cx=g.x-fdrag.ox,cy=g.y-fdrag.oy;
+      const next={...f,cx,cy};
+      const base=FurnishProducts.floorBase(panel.plan,next,state.furniture);
+      let hit;
+      if(ui.layers.sceneDragSnap&&!e.altKey&&base.known){
+        if(!panel.faces.has(base.z)){
+          panel.faces.set(base.z,FurnishElectrical.surfaces(panel.plan,state,next));
+        }
+        const faces=panel.faces.get(base.z).filter(s=>!s.hostId||FurnishObservationLayers.visible(getF(s.hostId)));
+        hit=FurnishElectrical.snapMount(next,faces,Math.min(100,12/fdrag.scale),panel.plan,state.furniture);
+      }
+      const [x,y]=hit?[hit.position.cx,hit.position.cy]:snapMove(f,cx,cy,fdrag.skip,e.altKey,undefined,undefined,fdrag.scale,{gridOnly:true});
+      panel.pose={cx:x,cy:y,rot:hit?.position.rot??f.rot};
+      showPanelDragPose(panel,f,panel.pose);
+      invalidate(!nightInteraction());
+      return;
+    }
     // When enabled, keep the magnet radius tied to this drag's 3D projection.
     const [nx, ny] = snapMove(f, g.x - fdrag.ox, g.y - fdrag.oy, fdrag.skip, false, undefined, undefined, fdrag.scale,
       {gridOnly:!ui.layers.sceneDragSnap,checkCollision:ui.layers.sceneDragCollision});
@@ -1133,9 +1166,22 @@ function init(){
     // local shadow maps can keep their last settled poses until drop.
     invalidate(!nightInteraction());
   });
-  const endF = e => {
-    if (!fdrag || e.pointerId !== fdrag.pid) return;
+  const panelDragActive=d=>active&&ui.sceneMove&&state===d.panel.work&&selIds().includes(d.id)&&!furnitureLocked(getF(d.id));
+  const endF = (e,cancel=false) => {
+    if (!fdrag || e.pointerId!==undefined&&e.pointerId !== fdrag.pid) return;
     const d = fdrag; fdrag = null; orbit.enabled = true; cv.style.cursor = '';
+    if(d.panel){
+      panelBodyDragging=false;
+      if(cv.hasPointerCapture(d.pid))cv.releasePointerCapture(d.pid);
+      const {model,pose}=d.panel,f=getF(d.id);
+      if(!f||!pose||!model?.parent)return;
+      showPanelDragPose(d.panel,f,f);
+      invalidate(true);
+      if(!cancel&&e.type==='pointerup'&&panelDragActive(d)){
+        try{mutate(()=>Object.assign(f,pose),{sceneFirst:true,furnitureId:f.id});}catch(error){toast(error.message);}
+      }
+      return;
+    }
     if (d.moved){
       invalidate(true);
       if (ui.layers.sceneDragCollision && d.ids.length === 1){ const f = getF(d.id); if (f) pushOut(f); }
@@ -1144,6 +1190,12 @@ function init(){
     }
   };
   cv.addEventListener('pointerup', endF); cv.addEventListener('pointercancel', endF);
+  cv.addEventListener('lostpointercapture',e=>{if(fdrag?.panel)endF(e,true);});
+  cancelPanelDrag=()=>{if(!fdrag?.panel)return false;endF({},true);return true;};
+  window.addEventListener('blur',cancelPanelDrag);
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'&&cancelPanelDrag()){e.preventDefault();e.stopImmediatePropagation();}
+  },true);
 
   cv.addEventListener('pointerup', e => {
     if(sceneMeasure?.active()){downAt=null;return;}
@@ -2028,7 +2080,8 @@ function refreshElectricalRoom(){
 function syncElectrical(){
   refreshElectricalRoom();
   const overlay=FurnishElectricalUI.active()?FurnishWiringUI.sceneOverlay():null;
-  const key=overlay?JSON.stringify([OX,OY,overlay]):'';
+  const movingPanel=ui.sceneMove?ui.sel?.id:null;
+  const key=overlay?JSON.stringify([OX,OY,overlay,movingPanel]):'';
   if(key===electricalKey)return;
   electricalKey=key;
   clearAnnotations(electricalG);
@@ -2036,6 +2089,7 @@ function syncElectrical(){
   if(!overlay)return;
   for(const {id,label,kind,x,y,z} of overlay.markers){
     const marker=annotationLabel(electricalG,label,wx(x),M(z),wz(y),'electrical-scene-marker');
+    marker.visible=id!==movingPanel;
     if(kind)marker.element.dataset.wireKind=kind;
     electricalMarkers.set(id,{label,position:marker.position});
   }
@@ -2072,7 +2126,7 @@ function syncElectrical(){
 function updateElectricalSwitch(){
   const f=FurnishElectricalUI.sceneSwitchSelection(),marker=electricalMarkers.get(f?.id);
   let point=null;
-  if(marker&&active&&opt.furn&&opt.mode==='orbit'&&!anim&&!fly&&!sceneMeasure?.active()){
+  if(marker&&active&&opt.furn&&opt.mode==='orbit'&&!ui.sceneMove&&!anim&&!fly&&!sceneMeasure?.active()){
     const {position,label}=marker,angle=(f.rot||0)*Math.PI/180;
     const front=-(camera.position.x-position.x)*Math.sin(angle)+(camera.position.z-position.z)*Math.cos(angle);
     if(front>=-.005){
@@ -2471,6 +2525,7 @@ async function enter(showLoading){
 }
 async function exit(){
   pauseCeilingWash();
+  cancelPanelDrag();
   ui.sceneMove=false;
   cancelOrbitMouseDrag();
   cancelSunPreview();
@@ -2659,13 +2714,27 @@ function pick(e){
     if (o.userData.door) { const door=o.userData.door;let owner=o;while(owner&&!owner.userData.fid)owner=owner.parent;return {door,dist:h.distance,fid:owner?.userData.fid}; }
     if (o.userData.room) return {room:o.userData.room};
     while (o && !o.userData.fid && o !== scene) o = o.parent;
-    if (o?.userData.fid) return {fid:o.userData.fid};
+    if (o?.userData.fid) return {fid:o.userData.fid,point:h.point};
     return null;                                     // 被墙体挡住
   }
   return null;
 }
 // 屏幕点 → 地面（y = 0）上的户型坐标 mm；s = 该处每 mm 对应的屏幕像素，用于拖放时的幽灵图大小
 const ground0 = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+function panelDragPoint(e,height){
+  const r=renderer.domElement.getBoundingClientRect(),hit=new THREE.Vector3();
+  ptr.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);
+  ray.setFromCamera(ptr,camera);
+  const plane=new THREE.Plane(ground0.normal,-height);
+  if(!ray.ray.intersectPlane(plane,hit)||hit.distanceTo(camera.position)>60)return null;
+  const projected=hit.clone().project(camera),right=hit.clone().add(new THREE.Vector3(1,0,0).applyQuaternion(camera.quaternion)).project(camera);
+  return {x:hit.x*1000+OX,y:hit.z*1000+OY,s:Math.abs(right.x-projected.x)*r.width/2000};
+}
+function showPanelDragPose({model,plan,nativeY},f,pose){
+  const base=FurnishProducts.floorBase(plan,{...f,...pose},state.furniture);
+  model.position.set(wx(pose.cx),nativeY+M(base.z),wz(pose.cy));
+  model.rotation.y=-pose.rot*Math.PI/180;
+}
 function observationLayer(g,key){if(key.startsWith('roomCeiling:'))g.userData.layerObject=key;return g;}
 function applyObservationLayers(){
  ceilingDisplay.restore();
@@ -2828,6 +2897,7 @@ function bindJoystick(){
 }
 function setMode(m){
   sceneMeasure?.set(false);
+  cancelPanelDrag();
   cancelElevationGesture();
   if (anim) return;
   cancelOrbitMouseDrag();
@@ -3173,7 +3243,7 @@ function loop(){
   labelRenderer.render(scene, camera);
   updateElectricalSwitch();
   fitSceneAnnotationLabels();
-  selectionTransform?.update(!!ui.sceneMove&&active&&opt.furn&&!globalThis.FurnishMaterialUI?.active()&&!sceneMeasure?.active()&&!globalThis.FurnishTilePresetUI?.inspecting()&&opt.mode==='orbit'&&!anim);
+  selectionTransform?.update(!!ui.sceneMove&&!panelBodyDragging&&active&&opt.furn&&!globalThis.FurnishMaterialUI?.active()&&!sceneMeasure?.active()&&!globalThis.FurnishTilePresetUI?.inspecting()&&opt.mode==='orbit'&&!anim);
   sceneMeasure?.update();
 }
 
@@ -3298,6 +3368,7 @@ function image(){
 function relang(){ syncWalkTexts(); if (inited&&!graphicsParked){updateProjection();buildLabels();buildHeaterClearances();} }
 // 户型切换后：重算中心、清空缓存签名，进入时强制重建
 function replan(){
+  cancelPanelDrag();
   ui.sceneMove=false;
   clearObservation();
   clearSceneIssue();clearAnnotations(elevationG);selKey=null;

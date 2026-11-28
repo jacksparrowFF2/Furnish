@@ -107,9 +107,11 @@ function renderBrokenFurniturePanel(f,p){
 function renderFab(){
   const fab = $('#fab'), ids = selIds(), f = ids.length === 1 && getF(ids[0]), r = ui.sel?.kind === 'room' && selectedRooms().length===1 && ROOMS.find(r => r.id === ui.sel.id);
   closeFabEditor(false);
-  if(globalThis.FurnishElectricalUI?.active()){fab.classList.remove('show');fab.innerHTML='';return;}
+  const electrical=globalThis.FurnishElectricalUI?.active();
+  if(electrical&&(!is3D()||!FurnishElectrical.panel(f)||!FurnishObservationLayers.visible(f))){fab.classList.remove('show');fab.innerHTML='';return;}
   fab.removeAttribute('style');
   fab.setAttribute('role','toolbar');fab.setAttribute('aria-label',tr('选中对象快捷调整','Selection quick adjustments'));
+  const moveButton=(disabled=false)=>`<button type="button" class="btn ${ui.sceneMove?'on':''}" data-scene-move aria-pressed="${!!ui.sceneMove}" ${disabled?'disabled':''}>${ui.sceneMove?tr('结束移动','Finish moving'):tr('移动','Move')}</button>`;
   if(ui.sel?.kind==='measure'&&state.measures[ui.sel.id]){fab.innerHTML=`<span class="name">${tr('测量线','Measurement')}</span><button class="btn danger" data-act="del">${tr('删除测量线','Delete measurement')}</button><button class="btn" data-act="done">${tr('完成','Done')}</button>`;fab.classList.add('show');queueFabPosition();return;}
   const ceiling=ui.sel?.kind==='ceiling'&&state.ceilings?.items.find(c=>c.id===ui.sel.id);
   if(ceiling){fab.innerHTML=`<span class="name">${esc(panelSelectionName())}</span><button class="btn primary" data-ceiling-fab aria-haspopup="dialog" ${FurnishLayers.locked(state,'ceiling:'+ceiling.id)?'disabled':''}>${tr('编辑吊顶','Edit ceiling')}</button><button class="btn" data-act="done">${tr('完成','Done')}</button>`;fab.classList.add('show');fab.querySelector('[data-ceiling-fab]').onclick=()=>FurnishCeilingUI.selectObject(ceiling.id,true);queueFabPosition();return;}
@@ -117,11 +119,13 @@ function renderFab(){
   if(bay){fab.innerHTML=`<span class="name">${esc(nm(state.rooms[bay.platform.id].name))}</span><button class="btn" data-bay-fab="window">${tr('窗体','Window')}</button><button class="btn" data-bay-fab="platform">${tr('台面','Platform')}</button><button class="btn" data-act="prop">${tr('飘窗属性','Bay properties')}</button><button class="btn" data-act="done">${tr('完成','Done')}</button>`;fab.classList.add('show');fab.querySelector('[data-bay-fab="window"]').onclick=()=>select({kind:'win',id:bay.windows[0].index});fab.querySelector('[data-bay-fab="platform"]').onclick=()=>select({kind:'room',id:bay.platform.id});queueFabPosition();return;}
   if (!ids.length && !r){ fab.classList.remove('show'); return; }
   const b = (act, icon, label, cls = '') => `<button class="btn ${cls}" data-act="${act}" title="${label}" aria-label="${label}">${ico(icon)}</button>`;
-  fab.innerHTML = ids.length
+  fab.innerHTML = electrical
+    ? `<div class="fab-actions">${moveButton(furnitureLocked(f)||!!furnitureError(f))}</div>`
+    : ids.length
     ? `<div class="fab-primary"><span class="name">${f ? esc(nm(propertyFurnitureName(f))) : tr(`已选 ${ids.length} 件`, `${ids.length} selected`)}</span>`
       + (f?`<button class="btn fab-size" data-fab-edit="size" aria-haspopup="dialog" aria-expanded="false" ${furnitureLocked(f)||furnitureError(f)||f.paperArray?'disabled':''} title="${f.paperArray?tr('通过纸品阵列参数调整整体尺寸','Adjust overall size through paper array settings'):furnitureUsesDetailedDesign(f)?tr('打开柜体详细设计','Open cabinet designer'):tr('调整占地尺寸','Edit footprint size')}"><b>${Number(FurnishProducts.dimensions(f).w.toFixed(2))} × ${Number(FurnishProducts.dimensions(f).d.toFixed(2))}${FurnishProducts.definition(f)?.wallRecess?' × '+Number(FurnishProducts.height(f).toFixed(2)):''}</b><small>mm · ${furnitureUsesDetailedDesign(f)?tr('详细设计','Design'):tr('尺寸','Size')}</small></button>`:'')
       + `<button class="btn" data-fab-edit="distance" aria-haspopup="dialog" aria-expanded="false" ${selItems().some(v=>furnitureError(v))?'disabled':''}>${tr('四向净距','Clearances')}</button></div><div class="fab-actions">`
-      + (is3D()?`<button class="btn ${ui.sceneMove?'on':''}" data-scene-move aria-pressed="${!!ui.sceneMove}">${ui.sceneMove?tr('结束移动','Finish moving'):tr('移动','Move')}</button>`:'')
+      + (is3D()?moveButton():'')
       + b('rotL', 'rotL', tr('逆时针 90°', 'Rotate left')) + b('rotR', 'rotR', tr('顺时针 90°', 'Rotate right')) + b('flip', 'flip', tr('镜像', 'Mirror'))
       + (ids.length>1?`<button class="btn" data-act="${selItems().every(f=>f.groupId&&f.groupId===selItems()[0].groupId)?'ungroup':'group'}">${selItems().every(f=>f.groupId&&f.groupId===selItems()[0].groupId)?tr('解组','Ungroup'):tr('打组','Group')}</button>`:'')
       + b('lock', selItems().every(x => furnitureLocked(x)) ? 'lock' : 'unlock', tr('锁定 / 解锁', 'Lock / unlock')) + b('dup', 'copy', tr('复制一份', 'Duplicate')) + b('del', 'trash', tr('删除', 'Delete'), 'danger')

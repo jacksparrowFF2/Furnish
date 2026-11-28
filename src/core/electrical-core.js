@@ -238,9 +238,17 @@ function points(work,plan){
  });
 }
 const surfaceCache=new Map();
+function mountingWalls(plan){
+ const W=root.FurnishWallFinish||require('./wall-finish-core.js');
+ const outline=([x,y,X,Y])=>[[x,y],[X,y],[X,Y],[x,Y]];
+ return [
+  ...(plan.walls||[]).map((r,i)=>({poly:outline(r),label:'墙 '+(i+1),...W.vertical(r,plan)})),
+  ...(plan.wallFinish?.solids||[]).map(s=>({poly:s.poly||outline(s.rect),label:'墙面饰层',bottom:s.bottom,top:s.top}))
+ ];
+}
 function surfaces(plan,work,f){
  const G=root.FurnishGeometry||require('./layout-geometry.js'),M=root.FurnishCabinetMotion||require('./cabinet-motion.js'),out=[];
- const floor=P().floorBase(plan,f,work.furniture),key=JSON.stringify([plan.walls,plan.furnitureDatum,plan.floorFinish,plan.rooms,plan.markers,plan.ceilingHeight,work.furniture.filter(v=>!panel(v)),{...f,cx:0,cy:0,rot:0},floor]);
+ const floor=P().floorBase(plan,f,work.furniture),key=JSON.stringify([plan.walls,plan.wallFinish?.solids,plan.furnitureDatum,plan.floorFinish,plan.rooms,plan.markers,plan.ceilingHeight,work.furniture.filter(v=>!panel(v)),{...f,cx:0,cy:0,rot:0},floor]);
  if(surfaceCache.has(key))return surfaceCache.get(key);
  const bottom=G.bodyParts(f,plan,work.furniture).flatMap(p=>p.vertices||[]).map(v=>v[1]),range=bottom.length?{bottom:Math.min(...bottom),top:Math.max(...bottom)}:null;
  if(!range)return out;
@@ -251,7 +259,10 @@ function surfaces(plan,work,f){
    out.push({...meta,key:meta.key+':'+i,a,b,normal,length});
   }
  }
- for(const [i,r]of (plan.walls||[]).entries())edges([[r[0],r[1]],[r[2],r[1]],[r[2],r[3]],[r[0],r[3]]],{key:'wall:'+i,label:'墙 '+(i+1),kind:'wall'});
+ for(const [i,wall]of mountingWalls(plan).entries()){
+  if(wall.bottom<=range.bottom+1e-6&&wall.top>=range.top-1e-6)
+   edges(wall.poly,{key:'wall:'+i,label:wall.label,kind:'wall'});
+ }
  for(const host of work.furniture.filter(v=>floor.known&&!panel(v)&&(v.cabinet||v.kitchen)&&P().floorBase(plan,v,work.furniture).known)){
   const parts=G.bodyParts(host,plan,work.furniture).filter(p=>p.actualBoard&&p.vertical?.bottom<=range.bottom+1e-6&&p.vertical?.top>=range.top-1e-6),polys=parts.map(p=>M.section(p,range));
   parts.forEach((part,i)=>edges(polys[i],{key:'cabinet:'+host.id+':'+i,label:host.name+' · '+part.boardName,kind:'cabinet',hostId:host.id},polys));
@@ -263,10 +274,30 @@ function place(f,surface,offset){
  const t=offset/surface.length,n=surface.normal;
  return {...f,cx:surface.a[0]+(surface.b[0]-surface.a[0])*t+n[0]*f.d/2,cy:surface.a[1]+(surface.b[1]-surface.a[1])*t+n[1]*f.d/2,rot:(Math.atan2(-n[0],n[1])*180/Math.PI+360)%360};
 }
-function nearest(f,faces,limit=Infinity){
+function nearest(f,faces,limit=Infinity,{turn=false,accept=()=>true}={}){
  const a=(f.rot||0)*Math.PI/180,n=[-Math.sin(a),Math.cos(a)];let best=null;
- for(const s of faces){if(n[0]*s.normal[0]+n[1]*s.normal[1]<.99999)continue;const offset=((f.cx-s.a[0])*(s.b[0]-s.a[0])+(f.cy-s.a[1])*(s.b[1]-s.a[1]))/s.length;if(offset<f.w/2||offset>s.length-f.w/2)continue;const position=place(f,s,offset),distance=Math.hypot(position.cx-f.cx,position.cy-f.cy);if(distance<=limit&&(!best||distance<best.distance))best={surface:s,offset,position,distance};}
+ for(const s of faces){
+  const dx=f.cx-s.a[0],dy=f.cy-s.a[1];
+  if(turn?dx*s.normal[0]+dy*s.normal[1]<-1e-6:n[0]*s.normal[0]+n[1]*s.normal[1]<.99999)continue;
+  const offset=(dx*(s.b[0]-s.a[0])+dy*(s.b[1]-s.a[1]))/s.length;
+  if(offset<f.w/2||offset>s.length-f.w/2)continue;
+  const position=place(f,s,offset),distance=Math.hypot(position.cx-f.cx,position.cy-f.cy);
+  if(distance<=limit&&(!best||distance<best.distance)&&accept(position,s))best={surface:s,offset,position,distance};
+ }
  return best;
+}
+function snapMount(f,faces,limit,plan,furniture){
+ const G=root.FurnishGeometry||require('./layout-geometry.js'),products=P(),base=products.floorBase(plan,f,furniture);
+ if(!base.known)return null;
+ const range=products.vertical(f),walls=mountingWalls(plan).filter(w=>w.top>range.bottom+base.z+1e-6&&w.bottom<range.top+base.z-1e-6);
+ return nearest(f,faces,limit,{turn:true,accept:(next,s)=>{
+  const target=products.floorBase(plan,next,furniture);
+  if(!target.known||target.z!==base.z)return false;
+  const outline=G.corners(next);
+  if(walls.some(w=>G.polygonOverlap(outline,w.poly,1e-6)))return false;
+  const host=s.hostId&&furniture.find(v=>v.id===s.hostId);
+  return !host||!G.volumeOverlap(next,host,plan,furniture);
+ }});
 }
 function replacePanel(f,candidate,variant,plan,work){
  if(!panel(f)||!panel(candidate))throw Error('请选择插座或开关面板');
@@ -446,6 +477,6 @@ function routeGeometry(route,plan,furniture,byId=new Map(furniture.map(f=>[f.id,
  const length=unresolved||reversals.length?null:path.reduce((sum,p,i)=>i?sum+distance(path[i-1],p):0,0);
  return {points,path,length,unresolved,reversals};
 }
-const api={panel,assertEditable,pointName,displayName,renamePoint,purpose,actionTargetLabel,panelActionTargets,controlPairs,roomFor,pointLocations,points,testPanelActions,surfaces,place,nearest,replacePanel,normalizePanelGaps,wireKinds,routeLimits,validateRoutes,boxKind,endpointKind,endpoint,routeGeometry,conduitDiameters,conduitDefault,conduitProfile};
+const api={panel,assertEditable,pointName,displayName,renamePoint,purpose,actionTargetLabel,panelActionTargets,controlPairs,roomFor,pointLocations,points,testPanelActions,surfaces,place,nearest,snapMount,replacePanel,normalizePanelGaps,wireKinds,routeLimits,validateRoutes,boxKind,endpointKind,endpoint,routeGeometry,conduitDiameters,conduitDefault,conduitProfile};
 root.FurnishElectrical=api;if(typeof module==='object'&&module.exports)module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

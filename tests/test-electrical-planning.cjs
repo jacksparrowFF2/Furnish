@@ -20,6 +20,27 @@ const low={...panel,cx:500,cy:2000,mountHeight:100},high={...low,cx:2000};assert
 const unknown=clone(floors);delete unknown.floorFinish.areas.high.finishedZ;assert.equal(E.surfaces(unknown,work,high).length,0,'unknown floor height must not invent a cabinet mounting face');
 const faces=E.surfaces({walls:[[0,0,1000,200]]},work,panel);assert.equal(faces.filter(s=>s.kind==='wall').length,4);
 {
+ const plan={walls:[[0,0,1000,200,'low']],wallFinish:{solids:[{rect:[0,200,1000,215],bottom:0,top:1000}]}};
+ const f={...panel,cx:500,cy:232,rot:90},items=[f];
+ const faces=E.surfaces(plan,{furniture:items},f);
+ assert.equal(E.nearest(f,faces,30),null,'2D snapping still requires the original orientation');
+ const hit=E.snapMount(f,faces,12,plan,items);
+ assert.deepEqual([hit.position.cx,hit.position.cy,hit.position.rot],[500,220,0]);
+ assert.equal(E.snapMount(f,faces,11.99,plan,items),null);
+ assert.equal(E.snapMount({...f,cx:10},faces,20,plan,items),null,'no overhang along the face');
+ assert.equal(E.snapMount({...f,cy:195},faces,30,plan,items),null,'no attraction through the wall or finish');
+ assert.equal(E.surfaces(plan,{furniture:items},{...f,mountHeight:950}).length,0,'no wall face beyond the full mounting height');
+ const rotated={...cabinet,rot:37,flip:true},cabinetPlan={walls:[]},cabinetWork={furniture:[rotated,f]};
+ const sides=E.surfaces(cabinetPlan,cabinetWork,f).filter(s=>s.label.includes('侧板'));
+ for(const side of sides){
+  const expected=E.place(f,side,side.length/2),raw={...f,cx:expected.cx+side.normal[0]*10,cy:expected.cy+side.normal[1]*10};
+  const snap=E.snapMount(raw,sides,12,cabinetPlan,cabinetWork.furniture);
+  assert(snap,'both sides of the rotated, mirrored board are usable');
+  assert(Math.hypot(snap.position.cx-expected.cx,snap.position.cy-expected.cy)<1e-6);
+  assert.equal(snap.position.rot,expected.rot);
+ }
+}
+{
  const fixed={...panel,id:'switch',cx:410,cy:205,panelVariant:'switch2-double',panelActions:[{key:0,gesture:'press',targetId:'lamp',action:'toggle'}]};
  const rail={type:'track_socket_bull_gb50k',name:'轨道插座',w:500,d:36,h:94,color:'#555',frontClearance:0};
  const plan={walls:[[0,0,1200,200]]},beside={...panel,id:'peer',cx:500,cy:205};
