@@ -82,6 +82,7 @@ globalThis.FurnishElectricalUI=(()=>{
  }
  function afterRender(){
   document.body.classList.toggle('electrical-mode',active());
+  if(sceneSwitchView)sceneSwitchView.dirty=true;
   const status=$('#placement-status'),message=active()&&adding&&!is3D()?tr('点击画布放置面板，按 Esc 取消','Click the plan to place the socket. Press Esc to cancel.'):'';
   if(status.textContent!==message)status.textContent=message;
   draw();
@@ -115,16 +116,16 @@ globalThis.FurnishElectricalUI=(()=>{
   if(!rows.length&&scopedRoom())return `<p class="muted">${tr('当前区域没有插座或开关面板。','No sockets or switch plates in this area.')}</p>`;
   if(!rows.length)return `<p class="muted">${tr('当前方案没有插座或开关面板。','There are no sockets or switch plates in this design.')}</p>`;
   const groups=new Map(ROOMS.map(room=>[room.id,{room,items:[]}])),current=ui.sel?.kind==='furn'?ui.sel.id:null,peers=relatedIds();
+  const {targets}=actionCatalog();
   for(const r of rows){
    const f=getF(r.id),room=r.room,key=room?.id??null;
    if(!groups.has(key))groups.set(key,{room,items:[]});
    const hidden=!FurnishLayers.visible(state,FurnishLayers.furnitureKey(f));
-   const references=relations.references.get(r.id);
-   const label=E.purpose(nm(r.name),[room&&nm(state.rooms[room.id]?.name),room&&nm(room.name)])
-    .replace(/(?<![A-Z0-9])E\d+(?![A-Z0-9])/gi,code=>{
-     const peerId=references?.get(code.toUpperCase());
-     return peerId?relatedLabel(peerId,room):code;
-    });
+   const keys=FurnishProducts.panelKeys(f);
+   const names=keys.length?[...new Set(purposeRows(keys,f.panelActions||[],targets).flatMap(row=>row.actions.flatMap(action=>action.names)))]:[];
+   const fullPurpose=names.join(' · ');
+   const label=keys.length?(names.length>3?`${names.slice(0,3).join(' · ')} 等 ${names.length} 项`:fullPurpose||'尚未配置按键用途'):
+    E.purpose(nm(recordedPurpose(f)),[room&&nm(state.rooms[room.id]?.name),room&&nm(room.name)]);
    const product=FurnishProducts.definition(f),variantLabel=nm(r.variant.label),detail=nm(r.variant.listLabel||r.variant.label);
    const series=product.panelLine&&tr(...product.panelLine);
    const model=r.variant.model?detail:series;
@@ -145,7 +146,7 @@ globalThis.FurnishElectricalUI=(()=>{
      <span class="electrical-row-number">${r.number}</span>
      <span class="electrical-row-description">
        <span class="electrical-row-heading"><b>${esc(type)}</b><span class="electrical-row-height"><small>${tr('底高','Bottom height')}</small> <b>${elevation}</b></span></span>
-       ${label&&label!==variantLabel&&label!==type&&label!==model?`<span class="electrical-row-purpose">${esc(label)}</span>`:''}
+       ${label&&label!==variantLabel&&label!==type&&label!==model?`<span class="electrical-row-purpose"${fullPurpose?` title="${esc(fullPurpose)}"`:''}>${esc(label)}</span>`:''}
        ${model?`<span class="electrical-row-product">${esc(model)}</span>`:''}
        ${tags?`<span class="electrical-row-tags">${tags}</span>`:''}
        ${hidden?`<small>${tr('图层已隐藏','Layer hidden')}</small>`:''}
@@ -213,6 +214,7 @@ globalThis.FurnishElectricalUI=(()=>{
   });
  }
  function selectionChanged(){
+  if(sceneSwitchView&&sceneSwitchSelection()?.id!==sceneSwitchView.id)positionSceneSwitch(null,null);
   if($('#electrical-list-dock').hidden)return;
   const id=ui.sel?.kind==='furn'?ui.sel.id:null;
   const peers=relatedIds();
@@ -268,9 +270,8 @@ globalThis.FurnishElectricalUI=(()=>{
    <div data-panel-actions></div>
   </details>`:'';
  }
- function actionTargetGroups(current){
-  const rooms=current?[current,...ROOMS.filter(room=>room!==current)]:ROOMS;
-  const groups=new Map([...rooms,null].map(room=>[room?.id??null,{room,options:[]}]));
+ function actionCatalog(){
+  const groups=new Map([...ROOMS,null].map(room=>[room?.id??null,{room,options:[]}]));
   const targets=E.panelActionTargets(state,ROOMS)
    .sort((a,b)=>a.cy-b.cy||a.cx-b.cx||a.id.localeCompare(b.id));
   for(const target of targets){
@@ -289,7 +290,8 @@ globalThis.FurnishElectricalUI=(()=>{
     next.set(label,number);
    }
   }
-  return [...groups.values()].filter(group=>group.options.length);
+  const populated=[...groups.values()].filter(group=>group.options.length);
+  return {groups:populated,targets:new Map(populated.flatMap(({room,options})=>options.map(target=>[target.id,{...target,purposeLabel:purposeTargetName(target.label,room)}])))};
  }
  function purposeTargetName(label,room){
   if(!room)return label;
@@ -298,7 +300,7 @@ globalThis.FurnishElectricalUI=(()=>{
   if(label.startsWith(area)||sharedRoom&&/^(客厅|餐厅)/.test(label))return label;
   return area+(/[\u3400-\u9fff]$/.test(area)&&/^[\u3400-\u9fff]/.test(label)?'':' · ')+label;
  }
- function switchPurpose(keys,entries,targets){
+ function purposeRows(keys,entries,targets){
   return keys.flatMap(({key,label,gestures})=>gestures.flatMap(gesture=>{
    const actions=new Map();
    for(const entry of entries){
@@ -310,9 +312,96 @@ globalThis.FurnishElectricalUI=(()=>{
     actions.get(action).push(target?.purposeLabel||'设备待核对');
    }
    if(!actions.size)return [];
-   const summary=[...actions].map(([action,targets])=>`${action} ${targets.join('、')}`).join('；');
-   return `<div><dt>${esc(label)} · ${triggerNames[gesture]}</dt><dd>${esc(summary)}</dd></div>`;
-  })).join('');
+   return [{key,label,gesture,actions:[...actions].map(([action,names])=>({action,names}))}];
+  }));
+ }
+ const describeActions=row=>row.actions.map(({action,names})=>`${action} ${names.join('、')}`).join('；');
+ const switchFinish=f=>/^#(?:[a-f\d]{3}|[a-f\d]{6})$/i.test(f.color)?f.color:'#f5f5f2';
+ function previewActions(f,key,gesture,entries,targets){
+  if(previewOwner!==state){previewOwner=state;previewStates=new Map();}
+  const actions=entries.filter(entry=>entry.key===key&&entry.gesture===gesture);
+  const lamps=FurnishDesign.sceneSettings(state.scene3d).lamps;
+  return E.testPanelActions(f,key,gesture,state,previewStates,lamps,actions).map(({targetId,status,value,command})=>{
+   const name=targets.get(targetId)?.label||'设备';
+   const outcome=command?curtainCommands[command]:status==='unavailable'?'待核对':status==='light'?(value?'已开灯':'已关灯'):(value?'已打开':'已关闭');
+   return name+' · '+outcome;
+  }).join('　');
+ }
+ let sceneSwitchHost=null,sceneSwitchView=null;
+ function sceneSwitchSelection(){
+  const ids=selIds();
+  if(!active()||!is3D()||ids.length!==1||FurnishWiringUI.active())return null;
+  const f=getF(ids[0]);
+  return FurnishProducts.panelKeys(f).length?f:null;
+ }
+ function hideSceneSwitch(){
+  if(sceneSwitchView)sceneSwitchView.dismissed=true;
+  if(sceneSwitchHost)sceneSwitchHost.hidden=true;
+ }
+ function createSceneSwitch(){
+  const host=document.createElement('section');
+  host.className='electrical-scene-switch';
+  host.setAttribute('aria-label','场景开关操作');
+  for(const event of ['pointerdown','click','dblclick','wheel'])host.addEventListener(event,e=>e.stopPropagation());
+  host.addEventListener('keydown',e=>{
+   e.stopPropagation();
+   if(e.key==='Escape'){e.preventDefault();hideSceneSwitch();$('#view3d canvas')?.focus({preventScroll:true});}
+  });
+  $('#view3d').append(host);
+  return host;
+ }
+ function placeSceneSwitch(host,{x,y,width,height,halfWidth,halfHeight}){
+  const w=host.offsetWidth,h=host.offsetHeight,margin=10,gap=10;
+  const sideGap=halfWidth+gap,verticalGap=halfHeight+gap;
+  let left=x+sideGap,top=y-20;
+  if(left+w>width-margin)left=x-w-sideGap;
+  if(left<margin){left=x-w/2;top=y>height/2?y-h-verticalGap:y+verticalGap;}
+  left=Math.max(margin,Math.min(width-w-margin,left));
+  top=Math.max(margin,Math.min(height-h-margin,top));
+  host.style.transform=`translate(${Math.round(left)}px, ${Math.round(top)}px)`;
+ }
+ function positionSceneSwitch(f,point){
+  if(!f)sceneSwitchView=null;
+  else if(sceneSwitchView?.work!==state||sceneSwitchView.id!==f.id)sceneSwitchView={work:state,id:f.id,key:0,dirty:true};
+  const view=sceneSwitchView;
+  if(!point||!view||view.dismissed){if(sceneSwitchHost)sceneSwitchHost.hidden=true;return;}
+  const host=sceneSwitchHost??=createSceneSwitch();
+  host.hidden=false;
+  view.point=point;
+  if(view.dirty||view.source!==f.panelActions||view.variant!==f.panelVariant){
+   view.dirty=false;view.source=f.panelActions;view.variant=f.panelVariant;
+   const keys=FurnishProducts.panelKeys(f),key=keys[view.key]||keys[0],{targets}=actionCatalog(),entries=f.panelActions||[];
+   const rows=purposeRows([key],entries,targets);
+   host.innerHTML=`<div class="electrical-scene-switch-header"><strong>${esc(`${point.label} · ${panelStyle(f).label}`)}</strong><button type="button" class="btn" data-scene-switch-close aria-label="收起按键浮层">×</button></div>
+    <div class="electrical-switch-face" role="group" aria-label="开关正面" style="--switch-face:${switchFinish(f)};--switch-keys:${keys.length}">${keys.map(item=>
+     `<button type="button" data-scene-switch-key="${item.key}" aria-pressed="${item.key===key.key}"><span>${esc(item.label)}</span></button>`).join('')}</div>
+    ${rows.length?rows.map(row=>`<div class="electrical-scene-switch-action"><div><b>${triggerNames[row.gesture]}</b><span>${esc(describeActions(row))}</span></div><button type="button" class="btn outline" data-scene-switch-test="${row.gesture}" aria-label="试按${triggerNames[row.gesture]}">试按</button></div>`).join(''):'<p class="muted">此键尚未配置</p>'}
+    <p class="muted" data-scene-switch-result role="status"></p><button type="button" class="btn outline" data-scene-switch-edit>${physicalLocked(f)?'查看配置':'编辑配置'}</button>`;
+   host.onclick=e=>{
+    const button=e.target.closest('button');
+    if(!button)return;
+    const {sceneSwitchKey,sceneSwitchTest}=button.dataset;
+    if(sceneSwitchKey!==undefined){
+     view.key=Number(sceneSwitchKey);view.dirty=true;
+     positionSceneSwitch(f,view.point);
+     host.querySelector('[aria-pressed="true"]')?.focus({preventScroll:true});
+    }else if(sceneSwitchTest){
+     const status=host.querySelector('[data-scene-switch-result]');
+     try{status.textContent=previewActions(f,key.key,sceneSwitchTest,entries,targets);}
+     catch(error){status.textContent=error.message;}
+     placeSceneSwitch(host,view.point);
+    }else if(button.hasAttribute('data-scene-switch-edit')){
+     const draft=draftFor(f);
+     draft.key=key.key;draft.triggers.set(key.key,rows[0]?.gesture??key.gestures[0]);
+     hideSceneSwitch();ui.panelScope='object';drawer('panel',true);renderPanel();
+     const fold=$('#panel [data-property-fold="electrical-actions"]');
+     if(fold){fold.open=true;fold.scrollIntoView({block:'nearest'});fold.querySelector('[aria-pressed="true"]')?.focus({preventScroll:true});}
+    }else if(button.hasAttribute('data-scene-switch-close')){
+     hideSceneSwitch();$('#view3d canvas')?.focus({preventScroll:true});
+    }
+   };
+  }
+  placeSceneSwitch(host,point);
  }
  function bindActions(p,f,locked){
   const host=p.querySelector('[data-panel-actions]');
@@ -320,12 +409,12 @@ globalThis.FurnishElectricalUI=(()=>{
   const purpose=p.querySelector('[data-switch-purpose]');
   if(previewOwner!==state){previewOwner=state;previewStates=new Map();}
   const draft=draftFor(f),entries=draft.entries,keys=FurnishProducts.panelKeys(f),disabled=locked?'disabled':'';
-  const finish=/^#(?:[a-f\d]{3}|[a-f\d]{6})$/i.test(f.color)?f.color:'#f5f5f2';
-  const ownRoom=E.roomFor(ROOMS,f.cx,f.cy),groups=actionTargetGroups(ownRoom);
-  const canLimit=ownRoom&&groups.length>1&&groups[0].room===ownRoom;
-  const targets=new Map(groups.flatMap(({room,options})=>options.map(target=>[target.id,{...target,purposeLabel:purposeTargetName(target.label,room)}])));
+  const finish=switchFinish(f),ownRoom=E.roomFor(ROOMS,f.cx,f.cy),catalog=actionCatalog();
+  const local=ownRoom&&catalog.groups.find(group=>group.room===ownRoom);
+  const groups=local?[local,...catalog.groups.filter(group=>group!==local)]:catalog.groups;
+  const canLimit=local&&groups.length>1,targets=catalog.targets;
   const updatePurpose=()=>{
-   const rows=switchPurpose(keys,entries,targets);
+   const rows=purposeRows(keys,entries,targets).map(row=>`<div><dt>${esc(row.label)} · ${triggerNames[row.gesture]}</dt><dd>${esc(describeActions(row))}</dd></div>`).join('');
    const pending=JSON.stringify(entries)!==JSON.stringify(f.panelActions||[]);
    const summary=(rows?`<dl>${rows}</dl>`:'<p class="muted">尚未配置按键用途</p>')+
     (pending?'<small class="muted">按键配置待应用</small>':'');
@@ -396,14 +485,7 @@ globalThis.FurnishElectricalUI=(()=>{
     }
     if(actionTest){
      const [key,gesture]=actionTest.split(':');
-     const actions=entries.filter(entry=>entry.key===Number(key)&&entry.gesture===gesture);
-     const lamps=FurnishDesign.sceneSettings(state.scene3d).lamps;
-     const results=E.testPanelActions(f,Number(key),gesture,state,previewStates,lamps,actions);
-     report(results.map(({targetId,status,value,command})=>{
-      const name=targets.get(targetId)?.label||'设备';
-      const outcome=command?curtainCommands[command]:status==='unavailable'?'待核对':status==='light'?(value?'已开灯':'已关灯'):(value?'已打开':'已关闭');
-      return name+' · '+outcome;
-     }).join('　'));
+     report(previewActions(f,Number(key),gesture,entries,targets));
      return;
     }
     if(btn.hasAttribute('data-actions-reset')){previewStates.clear();report('已重置模拟状态');return;}
@@ -517,5 +599,5 @@ globalThis.FurnishElectricalUI=(()=>{
   if(!repositoryBooting){refreshRelations();afterRender();if(active())renderPanel();}
  });
  document.addEventListener('keydown',e=>{if(active()&&e.key==='Escape'&&adding){adding=false;renderPanel();afterRender();}},true);
- return {active,blocked,physicalLocked,assertEditable,setMode,selection,selectionChanged,draw,refreshRelations,relatedIds,pairedOverlay,afterRender,pointer,panel,scopedRoom,visibleAt,updateCameraRoom,hiddenScenePanels};
+ return {active,blocked,physicalLocked,assertEditable,setMode,selection,selectionChanged,draw,refreshRelations,relatedIds,pairedOverlay,afterRender,pointer,panel,scopedRoom,visibleAt,updateCameraRoom,hiddenScenePanels,sceneSwitchSelection,positionSceneSwitch};
 })();

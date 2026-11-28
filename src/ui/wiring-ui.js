@@ -47,7 +47,7 @@ globalThis.FurnishWiringUI=(()=>{
    const box=E.boxKind(f),label=locations.get(f.id)?.number||(box==='power'?'强':box==='network'?'弱':null);
    if(!label||!FurnishElectricalUI.visibleAt(f.cx,f.cy)||!FurnishLayers.visible(state,'furniture:'+f.id))continue;
    const p=E.endpoint(f,plan,furniture);
-   if(Number.isFinite(p.z))markers.push({...p,label,kind:E.endpointKind(f)});
+   if(Number.isFinite(p.z))markers.push({...p,id:f.id,label,kind:E.endpointKind(f)});
   }
   return {paths,markers,conduitView};
  }
@@ -225,5 +225,5 @@ globalThis.FurnishWiringUI=(()=>{
  document.addEventListener('keydown',e=>{
   if(e.key==='Escape'&&active()&&current()&&$('#dlg').hidden){e.stopImmediatePropagation();draft=null;refresh();}
  },true);
- return {open,leave,draw,pointer,panel,sceneOverlay,colors};
+ return {active,open,leave,draw,pointer,panel,sceneOverlay,colors};
 })();

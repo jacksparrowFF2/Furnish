@@ -2014,6 +2014,7 @@ function syncReplacementFootprint(work){
 
 // 只重建变化的部分
 let electricalOrbitRoom=null;
+const electricalMarkers=new Map();
 function refreshElectricalRoom(){
   if(!FurnishElectricalUI.active())return false;
   const roomAtWorld=p=>FurnishElectrical.roomFor(ROOMS,p.x*1000+OX,p.z*1000+OY)?.id;
@@ -2030,10 +2031,12 @@ function syncElectrical(){
   if(key===electricalKey)return;
   electricalKey=key;
   clearAnnotations(electricalG);
+  electricalMarkers.clear();
   if(!overlay)return;
-  for(const {label,kind,x,y,z} of overlay.markers){
+  for(const {id,label,kind,x,y,z} of overlay.markers){
     const marker=annotationLabel(electricalG,label,wx(x),M(z),wz(y),'electrical-scene-marker');
     if(kind)marker.element.dataset.wireKind=kind;
+    electricalMarkers.set(id,{label,position:marker.position});
   }
   const world=({x,y,z})=>new THREE.Vector3(wx(x),M(z),wz(y));
   const up=new THREE.Vector3(0,1,0),part=new THREE.Object3D();
@@ -2063,6 +2066,24 @@ function syncElectrical(){
     bars.renderOrder=editing?61:60;
     electricalG.add(bars);
   }
+}
+
+function updateElectricalSwitch(){
+  const f=FurnishElectricalUI.sceneSwitchSelection(),marker=electricalMarkers.get(f?.id);
+  let point=null;
+  if(marker&&active&&opt.furn&&opt.mode==='orbit'&&!anim&&!fly&&!sceneMeasure?.active()){
+    const {position,label}=marker,angle=(f.rot||0)*Math.PI/180;
+    const front=-(camera.position.x-position.x)*Math.sin(angle)+(camera.position.z-position.z)*Math.cos(angle);
+    if(front>=-.005){
+      const at=position.clone().project(camera),width=SW(),height=SH();
+      if(Math.abs(at.x)<=1&&Math.abs(at.y)<=1&&Math.abs(at.z)<=1){
+        const side=position.clone().add(new THREE.Vector3(Math.cos(angle),0,Math.sin(angle)).multiplyScalar(M(f.w/2))).project(camera);
+        const top=position.clone().add(new THREE.Vector3(0,M(FurnishProducts.height(f)/2),0)).project(camera);
+        point={label,width,height,x:(at.x+1)*width/2,y:(1-at.y)*height/2,halfWidth:Math.abs(side.x-at.x)*width/2,halfHeight:Math.abs(top.y-at.y)*height/2};
+      }
+    }
+  }
+  FurnishElectricalUI.positionSceneSwitch(f,point);
 }
 
 // OBJ imports replace the vertex array as a unit. Keep its identity in the
@@ -3144,6 +3165,7 @@ function loop(){
   for(const o of wallLabelG.children)if(o.userData.wallTileLabel){const f=o.userData.wallTileLabel;o.visible=active&&opt.wallNumbers&&opt.mode==='orbit'&&!anim&&!stage.classList.contains('animating')&&(f.normal===0?camera.position.x-o.position.x:camera.position.z-o.position.z)*f.side>0;}
   applyObservationLayers();
   labelRenderer.render(scene, camera);
+  updateElectricalSwitch();
   fitSceneAnnotationLabels();
   selectionTransform?.update(!!ui.sceneMove&&active&&opt.furn&&!globalThis.FurnishMaterialUI?.active()&&!sceneMeasure?.active()&&!globalThis.FurnishTilePresetUI?.inspecting()&&opt.mode==='orbit'&&!anim);
   sceneMeasure?.update();

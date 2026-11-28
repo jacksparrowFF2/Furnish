@@ -98,6 +98,8 @@ async function main(){
 
   const controls=page.locator('[data-property-fold="electrical-actions"]');
   const switchPurpose=page.locator('[data-switch-purpose]');
+  const listPurpose=current.locator(`[data-electrical-id="${data.switchId}"] .electrical-row-purpose`);
+  const savedListPurpose=await listPurpose.textContent();
   assert.equal(await page.locator('#electrical-form').getByText('原用途说明',{exact:true}).count(),0);
   const switchStyle=await page.locator('#electrical-form select[name="variant"] option:checked').textContent();
   assert((await page.locator('#electrical-form h2').textContent()).endsWith(switchStyle));
@@ -162,6 +164,7 @@ async function main(){
   assert.match(await doublePurpose.locator('dd').textContent(),/^开灯 /);
   assert((await doublePurpose.locator('dd').textContent()).includes(lampLabel));
   assert.equal(await switchPurpose.getByText('按键配置待应用').count(),1);
+  assert.equal(await listPurpose.textContent(),savedListPurpose);
   await controls.locator('[data-action-test="1:double"]').click();
   assert((await result.textContent()).split('　').includes(`${lampLabel} · 已开灯`));
   const checkCycle=hasCurtainPair&&!savedBefore.some(a=>a.key===1&&a.gesture==='press');
@@ -198,6 +201,7 @@ async function main(){
   assert.equal(await controls.locator('[data-action-key="1"]').getAttribute('aria-pressed'),'true');
   assert.equal(await switchPurpose.getByText('按键配置待应用').count(),0);
   assert((await doublePurpose.locator('dd').textContent()).includes(lampLabel));
+  assert((await listPurpose.getAttribute('title')).includes(lampLabel));
   await switchPurpose.scrollIntoViewIfNeeded();
   await page.screenshot({path:path.join(job.dir,'switch-purpose.png')});
   await page.evaluate(()=>undo());
@@ -262,6 +266,7 @@ async function main(){
     assert.match(await switchPurpose.textContent(),/切换 客厅灯带/);
     if(key===2){
      assert.deepEqual(await switchPurpose.locator('dd').allTextContents(),['切换 走廊吸顶灯','切换 客厅吸顶灯','切换 客厅灯带']);
+     assert.equal(await page.locator(`#electrical-inline-rows [data-electrical-id="${id}"] .electrical-row-purpose`).textContent(),'走廊吸顶灯 · 客厅吸顶灯 · 客厅灯带');
      await switchPurpose.scrollIntoViewIfNeeded();
      await page.screenshot({path:path.join(job.dir,'ceiling-strip-purpose.png')});
     }
@@ -273,6 +278,35 @@ async function main(){
     await controls.locator(`[data-action-test="${entry[1]}:press"]`).click();
     assert.equal(await result.textContent(),`客厅灯带 · ${(i?lamps:!lamps)?'已开灯':'已关灯'}`);
    }
+   const id=stripSwitches[0][0],floating=page.getByRole('region',{name:'场景开关操作'});
+   await page.evaluate(async id=>{
+    await setView('3d');
+    const f=getF(id),target=FurnishElectrical.endpoint(f,canvasEffectivePlan(),state.furniture);
+    const a=f.rot*Math.PI/180;
+    await View3D.automationCamera({mode:'orbit',position:{x:target.x-1700*Math.sin(a),y:target.y+1700*Math.cos(a),z:target.z+180},target:{x:target.x,y:target.y,z:target.z}});
+    selectIds([id]);
+   },id);
+   await floating.waitFor({state:'visible'});
+   assert.deepEqual(await floating.locator('[data-scene-switch-key]').allTextContents(),['左键','中键','右键']);
+   await floating.getByRole('button',{name:'右键'}).click();
+   assert.match(await floating.textContent(),/切换 客厅灯带/);
+   await floating.getByRole('button',{name:'试按单击'}).click();
+   assert.equal(await floating.getByRole('status').textContent(),`客厅灯带 · ${lamps?'已关灯':'已开灯'}`);
+   const [card,viewport]=await Promise.all([floating.boundingBox(),page.locator('#view3d').boundingBox()]);
+   assert(card.x>=viewport.x&&card.y>=viewport.y&&card.x+card.width<=viewport.x+viewport.width&&card.y+card.height<=viewport.y+viewport.height);
+   await page.screenshot({path:path.join(job.dir,'scene-switch.png')});
+   await floating.getByRole('button',{name:'编辑配置'}).click();
+   await floating.waitFor({state:'hidden'});
+   assert.equal(await controls.locator('[data-action-key="2"]').getAttribute('aria-pressed'),'true');
+   await controls.locator('[data-action-test="2:press"]').click();
+   assert.equal(await result.textContent(),`客厅灯带 · ${lamps?'已开灯':'已关灯'}`);
+   await page.evaluate(()=>select(null));
+   await page.waitForFunction(()=>!selIds().length);
+   await page.evaluate(id=>selectIds([id]),id);
+   await floating.waitFor({state:'visible'});
+   await page.evaluate(()=>select(null));
+   await floating.waitFor({state:'hidden'});
+   await page.evaluate(async()=>{await setView('2d');});
   }
   const gapFixture=await page.evaluate(()=>{
    const E=FurnishElectrical,plan=canvasEffectivePlan();
@@ -335,6 +369,7 @@ async function main(){
   await socketPurpose.fill('电脑机箱');
   await properties.getByRole('button',{name:'应用面板属性'}).click();
   assert((await properties.locator('h2').textContent()).endsWith('10A斜五孔'));
+  assert.equal(await page.locator(`#electrical-inline-rows [data-electrical-id="${gapFixture.ids[1]}"] .electrical-row-purpose`).textContent(),'电脑机箱');
   await page.evaluate(async()=>{
    await FurnishRepository.flush();
    if(repositoryClient.status.mode!=='saved')throw Error(repositoryClient.status.message);
@@ -353,7 +388,7 @@ async function main(){
   }
   assert.deepEqual(errors,[]);
   passed=true;
-  console.log(JSON.stringify({passed,run:job.dir,checks:['room filtering in 2D, 3D and walk','independent collapse','whole-plan export','concise device labels and cross-room bindings','switch preview, undo/redo and reload','separate style, live switch purpose and saved socket purpose','50 mm threshold and 4 mm saved panel spacing',...(data.livingStrip?['existing ceiling strip shared by two switches']:[]),...(checkCycle?['two-curtain open/stop/close cycle']:[])]}));
+  console.log(JSON.stringify({passed,run:job.dir,checks:['room filtering in 2D, 3D and walk','independent collapse','whole-plan export','concise device labels and cross-room bindings','switch preview, undo/redo and reload','separate style, live switch purpose and saved socket purpose','50 mm threshold and 4 mm saved panel spacing','saved purpose shared by list and properties',...(data.livingStrip?['existing ceiling strip shared by two switches','3D switch overlay and property editor share preview']:[]),...(checkCycle?['two-curtain open/stop/close cycle']:[])]}));
  }finally{
   if(app){
    if(!passed)await app.evaluate(({app})=>app.exit()).catch(()=>{});
