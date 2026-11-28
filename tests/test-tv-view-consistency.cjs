@@ -9,8 +9,9 @@ const R=require('../src/core/product-rules.js'),SVG=require('../src/render/furni
  vm.runInContext(html.slice(html.indexOf('const primitives ='),html.indexOf('/* ======================= 建筑')),ctx);
  const near=(a,b)=>assert(Math.abs(a-b)<2e-6,`${a} versus ${b}`);
  const entries=require('../src/data/catalog.js').library.flatMap(c=>c.items).filter(i=>i[0]==='tv');
- for(const e of [...entries,['tv','自定义尺寸',1800,160,'#222']])for(const rot of [0,37,90,180,270])for(const flip of [false,true]){
-  const f={id:'tv',type:'tv',name:e[1],w:e[2],d:e[3],color:e[4],cx:0,cy:0,rot,flip},before=JSON.stringify(f);ctx.f=f;
+ for(const e of [...entries,['tv','自定义深度',1800,160,'#222'],['tv','客厅电视',1447,56,'#222',832,684],['tv','显式高度，无安装覆盖',1447,56,'#222',832],['tv','极小机身',100,10,'#222',10,0]])for(const rot of [0,37,90,180,270])for(const flip of [false,true]){
+  const [type,name,w,d,color,h,mountHeight]=e;
+  const f={id:'tv',type,name,w,d,color,cx:0,cy:0,rot,flip,...(h===undefined?{}:{h}),...(mountHeight===undefined?{}:{mountHeight})},before=JSON.stringify(f);ctx.f=f;
   const o=vm.runInContext('buildFurniture(f)',ctx),bounds=new T.Box3().setFromObject(o),vertical=R.vertical(f);
   near(bounds.min.y,vertical.bottom/1000);near(bounds.max.y,vertical.top/1000);near(o.rotation.y,-rot*Math.PI/180);assert.equal(o.scale.x,flip?-1:1);
   // SVG part rectangles and actual production mesh projections have identical local extents.
@@ -20,7 +21,12 @@ const R=require('../src/core/product-rules.js'),SVG=require('../src/render/furni
   rects.forEach((r,i)=>{const b=new T.Box3().setFromObject(o.children[i]);near(b.min.x,Number(r.x)/1000);near(b.max.x,(Number(r.x)+Number(r.width))/1000);near(b.min.z,Number(r.y)/1000);near(b.max.z,(Number(r.y)+Number(r.height)+(i===1?-Math.min(2,f.d*.04):0))/1000);});
   const panel=new T.Box3().setFromObject(o.children[1]),rear=new T.Box3().setFromObject(o.children[0]),glass=new T.Box3().setFromObject(o.children[2]);
   near(rear.min.z,-f.d/2000);near(rear.max.z,panel.min.z);near(glass.max.z,f.d/2000);assert(glass.min.z>=panel.max.z-2e-6);
+  const size=new T.Box3().setFromObject(o).getSize(new T.Vector3());
+  const bodyHeight=h??w*9/16, bottom=mountHeight??1200-bodyHeight/2;
+  near(size.x,w/1000);near(size.y,bodyHeight/1000);near(size.z,d/1000);
+  near(panel.min.y,bottom/1000);
+  near(glass.getCenter(new T.Vector3()).y,(bottom+bodyHeight/2+(h===undefined?3:0))/1000);
   assert.equal(JSON.stringify(f),before);
  }
- console.log('PASS TV: all catalog sizes, custom depth, production/SVG part alignment, rotation/mirror, vertical envelope, unchanged inputs');
+ console.log('PASS TV: legacy and recorded sizes, mounted screen center, production/SVG alignment, rotation/mirror, vertical envelope, unchanged inputs');
 })().catch(e=>{console.error(e);process.exitCode=1;});
