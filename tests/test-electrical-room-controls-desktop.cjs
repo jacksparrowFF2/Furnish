@@ -96,6 +96,11 @@ async function main(){
   await current.locator(`[data-electrical-id="${data.switchId}"]`).click();
 
   const controls=page.locator('[data-property-fold="electrical-actions"]');
+  const switchPurpose=page.locator('[data-switch-purpose]');
+  const switchStyle=await page.locator('#electrical-form select[name="variant"] option:checked').textContent();
+  assert((await page.locator('#electrical-form h2').textContent()).endsWith(switchStyle));
+  assert.equal(await page.locator('#electrical-form input[name="purpose"]').count(),0);
+  const originalPurpose=await switchPurpose.textContent();
   assert.equal(await controls.evaluate(el=>el.open),true);
   await controls.locator('summary').click();
   assert.equal(await controls.evaluate(el=>el.open),false);
@@ -151,6 +156,9 @@ async function main(){
   assert.equal(await controls.locator('[data-action-gesture]').inputValue(),'double');
   assert.equal(await controls.locator('[data-action-target]').last().inputValue(),data.lamp);
   const lampLabel=await target.locator('option:checked').textContent();
+  const doublePurpose=switchPurpose.locator('dl > div').filter({has:page.getByText('中键 · 双击',{exact:true})});
+  assert((await doublePurpose.locator('dd').textContent()).includes(`开灯 ${lampLabel}`));
+  assert.equal(await switchPurpose.getByText('按键配置待应用').count(),1);
   await controls.locator('[data-action-test="1:double"]').click();
   assert((await result.textContent()).split('　').includes(`${lampLabel} · 已开灯`));
   const checkCycle=hasCurtainPair&&!savedBefore.some(a=>a.key===1&&a.gesture==='press');
@@ -185,8 +193,13 @@ async function main(){
   assert(stored.some(a=>a.key===1&&a.gesture==='double'&&a.targetId===data.lamp&&a.action==='on'));
   if(checkCycle)assert.deepEqual(stored.filter(a=>a.key===1&&a.gesture==='press').map(a=>[a.targetId,a.action]),curtainIds.map(id=>[id,'cycle']));
   assert.equal(await controls.locator('[data-action-key="1"]').getAttribute('aria-pressed'),'true');
+  assert.equal(await switchPurpose.getByText('按键配置待应用').count(),0);
+  assert((await doublePurpose.locator('dd').textContent()).includes(`开灯 ${lampLabel}`));
+  await switchPurpose.scrollIntoViewIfNeeded();
+  await page.screenshot({path:path.join(job.dir,'switch-purpose.png')});
   await page.evaluate(()=>undo());
   assert.deepEqual(await page.evaluate(id=>getF(id).panelActions??null,data.switchId),savedBefore);
+  assert.equal(await switchPurpose.textContent(),originalPurpose);
   await page.evaluate(()=>redo());
   assert.deepEqual(await page.evaluate(id=>getF(id).panelActions,data.switchId),stored);
   await page.evaluate(async()=>{
@@ -225,7 +238,7 @@ async function main(){
   await page.evaluate(async()=>{await setView('2d');});
   const gapFixture=await page.evaluate(()=>{
    const E=FurnishElectrical,plan=canvasEffectivePlan();
-   const plate={id:uid(),name:'间距验收点位',type:'panel_bull_g12',panelVariant:'socket5-diagonal',w:86,d:10,h:86,cx:0,cy:0,rot:0,color:'#f5f5f2',mountHeight:1734};
+   const plate={id:uid(),name:'E999 · 间距验收点位',type:'panel_bull_g12',panelVariant:'socket5-diagonal',w:86,d:10,h:86,cx:0,cy:0,rot:0,color:'#f5f5f2',mountHeight:1734};
    const face=E.surfaces(plan,state,plate).find(s=>{
     if(s.kind!=='wall'||s.length<440)return false;
     const a=E.place(plate,s,s.length/2-70),b=E.place(plate,s,s.length/2+66);
@@ -274,6 +287,16 @@ async function main(){
   }finally{await page.keyboard.up('Alt');}
   await assertGap(4);
   await page.screenshot({path:path.join(job.dir,'panel-spacing.png')});
+  const socketPurpose=properties.getByLabel('用途',{exact:true});
+  assert.equal(await socketPurpose.inputValue(),'间距验收点位');
+  assert((await properties.locator('h2').textContent()).endsWith('10A斜五孔'));
+  await socketPurpose.fill('');
+  await properties.getByRole('button',{name:'应用面板属性'}).click();
+  assert.equal(await socketPurpose.inputValue(),'');
+  assert.equal(await page.evaluate(id=>getF(id).name,gapFixture.ids[1]),'E999 · 10A斜五孔');
+  await socketPurpose.fill('电脑机箱');
+  await properties.getByRole('button',{name:'应用面板属性'}).click();
+  assert((await properties.locator('h2').textContent()).endsWith('10A斜五孔'));
   await page.evaluate(async()=>{
    await FurnishRepository.flush();
    if(repositoryClient.status.mode!=='saved')throw Error(repositoryClient.status.message);
@@ -281,9 +304,12 @@ async function main(){
   await page.reload();
   await page.locator('#repository-loading').waitFor({state:'hidden'});
   await assertGap(4);
+  await page.evaluate(id=>selectIds([id]),gapFixture.ids[1]);
+  assert.equal(await socketPurpose.inputValue(),'电脑机箱');
+  assert.equal(await page.evaluate(id=>getF(id).name,gapFixture.ids[1]),'E999 · 电脑机箱');
   assert.deepEqual(errors,[]);
   passed=true;
-  console.log(JSON.stringify({passed,run:job.dir,checks:['room filtering in 2D, 3D and walk','independent collapse','whole-plan export','concise device labels and cross-room bindings','switch preview, undo/redo and reload','50 mm threshold and 4 mm saved panel spacing',...(checkCycle?['two-curtain open/stop/close cycle']:[])]}));
+  console.log(JSON.stringify({passed,run:job.dir,checks:['room filtering in 2D, 3D and walk','independent collapse','whole-plan export','concise device labels and cross-room bindings','switch preview, undo/redo and reload','separate style, live switch purpose and saved socket purpose','50 mm threshold and 4 mm saved panel spacing',...(checkCycle?['two-curtain open/stop/close cycle']:[])]}));
  }finally{
   if(app){
    if(!passed)await app.evaluate(({app})=>app.exit()).catch(()=>{});

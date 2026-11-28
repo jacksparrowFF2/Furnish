@@ -292,15 +292,39 @@ globalThis.FurnishElectricalUI=(()=>{
   }
   return [...groups.values()].filter(group=>group.options.length);
  }
+ function switchPurpose(keys,entries,targetLabels){
+  return keys.flatMap(({key,label,gestures})=>gestures.flatMap(gesture=>{
+   const actions=new Map();
+   for(const entry of entries){
+    if(entry.key!==key||entry.gesture!==gesture||!entry.targetId)continue;
+    const target=targetLabels.get(entry.targetId);
+    const action=target&&!FurnishProducts.panelTargetActions(getF(entry.targetId)).includes(entry.action)
+     ?'动作待核对':actionNames[entry.action];
+    if(!actions.has(action))actions.set(action,[]);
+    actions.get(action).push(target||'设备待核对');
+   }
+   if(!actions.size)return [];
+   const summary=[...actions].map(([action,targets])=>`${action} ${targets.join('、')}`).join('；');
+   return `<div><dt>${esc(label)} · ${triggerNames[gesture]}</dt><dd>${esc(summary)}</dd></div>`;
+  })).join('');
+ }
  function bindActions(p,f,locked){
   const host=p.querySelector('[data-panel-actions]');
   if(!host)return;
+  const purpose=p.querySelector('[data-switch-purpose]');
   if(previewOwner!==state){previewOwner=state;previewStates=new Map();}
   const draft=draftFor(f),entries=draft.entries,keys=FurnishProducts.panelKeys(f),disabled=locked?'disabled':'';
   const finish=/^#(?:[a-f\d]{3}|[a-f\d]{6})$/i.test(f.color)?f.color:'#f5f5f2';
   const ownRoom=E.roomFor(ROOMS,f.cx,f.cy),groups=actionTargetGroups(ownRoom);
   const canLimit=ownRoom&&groups.length>1&&groups[0].room===ownRoom;
   const targetLabels=new Map(groups.flatMap(group=>group.options.map(({id,label})=>[id,label])));
+  const updatePurpose=()=>{
+   const rows=switchPurpose(keys,entries,targetLabels);
+   const pending=JSON.stringify(entries)!==JSON.stringify(f.panelActions||[]);
+   const summary=(rows?`<dl>${rows}</dl>`:'<p class="muted">尚未配置按键用途</p>')+
+    (pending?'<small class="muted">按键配置待应用</small>':'');
+   if(purpose.innerHTML!==summary)purpose.innerHTML=summary;
+  };
   const targetOptions=selected=>{
    const missing=selected&&!targetLabels.has(selected);
    return `<option value="">请选择设备</option>${missing?`<option value="${esc(selected)}" selected>设备待核对</option>`:''}`+
@@ -312,6 +336,7 @@ globalThis.FurnishElectricalUI=(()=>{
   };
   const report=message=>{host.querySelector('[data-action-result]').textContent=message;};
   const render=()=>{
+   updatePurpose();
    const {key,gestures}=keys[draft.key]||keys[0];
    const savedTrigger=draft.triggers.get(key);
    const gesture=gestures.includes(savedTrigger)?savedTrigger:gestures[0];
@@ -350,6 +375,7 @@ globalThis.FurnishElectricalUI=(()=>{
     if(!FurnishProducts.panelTargetActions(getF(entry.targetId)).includes(entry.action))entry.action='toggle';
     row.querySelector('[data-action-verb]').innerHTML=actionOptions(entry.targetId,entry.action);
    }else if(e.target.matches('[data-action-verb]'))entry.action=e.target.value;
+   updatePurpose();
   };
   host.onclick=e=>{
    const btn=e.target.closest('button');
@@ -420,13 +446,22 @@ globalThis.FurnishElectricalUI=(()=>{
   p.querySelector('#electrical-3d').onclick=()=>{setView('3d');if(poseHost)window.View3D?.flyToRoom(roomAt(getF(poseHost).cx,getF(poseHost).cy)?.id);};
   if(f){bindEditor(p,f,report);bindActions(p,f,locked);}return true;
  }
+ function panelStyle(f){return FurnishProducts.panelSpec(f)||FurnishProducts.definition(f).trackSocket;}
+ function recordedPurpose(f){
+  const style=panelStyle(f),value=E.pointName(f.name);
+  const defaultNames=[style.label,style.listLabel,FurnishProducts.kind(f),libItem(f)?.[1]];
+  return defaultNames.includes(value)?'':value;
+ }
  function editor(f,r,locked){
   const dis=locked?'disabled':'',options=Object.entries(FurnishProducts.panelOptions),surfaces=geometry();
-  const variantField=FurnishProducts.supports(f,'panelVariant')?`<label class="full">面板款式<select name="variant" ${dis}>${[...new Set(options.map(([,v])=>v.group))].map(group=>`<optgroup label="${esc(group)}">${options.filter(([,v])=>v.group===group).map(([key,v])=>`<option value="${key}" ${FurnishProducts.value(f,'panelVariant')===key?'selected':''}>${esc(v.label)}</option>`).join('')}</optgroup>`).join('')}</select></label>`:'';
+  const variantField=FurnishProducts.supports(f,'panelVariant')?`<label class="full">名称（款式）<select name="variant" ${dis}>${[...new Set(options.map(([,v])=>v.group))].map(group=>`<optgroup label="${esc(group)}">${options.filter(([,v])=>v.group===group).map(([key,v])=>`<option value="${key}" ${FurnishProducts.value(f,'panelVariant')===key?'selected':''}>${esc(v.label)}</option>`).join('')}</optgroup>`).join('')}</select></label>`:'';
+  const note=recordedPurpose(f),switchKeys=FurnishProducts.panelKeys(f);
+  const usage=switchKeys.length?`<section class="electrical-switch-purpose"><h3>用途</h3><div data-switch-purpose aria-live="polite"></div>${note?`<details data-property-fold="electrical-legacy-purpose"><summary>原用途说明</summary><p>${esc(note)}</p></details>`:''}</section>`
+   :`<div class="form"><label class="full">用途<input name="purpose" maxlength="160" value="${esc(note)}" ${dis}></label></div>`;
   return `<form id="electrical-form">
-    ${propertyObjectHeader(r.variant.label,`${r.number} · ${E.pointName(r.name)||r.variant.label}`,{meta:locked?'<p class="property-lock">已锁定</p>':''})}
+    ${propertyObjectHeader('',`${r.number} · ${r.variant.label}`,{meta:locked?'<p class="property-lock">已锁定</p>':''})}
     ${furniturePriceField(f,locked)}
-    <h3>名称与款式</h3><div class="form"><label class="full">用途／名称<input name="name" maxlength="160" value="${esc(E.pointName(r.name)||r.variant.label)}" ${dis}></label>${variantField}${panelColorSelect(f,'name="panelColor"',dis)}</div>
+    <div class="form">${variantField}${panelColorSelect(f,'name="panelColor"',dis)}</div>${usage}
     <h3>安装高度</h3>${propertyMetrics([['完成面底高',height(r.finishedBottom),r.finishedBottom===null?'':'mm'],['完成面中心高',height(r.finishedCenter),r.finishedCenter===null?'':'mm']])}
     <div class="form"><label class="full">底部离地 · 方案基准 (mm)<input name="bottom" type="number" min="0" max="20000" step="any" value="${r.bottom}" ${dis}></label></div><h3>位置与朝向</h3><div class="form"><label>中心 X (mm)<input name="cx" type="number" step="any" value="${f.cx}" ${dis}></label><label>中心 Y (mm)<input name="cy" type="number" step="any" value="${f.cy}" ${dis}></label><label>朝向 (°)<input name="rot" type="number" step="any" value="${f.rot}" ${dis}></label></div><div class="actions"><button class="btn primary" type="submit" ${dis}>应用面板属性</button></div></form>${actionEditor(f)}<details class="property-fold" data-property-fold="electrical-surface"><summary>贴墙／柜体侧面定位</summary><p class="muted">先应用高度，再选择该高度实际存在的板面。起点距离按面板中心计；放置后可继续独立调整。</p><label>安装面<select id="electrical-surface" ${dis}><option value="">请选择安装面</option>${surfaces.map((s,i)=>`<option value="${esc(s.key)}">${esc(s.label)} · 面${i+1} · ${Number(s.length.toFixed(1))} mm</option>`).join('')}</select></label><label>沿面中心距起点 mm<input id="electrical-offset" type="number" step="any" ${dis}></label><p id="electrical-surface-info" class="muted"></p><button class="btn" id="electrical-place" ${dis}>贴此面放置</button></details><div class="actions"><button class="btn" data-act="dup" ${dis}>复制面板</button><button class="btn danger" data-act="del" ${dis}>删除面板</button></div>`;
  }
@@ -444,14 +479,17 @@ globalThis.FurnishElectricalUI=(()=>{
      if(!String(value).trim()||!Number.isFinite(Number(value)))throw Error('请输入有效数值');
      return Number(value);
     };
-    const name=E.renamePoint(current.name,data.get('name'));
     const next=variant===null?{...current}:FurnishProducts.editPanelVariant(current,variant);
+    const purpose=data.get('purpose');
+    if(purpose!==null){
+     const input=E.pointName(purpose);
+     if(input||recordedPurpose(current)||next.panelVariant!==current.panelVariant)next.name=E.renamePoint(current.name,input||panelStyle(next).label);
+    }
     if(price.value!==displayedPrice)setFurniturePrice(next,readFurniturePrice(price));
     const color=data.get('panelColor');
     if(FurnishProducts.panelColorPresets(next).some(([hex])=>hex===color))next.color=color;
-    Object.assign(next,{name,cx:number('cx'),cy:number('cy'),rot:norm(number('rot')),mountHeight:FurnishProducts.validateField(current,'mountHeight',number('bottom'))});
+    Object.assign(next,{cx:number('cx'),cy:number('cy'),rot:norm(number('rot')),mountHeight:FurnishProducts.validateField(current,'mountHeight',number('bottom'))});
     mutate(()=>FurnishProducts.applyPanelEdit(current,next));
-    form.elements.namedItem('name').value=E.pointName(name);
    });
   };
   const input=p.querySelector('#electrical-surface'),offset=p.querySelector('#electrical-offset');input.onchange=()=>{const s=geometry().find(s=>s.key===input.value);if(!s)return;offset.value=String(Number((s.length/2).toFixed(2)));p.querySelector('#electrical-surface-info').textContent=`起点 (${s.a.map(v=>Number(v.toFixed(1))).join(', ')}) → 终点 (${s.b.map(v=>Number(v.toFixed(1))).join(', ')})；中心距起点 ${f.w/2}～${Number((s.length-f.w/2).toFixed(1))} mm`;};
