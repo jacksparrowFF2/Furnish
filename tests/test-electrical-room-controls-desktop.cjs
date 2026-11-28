@@ -442,18 +442,23 @@ async function main(){
   const pose=()=>page.evaluate(id=>{const f=getF(id);return [f.id,f.name,f.cx,f.cy,f.rot,f.mountHeight];},gapFixture.ids[1]);
   const beforeReplacement=await pose();
   await properties.getByRole('button',{name:'原位替换'}).click();
+  const choices=page.locator('#electrical-replacement-kind');
+  assert.equal(await choices.locator('option[value="socket16"]').textContent(),'3孔插座（16A）');
+  assert.equal(await choices.locator('option[value="socket16-switch"]').textContent(),'3孔插座带开关（16A）');
+  assert.equal(await choices.locator('option[value="switch1-single"]').textContent(),'单开开关（通断触点）');
+  assert.equal(await choices.locator('option[value="switch1-double"]').textContent(),'单开开关（转换触点）');
   await page.locator('#electrical-replacement-kind').selectOption('track_socket_bull_gb50k');
   assert(await page.getByRole('button',{name:'确认替换'}).isDisabled());
   await page.locator('#electrical-replacement-kind').selectOption('socket4');
   await page.screenshot({path:path.join(job.dir,'panel-replacement.png')});
   await page.getByRole('button',{name:'确认替换'}).click();
-  assert.equal(await properties.locator('[data-electrical-style]').textContent(),'二位二极连体');
+  assert.equal(await properties.locator('[data-electrical-style]').textContent(),'双2孔插座');
   assert.deepEqual(await pose(),beforeReplacement);
   await assertGap(4);
   await page.evaluate(()=>undo());
   assert.equal(await properties.locator('[data-electrical-style]').textContent(),'10A斜五孔');
   await page.evaluate(()=>redo());
-  assert.equal(await properties.locator('[data-electrical-style]').textContent(),'二位二极连体');
+  assert.equal(await properties.locator('[data-electrical-style]').textContent(),'双2孔插座');
   await page.evaluate(async()=>{
    await FurnishRepository.flush();
    if(repositoryClient.status.mode!=='saved')throw Error(repositoryClient.status.message);
@@ -463,7 +468,7 @@ async function main(){
   await assertGap(4);
   await page.evaluate(id=>selectIds([id]),gapFixture.ids[1]);
   assert.equal(await socketPurpose.inputValue(),'电脑机箱');
-  assert.equal(await properties.locator('[data-electrical-style]').textContent(),'二位二极连体');
+  assert.equal(await properties.locator('[data-electrical-style]').textContent(),'双2孔插座');
   assert.equal(await page.evaluate(id=>getF(id).name,gapFixture.ids[1]),'E999 · 电脑机箱');
   if(data.livingStrip){
    for(const [id,key] of stripSwitches){

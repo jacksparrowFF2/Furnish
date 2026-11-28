@@ -133,11 +133,9 @@ globalThis.FurnishElectricalUI=(()=>{
    const model=r.variant.model?detail:series;
    const type=product.trackSocket?`${tr('轨道插座','Track socket')} · ${variantLabel}`
     :r.variant.requiresWiring===false?tr('无线开关','Wireless switch')
-    :r.variant.control==='smart'?tr('墙壁开关','Wall switch')
-    :r.variant.gangs?`${tr('开关','Switch')} · ${detail}`
-    :r.variant.group==='插座类'?`${tr('插座','Socket')} · ${detail}`:detail;
+    :r.variant.control==='smart'?tr('墙壁开关','Wall switch'):detail;
    const control=r.variant.control||product.trackSocket?.control,category=controlLabels[control];
-   const gangs=gangLabels[r.variant.gangs],amps=r.variant.ratedAmps;
+   const gangs=r.variant.mechanism?null:gangLabels[r.variant.gangs],amps=r.variant.ratedAmps;
    const tags=[
     category?`<span class="electrical-control" data-control="${control}">${tr(...category)}</span>`:'',
     gangs?`<span class="electrical-control">${tr(...gangs)}</span>`:'',
@@ -564,7 +562,7 @@ globalThis.FurnishElectricalUI=(()=>{
  function panelStyle(f){return FurnishProducts.panelSpec(f)||FurnishProducts.definition(f).trackSocket;}
  function recordedPurpose(f){
   const style=panelStyle(f),value=E.pointName(f.name);
-  const defaultNames=[style.label,style.listLabel,FurnishProducts.kind(f),libItem(f)?.[1]];
+  const defaultNames=[style.label,style.listLabel,style.legacyLabel,style.legacyListLabel,FurnishProducts.kind(f),libItem(f)?.[1]];
   return defaultNames.includes(value)?'':value;
  }
  function replacePanel(f){
@@ -580,7 +578,7 @@ globalThis.FurnishElectricalUI=(()=>{
   };
   if(wall)for(const [variant,style] of Object.entries(products.panelOptions)){
    if(f.type===wall[0]&&products.value(f,'panelVariant')===variant)continue;
-   add(variant,style.group,style.label,wall,variant);
+   add(variant,style.group,products.panelProductLabel(style),wall,variant);
   }
   for(const item of items){
    if(f.type===item[0]||!products.definition(item[0])?.trackSocket)continue;

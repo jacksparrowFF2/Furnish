@@ -57,10 +57,32 @@ const artGlassPatterns={
  mist:{label:'银霞',pitch:75,relief:.7,roughness:.12},
  diamond:{label:'钻石',pitch:80,relief:1.15,roughness:.075}
 };
-// G12 detail-page range; variants with identical fronts retain electrical labels.
+// Layout labels describe the face. Product selection also distinguishes the switch mechanism.
+const g12SwitchMechanisms=[
+ ['single','单极','通断触点'],['double','双控','转换触点'],['intermediate','中途掣','中途开关']
+];
 const panelVariants=Object.freeze(Object.fromEntries([
- ...[['1','一'],['2','二'],['3','三'],['4','四']].flatMap(([n,label])=>[['single','单极'],['double','双控'],...(Number(n)<=2?[['intermediate','中途掣']]:[])].map(([mode,text])=>['switch'+n+'-'+mode,{label:label+'位'+text,listLabel:text,group:'开关类',control:'conventional',gangs:Number(n)}])),
- ...[['socket5','二三极连体'],['socket5-wide','二三极宽体'],['socket16','一位三极（16A）',16,'一位三极'],['socket5-switch','二三极＋双控开关'],['socket16-switch','三极＋单极开关'],['socket4','二位二极连体'],['socket5-separated','二极＋三极分体'],['socket7','二位二极＋三极连体'],['socket5-3usb','二三极＋三位USB'],['socket5-ac','二三极＋二位USB（A+C）'],['socket5-diagonal','10A斜五孔',10,'斜五孔']].map(([id,label,ratedAmps,listLabel])=>[id,{label,group:'插座类',control:'conventional',...(ratedAmps?{ratedAmps,listLabel}:{})}]),
+ ...[['单','一'],['双','二'],['三','三'],['四','四']].flatMap(([count,legacyCount],i)=>
+  g12SwitchMechanisms.slice(0,i<2?3:2).map(([mode,legacyListLabel,mechanism])=>[
+   'switch'+(i+1)+'-'+mode,{label:count+'开开关',mechanism,legacyLabel:legacyCount+'位'+legacyListLabel,
+    legacyListLabel,group:'开关类',control:'conventional',gangs:i+1}
+  ])),
+ ...[
+  ['socket5','5孔插座','二三极连体',10],
+  ['socket5-wide','宽版5孔插座','二三极宽体'],
+  ['socket16','3孔插座','一位三极（16A）',16,'一位三极'],
+  ['socket5-switch','5孔插座带开关','二三极＋双控开关',10,undefined,'转换触点'],
+  ['socket16-switch','3孔插座带开关','三极＋单极开关',16],
+  ['socket4','双2孔插座','二位二极连体'],
+  ['socket5-separated','分体5孔插座','二极＋三极分体'],
+  ['socket7','双2孔＋3孔插座','二位二极＋三极连体'],
+  ['socket5-3usb','5孔插座带三口USB','二三极＋三位USB'],
+  ['socket5-ac','5孔插座带双口USB（A+C）','二三极＋二位USB（A+C）']
+ ].map(([id,name,legacyLabel,ratedAmps,legacyListLabel,mechanism])=>[id,{
+  label:ratedAmps?name+'（'+ratedAmps+'A）':name,listLabel:name,legacyLabel,legacyListLabel,mechanism,
+  group:'插座类',control:'conventional',ratedAmps
+ }]),
+ ['socket5-diagonal',{label:'10A斜五孔',listLabel:'斜五孔插座',legacyListLabel:'斜五孔',group:'插座类',control:'conventional',ratedAmps:10}],
  ...[['blank','白板'],['phone','一位电话'],['net5','一位电脑'],['net6','一位电脑（六类）'],['tv','一位电视'],['tv-push','插入式一分支电视'],['phone-net5','一位电话＋电脑'],['phone-net6','一位电话＋电脑（六类）'],['net5-double','二位电脑'],['net6-double','二位电脑（六类）'],['tv-net5','一位电脑＋电视'],['tv-net6','一位电脑＋电视（六类）']].map(([id,label])=>[id,{label,group:'信息类'}]),
  ...[['cable','出线孔'],['doorbell','一位带荧光门铃开关'],['bell','呼叫开关'],['nightlight','人体感应地脚灯']].map(([id,label])=>[id,{label,group:'电子类',...(id==='nightlight'?{control:'sensor'}:{})}])
 ]));
@@ -86,6 +108,7 @@ const g12Colors=Object.freeze([
  ['#f3ecd9','象牙白'],['#c9b58f','香槟金'],['#53565b','星空灰'],['#282a2d','皓钻黑']
 ].map(Object.freeze));
 function panelSpec(f){const key=value(f,'panelVariant');return panelOptions[key];}
+function panelProductLabel(spec){return spec.mechanism?spec.label+'（'+spec.mechanism+'）':spec.label;}
 const panelActions=Object.freeze({formatVersion:112,cycleFormatVersion:113,maxActions:48,gestures:Object.freeze(['press','double','hold']),actions:Object.freeze(['toggle','on','off','open','close','cycle']),lightActions:Object.freeze(['toggle','on','off'])});
 function panelKeys(f){
  const spec=f&&!f.obj&&panelSpec(f);
@@ -1181,6 +1204,6 @@ function coveLightLayout(f){
  const w=f.w,d=f.d,h=height(f),t=P.wall;if(![w,d,h].every(Number.isFinite)||w<100||d<25||h<P.minHeight)throw Error('反射灯槽至少100×25×20mm');
  return {w,d,h,t,base:value(f,'mountHeight'),innerWidth:w-2*t,stripWidth:P.stripWidth,emitterHeight:P.emitterHeight,emitterZ:0,level:value(f,'lightPreviewLevel')/100,color:P.colors[value(f,'lightKelvin')],candela:w/1000*P.previewCandelaPerM*value(f,'lightPreviewLevel')/100};
 }
-const api={curtainOpening,editCurtainOpening,coveringRetrofit,softCoveringOnly,dryingRackLayout,editDryingRackDrop,styleAppearance,styleRole,cabinetAppearance,coveLightLayout,panelVariants,panelOptions,xiaomiPanelVariants,panelSpec,panelColorPresets,panelSpatialKey,panelActions,panelKeys,panelActionTarget,panelTargetActions,editPanelVariant,applyPanelEdit,cabinetService,cabinetBuilder,inventoryArrayDefaults,inventoryArrayConfig,inventoryArraySpacing,arrayQuantityEdit,clearPaperArray,paperArrayConfig,paperArrayLayout,editPaperArray,cabinetDetail,cabinetTiers,cabinetDrawerBox,cabinetBackPanel,cabinetEntry,bottomMode,bottomHeight,editBottomHeight,elevationOriginal,elevationSource,elevationDelta,elevatedRange,elevatedParts,elevatedZones,circulatorLayout,catalogMinimum,artGlass,artGlassPatterns,gardenLayout,windowLining,stoolStack,cabinetDoorLimits,kind,kinds,matchesSearch,supportsAction,upgradeIdentity,wardrobeHanging,coveringLayout,coverSpecs,pocketLayout,cabinetSideClosure,cabinetTopClosure,cabinetConstruction,slidingGlass,slidingResizeFrame,resizeSliding,slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,tvHeight,cabinetSpec,cabinetBase,validateField,validate,modelError,planFurnitureInput,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
+const api={curtainOpening,editCurtainOpening,coveringRetrofit,softCoveringOnly,dryingRackLayout,editDryingRackDrop,styleAppearance,styleRole,cabinetAppearance,coveLightLayout,panelVariants,panelOptions,xiaomiPanelVariants,panelSpec,panelProductLabel,panelColorPresets,panelSpatialKey,panelActions,panelKeys,panelActionTarget,panelTargetActions,editPanelVariant,applyPanelEdit,cabinetService,cabinetBuilder,inventoryArrayDefaults,inventoryArrayConfig,inventoryArraySpacing,arrayQuantityEdit,clearPaperArray,paperArrayConfig,paperArrayLayout,editPaperArray,cabinetDetail,cabinetTiers,cabinetDrawerBox,cabinetBackPanel,cabinetEntry,bottomMode,bottomHeight,editBottomHeight,elevationOriginal,elevationSource,elevationDelta,elevatedRange,elevatedParts,elevatedZones,circulatorLayout,catalogMinimum,artGlass,artGlassPatterns,gardenLayout,windowLining,stoolStack,cabinetDoorLimits,kind,kinds,matchesSearch,supportsAction,upgradeIdentity,wardrobeHanging,coveringLayout,coverSpecs,pocketLayout,cabinetSideClosure,cabinetTopClosure,cabinetConstruction,slidingGlass,slidingResizeFrame,resizeSliding,slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,tvHeight,cabinetSpec,cabinetBase,validateField,validate,modelError,planFurnitureInput,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishProducts=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

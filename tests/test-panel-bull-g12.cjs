@@ -4,6 +4,15 @@ const P=require('../src/core/product-rules.js'),D=require('../src/core/design-co
 const base={id:'panel',name:'86面板',type:'panel_bull_g12',w:86,d:10,h:86,cx:0,cy:0,rot:0,color:'#f5f5f2',mountHeight:1200,panelVariant:'socket5-diagonal'};
 const near=(a,b)=>assert(Math.abs(a-b)<.025,`${a} != ${b}`),sha=file=>crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
 const keys=Object.keys(P.panelVariants);assert.equal(keys.length,37);assert.deepEqual(Object.keys(A.variants),keys);
+assert.equal(new Set(Object.values(P.panelVariants).map(P.panelProductLabel)).size,keys.length);
+assert.equal(P.panelVariants['switch1-single'].label,P.panelVariants['switch1-double'].label);
+for(const [key,label,amps] of [
+ ['socket4','双2孔插座',undefined],['socket16','3孔插座（16A）',16],
+ ['socket5-switch','5孔插座带开关（10A）',10],['socket16-switch','3孔插座带开关（16A）',16]
+]){
+ const spec=P.panelSpec({...base,panelVariant:key});
+ assert.equal(spec.label,label);assert.equal(spec.ratedAmps,amps);
+}
 const entry=require('../src/data/catalog.js').library.flatMap(c=>c.items).find(i=>i[0]===base.type);assert(entry);assert.equal(entry[3],10);assert.equal(entry[5],undefined);
 assert.equal(P.initial({type:base.type}).mountHeight,0);assert.equal(P.initial(base).panelVariant,'socket5-diagonal');assert.equal(P.catalogMinimum(base,'d'),2);
 assert.throws(()=>P.validate({...base,panelVariant:'bad'}));assert.throws(()=>P.validateField({type:'block'},'panelVariant','blank'));assert.throws(()=>P.validate({...base,mountHeight:-1}));
