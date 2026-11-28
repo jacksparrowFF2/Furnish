@@ -61,15 +61,16 @@ async function main(){
     return {position:{x:a[0],y:a[1],z:1600},target:{x:a[0]+500,y:a[1],z:1600}};
    };
    const doorPair=points.filter(r=>['fmwng69uh19','fmwnpyy8h2'].includes(r.id)).map(r=>r.number);
-   const roomOf=f=>FurnishElectrical.roomFor(ROOMS,f.cx,f.cy)?.id;
-   const targets=state.furniture.filter(FurnishProducts.panelActionTarget);
+   const roomOf=f=>f.room?.id;
+   const targets=FurnishElectrical.panelActionTargets(state,ROOMS);
    const ownTargets=targets.filter(f=>roomOf(f)===button.room.id).map(f=>f.id);
-   const lights=targets.filter(f=>FurnishProducts.panelActionTarget(f)==='light');
+   const lights=targets.filter(f=>f.kind==='light');
    const otherLights=lights.filter(f=>roomOf(f)!==button.room.id);
    const otherLamp=otherLights.find(f=>f.id==='fmvs5p45s1')||otherLights[0];
    return {switchId:button?.id,point:button?.number,room:button?.room?.id,other:peer?.room.id,otherPoint:peer?.number,doorPair,
     start:button&&camera(button.room),next:peer&&camera(peer.room),total:points.length,
-    lamp:(otherLamp||lights[0])?.id,otherLamp:otherLamp?.id,ownTargets,allTargets:targets.length};
+    lamp:(otherLamp||lights[0])?.id,otherLamp:otherLamp?.id,ownTargets,allTargets:targets.length,
+    livingStrip:['fmwng69uh9','fmwnp38p49'].every(id=>points.some(p=>p.id===id))?targets.find(t=>t.label==='客厅灯带')?.id:undefined};
   });
   assert(data.switchId&&data.other&&data.lamp,'fixture must contain a smart switch, a light and points in two rooms');
   if(data.doorPair.length===2){
@@ -97,6 +98,7 @@ async function main(){
 
   const controls=page.locator('[data-property-fold="electrical-actions"]');
   const switchPurpose=page.locator('[data-switch-purpose]');
+  assert.equal(await page.locator('#electrical-form').getByText('原用途说明',{exact:true}).count(),0);
   const switchStyle=await page.locator('#electrical-form select[name="variant"] option:checked').textContent();
   assert((await page.locator('#electrical-form h2').textContent()).endsWith(switchStyle));
   assert.equal(await page.locator('#electrical-form input[name="purpose"]').count(),0);
@@ -157,7 +159,8 @@ async function main(){
   assert.equal(await controls.locator('[data-action-target]').last().inputValue(),data.lamp);
   const lampLabel=await target.locator('option:checked').textContent();
   const doublePurpose=switchPurpose.locator('dl > div').filter({has:page.getByText('中键 · 双击',{exact:true})});
-  assert((await doublePurpose.locator('dd').textContent()).includes(`开灯 ${lampLabel}`));
+  assert.match(await doublePurpose.locator('dd').textContent(),/^开灯 /);
+  assert((await doublePurpose.locator('dd').textContent()).includes(lampLabel));
   assert.equal(await switchPurpose.getByText('按键配置待应用').count(),1);
   await controls.locator('[data-action-test="1:double"]').click();
   assert((await result.textContent()).split('　').includes(`${lampLabel} · 已开灯`));
@@ -194,7 +197,7 @@ async function main(){
   if(checkCycle)assert.deepEqual(stored.filter(a=>a.key===1&&a.gesture==='press').map(a=>[a.targetId,a.action]),curtainIds.map(id=>[id,'cycle']));
   assert.equal(await controls.locator('[data-action-key="1"]').getAttribute('aria-pressed'),'true');
   assert.equal(await switchPurpose.getByText('按键配置待应用').count(),0);
-  assert((await doublePurpose.locator('dd').textContent()).includes(`开灯 ${lampLabel}`));
+  assert((await doublePurpose.locator('dd').textContent()).includes(lampLabel));
   await switchPurpose.scrollIntoViewIfNeeded();
   await page.screenshot({path:path.join(job.dir,'switch-purpose.png')});
   await page.evaluate(()=>undo());
@@ -236,6 +239,41 @@ async function main(){
   await second.waitFor({state:'attached'});
 
   await page.evaluate(async()=>{await setView('2d');});
+  const stripSwitches=[['fmwng69uh9',2],['fmwnp38p49',0]];
+  const selectStripKey=async ([id,key])=>{
+   await page.evaluate(id=>selectIds([id]),id);
+   await controls.locator(`[data-action-key="${key}"]`).click();
+   await controls.locator('[data-action-gesture]').selectOption('press');
+  };
+  if(data.livingStrip){
+   for(const [id,key] of stripSwitches){
+    await selectStripKey([id,key]);
+    const panelActions=await page.evaluate(id=>getF(id).panelActions||[],id);
+    if(!panelActions.some(a=>a.key===key&&a.gesture==='press'&&a.targetId===data.livingStrip)){
+     await controls.locator(`[data-action-add="${key}:press"]`).click();
+     if(!data.livingStrip.startsWith('ceiling-light:'))throw Error('expected a ceiling component target');
+     const stripOption=target.locator(`option[value="${data.livingStrip}"]`);
+     if(!await stripOption.count())await otherTargets.check();
+     assert.equal(await stripOption.textContent(),'客厅灯带');
+     await target.selectOption(data.livingStrip);
+     assert.equal(await controls.locator('[data-action-verb]').last().inputValue(),'toggle');
+     await controls.locator('[data-actions-save]').click();
+    }
+    assert.match(await switchPurpose.textContent(),/切换 客厅灯带/);
+    if(key===2){
+     assert.deepEqual(await switchPurpose.locator('dd').allTextContents(),['切换 走廊吸顶灯','切换 客厅吸顶灯','切换 客厅灯带']);
+     await switchPurpose.scrollIntoViewIfNeeded();
+     await page.screenshot({path:path.join(job.dir,'ceiling-strip-purpose.png')});
+    }
+   }
+   const lamps=await page.evaluate(()=>FurnishDesign.sceneSettings(state.scene3d).lamps);
+   await controls.locator('[data-actions-reset]').click();
+   for(const [i,entry] of stripSwitches.entries()){
+    await selectStripKey(entry);
+    await controls.locator(`[data-action-test="${entry[1]}:press"]`).click();
+    assert.equal(await result.textContent(),`客厅灯带 · ${(i?lamps:!lamps)?'已开灯':'已关灯'}`);
+   }
+  }
   const gapFixture=await page.evaluate(()=>{
    const E=FurnishElectrical,plan=canvasEffectivePlan();
    const plate={id:uid(),name:'E999 · 间距验收点位',type:'panel_bull_g12',panelVariant:'socket5-diagonal',w:86,d:10,h:86,cx:0,cy:0,rot:0,color:'#f5f5f2',mountHeight:1734};
@@ -307,9 +345,15 @@ async function main(){
   await page.evaluate(id=>selectIds([id]),gapFixture.ids[1]);
   assert.equal(await socketPurpose.inputValue(),'电脑机箱');
   assert.equal(await page.evaluate(id=>getF(id).name,gapFixture.ids[1]),'E999 · 电脑机箱');
+  if(data.livingStrip){
+   for(const [id,key] of stripSwitches){
+    const actions=await page.evaluate(id=>getF(id).panelActions,id);
+    assert(actions.some(a=>a.key===key&&a.gesture==='press'&&a.action==='toggle'&&a.targetId===data.livingStrip));
+   }
+  }
   assert.deepEqual(errors,[]);
   passed=true;
-  console.log(JSON.stringify({passed,run:job.dir,checks:['room filtering in 2D, 3D and walk','independent collapse','whole-plan export','concise device labels and cross-room bindings','switch preview, undo/redo and reload','separate style, live switch purpose and saved socket purpose','50 mm threshold and 4 mm saved panel spacing',...(checkCycle?['two-curtain open/stop/close cycle']:[])]}));
+  console.log(JSON.stringify({passed,run:job.dir,checks:['room filtering in 2D, 3D and walk','independent collapse','whole-plan export','concise device labels and cross-room bindings','switch preview, undo/redo and reload','separate style, live switch purpose and saved socket purpose','50 mm threshold and 4 mm saved panel spacing',...(data.livingStrip?['existing ceiling strip shared by two switches']:[]),...(checkCycle?['two-curtain open/stop/close cycle']:[])]}));
  }finally{
   if(app){
    if(!passed)await app.evaluate(({app})=>app.exit()).catch(()=>{});

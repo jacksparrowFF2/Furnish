@@ -257,9 +257,8 @@ globalThis.FurnishElectricalUI=(()=>{
   }
   return actionsDraft;
  }
- function actionOptions(targetId,action){
-  const target=getF(targetId);
-  const options=FurnishProducts.panelTargetActions(target);
+ function actionOptions(target,action){
+  const options=target?.actions??[];
   const pending=options.length&&!options.includes(action)?`<option value="${action}" selected>动作待核对</option>`:'';
   return pending+(options.length?options:[action]).map(key=>`<option value="${key}" ${key===action?'selected':''}>${actionNames[key]}</option>`).join('');
  }
@@ -272,12 +271,12 @@ globalThis.FurnishElectricalUI=(()=>{
  function actionTargetGroups(current){
   const rooms=current?[current,...ROOMS.filter(room=>room!==current)]:ROOMS;
   const groups=new Map([...rooms,null].map(room=>[room?.id??null,{room,options:[]}]));
-  const targets=state.furniture.filter(FurnishProducts.panelActionTarget)
+  const targets=E.panelActionTargets(state,ROOMS)
    .sort((a,b)=>a.cy-b.cy||a.cx-b.cx||a.id.localeCompare(b.id));
   for(const target of targets){
-   const room=E.roomFor(ROOMS,target.cx,target.cy);
-   const label=E.actionTargetLabel(target,[room?.name,room&&state.rooms[room.id]?.name]);
-   groups.get(room?.id??null).options.push({id:target.id,label:nm(label),fullName:nm(target.name)});
+   const {room}=target;
+   const label=target.label??E.actionTargetLabel(target.source,[room?.name,room&&state.rooms[room.id]?.name]);
+   groups.get(room?.id??null).options.push({id:target.id,label:nm(label),fullName:nm(target.name),actions:target.actions});
   }
   for(const {options} of groups.values()){
    const counts=new Map(),next=new Map();
@@ -292,16 +291,23 @@ globalThis.FurnishElectricalUI=(()=>{
   }
   return [...groups.values()].filter(group=>group.options.length);
  }
- function switchPurpose(keys,entries,targetLabels){
+ function purposeTargetName(label,room){
+  if(!room)return label;
+  const area=roomName(room);
+  const sharedRoom=area==='客餐厅'||room.name==='客餐厅';
+  if(label.startsWith(area)||sharedRoom&&/^(客厅|餐厅)/.test(label))return label;
+  return area+(/[\u3400-\u9fff]$/.test(area)&&/^[\u3400-\u9fff]/.test(label)?'':' · ')+label;
+ }
+ function switchPurpose(keys,entries,targets){
   return keys.flatMap(({key,label,gestures})=>gestures.flatMap(gesture=>{
    const actions=new Map();
    for(const entry of entries){
     if(entry.key!==key||entry.gesture!==gesture||!entry.targetId)continue;
-    const target=targetLabels.get(entry.targetId);
-    const action=target&&!FurnishProducts.panelTargetActions(getF(entry.targetId)).includes(entry.action)
+    const target=targets.get(entry.targetId);
+    const action=target&&!target.actions.includes(entry.action)
      ?'动作待核对':actionNames[entry.action];
     if(!actions.has(action))actions.set(action,[]);
-    actions.get(action).push(target||'设备待核对');
+    actions.get(action).push(target?.purposeLabel||'设备待核对');
    }
    if(!actions.size)return [];
    const summary=[...actions].map(([action,targets])=>`${action} ${targets.join('、')}`).join('；');
@@ -317,16 +323,16 @@ globalThis.FurnishElectricalUI=(()=>{
   const finish=/^#(?:[a-f\d]{3}|[a-f\d]{6})$/i.test(f.color)?f.color:'#f5f5f2';
   const ownRoom=E.roomFor(ROOMS,f.cx,f.cy),groups=actionTargetGroups(ownRoom);
   const canLimit=ownRoom&&groups.length>1&&groups[0].room===ownRoom;
-  const targetLabels=new Map(groups.flatMap(group=>group.options.map(({id,label})=>[id,label])));
+  const targets=new Map(groups.flatMap(({room,options})=>options.map(target=>[target.id,{...target,purposeLabel:purposeTargetName(target.label,room)}])));
   const updatePurpose=()=>{
-   const rows=switchPurpose(keys,entries,targetLabels);
+   const rows=switchPurpose(keys,entries,targets);
    const pending=JSON.stringify(entries)!==JSON.stringify(f.panelActions||[]);
    const summary=(rows?`<dl>${rows}</dl>`:'<p class="muted">尚未配置按键用途</p>')+
     (pending?'<small class="muted">按键配置待应用</small>':'');
    if(purpose.innerHTML!==summary)purpose.innerHTML=summary;
   };
   const targetOptions=selected=>{
-   const missing=selected&&!targetLabels.has(selected);
+   const missing=selected&&!targets.has(selected);
    return `<option value="">请选择设备</option>${missing?`<option value="${esc(selected)}" selected>设备待核对</option>`:''}`+
     groups.map(({room,options})=>{
      const visible=!canLimit||draft.showOtherTargets||room===ownRoom?options:options.filter(option=>option.id===selected);
@@ -344,12 +350,12 @@ globalThis.FurnishElectricalUI=(()=>{
    host.innerHTML=`<div class="electrical-switch-face" role="group" aria-label="开关正面" style="--switch-face:${finish};--switch-keys:${keys.length}">
     ${keys.map(item=>`<button type="button" data-action-key="${item.key}" aria-pressed="${item.key===key}"><span>${item.label}</span></button>`).join('')}
    </div><label class="electrical-trigger">触发方式<select data-action-gesture>${gestures.map(option=>`<option value="${option}" ${option===gesture?'selected':''}>${triggerNames[option]}</option>`).join('')}</select></label>
-   <div class="actions"><button class="btn" type="button" data-action-add="${key}:${gesture}" ${locked||!targetLabels.size?'disabled':''}>添加动作</button><button class="btn" type="button" data-action-test="${key}:${gesture}" ${slot.length?'':'disabled'}>试按</button></div>
+   <div class="actions"><button class="btn" type="button" data-action-add="${key}:${gesture}" ${locked||!targets.size?'disabled':''}>添加动作</button><button class="btn" type="button" data-action-test="${key}:${gesture}" ${slot.length?'':'disabled'}>试按</button></div>
    ${canLimit&&slot.length?`<label class="electrical-device-scope"><input type="checkbox" data-action-other-rooms ${draft.showOtherTargets?'checked':''} ${disabled}>显示其他区域设备</label>`:''}
    ${slot.map(({entry,i})=>{
      return `<div class="electrical-action-row" data-action-index="${i}">
       <label>设备<select data-action-target ${disabled}>${targetOptions(entry.targetId)}</select></label>
-      <label>动作<select data-action-verb ${disabled}>${actionOptions(entry.targetId,entry.action)}</select></label>
+      <label>动作<select data-action-verb ${disabled}>${actionOptions(targets.get(entry.targetId),entry.action)}</select></label>
       <button class="btn danger" type="button" data-action-remove aria-label="移除此动作" ${disabled}>移除</button>
      </div>`;
     }).join('')}<p class="muted" data-action-result role="status"></p><div class="actions"><button class="btn primary" type="button" data-actions-save ${disabled}>应用按键配置</button><button class="btn" type="button" data-actions-reset>重置试按</button></div>`;
@@ -372,8 +378,9 @@ globalThis.FurnishElectricalUI=(()=>{
    if(e.target.matches('[data-action-target]')){
     entry.targetId=e.target.value;
     e.target.innerHTML=targetOptions(entry.targetId);
-    if(!FurnishProducts.panelTargetActions(getF(entry.targetId)).includes(entry.action))entry.action='toggle';
-    row.querySelector('[data-action-verb]').innerHTML=actionOptions(entry.targetId,entry.action);
+    const target=targets.get(entry.targetId);
+    if(!target?.actions.includes(entry.action))entry.action='toggle';
+    row.querySelector('[data-action-verb]').innerHTML=actionOptions(target,entry.action);
    }else if(e.target.matches('[data-action-verb]'))entry.action=e.target.value;
    updatePurpose();
   };
@@ -391,9 +398,9 @@ globalThis.FurnishElectricalUI=(()=>{
      const [key,gesture]=actionTest.split(':');
      const actions=entries.filter(entry=>entry.key===Number(key)&&entry.gesture===gesture);
      const lamps=FurnishDesign.sceneSettings(state.scene3d).lamps;
-     const results=E.testPanelActions(f,Number(key),gesture,state.furniture,previewStates,lamps,actions);
+     const results=E.testPanelActions(f,Number(key),gesture,state,previewStates,lamps,actions);
      report(results.map(({targetId,status,value,command})=>{
-      const name=targetLabels.get(targetId)||'设备';
+      const name=targets.get(targetId)?.label||'设备';
       const outcome=command?curtainCommands[command]:status==='unavailable'?'待核对':status==='light'?(value?'已开灯':'已关灯'):(value?'已打开':'已关闭');
       return name+' · '+outcome;
      }).join('　'));
@@ -455,9 +462,8 @@ globalThis.FurnishElectricalUI=(()=>{
  function editor(f,r,locked){
   const dis=locked?'disabled':'',options=Object.entries(FurnishProducts.panelOptions),surfaces=geometry();
   const variantField=FurnishProducts.supports(f,'panelVariant')?`<label class="full">名称（款式）<select name="variant" ${dis}>${[...new Set(options.map(([,v])=>v.group))].map(group=>`<optgroup label="${esc(group)}">${options.filter(([,v])=>v.group===group).map(([key,v])=>`<option value="${key}" ${FurnishProducts.value(f,'panelVariant')===key?'selected':''}>${esc(v.label)}</option>`).join('')}</optgroup>`).join('')}</select></label>`:'';
-  const note=recordedPurpose(f),switchKeys=FurnishProducts.panelKeys(f);
-  const usage=switchKeys.length?`<section class="electrical-switch-purpose"><h3>用途</h3><div data-switch-purpose aria-live="polite"></div>${note?`<details data-property-fold="electrical-legacy-purpose"><summary>原用途说明</summary><p>${esc(note)}</p></details>`:''}</section>`
-   :`<div class="form"><label class="full">用途<input name="purpose" maxlength="160" value="${esc(note)}" ${dis}></label></div>`;
+  const usage=FurnishProducts.panelKeys(f).length?`<section class="electrical-switch-purpose"><h3>用途</h3><div data-switch-purpose aria-live="polite"></div></section>`
+   :`<div class="form"><label class="full">用途<input name="purpose" maxlength="160" value="${esc(recordedPurpose(f))}" ${dis}></label></div>`;
   return `<form id="electrical-form">
     ${propertyObjectHeader('',`${r.number} · ${r.variant.label}`,{meta:locked?'<p class="property-lock">已锁定</p>':''})}
     ${furniturePriceField(f,locked)}

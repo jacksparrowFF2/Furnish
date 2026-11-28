@@ -86,7 +86,7 @@ const g12Colors=Object.freeze([
  ['#f3ecd9','象牙白'],['#c9b58f','香槟金'],['#53565b','星空灰'],['#282a2d','皓钻黑']
 ].map(Object.freeze));
 function panelSpec(f){const key=value(f,'panelVariant');return panelOptions[key];}
-const panelActions=Object.freeze({formatVersion:112,cycleFormatVersion:113,maxActions:48,gestures:Object.freeze(['press','double','hold']),actions:Object.freeze(['toggle','on','off','open','close','cycle'])});
+const panelActions=Object.freeze({formatVersion:112,cycleFormatVersion:113,maxActions:48,gestures:Object.freeze(['press','double','hold']),actions:Object.freeze(['toggle','on','off','open','close','cycle']),lightActions:Object.freeze(['toggle','on','off'])});
 function panelKeys(f){
  const spec=f&&!f.obj&&panelSpec(f);
  if(!spec?.gangs)return [];
@@ -104,7 +104,7 @@ function panelActionTarget(f){
 }
 function panelTargetActions(f){
  const target=panelActionTarget(f);
- return target==='light'?['toggle','on','off']:target==='covering'?['toggle','open','close','cycle']:[];
+ return target==='light'?panelActions.lightActions:target==='covering'?['toggle','open','close','cycle']:[];
 }
 function panelColorPresets(f){return family(f,'wall-panel')&&!f.obj&&!panelSpec(f).series?g12Colors:[];}
 function panelSpatialKey(f){

@@ -1113,7 +1113,6 @@ button.replacement-product:focus-visible{outline:2px solid var(--accent);outline
 .electrical-switch-purpose dl > div { padding:6px 8px; border-radius:6px; background:var(--soft); }
 .electrical-switch-purpose dt { font-weight:600; color:var(--muted); }
 .electrical-switch-purpose dd { margin:2px 0 0; overflow-wrap:anywhere; }
-.electrical-switch-purpose details { margin-top:8px; padding-top:0; border-top:0; color:var(--muted); }
 .electrical-list-groups { display:grid; gap:14px; }
 .electrical-list-group { overflow:hidden; border:1px solid var(--line); border-radius:10px; }
 .electrical-list-group > summary { margin:0; padding:7px 9px; background:var(--soft); color:var(--ink); font-size:12px; font-weight:600; cursor:pointer; }

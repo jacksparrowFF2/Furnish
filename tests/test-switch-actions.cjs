@@ -6,6 +6,7 @@ const Project=require('../src/core/project-core.js');
 const Repository=require('../src/core/repository-core.js');
 const WorkspaceCache=require('../src/io/workspace-cache.js');
 const Design=require('../src/core/design-core.js');
+const Ceiling=require('../src/core/ceiling-core.js');
 const plan=require('../src/data/plans.js')[0];
 const Work=require('../src/core/work-state.js').create({
  makeId:()=> 'fixture',colorFor:()=> '#fff',materials:require('../src/data/catalog.js').materials
@@ -98,6 +99,29 @@ assert.deepEqual(Repository.parse(stored).work[plan.id].furniture[0].panelAction
  assert.deepEqual(WorkspaceCache.load({read:key=>key==='huxing-design-v113'?JSON.stringify(cycleCache):read(key),firstPlan:plan,key:'huxing-design-v113'}),cycleCache);
 }
 const swapped={...configured};
+{
+ const roomId=plan.rooms[0].id;
+ const housing={id:'profile',roomId,kind:'profile',name:'客厅吊顶 · 上发光型材',height:2550,path:{a:[100,100],b:[1400,100],normal:[0,1]},section:Ceiling.sectionPreset('up')[1].section};
+ const stripId='ceiling-light:'+housing.id;
+ const targetPlan=[{id:roomId,name:'客餐厅',poly:[[0,0],[1500,0],[1500,1500],[0,1500]]}];
+ const stripBindings=[{key:0,gesture:'press',targetId:stripId,action:'toggle'}];
+ const first={...panel,panelActions:stripBindings},second={...first,id:'second-switch'};
+ const unlit={...housing,id:'unlit',section:{...housing.section,light:undefined}};
+ const layout={...work,furniture:[first,second,lamp],ceilings:{version:1,items:[housing,unlit]}};
+ const strips=Electrical.panelActionTargets(layout,targetPlan).filter(t=>!layout.furniture.some(f=>f.id===t.id));
+ assert.equal(strips.length,1);
+ const [resolved]=strips;
+ assert.deepEqual([resolved.id,resolved.label,resolved.room.id,resolved.actions],[stripId,'客厅灯带',roomId,['toggle','on','off']]);
+ const preview=new Map();
+ const press=f=>Electrical.testPanelActions(f,0,'press',layout,preview,false)[0];
+ assert.equal(press(first).value,true);
+ assert.equal(press(second).value,false);
+ assert.equal(press(second).target,housing);
+ assert.equal(Electrical.testPanelActions(first,0,'press',{...layout,ceilings:undefined},preview)[0].status,'unavailable');
+ const restored=Project.unpack(Project.pack({...payload,current:layout})).current;
+ assert.deepEqual(restored.furniture[0].panelActions,stripBindings);
+ assert.equal(Electrical.testPanelActions(restored.furniture[0],0,'press',restored,new Map())[0].value,true);
+}
 Products.applyPanelEdit(swapped,Products.editPanelVariant(swapped,'net6'));
 assert(!Object.hasOwn(swapped,'panelActions'));
 let copyId=0;

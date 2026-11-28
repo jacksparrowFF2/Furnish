@@ -105,14 +105,40 @@ function curtainPreviewState(target,saved,now){
  const levels=saved.levels.map(level=>goal?Math.min(goal,level+travel):Math.max(goal,level-travel));
  return levels.every(level=>level===goal)?{levels}:{levels,direction:saved.direction,moving:true};
 }
-function testPanelActions(f,key,gesture,furniture,preview,lamps=false,entries=f.panelActions,now=Date.now()){
- const products=P(),byId=new Map(furniture.map(item=>[item.id,item]));
+function panelActionTargets(work,rooms){
+ const products=P(),furniture=Array.isArray(work)?work:work.furniture;
+ const targets=furniture.flatMap(source=>{
+  const kind=products.panelActionTarget(source);
+  return kind?[{id:source.id,source,kind,name:source.name,cx:source.cx,cy:source.cy,room:roomFor(rooms,source.cx,source.cy),actions:products.panelTargetActions(source)}]:[];
+ });
+ const strips=(work.ceilings?.items||[]).filter(c=>c.kind==='profile'&&c.section?.light);
+ if(!strips.length)return targets;
+ const occupied=new Set(furniture.map(f=>f.id)),C=root.FurnishCeiling||require('./ceiling-core.js');
+ const regions=new Map((work.ceilings.regions||[]).map(r=>[r.id,r]));
+ for(const source of strips){
+  const id='ceiling-light:'+source.id;
+  if(occupied.has(id)||id.length>200)continue;
+  const {u}=source.section.light;
+  const stops=C.route(source).map(({a,b,normal})=>a.map((v,i)=>(v+b[i])/2+normal[i]*u));
+  const located=stops.map(([cx,cy])=>({cx,cy,room:roomFor(rooms,cx,cy)}));
+  const point=located.find(p=>p.room)||located[0];
+  const room=rooms?.find(r=>r.id===source.roomId)||point.room;
+  const heading=(regions.get(source.regionId)?.name||source.name||'').split(/\s*·\s*/,1)[0].trim();
+  const area=heading.endsWith('吊顶')?heading.slice(0,-2):'';
+  const label=heading.endsWith('灯带')?heading:(area||'')+'灯带';
+  targets.push({id,source,kind:'light',name:source.name,room,cx:point.cx,cy:point.cy,label,actions:products.panelActions.lightActions});
+ }
+ return targets;
+}
+function testPanelActions(f,key,gesture,work,preview,lamps=false,entries=f.panelActions,now=Date.now()){
+ const products=P(),furniture=Array.isArray(work)?work:work.furniture;
+ const byId=new Map(panelActionTargets(work).map(target=>[target.id,target]));
  const actions=entries?products.validateField(f,'panelActions',entries):[];
  const slot=actions.filter(entry=>entry.key===key&&entry.gesture===gesture).map(entry=>{
-  const target=byId.get(entry.targetId);
-  const kind=products.panelActionTarget(target);
+  const resolved=byId.get(entry.targetId),kind=resolved?.kind;
+  const target=resolved?.source??furniture.find(item=>item.id===entry.targetId);
   const covering=kind==='covering'?curtainPreviewState(target,preview.get(target.id),now):null;
-  return {entry,target,kind,covering};
+  return {entry,target,kind,covering,available:resolved?.actions.includes(entry.action)};
  });
  const fullyOpen=({covering})=>covering.levels.every(level=>level>=1);
  const curtains=slot.filter(({covering,entry})=>covering&&entry.action==='toggle');
@@ -122,17 +148,17 @@ function testPanelActions(f,key,gesture,furniture,preview,lamps=false,entries=f.
  const pausedOpening=cycle.some(({covering})=>covering.direction==='open'&&covering.levels.some(level=>level>0));
  const cycleCommand=cycle.some(({covering})=>covering.moving)?'stop':
   cycle.every(fullyOpen)||pausedOpening?'close':'open';
- return slot.map(({entry,target,kind,covering})=>{
-  if(!products.panelTargetActions(target).includes(entry.action))return {...entry,target,status:'unavailable'};
+ return slot.map(({entry,target,kind,covering,available})=>{
+  if(!available)return {...entry,target,status:'unavailable'};
   if(entry.action==='cycle'){
    const {levels,direction}=covering;
    const next=cycleCommand==='stop'?{levels,direction}:{levels,direction:cycleCommand,startedAt:now};
    preview.set(target.id,next);
    return {...entry,target,status:kind,command:cycleCommand};
   }
-  const current=covering?covering.levels.some(level=>level>0):preview.get(target.id)??lamps;
+  const current=covering?covering.levels.some(level=>level>0):preview.get(entry.targetId)??lamps;
   const value=entry.action==='toggle'?(kind==='covering'&&groupOpens!==null?groupOpens:!current):entry.action==='on'||entry.action==='open';
-  preview.set(target.id,value);
+  preview.set(entry.targetId,value);
   return {...entry,target,status:kind,value};
  });
 }
@@ -396,6 +422,6 @@ function routeGeometry(route,plan,furniture,byId=new Map(furniture.map(f=>[f.id,
  const length=unresolved||reversals.length?null:path.reduce((sum,p,i)=>i?sum+distance(path[i-1],p):0,0);
  return {points,path,length,unresolved,reversals};
 }
-const api={panel,assertEditable,pointName,displayName,renamePoint,purpose,actionTargetLabel,controlPairs,roomFor,pointLocations,points,testPanelActions,surfaces,place,nearest,normalizePanelGaps,wireKinds,routeLimits,validateRoutes,boxKind,endpointKind,endpoint,routeGeometry,conduitDiameters,conduitDefault,conduitProfile};
+const api={panel,assertEditable,pointName,displayName,renamePoint,purpose,actionTargetLabel,panelActionTargets,controlPairs,roomFor,pointLocations,points,testPanelActions,surfaces,place,nearest,normalizePanelGaps,wireKinds,routeLimits,validateRoutes,boxKind,endpointKind,endpoint,routeGeometry,conduitDiameters,conduitDefault,conduitProfile};
 root.FurnishElectrical=api;if(typeof module==='object'&&module.exports)module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
