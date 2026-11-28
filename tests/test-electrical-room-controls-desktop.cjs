@@ -90,6 +90,11 @@ async function main(){
   await current.locator(`[data-electrical-id="${data.switchId}"]`).click();
 
   const controls=page.locator('[data-property-fold="electrical-actions"]');
+  assert.equal(await controls.evaluate(el=>el.open),true);
+  await controls.locator('summary').click();
+  assert.equal(await controls.evaluate(el=>el.open),false);
+  await page.evaluate(()=>renderPanel());
+  assert.equal(await controls.evaluate(el=>el.open),false);
   await controls.locator('summary').click();
   assert.deepEqual(await controls.locator('[data-action-key]').allTextContents(),['左键','中键','右键']);
   const face=await controls.locator('.electrical-switch-face').boundingBox();

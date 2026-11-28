@@ -263,7 +263,7 @@ globalThis.FurnishElectricalUI=(()=>{
  }
  function actionEditor(f){
   const keys=FurnishProducts.panelKeys(f);
-  return keys.length?`<details class="property-fold" data-property-fold="electrical-actions"><summary>按键配置</summary>
+  return keys.length?`<details class="property-fold" data-property-fold="electrical-actions" open><summary>按键配置</summary>
    <div data-panel-actions></div>
   </details>`:'';
  }

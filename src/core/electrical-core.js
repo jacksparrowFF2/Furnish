@@ -95,12 +95,22 @@ function pointLocations(furniture,rooms){
 function testPanelActions(f,key,gesture,furniture,preview,lamps=false,entries=f.panelActions){
  const products=P(),byId=new Map(furniture.map(item=>[item.id,item]));
  const actions=entries?products.validateField(f,'panelActions',entries):[];
- return actions.filter(entry=>entry.key===key&&entry.gesture===gesture).map(entry=>{
-  const target=byId.get(entry.targetId),kind=products.panelActionTarget(target);
+ const slot=actions.filter(entry=>entry.key===key&&entry.gesture===gesture).map(entry=>{
+  const target=byId.get(entry.targetId);
+  return {entry,target,kind:products.panelActionTarget(target)};
+ });
+ const coveringLevels=target=>{
+  const sides=products.curtainOpening.sideFields.filter(field=>products.supports(target,field));
+  return (sides.length?sides:['curtainOpen']).map(field=>products.value(target,field));
+ };
+ const curtains=slot.filter(({kind,entry})=>kind==='covering'&&entry.action==='toggle');
+ // One group command: a mixed or partly open group goes to fully open first.
+ const groupOpens=curtains.length>1?!curtains.every(({target})=>preview.get(target.id)??coveringLevels(target).every(level=>level>=1)):null;
+ return slot.map(({entry,target,kind})=>{
   if(!products.panelTargetActions(target).includes(entry.action))return {...entry,target,status:'unavailable'};
-  const baseline=kind==='light'?lamps:['curtainOpen',...products.curtainOpening.sideFields].some(field=>products.value(target,field)>0);
+  const baseline=kind==='light'?lamps:coveringLevels(target).some(level=>level>0);
   const current=preview.get(target.id)??baseline;
-  const value=entry.action==='toggle'?!current:entry.action==='on'||entry.action==='open';
+  const value=entry.action==='toggle'?(kind==='covering'&&groupOpens!==null?groupOpens:!current):entry.action==='on'||entry.action==='open';
   preview.set(target.id,value);
   return {...entry,target,status:kind,value};
  });

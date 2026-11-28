@@ -39,6 +39,17 @@ assert.deepEqual(press(0,'press').map(r=>r.value),[false,true]);
 assert.deepEqual(press(1,'hold').map(r=>r.value),[false]);
 assert.equal(press(1,'double',[configured,curtain])[0].status,'unavailable');
 assert.deepEqual(work,before);
+{
+ const cloth={...curtain,curtainOpen:1,curtainRightOpen:.5};
+ const sheer={...curtain,id:'sheer',type:'curtain_mijia_3_pro_sheer',curtainOpen:1};
+ const group=[cloth,sheer].map(target=>({key:1,gesture:'press',targetId:target.id,action:'toggle'}));
+ const targets=[panel,cloth,sheer],states=new Map();
+ const pressGroup=()=>Electrical.testPanelActions(panel,1,'press',targets,states,false,group).map(r=>r.value);
+ assert.deepEqual(pressGroup(),[true,true]);
+ assert.deepEqual(pressGroup(),[false,false]);
+ states.set(sheer.id,true);
+ assert.deepEqual(pressGroup(),[true,true]);
+}
 const payload={planId:plan.id,current:work,designs:[{name:'备选',work:structuredClone(work)}],catalog:[]};
 const packed=Project.pack(payload);
 assert.equal(packed.version,Products.panelActions.formatVersion);
