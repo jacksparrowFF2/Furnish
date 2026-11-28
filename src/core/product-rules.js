@@ -145,6 +145,7 @@ function editPanelVariant(f,key){
  return keepPanelActions(next);
 }
 function keepPanelActions(f){
+ if(f.panelLinks!==undefined&&!supports(f,'panelLinks'))delete f.panelLinks;
  if(f.panelActions!==undefined){
   const kept=retainedPanelActions(f,f.panelActions);
   if(kept.length)f.panelActions=kept;
@@ -154,10 +155,12 @@ function keepPanelActions(f){
 }
 function applyPanelEdit(f,next){
  if(next.panelActions===undefined)delete f.panelActions;
+ if(next.panelLinks===undefined)delete f.panelLinks;
  return Object.assign(f,next);
 }
 const fields={
  panelVariant:{values:Object.keys(panelOptions),message:'请选择有效的86面板种类'},
+ panelLinks:{formatVersion:115,message:'面板双控关联无效'},
  panelActions:{message:'面板按键配置无效'},
  inventoryArray:{message:'物品阵列参数无效'},
  paperArray:{message:'纸品阵列参数无效'},
@@ -629,7 +632,7 @@ function coveringLayout(f){
  }
  return {...spec,open,h,head,hem,drop,bottom,parts};
 }
-const supports=(f,key)=>key==='panelActions'?panelKeys(f).length>0:key==='paperArray'?!!definition(f)?.paperArray&&!f.obj:key==='pose3D'?!!definition(f)?.freeRotation&&!f.obj:key==='groupId'||key==='mountHeight'&&bottomMode(f)==='offset'||definition(f)?.fields?.includes(key)||false;
+const supports=(f,key)=>key==='panelLinks'?!!panelSpec(f)?.gangs&&!f.obj:key==='panelActions'?panelKeys(f).length>0:key==='paperArray'?!!definition(f)?.paperArray&&!f.obj:key==='pose3D'?!!definition(f)?.freeRotation&&!f.obj:key==='groupId'||key==='mountHeight'&&bottomMode(f)==='offset'||definition(f)?.fields?.includes(key)||false;
 const family=(f,name)=>definition(f)?.family===name;
 function value(f,key){
  if(f[key]!=null)return f[key];
@@ -729,6 +732,17 @@ const cabinetBase=f=>f.type==='kitchenwall'?value(f,'mountHeight'):cabinetSpec(f
 const catalogMinimum=(f,key)=>!f.obj&&definition(f)?.footprintMin?.[key]!==undefined?definition(f).footprintMin[key]:!f.obj&&definition(f)?.glass?footprintMinimum(f,key):50;
 function validateField(f,key,v){
  const rule=fields[key];if(!rule||!supports(f,key))throw Error(rule?.message||'不支持的产品参数：'+key);
+ if(key==='panelLinks'){
+  if(!Array.isArray(v)||!v.length||v.length>1999)throw Error(rule.message);
+  const targets=new Set();
+  for(const entry of v){
+   const id=entry?.targetId,methods=entry?.methods;
+   if(!entry||Object.keys(entry).length!==2||typeof id!=='string'||!id.trim()||id.length>200||id===f.id||targets.has(id)||
+      !Array.isArray(methods)||methods.length>2||new Set(methods).size!==methods.length||methods.some(m=>m!=='wired'&&m!=='mijia'))throw Error(rule.message);
+   targets.add(id);
+  }
+  return v.map(({targetId,methods})=>({targetId,methods:[...methods]}));
+ }
  if(key==='panelActions'){
   if(!Array.isArray(v)||!v.length||v.length>panelActions.maxActions)throw Error(rule.message);
   const seen=new Set(),keys=panelKeys(f);
@@ -1060,7 +1074,7 @@ function coveringRetrofit(previous,candidate){
  return {...candidate,w:previous.w,d:previous.d,h:height(previous),color:previous.color??candidate.color,curtainOpen:value(previous,'curtainOpen'),mountHeight:value(previous,'mountHeight'),bottomPhysical:value(previous,'bottomPhysical')};
 }
 const softCoveringOnly=f=>!!definition(f)?.covering?.soft&&!definition(f)?.solidModel;
-function retainReplacementField(previous,next,key){return key==='groupId'||supports(next,key)&&supports(previous,key)&&(key==='floorTrack'||key==='slidingTrackOrder'||previous.type===next.type||family(previous,'laundry')&&family(next,'laundry')||key==='mountHeight'&&definition(previous)?.dryingRack&&definition(next)?.dryingRack);}
+function retainReplacementField(previous,next,key){return key==='groupId'||supports(next,key)&&supports(previous,key)&&(key==='floorTrack'||key==='slidingTrackOrder'||key==='panelLinks'||previous.type===next.type||family(previous,'laundry')&&family(next,'laundry')||key==='mountHeight'&&definition(previous)?.dryingRack&&definition(next)?.dryingRack);}
 // Remove incompatible parameters before checking the replacement's outer size.
 function customSinkCandidate(next,candidate){
  if(next.type!=='ksink')return;

@@ -42,7 +42,7 @@
    edits:list(surfaceEdit,100,1),selections:list(schema({target:record,product:{...schema({
     name:string,sku:string,sourceUrl:{...text(4000),minLength:1},length:positive(10,20000),width:positive(10,20000),pack:positive(1,10000),waste:positive(0,100),note:text(1000)
    },['name','sku']),type:['object','null']}},['target','product']),100,1)},['planId','revision','requestId'],true),
-  {name:'get_current_plan',description:'读取正在运行的 Furnish 桌面窗口当前方案、家具 ID／尺寸／位置、坐标单位、方案列表、保存状态和 revision；可选完整 work。',inputSchema:schema({includeDetails:{type:'boolean'}}),annotations:{readOnlyHint:true}},
+  {name:'get_current_plan',description:'读取正在运行的 Furnish 桌面窗口当前方案、家具 ID／尺寸／位置、坐标单位、方案列表、保存状态和 revision；electricalPoints 返回与插座清单一致的动态编号、房间、完成地面标高及双控关联。可选完整 work。',inputSchema:schema({includeDetails:{type:'boolean'}}),annotations:{readOnlyHint:true}},
   {name:'copy_design',description:'复制当前布置为新的可编辑方案并进入副本，保留原方案；沿用现有方案创建／保存链。与界面切换相同，清空跨方案撤销栈。先读取当前 revision，重试必须沿用 requestId。',inputSchema:schema({...write,name:{type:'string',minLength:1,maxLength:80}},['planId','revision','requestId','name']),annotations:{readOnlyHint:false,destructiveHint:false,idempotentHint:true}},
   {name:'update_furniture',description:'按家具 ID 批量调整中心 cx/cy、局部宽 w／深 d／机身高 h（mm）和 rot（度）。调用共享 resizeFurniture、mutate、一次撤销及原自动保存；锁定物体／旧 revision／无效整批拒绝。位置为模型坐标，不是屏幕像素，省略值保持原值。先读取 revision；重试沿用 requestId。',inputSchema:schema({...write,updates:{type:'array',minItems:1,maxItems:100,items:edit}},['planId','revision','requestId','updates']),annotations:{readOnlyHint:false,destructiveHint:false,idempotentHint:true}},
   {name:'check_space',description:'对当前桌面方案运行与工作台相同的空间核对，包括家具实体、开启空间和通道；返回问题与未知信息，不移动家具或标记已确认。',inputSchema:schema({focusIds:{type:'array',minItems:1,maxItems:100,items:string}}),annotations:{readOnlyHint:true}}
@@ -119,5 +119,5 @@
   else validateReferenceSource(args.sourceUrl,args.capturedOn);
  }if(name==='compare_designs'&&args.designIds[0]===args.designIds[1])throw Error('请选择两个不同方案');if(name==='configure_building'&&!['draft','floorFinishes','wallFinishes','wallTiling','roomUpdates','surveyFileName','confirmStructure'].some(k=>Object.hasOwn(args,k)))throw Error('请提供建筑或饰面配置');if(name==='configure_cabinet_components')for(const edit of args.edits){if((edit.changes!==undefined)===(edit.position!==undefined)||edit.changes&&!Object.keys(edit.changes).length)throw Error('每次组件编辑须选择changes或绝对mm的position之一');}return args;}
  function validateCommonParameter(key,value){if(!Object.hasOwn(commonParameters,key))throw Error('不支持的通用参数');check(value,commonParameters[key],key);}
- return {capabilityVersion:3,tools,validate:validateAutomation,validateCapture,commonParameters,validateCommonParameter,maxRequestBytes:3*1024*1024};
+ return {capabilityVersion:4,tools,validate:validateAutomation,validateCapture,commonParameters,validateCommonParameter,maxRequestBytes:3*1024*1024};
 });

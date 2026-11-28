@@ -123,8 +123,9 @@ assert.equal(E.displayName({...panel,name:'E35 · 玄关插座'}),'玄关插座'
 assert.equal(E.displayName({...cabinet,name:'E35 · 玄关柜体'}),'E35 · 玄关柜体');
 assert.equal(E.renamePoint('插座','E60 · 玄关充电'),'玄关充电');
 assert.equal(E.renamePoint('N3 · 地脚灯','N4 · 夜间地脚灯'),'夜间地脚灯');
-assert.equal(E.renamePoint('E35入户三键','入户三键'),'E35入户三键');
-assert.equal(E.renamePoint('E35入户三键','E32 · Entry switches'),'E35 · Entry switches');
+assert.equal(E.renamePoint('E35入户三键','入户三键'),'入户三键');
+assert.equal(E.renamePoint('E35入户三键','E32 · Entry switches'),'Entry switches');
+assert.equal(E.renamePoint('插座','B03 · 洗衣机电源'),'洗衣机电源');
 assert.throws(()=>E.renamePoint('插座','E60 · N3'),/请输入用途／名称/);
 assert.equal(E.purpose('E25 · 主卧普通床头柜电源 · 台灯及充电',['主卧']),'普通床头柜电源 · 台灯及充电');
 assert.equal(E.purpose('N3 · 次卧下床落脚灯 · N3 · 独立感应',['次卧']),'下床落脚灯 · 独立感应');
@@ -178,9 +179,10 @@ for(const order of [switches,[...switches].reverse()]){
 }
 assert(!E.controlPairs([...switches,switchPoint('duplicate','E67 · 另一开关')]).links.has(wired.id));
 assert(!E.controlPairs([wired,{...wiredPeer,name:'门口开关'}]).links.size);
-const renamedPeer={...wiredPeer,name:E.renamePoint(wiredPeer.name,'E02 · 过道开关')};
+const [migratedWired, migratedPeer]=E.migratePointNames(clone([wired,wiredPeer]));
+const renamedPeer={...migratedPeer,name:E.renamePoint(migratedPeer.name,'E02 · 过道开关')};
 assert.equal(E.pointName(renamedPeer.name),'过道开关');
-assert.deepEqual(E.controlPairs([renamedPeer,wired]).links.get(wired.id),new Map([[wiredPeer.id,new Set(['wired'])]]));
+assert.deepEqual(E.controlPairs([renamedPeer,migratedWired]).links.get(wired.id),new Map([[wiredPeer.id,new Set(['wired'])]]));
 assert(!E.controlPairs([wired,{...wiredPeer,panelVariant:'socket5-diagonal'}]).links.size);
 assert(!E.controlPairs([{...wired,name:'E29 · 不与 E67 双控'},wiredPeer]).links.size);
 assert.deepEqual(E.controlPairs([smart,{...smartPeer,name:'E28 · 与 E27 两地控制'}]).links.get(smartPeer.id).get(smart.id),new Set(['mijia']));
@@ -193,4 +195,20 @@ for(const [description,methods] of [
 }
 const plan=require('../src/data/plans.js')[0],W=require('../src/core/work-state.js').create({makeId:()=> 'fixture',colorFor:()=> '#fff',materials:require('../src/data/catalog.js').materials}),full={...W.fresh(plan),furniture:[cabinet,panel]},payload={planId:plan.id,current:full,designs:[{name:'插座布置',work:clone(full)}],catalog:[]};
 assert.deepEqual(J.unpack(J.pack(payload)),payload);let restored=clone(full);for(let i=0;i<3;i++)restored=W.restore(clone(restored),plan);assert.deepEqual(restored.furniture,full.furniture);P.validate(panel);
+const legacy={...full,furniture:[wired,wiredPeer,smart,smartPeer]};
+const migrated=J.unpack(J.pack({...payload,current:legacy,designs:[{name:'双控旧方案',work:clone(legacy)}]}));
+assert.deepEqual(migrated.current.furniture,migrated.designs[0].work.furniture);
+assert(migrated.current.furniture.every(f=>!/^E\d/.test(f.name)));
+assert(!migrated.current.furniture[0].name.includes('E67'));
+assert.deepEqual(E.controlPairs(migrated.current.furniture).links,E.controlPairs(legacy.furniture).links);
+assert.equal(J.pack(migrated).version,115);
+assert.deepEqual(J.unpack(J.pack(migrated)),migrated);
+assert.deepEqual(W.restore(clone(migrated.current),plan).furniture,migrated.current.furniture);
+const ambiguous=E.migratePointNames(clone([wired,wiredPeer,switchPoint('duplicate','E67 · 另一开关')]));
+assert(ambiguous[0].name.includes('E67'),'unresolved references retain their original evidence');
+assert(!E.controlPairs(ambiguous).links.size);
+let nextId=0;
+const pasted=require('../src/core/design-core.js').pasteFurniture({items:migrated.current.furniture,cx:0,cy:0},{x:0,y:0},{x:-1000,y:-1000,w:10000,h:10000},()=> 'copy'+(++nextId)).items;
+assert.deepEqual(pasted[0].panelLinks,[{targetId:pasted[1].id,methods:['wired']}]);
+assert.throws(()=>P.validate({...wired,panelLinks:[{targetId:wired.id,methods:['wired']}]}),/双控关联无效/);
 console.log('electrical planning: protected layout, opening exception, actual inner/outer board faces, rotated/mirrored contact, height limits and project round trip passed');

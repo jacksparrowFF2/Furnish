@@ -165,9 +165,10 @@ function testPanelActions(f,key,gesture,work,preview,lamps=false,entries=f.panel
  });
 }
 const leadingCode=/^([EN]\d+)(?:\s*[·・:：-]\s*|\s+|(?=[\u3400-\u9fff])|$)/i;
+const numberedLabel=/^[A-Z]{1,3}\d{2,}\s*[·・:：]\s*/;
 function pointName(name){
  let label=typeof name==='string'?name.trim():'';
- while(leadingCode.test(label))label=label.replace(leadingCode,'');
+ while(leadingCode.test(label)||numberedLabel.test(label))label=label.replace(leadingCode,'').replace(numberedLabel,'');
  return label.replace(/\s*[·・]\s*N\d+(?=\s*(?:[·・]|$))/gi,'').trim();
 }
 function displayName(f){return panel(f)?pointName(f.name)||P().kind(f):f?.name;}
@@ -175,10 +176,7 @@ function legacyCode(name){return typeof name==='string'?name.trim().match(leadin
 function renamePoint(previous,input){
  const name=pointName(input);
  if(!name)throw Error('请输入用途／名称');
- if(name===pointName(previous))return previous;
- // The original E code is a lookup key for two-way switch notes in saved plans.
- const code=legacyCode(previous);
- return code?.startsWith('E')?`${code} · ${name}`:name;
+ return name;
 }
 function purpose(name,roomNames=[]){
  const label=pointName(name);
@@ -200,18 +198,22 @@ function actionTargetLabel(f,roomNames=[]){
  if(branded&&label.includes(kind))return kind;
  return !label.includes(kind)&&parts.slice(1).some(part=>part.includes(kind))?label+kind:label;
 }
-function controlPairs(furniture,rooms){
- const panels=furniture.filter(panel),aliases=new Map(),locations=pointLocations(panels,rooms),links=new Map(),references=new Map();
+const noteSeparator=/([，,。；;、／\n])/;
+const noteCode=/(?<![A-Z0-9])E\d+(?![A-Z0-9])/gi;
+function legacyControls(panels){
+ const aliases=new Map(),sources=new Map();
  for(const f of panels){
   const code=legacyCode(f.name);
   if(code?.startsWith('E'))aliases.set(code,aliases.has(code)?null:f);
  }
  for(const f of panels){
   if(!P().panelSpec(f)?.gangs)continue;
-  for(const clause of purpose(f.name).split(/[，,。；;、\n]/)){
+  const clauses=pointName(f.name).split(noteSeparator);
+  const matches=[];
+  for(const [index,clause] of clauses.entries()){
    if(!/双控|两地控制|两地联动|两处控制|米家(?:场景)?联动|无线联动/i.test(clause))continue;
    if(/不做|不与|不跟|不接|不联动|不可|取消|待定|待确认|待核/.test(clause))continue;
-   const codes=[...new Set(clause.match(/(?<![A-Z0-9])E\d+(?![A-Z0-9])/gi)?.map(v=>v.toUpperCase()))];
+   const codes=[...new Set(clause.match(noteCode)?.map(v=>v.toUpperCase()))];
    if(codes.length!==1)continue;
    const [code]=codes,other=aliases.get(code);
    if(!other||other.id===f.id||!P().panelSpec(other)?.gangs)continue;
@@ -219,15 +221,47 @@ function controlPairs(furniture,rooms){
     ...(/有线|物理|双控\s*[（(]\s*电路\s*[）)]/.test(clause)?['wired']:[]),
     ...(/米家|无线|双控\s*[（(]\s*智能\s*[）)]/.test(clause)?['mijia']:[])
    ];
-   for(const [a,b] of [[f.id,other.id],[other.id,f.id]]){
-    if(!links.has(a))links.set(a,new Map());
-    const peers=links.get(a);
-    if(!peers.has(b))peers.set(b,new Set());
-    for(const method of methods)peers.get(b).add(method);
-   }
-   if(!references.has(f.id))references.set(f.id,new Map());
-   references.get(f.id).set(code,other.id);
+   matches.push({index,code,targetId:other.id,methods});
   }
+  if(matches.length)sources.set(f.id,{clauses,matches});
+ }
+ return sources;
+}
+function migratePointNames(furniture){
+ const panels=furniture.filter(panel),legacy=legacyControls(panels);
+ for(const f of panels){
+  const source=legacy.get(f.id);
+  let name=pointName(f.name);
+  if(source){
+   const {clauses,matches}=source,links=new Map((f.panelLinks||[]).map(link=>[link.targetId,new Set(link.methods)]));
+   for(const {index,targetId,methods} of matches){
+    if(!links.has(targetId))links.set(targetId,new Set());
+    for(const method of methods)links.get(targetId).add(method);
+    clauses[index]=clauses[index].replace(/([与和跟]) *E\d+(?![A-Z0-9])/gi,'$1关联开关').replace(noteCode,'').replace(/ {2,}/g,' ').replace(/([（(]) +/g,'$1');
+   }
+   name=clauses.join('');
+   f.panelLinks=[...links].map(([targetId,methods])=>({targetId,methods:[...methods]}));
+  }
+  if(name!==f.name)f.name=name||P().kind(f);
+ }
+ return furniture;
+}
+function controlPairs(furniture,rooms){
+ const panels=furniture.filter(panel),locations=pointLocations(panels,rooms),links=new Map(),references=new Map();
+ const switches=new Set(panels.filter(f=>P().panelSpec(f)?.gangs).map(f=>f.id));
+ function link(source,target,methods){
+  if(!switches.has(source)||!switches.has(target))return;
+  for(const [a,b] of [[source,target],[target,source]]){
+   if(!links.has(a))links.set(a,new Map());
+   const peers=links.get(a);
+   if(!peers.has(b))peers.set(b,new Set());
+   for(const method of methods)peers.get(b).add(method);
+  }
+ }
+ for(const f of panels)for(const relation of f.panelLinks||[])link(f.id,relation.targetId,relation.methods);
+ for(const [id,{matches}] of legacyControls(panels)){
+  references.set(id,new Map(matches.map(({code,targetId})=>[code,targetId])));
+  for(const {targetId,methods} of matches)link(id,targetId,methods);
  }
  return {locations,links,references};
 }
@@ -528,6 +562,6 @@ function routeGeometry(route,plan,furniture,byId=new Map(furniture.map(f=>[f.id,
  const length=unresolved||reversals.length?null:path.reduce((sum,p,i)=>i?sum+distance(path[i-1],p):0,0);
  return {points,path,length,unresolved,reversals};
 }
-const api={panel,assertEditable,pointName,displayName,renamePoint,purpose,actionTargetLabel,panelActionTargets,controlPairs,roomFor,pointLocations,points,testPanelActions,surfaces,place,nearest,snapMount,replacePanel,nearbyPanelCopy,normalizePanelGaps,wireKinds,routeLimits,validateRoutes,boxKind,endpointKind,endpoint,routeGeometry,conduitDiameters,conduitDefault,conduitProfile};
+const api={panel,assertEditable,pointName,displayName,renamePoint,purpose,actionTargetLabel,panelActionTargets,controlPairs,roomFor,pointLocations,points,migratePointNames,testPanelActions,surfaces,place,nearest,snapMount,replacePanel,nearbyPanelCopy,normalizePanelGaps,wireKinds,routeLimits,validateRoutes,boxKind,endpointKind,endpoint,routeGeometry,conduitDiameters,conduitDefault,conduitProfile};
 root.FurnishElectrical=api;if(typeof module==='object'&&module.exports)module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

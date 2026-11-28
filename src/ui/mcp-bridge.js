@@ -16,7 +16,7 @@
  function visualReady(){ready();if(typeof drag!=='undefined'&&drag||ui.mA||!$('#dlg').hidden||globalThis.FurnishCatalog?.active()||globalThis.FurnishMaterialUI?.dirty()||globalThis.FurnishMaterialUI?.lighting())throw Error('请先结束拖动、绘制、模态编辑或临时预览');}
  function cabinetModules(f){return f.kitchen?FurnishCabinetAssembly.modules(f).map(r=>({moduleId:r.id,label:r.label,editable:!!r.furniture&&FurnishCabinetBuilder.is(r.furniture),furniture:r.furniture})): [{moduleId:'body',label:f.name,editable:FurnishCabinetBuilder.is(f),furniture:f}];}
  async function camera(){const r=$('#stage').getBoundingClientRect();return {view:is3D()?'3d':'2d',camera:is3D()?await window.View3D.automationCamera():null,planView:clone(view),viewport:{x:Math.round(r.x),y:Math.round(r.y),width:Math.round(r.width),height:Math.round(r.height)}};}
- function applyWork(work){FurnishProject.validateWork(work);const preview=clone(work);normalizeFurnitureEdit(preview,state);FurnishLayers.assertEditable(state,preview);FurnishProject.validateWork(preview);FurnishProject.validatePlanWork(PLAN,preview);mutate(()=>{state.furniture=work.furniture;if(work.objectLayers)state.objectLayers=work.objectLayers;else delete state.objectLayers;});}
+ function applyWork(work){FurnishElectrical.migratePointNames(work.furniture);FurnishProject.validateWork(work);const preview=clone(work);normalizeFurnitureEdit(preview,state);FurnishLayers.assertEditable(state,preview);FurnishProject.validateWork(preview);FurnishProject.validatePlanWork(PLAN,preview);mutate(()=>{state.furniture=work.furniture;if(work.objectLayers)state.objectLayers=work.objectLayers;else delete state.objectLayers;});}
  function ceilings(){
   const plan=FurnishProject.effectivePlan(PLAN,state),data=clone(state.ceilings||{version:1,items:[]});
   return {ceilings:data,measurements:(data.regions||[]).map(r=>({id:r.id,...FurnishCeiling.heightMeasurements(plan,r.polygon,FurnishCeiling.regionItems(r).map(c=>c.kind==='flat'?c.height:c.height-Math.max(...FurnishCeiling.sectionPoints(c.section).map(v=>v.d))))})),sectionPresets:{plain:FurnishCeiling.sectionPreset('plain'),up:FurnishCeiling.sectionPreset('upMount')},heightSemantics:'region.height及构件标高为模型绝对mm；measurements为完成面派生读数，不直接回写height'};
@@ -67,9 +67,21 @@
  }
  async function assertRevision(args){const source=revisionSource();if(args.planId!==PLAN.id||args.revision!==await revision(source)||source!==revisionSource())throw Error('当前方案已变化，请重新读取 revision');}
  function saving(){return {mode:repositoryClient?.status.mode||'cache',message:repositoryClient?.status.message||'',pending:!!repositoryClient?.pending};}
+ function electricalRead(plan){
+  const E=FurnishElectrical,relations=E.controlPairs(state.furniture,plan.rooms);
+  return E.points(state,plan).map(row=>({
+   id:row.id,number:row.number,name:E.displayName(getF(row.id)),
+   roomId:row.room?.id??null,roomName:row.room?state.rooms?.[row.room.id]?.name||row.room.name:null,
+   variant:row.variant.label,bottom:row.bottom,center:row.center,
+   finishedBottom:row.finishedBottom,finishedCenter:row.finishedCenter,
+   related:[...(relations.links.get(row.id)||[])].map(([id,methods])=>({
+    id,number:relations.locations.get(id).number,methods:[...methods]
+   }))
+  }));
+ }
  async function read(includeDetails=false){
   ready();const p=FurnishProject.effectivePlan(PLAN,state),active=FurnishDesign.activeDesign(store,PLAN.id);
-  const source=revisionSource(),result={plan:{id:PLAN.id,name:PLAN.name,bounds:clone(p.bounds),rooms:clone(p.rooms||[]),walls:clone(p.walls||[]),doors:clone(p.doors||[]),windows:clone(p.wins||[])},coordinates:{unit:'mm',position:'cx/cy 为户型模型坐标中的家具中心',dimensions:'w/d 为局部宽深；h 为机身高度，缺失高度保持未知；旋转与镜像按现有模型解释',rotationUnit:'degree'},activeDesign:active?{id:active.id,name:active.name}:null,designs:store.designs.filter(d=>d.planId===PLAN.id&&d.editable).map(d=>({id:d.id,name:d.name})),furniture:clone(state.furniture),save:saving(),mcp:{version:core.capabilityVersion,tools:core.tools.map(t=>t.name)},undo:{available:undoStack.length,redoAvailable:redoStack.length},...(includeDetails?{work:clone(state)}:{})};result.revision=await revision(source);return result;
+  const source=revisionSource(),result={plan:{id:PLAN.id,name:PLAN.name,bounds:clone(p.bounds),rooms:clone(p.rooms||[]),walls:clone(p.walls||[]),doors:clone(p.doors||[]),windows:clone(p.wins||[])},coordinates:{unit:'mm',position:'cx/cy 为户型模型坐标中的家具中心',dimensions:'w/d 为局部宽深；h 为机身高度，缺失高度保持未知；旋转与镜像按现有模型解释',rotationUnit:'degree'},activeDesign:active?{id:active.id,name:active.name}:null,designs:store.designs.filter(d=>d.planId===PLAN.id&&d.editable).map(d=>({id:d.id,name:d.name})),furniture:clone(state.furniture),electricalPoints:electricalRead(p),save:saving(),mcp:{version:core.capabilityVersion,tools:core.tools.map(t=>t.name)},undo:{available:undoStack.length,redoAvailable:redoStack.length},...(includeDetails?{work:clone(state)}:{})};result.revision=await revision(source);return result;
  }
  function space(args){const passage=state.spaceThreshold||800,plan=FurnishProject.effectivePlan(PLAN,state),options={passage,...(args.focusIds?{focusIds:args.focusIds}:{}),scanPassages:true};if(args.focusIds?.some(id=>!getF(id)))throw Error('空间核对包含不存在的家具');const issues=FurnishProject.spaceCheck(plan,state.furniture,options).map(issue=>({...issue,confirmed:(state.spaceIgnored||[]).includes(FurnishProject.checkFingerprint(issue,plan,state.furniture,passage))}));return {passage,issues:clone(issues),count:issues.length,pending:issues.filter(i=>i.pending).length,limit:'按现有空间算法输出；未知信息不代表通过，未自动确认或移动家具。'};}
  async function execute(name,args,staged){

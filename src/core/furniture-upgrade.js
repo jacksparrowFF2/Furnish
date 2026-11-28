@@ -36,7 +36,8 @@
     list[i]=original;added.splice(addedBefore);
    }
   }
-  return {furniture:list.concat(added.flatMap(a=>a.items)),added};
+  const furniture=(root.FurnishElectrical||require('./electrical-core.js')).migratePointNames(list.concat(added.flatMap(a=>a.items)));
+  return {furniture,added};
  }
  function upgradeWork(work){
   const next=copy(work),result=upgradeList(next.furniture);next.furniture=result.furniture;inheritLayers(next,result.added);return next;

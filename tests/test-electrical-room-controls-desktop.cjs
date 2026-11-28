@@ -32,6 +32,14 @@ async function main(){
   await page.waitForURL(`http://127.0.0.1:${port}/`);
   await page.locator('#repository-loading').waitFor({state:'hidden'});
   await page.evaluate(()=>{FurnishElectricalUI.setMode('electrical');if(is3D())return setView('2d');});
+  const mcpPoints=await page.evaluate(async()=>{
+   const plan=await FurnishMcp.execute('get_current_plan');
+   return {points:plan.electricalPoints.map(({id,number,finishedBottom})=>[id,number,finishedBottom]),
+    ui:FurnishElectrical.points(state,canvasEffectivePlan()).map(({id,number,finishedBottom})=>[id,number,finishedBottom]),
+    savedNames:plan.furniture.filter(FurnishElectrical.panel).map(f=>f.name)};
+  });
+  assert.deepEqual(mcpPoints.points,mcpPoints.ui);
+  assert(mcpPoints.savedNames.every(name=>name===require('../src/core/electrical-core.js').pointName(name)));
   const data=await page.evaluate(()=>{
    const readPoints=()=>FurnishElectrical.points(state,canvasEffectivePlan());
    const smart=points=>{
@@ -434,7 +442,7 @@ async function main(){
   await socketPurpose.fill('');
   await properties.getByRole('button',{name:'应用面板属性'}).click();
   assert.equal(await socketPurpose.inputValue(),'');
-  assert.equal(await page.evaluate(id=>getF(id).name,gapFixture.ids[1]),'E999 · 10A斜五孔');
+  assert.equal(await page.evaluate(id=>getF(id).name,gapFixture.ids[1]),'10A斜五孔');
   await socketPurpose.fill('电脑机箱');
   await properties.getByRole('button',{name:'应用面板属性'}).click();
   assert((await properties.locator('h2').textContent()).endsWith('10A斜五孔'));
@@ -469,7 +477,7 @@ async function main(){
   await page.evaluate(id=>selectIds([id]),gapFixture.ids[1]);
   assert.equal(await socketPurpose.inputValue(),'电脑机箱');
   assert.equal(await properties.locator('[data-electrical-style]').textContent(),'双2孔插座');
-  assert.equal(await page.evaluate(id=>getF(id).name,gapFixture.ids[1]),'E999 · 电脑机箱');
+  assert.equal(await page.evaluate(id=>getF(id).name,gapFixture.ids[1]),'电脑机箱');
   if(data.livingStrip){
    for(const [id,key] of stripSwitches){
     const actions=await page.evaluate(id=>getF(id).panelActions,id);
@@ -515,7 +523,8 @@ async function main(){
     await FurnishRepository.flush();
     if(repositoryClient.status.mode!=='saved')throw Error(repositoryClient.status.message);
    });
-   assert.equal(JSON.parse(fs.readFileSync(path.join(work,'projects/workspace.furnish.json'),'utf8')).version,114);
+   const saved=JSON.parse(fs.readFileSync(path.join(work,'projects/workspace.furnish.json'),'utf8'));
+   assert.equal(saved.version,Math.max(114,...Object.values(saved.workspace.work).map(w=>w.furniture.some(f=>f.panelLinks)?115:114),...saved.workspace.designs.map(d=>d.work.furniture.some(f=>f.panelLinks)?115:114)));
    await page.reload();
    await page.locator('#repository-loading').waitFor({state:'hidden'});
    assert.equal(await page.evaluate(id=>getF(id).coveringMotorized,northBlind),true);
@@ -530,7 +539,7 @@ async function main(){
    const source=point(start,'E9900 · 验收开关，与 E9901 有线双控，与 E9902 米家联动，与 E9903 双控');
    const wired=point(target,'E9901 · 电路端'),smart=point(target,'E9902 · 智能端，与 E9900 有线双控');
    const unknown=point(target,'E9903 · 方式未注明');
-   mutate(()=>state.furniture.push(source,wired,smart,unknown));
+   mutate(()=>state.furniture.push(...FurnishElectrical.migratePointNames([source,wired,smart,unknown])));
    return {source:source.id,wired:wired.id,smart:smart.id,unknown:unknown.id};
   },data);
   if(await page.locator('#electrical-list').getAttribute('aria-expanded')!=='true')await page.locator('#electrical-list').click();
