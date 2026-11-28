@@ -53,19 +53,33 @@ for(const order of [switches,[...switches].reverse()]){
  const fixtures=[at(wired,500),at(wiredPeer,2000),outsideA,at(smart,600),outsideB,at(smartPeer,2200)];
  const summarize=furniture=>E.points({furniture},floors).map(({id,room,number})=>[id,room?.id,number]);
  assert.deepEqual(summarize(fixtures),[
-  [wired.id,'low','A01'],[wiredPeer.id,'high','B01'],[outsideA.id,undefined,'C01'],
-  [smart.id,'low','A02'],[outsideB.id,undefined,'C02'],[smartPeer.id,'high','B02']
+  [smart.id,'low','A01'],[wired.id,'low','A02'],[smartPeer.id,'high','B01'],
+  [wiredPeer.id,'high','B02'],[outsideA.id,undefined,'C01'],[outsideB.id,undefined,'C02']
  ]);
+ assert.deepEqual(summarize([...fixtures].reverse()),summarize(fixtures));
  const pairs=E.controlPairs(fixtures,floors.rooms);
  const targetId=pairs.references.get(wired.id).get('E67');
  assert.equal(targetId,wiredPeer.id);
- assert.deepEqual(pairs.locations.get(targetId),{room:floors.rooms[1],number:'B01'});
+ assert.deepEqual(pairs.locations.get(targetId),{room:floors.rooms[1],number:'B02'});
  const moved=[at(wired,2500),...fixtures.slice(1)];
- assert.deepEqual(summarize(moved).map(row=>row[2]),['B01','B02','C01','A01','C02','B03']);
+ assert.deepEqual(summarize(moved).slice(0,4),[
+  [smart.id,'low','A01'],[wired.id,'high','B01'],[smartPeer.id,'high','B02'],[wiredPeer.id,'high','B03']
+ ]);
  assert.equal(E.controlPairs(moved,floors.rooms).references.get(wired.id).get('E67'),targetId);
  const emptyRooms=Array.from({length:25},(_,i)=>({id:'empty'+i,poly:[]}));
  const locations=E.pointLocations(fixtures,[...emptyRooms,...floors.rooms]);
- assert.deepEqual([wired.id,wiredPeer.id,outsideA.id].map(id=>locations.get(id).number),['Z01','AA01','AB01']);
+ assert.deepEqual([wired.id,wiredPeer.id,outsideA.id].map(id=>locations.get(id).number),['Z02','AA02','AB01']);
+}
+{
+ const room=floors.rooms[0];
+ const at=(id,cx,mountHeight=500)=>({...panel,id,cx,cy:5,mountHeight});
+ const entries=[at('far',910),at('right',195),at('upper',140,1200),at('left',100)];
+ const sorted=['left','right','upper','far'];
+ for(const poly of [room.poly,[...room.poly].reverse(),[...room.poly.slice(1),room.poly[0]]]){
+  const plan={...floors,rooms:[{...room,poly}]};
+  assert.deepEqual(E.points({furniture:entries},plan).map(row=>row.id),sorted);
+  assert.deepEqual(E.points({furniture:entries.slice().reverse()},plan).map(row=>row.number),['A01','A02','A03','A04']);
+ }
 }
 assert(!E.controlPairs([...switches,switchPoint('duplicate','E67 · 另一开关')]).links.has(wired.id));
 assert(!E.controlPairs([wired,{...wiredPeer,name:'门口开关'}]).links.size);

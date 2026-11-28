@@ -34,7 +34,10 @@ async function main(){
   await page.evaluate(()=>{FurnishElectricalUI.setMode('electrical');if(is3D())return setView('2d');});
   const data=await page.evaluate(()=>{
    const readPoints=()=>FurnishElectrical.points(state,canvasEffectivePlan());
-   const smart=points=>points.find(r=>r.room&&r.variant.gangs>1&&r.variant.control==='smart');
+   const smart=points=>{
+    const supported=points.filter(r=>r.room&&r.variant.gangs===3&&r.variant.control==='smart');
+    return supported.find(r=>r.id==='fmwng69uh19')||supported[0];
+   };
    const centre=poly=>poly.reduce(([x,y],p)=>[x+p[0]/poly.length,y+p[1]/poly.length],[0,0]);
    const inside=room=>[room.at,...(room.polys||[room.poly]).map(centre)].find(p=>p&&FurnishElectrical.roomFor(ROOMS,...p)?.id===room.id);
    const available=ROOMS.filter(room=>inside(room));
@@ -44,7 +47,7 @@ async function main(){
    };
    let points=readPoints(),button=smart(points);
    if(!button){
-    addFixture(available[0],'xiaomi-2pro-2-white');
+    addFixture(available[0],'xiaomi-2pro-3-white');
     points=readPoints();button=smart(points);
    }
    const inAnotherRoom=r=>r.room&&r.room.id!==button.room.id&&inside(r.room);
@@ -57,11 +60,16 @@ async function main(){
     const a=inside(room);
     return {position:{x:a[0],y:a[1],z:1600},target:{x:a[0]+500,y:a[1],z:1600}};
    };
-   return {switchId:button?.id,point:button?.number,room:button?.room?.id,other:peer?.room.id,otherPoint:peer?.number,
+   const doorPair=points.filter(r=>['fmwng69uh19','fmwnpyy8h2'].includes(r.id)).map(r=>r.number);
+   return {switchId:button?.id,point:button?.number,room:button?.room?.id,other:peer?.room.id,otherPoint:peer?.number,doorPair,
     start:button&&camera(button.room),next:peer&&camera(peer.room),total:points.length,
     lamp:state.furniture.find(f=>FurnishProducts.panelActionTarget(f)==='light')?.id};
   });
   assert(data.switchId&&data.other&&data.lamp,'fixture must contain a smart switch, a light and points in two rooms');
+  if(data.doorPair.length===2){
+   assert.equal(data.doorPair[0][0],data.doorPair[1][0]);
+   assert.equal(Number(data.doorPair[1].slice(1))-Number(data.doorPair[0].slice(1)),1);
+  }
   await page.locator('#electrical-list').click();
   const dock=page.locator('#electrical-list-rows'),scope=dock.locator('[data-electrical-scope]');
   const groups=dock.locator('[data-electrical-area]'),current=groups.filter({has:page.locator(`[data-electrical-id="${data.switchId}"]`)});
@@ -83,26 +91,41 @@ async function main(){
 
   const controls=page.locator('[data-property-fold="electrical-actions"]');
   await controls.locator('summary').click();
-  assert.equal(await controls.locator('fieldset').count(),2);
+  assert.deepEqual(await controls.locator('[data-action-key]').allTextContents(),['左键','中键','右键']);
+  const face=await controls.locator('.electrical-switch-face').boundingBox();
+  assert(Math.abs(face.width-face.height)<1);
+  await controls.locator('[data-action-key="1"]').click();
+  assert.equal(await controls.locator('[data-action-key="1"]').getAttribute('aria-pressed'),'true');
+  await controls.locator('[data-action-gesture]').selectOption('double');
   const savedBefore=await page.evaluate(id=>getF(id).panelActions??null,data.switchId);
-  await controls.locator('[data-action-add="0:press"]').click();
+  await controls.locator('[data-action-add="1:double"]').click();
   await controls.locator('[data-action-target]').last().selectOption(data.lamp);
   await controls.locator('[data-action-verb]').last().selectOption('on');
-  await controls.locator('[data-action-test="0:press"]').click();
+  await controls.locator('[data-action-key="2"]').click();
+  assert.equal(await controls.locator('[data-action-add="2:press"]').count(),1);
+  await controls.locator('[data-action-key="1"]').click();
+  assert.equal(await controls.locator('[data-action-gesture]').inputValue(),'double');
+  assert.equal(await controls.locator('[data-action-target]').last().inputValue(),data.lamp);
+  await controls.locator('[data-action-test="1:double"]').click();
   assert.match(await controls.locator('[data-action-result]').textContent(),/已开灯/);
   assert.deepEqual(await page.evaluate(id=>getF(id).panelActions??null,data.switchId),savedBefore);
   await controls.locator('[data-actions-save]').click();
   const stored=await page.evaluate(id=>getF(id).panelActions,data.switchId);
-  assert(stored.some(a=>a.key===0&&a.gesture==='press'&&a.targetId===data.lamp&&a.action==='on'));
+  assert(stored.some(a=>a.key===1&&a.gesture==='double'&&a.targetId===data.lamp&&a.action==='on'));
+  assert.equal(await controls.locator('[data-action-key="1"]').getAttribute('aria-pressed'),'true');
   await page.evaluate(()=>undo());
   assert.deepEqual(await page.evaluate(id=>getF(id).panelActions??null,data.switchId),savedBefore);
   await page.evaluate(()=>redo());
   assert.deepEqual(await page.evaluate(id=>getF(id).panelActions,data.switchId),stored);
-  await page.screenshot({path:path.join(job.dir,'switch-actions.png')});
   await page.evaluate(async()=>{
    await FurnishRepository.flush();
    if(repositoryClient.status.mode!=='saved')throw Error(repositoryClient.status.message);
   });
+  await controls.locator('[data-action-key="1"]').click();
+  await controls.locator('[data-action-gesture]').selectOption('double');
+  await controls.locator('[data-action-test="1:double"]').click();
+  await controls.locator('.electrical-switch-face').scrollIntoViewIfNeeded();
+  await page.screenshot({path:path.join(job.dir,'switch-actions.png')});
   assert.equal(JSON.parse(fs.readFileSync(path.join(work,'projects/workspace.furnish.json'),'utf8')).version,112);
   await page.reload();
   await page.locator('#repository-loading').waitFor({state:'hidden'});

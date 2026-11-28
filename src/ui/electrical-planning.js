@@ -248,10 +248,12 @@ globalThis.FurnishElectricalUI=(()=>{
  const actionNames={toggle:'切换',on:'开灯',off:'关灯',open:'打开窗帘',close:'关闭窗帘'};
  let actionsDraft=null,previewOwner=null,previewStates=new Map();
  function draftFor(f){
-  if(actionsDraft?.work!==state||actionsDraft?.id!==f.id||actionsDraft?.source!==f.panelActions||actionsDraft?.variant!==f.panelVariant){
-   actionsDraft={work:state,id:f.id,source:f.panelActions,variant:f.panelVariant,entries:structuredClone(f.panelActions||[])};
+  const samePanel=actionsDraft?.work===state&&actionsDraft.id===f.id;
+  if(!samePanel||actionsDraft.source!==f.panelActions||actionsDraft.variant!==f.panelVariant){
+   actionsDraft={work:state,id:f.id,source:f.panelActions,variant:f.panelVariant,
+    key:samePanel?actionsDraft.key:0,triggers:samePanel?actionsDraft.triggers:new Map(),entries:structuredClone(f.panelActions||[])};
   }
-  return actionsDraft.entries;
+  return actionsDraft;
  }
  function actionOptions(targetId,action){
   const target=getF(targetId);
@@ -262,14 +264,15 @@ globalThis.FurnishElectricalUI=(()=>{
  function actionEditor(f){
   const keys=FurnishProducts.panelKeys(f);
   return keys.length?`<details class="property-fold" data-property-fold="electrical-actions"><summary>按键配置</summary>
-   <p class="muted">为各按键选择设备和动作。试按会在此处显示模拟结果。</p><div data-panel-actions></div>
+   <div data-panel-actions></div>
   </details>`:'';
  }
  function bindActions(p,f,locked){
   const host=p.querySelector('[data-panel-actions]');
   if(!host)return;
   if(previewOwner!==state){previewOwner=state;previewStates=new Map();}
-  const entries=draftFor(f),disabled=locked?'disabled':'';
+  const draft=draftFor(f),entries=draft.entries,keys=FurnishProducts.panelKeys(f),disabled=locked?'disabled':'';
+  const finish=/^#(?:[a-f\d]{3}|[a-f\d]{6})$/i.test(f.color)?f.color:'#f5f5f2';
   const targets=state.furniture.filter(FurnishProducts.panelActionTarget);
   const targetOption=target=>{
    const room=E.roomFor(ROOMS,target.cx,target.cy);
@@ -278,9 +281,14 @@ globalThis.FurnishElectricalUI=(()=>{
   const targetOptions=targets.map(targetOption);
   const report=message=>{host.querySelector('[data-action-result]').textContent=message;};
   const render=()=>{
-   host.innerHTML=FurnishProducts.panelKeys(f).map(({key,label,gestures})=>`<fieldset class="electrical-key"><legend>${label}</legend>${gestures.map(gesture=>{
-    const name=triggerNames[gesture],slot=entries.map((entry,i)=>({entry,i})).filter(({entry})=>entry.key===key&&entry.gesture===gesture);
-    return `<div class="electrical-trigger"><div class="actions"><b>${name}</b><button class="btn" type="button" data-action-add="${key}:${gesture}" ${disabled} ${targetOptions.length?'':'disabled'}>添加动作</button><button class="btn" type="button" data-action-test="${key}:${gesture}" ${slot.length?'':'disabled'}>试按</button></div>${slot.map(({entry,i})=>{
+   const {key,gestures}=keys[draft.key]||keys[0];
+   const savedTrigger=draft.triggers.get(key);
+   const gesture=gestures.includes(savedTrigger)?savedTrigger:gestures[0];
+   const slot=entries.map((entry,i)=>({entry,i})).filter(({entry})=>entry.key===key&&entry.gesture===gesture);
+   host.innerHTML=`<div class="electrical-switch-face" role="group" aria-label="开关正面" style="--switch-face:${finish};--switch-keys:${keys.length}">
+    ${keys.map(item=>`<button type="button" data-action-key="${item.key}" aria-pressed="${item.key===key}"><span>${item.label}</span></button>`).join('')}
+   </div><label class="electrical-trigger">触发方式<select data-action-gesture>${gestures.map(option=>`<option value="${option}" ${option===gesture?'selected':''}>${triggerNames[option]}</option>`).join('')}</select></label>
+   <div class="actions"><button class="btn" type="button" data-action-add="${key}:${gesture}" ${locked||!targetOptions.length?'disabled':''}>添加动作</button><button class="btn" type="button" data-action-test="${key}:${gesture}" ${slot.length?'':'disabled'}>试按</button></div>${slot.map(({entry,i})=>{
      const targetMissing=entry.targetId&&!targetOptions.some(target=>target.id===entry.targetId);
      return `<div class="electrical-action-row" data-action-index="${i}">
       <label>设备<select data-action-target ${disabled}><option value="">请选择设备</option>${targetMissing?`<option value="${esc(entry.targetId)}" selected>设备待核对</option>`:''}
@@ -288,11 +296,15 @@ globalThis.FurnishElectricalUI=(()=>{
       <label>动作<select data-action-verb ${disabled}>${actionOptions(entry.targetId,entry.action)}</select></label>
       <button class="btn danger" type="button" data-action-remove aria-label="移除此动作" ${disabled}>移除</button>
      </div>`;
-    }).join('')}</div>`;
-   }).join('')}</fieldset>`).join('')+`<div class="actions"><button class="btn primary" type="button" data-actions-save ${disabled}>应用按键配置</button><button class="btn" type="button" data-actions-reset>重置试按</button></div><p class="muted" data-action-result role="status"></p>`;
+    }).join('')}<p class="muted" data-action-result role="status"></p><div class="actions"><button class="btn primary" type="button" data-actions-save ${disabled}>应用按键配置</button><button class="btn" type="button" data-actions-reset>重置试按</button></div>`;
   };
   render();
   host.onchange=e=>{
+   if(e.target.matches('[data-action-gesture]')){
+    draft.triggers.set((keys[draft.key]||keys[0]).key,e.target.value);
+    render();host.querySelector('[data-action-gesture]').focus({preventScroll:true});
+    return;
+   }
    const row=e.target.closest('[data-action-index]');
    if(!row||locked)return;
    const entry=entries[Number(row.dataset.actionIndex)];
@@ -305,8 +317,13 @@ globalThis.FurnishElectricalUI=(()=>{
   host.onclick=e=>{
    const btn=e.target.closest('button');
    if(!btn)return;
-   const {actionAdd,actionTest}=btn.dataset;
+   const {actionKey,actionAdd,actionTest}=btn.dataset;
    try{
+    if(actionKey!==undefined){
+     draft.key=Number(actionKey);
+     render();host.querySelector('[aria-pressed="true"]').focus({preventScroll:true});
+     return;
+    }
     if(actionTest){
      const [key,gesture]=actionTest.split(':');
      const actions=entries.filter(entry=>entry.key===Number(key)&&entry.gesture===gesture);

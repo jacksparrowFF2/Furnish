@@ -30,17 +30,66 @@ function roomFor(rooms,x,y){
  const {inPoly}=root.FurnishGeometry||require('./layout-geometry.js');
  return rooms?.find(room=>inPoly(x,y,room.poly))||null;
 }
+function perimeter(poly){
+ let ring=poly;
+ const twiceArea=ring.reduce((area,[x,y],i)=>{
+  const [nx,ny]=ring[(i+1)%ring.length];
+  return area+x*ny-y*nx;
+ },0);
+ if(!twiceArea)return [];
+ if(twiceArea<0)ring=ring.slice().reverse();
+ const start=ring.reduce((first,p,i)=>p[1]<ring[first][1]||p[1]===ring[first][1]&&p[0]<ring[first][0]?i:first,0);
+ const edges=[];
+ let offset=0;
+ for(let i=0;i<ring.length;i++){
+  const a=ring[(start+i)%ring.length],b=ring[(start+i+1)%ring.length],dx=b[0]-a[0],dy=b[1]-a[1],length=Math.hypot(dx,dy);
+  if(!length)continue;
+  edges.push({a,ux:dx/length,uy:dy/length,length,offset});
+  offset+=length;
+ }
+ return edges;
+}
+function orderPanels(items,room){
+ if(items.length<2)return items;
+ const edges=perimeter(room?.poly||[]);
+ const height=f=>P().bottomHeight(f)+(P().height(f)||0)/2;
+ const compareId=(a,b)=>a.id<b.id?-1:a.id>b.id?1:0;
+ if(!edges.length)return items.sort((a,b)=>a.cy-b.cy||a.cx-b.cx||height(a)-height(b)||compareId(a,b));
+ const positions=items.map(f=>{
+  const angle=(f.rot||0)*Math.PI/180,cos=Math.cos(angle),sin=Math.sin(angle),z=height(f);
+  let best;
+  for(const edge of edges){
+   const x=f.cx-edge.a[0],y=f.cy-edge.a[1],along=Math.max(0,Math.min(edge.length,x*edge.ux+y*edge.uy));
+   const depth=edge.ux*y-edge.uy*x;
+   // Near a corner, prefer the run the panel faces when the distances are similar.
+   const facing=edge.ux*cos+edge.uy*sin;
+   const score=Math.hypot(x-along*edge.ux,y-along*edge.uy)+2*(1-facing);
+   if(!best||score<best.score)best={f,edge,score,depth,at:edge.offset+along,height:z};
+  }
+  return best;
+ }).sort((a,b)=>a.at-b.at||a.height-b.height||a.depth-b.depth||compareId(a.f,b.f));
+ // Keep adjacent same-height plates together even if another level projects between them.
+ const runs=[];
+ for(const p of positions){
+  const run=runs.findLast(({last})=>last.edge===p.edge&&p.at-last.at<=(p.f.w+last.f.w)/2+40&&
+   Math.abs(p.depth-last.depth)<=40&&Math.abs(p.height-last.height)<=25);
+  if(run){run.items.push(p.f);run.last=p;}
+  else runs.push({last:p,items:[p.f]});
+ }
+ return runs.flatMap(run=>run.items);
+}
 function pointLocations(furniture,rooms){
- const locations=new Map(),counts=new Map(),areas=rooms??[];
- const prefixes=new Map(areas.map((r,i)=>[r.id,areaPrefix(i)]));
- prefixes.set(null,rooms?areaPrefix(areas.length):'E');
+ const locations=new Map(),areas=rooms??[];
+ const groups=new Map(areas.map((room,i)=>[room.id,{room,prefix:areaPrefix(i),items:[]}]));
+ groups.set(null,{room:null,prefix:rooms?areaPrefix(areas.length):'E',items:[]});
  for(const f of furniture){
   if(!panel(f))continue;
   const room=roomFor(areas,f.cx,f.cy);
-  const key=room?.id??null,sequence=(counts.get(key)??0)+1;
-  locations.set(f.id,{room,number:prefixes.get(key)+String(sequence).padStart(2,'0')});
-  counts.set(key,sequence);
+  groups.get(room?.id??null).items.push(f);
  }
+ for(const {room,prefix,items} of groups.values())orderPanels(items,room).forEach((f,i)=>{
+  locations.set(f.id,{room,number:prefix+String(i+1).padStart(2,'0')});
+ });
  return locations;
 }
 function testPanelActions(f,key,gesture,furniture,preview,lamps=false,entries=f.panelActions){
@@ -106,11 +155,12 @@ function controlPairs(furniture,rooms){
  return {locations,links,references};
 }
 function points(work,plan){
- const locations=pointLocations(work.furniture,plan?.rooms);
- return work.furniture.filter(panel).map(f=>{
+ const panels=new Map(work.furniture.filter(panel).map(f=>[f.id,f]));
+ return [...pointLocations(panels.values(),plan?.rooms)].map(([id,location])=>{
+  const f=panels.get(id);
   const bottom=P().bottomHeight(f),height=P().height(f);
   const m=plan?(root.FurnishDesign||require('./design-core.js')).furnitureHeightMeasurements(f,plan,work.furniture):{bottom};
-  return {id:f.id,...locations.get(f.id),name:f.name,variant:P().panelSpec(f)||{label:P().definition(f).trackSocket.label},bottom,center:bottom+height/2,finishedBottom:m.bottom,finishedCenter:m.bottom===null?null:m.bottom+height/2};
+  return {id,...location,name:f.name,variant:P().panelSpec(f)||{label:P().definition(f).trackSocket.label},bottom,center:bottom+height/2,finishedBottom:m.bottom,finishedCenter:m.bottom===null?null:m.bottom+height/2};
  });
 }
 const surfaceCache=new Map();
