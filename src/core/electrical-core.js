@@ -263,6 +263,25 @@ function nearest(f,faces,limit=Infinity){
  for(const s of faces){if(n[0]*s.normal[0]+n[1]*s.normal[1]<.99999)continue;const offset=((f.cx-s.a[0])*(s.b[0]-s.a[0])+(f.cy-s.a[1])*(s.b[1]-s.a[1]))/s.length;if(offset<f.w/2||offset>s.length-f.w/2)continue;const position=place(f,s,offset),distance=Math.hypot(position.cx-f.cx,position.cy-f.cy);if(distance<=limit&&(!best||distance<best.distance))best={surface:s,offset,position,distance};}
  return best;
 }
+function replacePanel(f,candidate,variant,plan,work){
+ if(!panel(f)||!panel(candidate))throw Error('请选择插座或开关面板');
+ const products=P(),D=root.FurnishDesign||require('./design-core.js'),G=root.FurnishGeometry||require('./layout-geometry.js');
+ const base=f.type===candidate.type?f:D.replaceFurniture(f,candidate,{anchor:'center'});
+ const next=variant===undefined?{...base}:products.editPanelVariant(base,variant);
+ next.name=f.name;
+ next.mountHeight=products.bottomHeight(f);
+ const a=(f.rot||0)*Math.PI/180,depth=(next.d-f.d)/2;
+ next.cx=f.cx-Math.sin(a)*depth;next.cy=f.cy+Math.cos(a)*depth;
+ products.validate(next);
+ if(next.w===f.w&&next.d===f.d&&products.height(next)===products.height(f))return next;
+ const mount=nearest(f,surfaces(plan,work,f),2);
+ if(mount){
+  const faces=surfaces(plan,work,next).filter(s=>s.kind===mount.surface.kind&&s.hostId===mount.surface.hostId);
+  if(!nearest(next,faces,2))throw Error('新面板无法完整放在原安装面内');
+ }
+ if(work.furniture.some(peer=>peer.id!==f.id&&G.volumeOverlap(next,peer,plan,work.furniture)&&!G.volumeOverlap(f,peer,plan,work.furniture)))throw Error('新面板会与附近物体重叠');
+ return next;
+}
 const panelSpacing=Object.freeze({gap:4,threshold:50});
 const panelPose=['cx','cy','rot','w','d','h','mountHeight'];
 const independentPanel=f=>!f.obj&&P().family(f,'wall-panel');
@@ -422,6 +441,6 @@ function routeGeometry(route,plan,furniture,byId=new Map(furniture.map(f=>[f.id,
  const length=unresolved||reversals.length?null:path.reduce((sum,p,i)=>i?sum+distance(path[i-1],p):0,0);
  return {points,path,length,unresolved,reversals};
 }
-const api={panel,assertEditable,pointName,displayName,renamePoint,purpose,actionTargetLabel,panelActionTargets,controlPairs,roomFor,pointLocations,points,testPanelActions,surfaces,place,nearest,normalizePanelGaps,wireKinds,routeLimits,validateRoutes,boxKind,endpointKind,endpoint,routeGeometry,conduitDiameters,conduitDefault,conduitProfile};
+const api={panel,assertEditable,pointName,displayName,renamePoint,purpose,actionTargetLabel,panelActionTargets,controlPairs,roomFor,pointLocations,points,testPanelActions,surfaces,place,nearest,replacePanel,normalizePanelGaps,wireKinds,routeLimits,validateRoutes,boxKind,endpointKind,endpoint,routeGeometry,conduitDiameters,conduitDefault,conduitProfile};
 root.FurnishElectrical=api;if(typeof module==='object'&&module.exports)module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

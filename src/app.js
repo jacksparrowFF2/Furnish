@@ -232,10 +232,10 @@ function normalizeFurnitureEdit(work,previous,{furnitureEdit=false}={}){
     FurnishCabinet.normalizePegboardHatches(work.furniture,FurnishProject.effectivePlan(PLAN,work),{editable:f=>!furnitureLocked(f)});
   }
 }
-function commit(before,checkLayers=false,{sceneFirst=false,furnitureId,furnitureEdit=furnitureId!==undefined,appearanceEdit=false,previous=JSON.parse(before)}={}){
+function commit(before,checkLayers=false,{sceneFirst=false,furnitureId,furnitureEdit=furnitureId!==undefined,appearanceEdit=false,preservePanelPosition=false,previous=JSON.parse(before)}={}){
   try{
     if(globalThis.FurnishElectricalUI?.active()){
-      const adjusted=FurnishElectrical.normalizePanelGaps(previous,state,()=>FurnishProject.effectivePlan(PLAN,state),{locked:FurnishElectricalUI.physicalLocked});
+      const adjusted=!preservePanelPosition&&FurnishElectrical.normalizePanelGaps(previous,state,()=>FurnishProject.effectivePlan(PLAN,state),{locked:FurnishElectricalUI.physicalLocked});
       if(adjusted)furnitureId=undefined;
     }else if(!appearanceEdit)normalizeFurnitureEdit(state,previous,{furnitureEdit});
     globalThis.FurnishElectricalUI?.assertEditable(previous,state);
@@ -252,7 +252,7 @@ function commit(before,checkLayers=false,{sceneFirst=false,furnitureId,furniture
   save({defer:sceneFirst,furnitureId});
   snapshot(false,previous,'编辑前',undefined,{owned:true});
 }
-function mutate(fn,{sceneFirst=false,furnitureId,appearanceEdit=false}={}){
+function mutate(fn,{sceneFirst=false,furnitureId,appearanceEdit=false,preservePanelPosition=false}={}){
   const before=snap(),previous=JSON.parse(before);
   try{
     fn();
@@ -263,7 +263,7 @@ function mutate(fn,{sceneFirst=false,furnitureId,appearanceEdit=false}={}){
   const unchanged=furnitureId===undefined?snap()===before
     :JSON.stringify(getF(furnitureId))===JSON.stringify(previous.furniture.find(f=>f.id===furnitureId));
   if(unchanged)return;
-  commit(before,true,{sceneFirst,furnitureId,appearanceEdit,previous});
+  commit(before,true,{sceneFirst,furnitureId,appearanceEdit,preservePanelPosition,previous});
   renderAll({sceneFirst});
 }
 function undo(){ if (!undoStack.length) return toast(tr('没有可撤销的操作', 'Nothing to undo')); try{globalThis.FurnishElectricalUI?.assertEditable(state,JSON.parse(undoStack.at(-1)));}catch(e){return toast('已到插座视图的撤销边界；家具布局受到保护');} redoStack.push(snap()); state = JSON.parse(undoStack.pop()); syncCutClipboard();validateSel(); save(); renderAll(); }

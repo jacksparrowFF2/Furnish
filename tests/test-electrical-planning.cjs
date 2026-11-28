@@ -20,6 +20,22 @@ const low={...panel,cx:500,cy:2000,mountHeight:100},high={...low,cx:2000};assert
 const unknown=clone(floors);delete unknown.floorFinish.areas.high.finishedZ;assert.equal(E.surfaces(unknown,work,high).length,0,'unknown floor height must not invent a cabinet mounting face');
 const faces=E.surfaces({walls:[[0,0,1000,200]]},work,panel);assert.equal(faces.filter(s=>s.kind==='wall').length,4);
 {
+ const fixed={...panel,id:'switch',cx:410,cy:205,panelVariant:'switch2-double',panelActions:[{key:0,gesture:'press',targetId:'lamp',action:'toggle'}]};
+ const rail={type:'track_socket_bull_gb50k',name:'轨道插座',w:500,d:36,h:94,color:'#555',frontClearance:0};
+ const plan={walls:[[0,0,1200,200]]},beside={...panel,id:'peer',cx:500,cy:205};
+ const next=E.replacePanel(fixed,panel,'xiaomi-2pro-2-white',plan,{furniture:[fixed,beside]});
+ assert.deepEqual([next.id,next.name,next.cx,next.cy-next.d/2,next.mountHeight,next.rot,next.panelActions],
+  [fixed.id,fixed.name,fixed.cx,200,fixed.mountHeight,fixed.rot,fixed.panelActions]);
+ const replaced=E.replacePanel(fixed,rail,undefined,plan,{furniture:[fixed]});
+ assert.deepEqual([replaced.id,replaced.name,replaced.type,replaced.w,replaced.cy-replaced.d/2,replaced.mountHeight,replaced.panelActions],
+  [fixed.id,fixed.name,rail.type,500,200,fixed.mountHeight,undefined]);
+ const back=E.replacePanel(replaced,panel,'socket4',plan,{furniture:[replaced]});
+ assert.deepEqual([back.id,back.panelVariant,back.w,back.cy-back.d/2,back.mountHeight],[fixed.id,'socket4',86,200,fixed.mountHeight]);
+ assert.throws(()=>E.replacePanel(fixed,rail,undefined,plan,{furniture:[fixed,beside]}),/重叠/);
+ const edge={...fixed,cx:70};
+ assert.throws(()=>E.replacePanel(edge,rail,undefined,plan,{furniture:[edge]}),/安装面/);
+}
+{
  const field={walls:[[0,0,1200,200]]};
  const place=(id,cx,options={})=>({...panel,id,cx,cy:205,...options});
  const fit=(before,after,plan=field,options)=>{

@@ -265,10 +265,9 @@ globalThis.FurnishElectricalUI=(()=>{
   return pending+(options.length?options:[action]).map(key=>`<option value="${key}" ${key===action?'selected':''}>${actionNames[key]}</option>`).join('');
  }
  function actionEditor(f){
-  const keys=FurnishProducts.panelKeys(f);
-  return keys.length?`<details class="property-fold" data-property-fold="electrical-actions" open><summary>按键配置</summary>
-   <div data-panel-actions></div>
-  </details>`:'';
+  if(!FurnishProducts.panelKeys(f).length)return '';
+  if(is3D())return '<div class="actions"><button type="button" class="btn" data-open-scene-switch>打开按键配置</button></div>';
+  return `<details class="property-fold" data-property-fold="electrical-actions" open><summary>按键配置</summary><div data-panel-actions></div></details>`;
  }
  function actionCatalog(){
   const groups=new Map([...ROOMS,null].map(room=>[room?.id??null,{room,options:[]}]));
@@ -338,6 +337,17 @@ globalThis.FurnishElectricalUI=(()=>{
   if(sceneSwitchView)sceneSwitchView.dismissed=true;
   if(sceneSwitchHost)sceneSwitchHost.hidden=true;
  }
+ function openSceneSwitch(f){
+  if(sceneSwitchView?.id===f.id){
+   sceneSwitchView.dismissed=false;
+   if(sceneSwitchView.point){
+    positionSceneSwitch(f,sceneSwitchView.point);
+    sceneSwitchHost?.querySelector('[aria-pressed="true"]')?.focus({preventScroll:true});
+    return;
+   }
+  }
+  View3D.focusSelection({itemId:f.id});
+ }
  function createSceneSwitch(){
   const host=document.createElement('section');
   host.className='electrical-scene-switch';
@@ -351,75 +361,56 @@ globalThis.FurnishElectricalUI=(()=>{
   return host;
  }
  function placeSceneSwitch(host,{x,y,width,height,halfWidth,halfHeight}){
-  const w=host.offsetWidth,h=host.offsetHeight,margin=10,gap=10;
+  const margin=10,gap=10,bounds=host.parentElement.getBoundingClientRect();
+  const rail=$('.canvas-rail')?.getBoundingClientRect(),light=$('.scene-light')?.getBoundingClientRect();
+  const minTop=light?.height?Math.max(margin,light.bottom-bounds.top+gap):margin;
+  const maxBottom=rail?.height?Math.min(height-margin,rail.top-bounds.top-gap):height-margin;
+  host.style.maxHeight=`${Math.max(0,Math.floor(maxBottom-minTop))}px`;
+  const w=host.offsetWidth,h=host.offsetHeight;
   const sideGap=halfWidth+gap,verticalGap=halfHeight+gap;
   let left=x+sideGap,top=y-20;
   if(left+w>width-margin)left=x-w-sideGap;
   if(left<margin){left=x-w/2;top=y>height/2?y-h-verticalGap:y+verticalGap;}
   left=Math.max(margin,Math.min(width-w-margin,left));
-  top=Math.max(margin,Math.min(height-h-margin,top));
+  top=Math.max(minTop,Math.min(maxBottom-h,top));
   host.style.transform=`translate(${Math.round(left)}px, ${Math.round(top)}px)`;
  }
  function positionSceneSwitch(f,point){
   if(!f)sceneSwitchView=null;
-  else if(sceneSwitchView?.work!==state||sceneSwitchView.id!==f.id)sceneSwitchView={work:state,id:f.id,key:0,dirty:true};
+  else if(sceneSwitchView?.work!==state||sceneSwitchView.id!==f.id)sceneSwitchView={work:state,id:f.id,dirty:true};
   const view=sceneSwitchView;
+  if(view)view.point=point;
   if(!point||!view||view.dismissed){if(sceneSwitchHost)sceneSwitchHost.hidden=true;return;}
   const host=sceneSwitchHost??=createSceneSwitch();
   host.hidden=false;
-  view.point=point;
   if(view.dirty||view.source!==f.panelActions||view.variant!==f.panelVariant){
    view.dirty=false;view.source=f.panelActions;view.variant=f.panelVariant;
-   const keys=FurnishProducts.panelKeys(f),key=keys[view.key]||keys[0],{targets}=actionCatalog(),entries=f.panelActions||[];
-   const rows=purposeRows([key],entries,targets);
    host.innerHTML=`<div class="electrical-scene-switch-header"><strong>${esc(`${point.label} · ${panelStyle(f).label}`)}</strong><button type="button" class="btn" data-scene-switch-close aria-label="收起按键浮层">×</button></div>
-    <div class="electrical-switch-face" role="group" aria-label="开关正面" style="--switch-face:${switchFinish(f)};--switch-keys:${keys.length}">${keys.map(item=>
-     `<button type="button" data-scene-switch-key="${item.key}" aria-pressed="${item.key===key.key}"><span>${esc(item.label)}</span></button>`).join('')}</div>
-    ${rows.length?rows.map(row=>`<div class="electrical-scene-switch-action"><div><b>${triggerNames[row.gesture]}</b><span>${esc(describeActions(row))}</span></div><button type="button" class="btn outline" data-scene-switch-test="${row.gesture}" aria-label="试按${triggerNames[row.gesture]}">试按</button></div>`).join(''):'<p class="muted">此键尚未配置</p>'}
-    <p class="muted" data-scene-switch-result role="status"></p><button type="button" class="btn outline" data-scene-switch-edit>${physicalLocked(f)?'查看配置':'编辑配置'}</button>`;
-   host.onclick=e=>{
-    const button=e.target.closest('button');
-    if(!button)return;
-    const {sceneSwitchKey,sceneSwitchTest}=button.dataset;
-    if(sceneSwitchKey!==undefined){
-     view.key=Number(sceneSwitchKey);view.dirty=true;
-     positionSceneSwitch(f,view.point);
-     host.querySelector('[aria-pressed="true"]')?.focus({preventScroll:true});
-    }else if(sceneSwitchTest){
-     const status=host.querySelector('[data-scene-switch-result]');
-     try{status.textContent=previewActions(f,key.key,sceneSwitchTest,entries,targets);}
-     catch(error){status.textContent=error.message;}
-     placeSceneSwitch(host,view.point);
-    }else if(button.hasAttribute('data-scene-switch-edit')){
-     const draft=draftFor(f);
-     draft.key=key.key;draft.triggers.set(key.key,rows[0]?.gesture??key.gestures[0]);
-     hideSceneSwitch();ui.panelScope='object';drawer('panel',true);renderPanel();
-     const fold=$('#panel [data-property-fold="electrical-actions"]');
-     if(fold){fold.open=true;fold.scrollIntoView({block:'nearest'});fold.querySelector('[aria-pressed="true"]')?.focus({preventScroll:true});}
-    }else if(button.hasAttribute('data-scene-switch-close')){
+    <div data-panel-actions></div>`;
+   host.querySelector('[data-scene-switch-close]').onclick=()=>{
      hideSceneSwitch();$('#view3d canvas')?.focus({preventScroll:true});
-    }
    };
+   bindActions(host.querySelector('[data-panel-actions]'),f,physicalLocked(f),()=>{if(view.point)placeSceneSwitch(host,view.point);});
   }
   placeSceneSwitch(host,point);
  }
- function bindActions(p,f,locked){
-  const host=p.querySelector('[data-panel-actions]');
-  if(!host)return;
-  const purpose=p.querySelector('[data-switch-purpose]');
+ function updateSwitchPurpose(f,targets){
+  const purpose=$('#panel [data-switch-purpose]');
+  if(purpose?.dataset.switchPurpose!==f.id)return;
+  const {entries}=draftFor(f),keys=FurnishProducts.panelKeys(f);
+  const rows=purposeRows(keys,entries,targets).map(row=>`<div><dt>${esc(row.label)} · ${triggerNames[row.gesture]}</dt><dd>${esc(describeActions(row))}</dd></div>`).join('');
+  const pending=JSON.stringify(entries)!==JSON.stringify(f.panelActions||[]);
+  const summary=(rows?`<dl>${rows}</dl>`:'<p class="muted">尚未配置按键用途</p>')+
+   (pending?'<small class="muted">按键配置待应用</small>':'');
+  if(purpose.innerHTML!==summary)purpose.innerHTML=summary;
+ }
+ function bindActions(host,f,locked,resized=()=>{}){
   if(previewOwner!==state){previewOwner=state;previewStates=new Map();}
   const draft=draftFor(f),entries=draft.entries,keys=FurnishProducts.panelKeys(f),disabled=locked?'disabled':'';
   const finish=switchFinish(f),ownRoom=E.roomFor(ROOMS,f.cx,f.cy),catalog=actionCatalog();
   const local=ownRoom&&catalog.groups.find(group=>group.room===ownRoom);
   const groups=local?[local,...catalog.groups.filter(group=>group!==local)]:catalog.groups;
   const canLimit=local&&groups.length>1,targets=catalog.targets;
-  const updatePurpose=()=>{
-   const rows=purposeRows(keys,entries,targets).map(row=>`<div><dt>${esc(row.label)} · ${triggerNames[row.gesture]}</dt><dd>${esc(describeActions(row))}</dd></div>`).join('');
-   const pending=JSON.stringify(entries)!==JSON.stringify(f.panelActions||[]);
-   const summary=(rows?`<dl>${rows}</dl>`:'<p class="muted">尚未配置按键用途</p>')+
-    (pending?'<small class="muted">按键配置待应用</small>':'');
-   if(purpose.innerHTML!==summary)purpose.innerHTML=summary;
-  };
   const targetOptions=selected=>{
    const missing=selected&&!targets.has(selected);
    return `<option value="">请选择设备</option>${missing?`<option value="${esc(selected)}" selected>设备待核对</option>`:''}`+
@@ -429,9 +420,9 @@ globalThis.FurnishElectricalUI=(()=>{
       `<option value="${esc(id)}" title="${esc(fullName)}" ${id===selected?'selected':''}>${esc(label)}</option>`).join('')}</optgroup>`:'';
     }).join('');
   };
-  const report=message=>{host.querySelector('[data-action-result]').textContent=message;};
+  const report=message=>{host.querySelector('[data-action-result]').textContent=message;resized();};
   const render=()=>{
-   updatePurpose();
+   updateSwitchPurpose(f,targets);
    const {key,gestures}=keys[draft.key]||keys[0];
    const savedTrigger=draft.triggers.get(key);
    const gesture=gestures.includes(savedTrigger)?savedTrigger:gestures[0];
@@ -448,6 +439,7 @@ globalThis.FurnishElectricalUI=(()=>{
       <button class="btn danger" type="button" data-action-remove aria-label="移除此动作" ${disabled}>移除</button>
      </div>`;
     }).join('')}<p class="muted" data-action-result role="status"></p><div class="actions"><button class="btn primary" type="button" data-actions-save ${disabled}>应用按键配置</button><button class="btn" type="button" data-actions-reset>重置试按</button></div>`;
+   resized();
   };
   render();
   host.onchange=e=>{
@@ -471,7 +463,7 @@ globalThis.FurnishElectricalUI=(()=>{
     if(!target?.actions.includes(entry.action))entry.action='toggle';
     row.querySelector('[data-action-verb]').innerHTML=actionOptions(target,entry.action);
    }else if(e.target.matches('[data-action-verb]'))entry.action=e.target.value;
-   updatePurpose();
+   updateSwitchPurpose(f,targets);
   };
   host.onclick=e=>{
    const btn=e.target.closest('button');
@@ -533,7 +525,13 @@ globalThis.FurnishElectricalUI=(()=>{
   const report=fn=>{try{fn();}catch(e){p.querySelector('#electrical-error').textContent=e.message;}};
   p.querySelector('#electrical-open').onclick=()=>report(()=>opening(true));p.querySelector('#electrical-close').onclick=()=>report(()=>opening(false));
   p.querySelector('#electrical-3d').onclick=()=>{setView('3d');if(poseHost)window.View3D?.flyToRoom(roomAt(getF(poseHost).cx,getF(poseHost).cy)?.id);};
-  if(f){bindEditor(p,f,report);bindActions(p,f,locked);}return true;
+  if(f){
+   bindEditor(p,f,report);
+   const actions=p.querySelector('[data-panel-actions]'),open=p.querySelector('[data-open-scene-switch]');
+   if(actions)bindActions(actions,f,locked);
+   if(open){updateSwitchPurpose(f,actionCatalog().targets);open.onclick=()=>openSceneSwitch(f);}
+  }
+  return true;
  }
  function panelStyle(f){return FurnishProducts.panelSpec(f)||FurnishProducts.definition(f).trackSocket;}
  function recordedPurpose(f){
@@ -541,37 +539,84 @@ globalThis.FurnishElectricalUI=(()=>{
   const defaultNames=[style.label,style.listLabel,FurnishProducts.kind(f),libItem(f)?.[1]];
   return defaultNames.includes(value)?'':value;
  }
+ function replacePanel(f){
+  if(physicalLocked(f))return;
+  const owner=state,planId=PLAN.id,before=JSON.stringify(f),products=FurnishProducts;
+  const items=LIB.flatMap(c=>c.items).filter(it=>E.panel({type:it[0]}));
+  const wall=items.find(it=>products.supports({type:it[0]},'panelVariant'));
+  const choices=new Map(),groups=new Map();
+  const add=(id,group,label,item,variant)=>{
+   choices.set(id,{item,variant});
+   if(!groups.has(group))groups.set(group,[]);
+   groups.get(group).push(`<option value="${esc(id)}">${esc(label)}</option>`);
+  };
+  if(wall)for(const [variant,style] of Object.entries(products.panelOptions)){
+   if(f.type===wall[0]&&products.value(f,'panelVariant')===variant)continue;
+   add(variant,style.group,style.label,wall,variant);
+  }
+  for(const item of items){
+   if(f.type===item[0]||!products.definition(item[0])?.trackSocket)continue;
+   add(item[0],'轨道插座',item[1],item);
+  }
+  const proposal=()=>{
+   const current=getF(f.id),choice=choices.get($('#electrical-replacement-kind').value);
+   if(state!==owner||PLAN.id!==planId||JSON.stringify(current)!==before||physicalLocked(current))throw Error('点位已变化，请重新打开原位替换');
+   if(!choice)return null;
+   const [candidate]=createCatalogFurniture(choice.item,0,0);
+   const next=E.replacePanel(current,candidate,choice.variant,canvasEffectivePlan(),state);
+   if(!recordedPurpose(current))next.name=E.renamePoint(current.name,panelStyle(next).label);
+   return next;
+  };
+  const describe=()=>{
+   const status=$('#electrical-replacement-result'),apply=$('#dlgActions .primary');
+   try{
+    const next=proposal();apply.disabled=!next;
+    if(!next){status.textContent='';return;}
+    const lost=(f.panelActions?.length||0)-(next.panelActions?.length||0);
+    const changesRoute=(state.wireRoutes||[]).some(route=>route.points.some(p=>p.furnitureId===f.id)&&route.kind!==E.endpointKind(next));
+    status.textContent=[`${next.w} × ${products.height(next)} mm`,lost?`${lost} 条按键动作随款式更换移除`:'',changesRoute?'原接线类别需要核对':''].filter(Boolean).join(' · ');
+   }catch(error){apply.disabled=true;status.textContent=error.message;}
+  };
+  openDialog({title:'原位替换面板',body:`<div class="form"><label class="full">替换成<select id="electrical-replacement-kind"><option value="">选择插座或开关款式</option>${[...groups].map(([name,options])=>`<optgroup label="${esc(name)}">${options.join('')}</optgroup>`).join('')}</select></label></div><p class="muted" id="electrical-replacement-result" role="status"></p>`,
+   actions:[{label:'取消'},{label:'确认替换',cls:'primary',fn:()=>{
+    try{
+     const next=proposal();if(!next)return false;
+     mutate(()=>{state.furniture[state.furniture.findIndex(member=>member.id===f.id)]=next;},{preservePanelPosition:true});
+     toast('已原位替换面板',{label:'撤销',fn:undo});
+    }catch(error){$('#electrical-replacement-result').textContent=error.message;return false;}
+   }}],onOpen:()=>{$('#electrical-replacement-kind').onchange=describe;describe();}});
+ }
  function editor(f,r,locked){
-  const dis=locked?'disabled':'',options=Object.entries(FurnishProducts.panelOptions),surfaces=geometry();
-  const variantField=FurnishProducts.supports(f,'panelVariant')?`<label class="full">名称（款式）<select name="variant" ${dis}>${[...new Set(options.map(([,v])=>v.group))].map(group=>`<optgroup label="${esc(group)}">${options.filter(([,v])=>v.group===group).map(([key,v])=>`<option value="${key}" ${FurnishProducts.value(f,'panelVariant')===key?'selected':''}>${esc(v.label)}</option>`).join('')}</optgroup>`).join('')}</select></label>`:'';
-  const usage=FurnishProducts.panelKeys(f).length?`<section class="electrical-switch-purpose"><h3>用途</h3><div data-switch-purpose aria-live="polite"></div></section>`
+  const dis=locked?'disabled':'',surfaces=geometry();
+  const usage=FurnishProducts.panelKeys(f).length?`<section class="electrical-switch-purpose"><h3>用途</h3><div data-switch-purpose="${esc(f.id)}" aria-live="polite"></div></section>`
    :`<div class="form"><label class="full">用途<input name="purpose" maxlength="160" value="${esc(recordedPurpose(f))}" ${dis}></label></div>`;
   return `<form id="electrical-form">
     ${propertyObjectHeader('',`${r.number} · ${r.variant.label}`,{meta:locked?'<p class="property-lock">已锁定</p>':''})}
     ${furniturePriceField(f,locked)}
-    <div class="form">${variantField}${panelColorSelect(f,'name="panelColor"',dis)}</div>${usage}
+    <div class="form"><div class="full electrical-type-row"><div><small class="muted">名称（款式）</small><div data-electrical-style>${esc(r.variant.label)}</div></div><button type="button" class="btn outline" data-electrical-replace ${dis}>原位替换</button></div>${panelColorSelect(f,'name="panelColor"',dis)}</div>${usage}
     <h3>安装高度</h3>${propertyMetrics([['完成面底高',height(r.finishedBottom),r.finishedBottom===null?'':'mm'],['完成面中心高',height(r.finishedCenter),r.finishedCenter===null?'':'mm']])}
     <div class="form"><label class="full">底部离地 · 方案基准 (mm)<input name="bottom" type="number" min="0" max="20000" step="any" value="${r.bottom}" ${dis}></label></div><h3>位置与朝向</h3><div class="form"><label>中心 X (mm)<input name="cx" type="number" step="any" value="${f.cx}" ${dis}></label><label>中心 Y (mm)<input name="cy" type="number" step="any" value="${f.cy}" ${dis}></label><label>朝向 (°)<input name="rot" type="number" step="any" value="${f.rot}" ${dis}></label></div><div class="actions"><button class="btn primary" type="submit" ${dis}>应用面板属性</button></div></form>${actionEditor(f)}<details class="property-fold" data-property-fold="electrical-surface"><summary>贴墙／柜体侧面定位</summary><p class="muted">先应用高度，再选择该高度实际存在的板面。起点距离按面板中心计；放置后可继续独立调整。</p><label>安装面<select id="electrical-surface" ${dis}><option value="">请选择安装面</option>${surfaces.map((s,i)=>`<option value="${esc(s.key)}">${esc(s.label)} · 面${i+1} · ${Number(s.length.toFixed(1))} mm</option>`).join('')}</select></label><label>沿面中心距起点 mm<input id="electrical-offset" type="number" step="any" ${dis}></label><p id="electrical-surface-info" class="muted"></p><button class="btn" id="electrical-place" ${dis}>贴此面放置</button></details><div class="actions"><button class="btn" data-act="dup" ${dis}>复制面板</button><button class="btn danger" data-act="del" ${dis}>删除面板</button></div>`;
  }
  function bindEditor(p,f,report){
   const form=p.querySelector('#electrical-form');
   const price=form.querySelector('#fP'),displayedPrice=price.value;
+  form.querySelector('[data-electrical-replace]').onclick=()=>replacePanel(getF(f.id));
   form.onsubmit=e=>{
    e.preventDefault();
    report(()=>{
     const current=getF(f.id);
     if(physicalLocked(current))throw Error('面板已锁定，请返回家具布局解锁');
-    const data=new FormData(form),variant=data.get('variant');
+    const data=new FormData(form);
     const number=key=>{
      const value=data.get(key);
      if(!String(value).trim()||!Number.isFinite(Number(value)))throw Error('请输入有效数值');
      return Number(value);
     };
-    const next=variant===null?{...current}:FurnishProducts.editPanelVariant(current,variant);
+    const next={...current};
     const purpose=data.get('purpose');
     if(purpose!==null){
      const input=E.pointName(purpose);
-     if(input||recordedPurpose(current)||next.panelVariant!==current.panelVariant)next.name=E.renamePoint(current.name,input||panelStyle(next).label);
+     if(input||recordedPurpose(current))next.name=E.renamePoint(current.name,input||panelStyle(next).label);
     }
     if(price.value!==displayedPrice)setFurniturePrice(next,readFurniturePrice(price));
     const color=data.get('panelColor');

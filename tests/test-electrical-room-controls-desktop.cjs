@@ -101,8 +101,11 @@ async function main(){
   const listPurpose=current.locator(`[data-electrical-id="${data.switchId}"] .electrical-row-purpose`);
   const savedListPurpose=await listPurpose.textContent();
   assert.equal(await page.locator('#electrical-form').getByText('原用途说明',{exact:true}).count(),0);
-  const switchStyle=await page.locator('#electrical-form select[name="variant"] option:checked').textContent();
+  const switchStyle=await page.locator('#electrical-form [data-electrical-style]').textContent();
   assert((await page.locator('#electrical-form h2').textContent()).endsWith(switchStyle));
+  const fields=page.locator('#electrical-form');
+  const aligned=await Promise.all([fields.locator('#f-price-label'),fields.locator('.electrical-type-row small'),fields.getByRole('heading',{name:'用途',exact:true}),fields.getByRole('heading',{name:'安装高度',exact:true})].map(loc=>loc.boundingBox()));
+  assert(aligned.every(b=>Math.abs(b.x-aligned[0].x)<1));
   assert.equal(await page.locator('#electrical-form input[name="purpose"]').count(),0);
   const originalPurpose=await switchPurpose.textContent();
   assert.equal(await controls.evaluate(el=>el.open),true);
@@ -287,19 +290,28 @@ async function main(){
     selectIds([id]);
    },id);
    await floating.waitFor({state:'visible'});
-   assert.deepEqual(await floating.locator('[data-scene-switch-key]').allTextContents(),['左键','中键','右键']);
+   assert.equal(await controls.count(),0);
+   assert.deepEqual(await floating.locator('[data-action-key]').allTextContents(),['左键','中键','右键']);
    await floating.getByRole('button',{name:'右键'}).click();
-   assert.match(await floating.textContent(),/切换 客厅灯带/);
-   await floating.getByRole('button',{name:'试按单击'}).click();
+   assert.equal(await floating.locator('[data-action-target] option:checked').textContent(),'客厅灯带');
+   await floating.locator('[data-action-test="2:press"]').click();
    assert.equal(await floating.getByRole('status').textContent(),`客厅灯带 · ${lamps?'已关灯':'已开灯'}`);
    const [card,viewport]=await Promise.all([floating.boundingBox(),page.locator('#view3d').boundingBox()]);
    assert(card.x>=viewport.x&&card.y>=viewport.y&&card.x+card.width<=viewport.x+viewport.width&&card.y+card.height<=viewport.y+viewport.height);
+   const rail=await page.locator('.canvas-rail').boundingBox();
+   assert(card.y+card.height<rail.y);
    await page.screenshot({path:path.join(job.dir,'scene-switch.png')});
-   await floating.getByRole('button',{name:'编辑配置'}).click();
+   await floating.locator('[data-action-verb]').selectOption('off');
+   assert.match(await switchPurpose.textContent(),/关灯 客厅灯带/);
+   assert.equal(await page.evaluate(id=>getF(id).panelActions.find(a=>a.key===2).action,id),'toggle');
+   await floating.locator('[data-actions-save]').click();
+   assert.equal(await page.evaluate(id=>getF(id).panelActions.find(a=>a.key===2).action,id),'off');
+   await page.evaluate(()=>undo());
+   assert.equal(await page.evaluate(id=>getF(id).panelActions.find(a=>a.key===2).action,id),'toggle');
+   await floating.getByRole('button',{name:'收起按键浮层'}).click();
    await floating.waitFor({state:'hidden'});
-   assert.equal(await controls.locator('[data-action-key="2"]').getAttribute('aria-pressed'),'true');
-   await controls.locator('[data-action-test="2:press"]').click();
-   assert.equal(await result.textContent(),`客厅灯带 · ${lamps?'已开灯':'已关灯'}`);
+   await page.getByRole('button',{name:'打开按键配置'}).click();
+   await floating.waitFor({state:'visible'});
    await page.evaluate(()=>select(null));
    await page.waitForFunction(()=>!selIds().length);
    await page.evaluate(id=>selectIds([id]),id);
@@ -370,6 +382,21 @@ async function main(){
   await properties.getByRole('button',{name:'应用面板属性'}).click();
   assert((await properties.locator('h2').textContent()).endsWith('10A斜五孔'));
   assert.equal(await page.locator(`#electrical-inline-rows [data-electrical-id="${gapFixture.ids[1]}"] .electrical-row-purpose`).textContent(),'电脑机箱');
+  const pose=()=>page.evaluate(id=>{const f=getF(id);return [f.id,f.name,f.cx,f.cy,f.rot,f.mountHeight];},gapFixture.ids[1]);
+  const beforeReplacement=await pose();
+  await properties.getByRole('button',{name:'原位替换'}).click();
+  await page.locator('#electrical-replacement-kind').selectOption('track_socket_bull_gb50k');
+  assert(await page.getByRole('button',{name:'确认替换'}).isDisabled());
+  await page.locator('#electrical-replacement-kind').selectOption('socket4');
+  await page.screenshot({path:path.join(job.dir,'panel-replacement.png')});
+  await page.getByRole('button',{name:'确认替换'}).click();
+  assert.equal(await properties.locator('[data-electrical-style]').textContent(),'二位二极连体');
+  assert.deepEqual(await pose(),beforeReplacement);
+  await assertGap(4);
+  await page.evaluate(()=>undo());
+  assert.equal(await properties.locator('[data-electrical-style]').textContent(),'10A斜五孔');
+  await page.evaluate(()=>redo());
+  assert.equal(await properties.locator('[data-electrical-style]').textContent(),'二位二极连体');
   await page.evaluate(async()=>{
    await FurnishRepository.flush();
    if(repositoryClient.status.mode!=='saved')throw Error(repositoryClient.status.message);
@@ -379,6 +406,7 @@ async function main(){
   await assertGap(4);
   await page.evaluate(id=>selectIds([id]),gapFixture.ids[1]);
   assert.equal(await socketPurpose.inputValue(),'电脑机箱');
+  assert.equal(await properties.locator('[data-electrical-style]').textContent(),'二位二极连体');
   assert.equal(await page.evaluate(id=>getF(id).name,gapFixture.ids[1]),'E999 · 电脑机箱');
   if(data.livingStrip){
    for(const [id,key] of stripSwitches){
@@ -388,7 +416,7 @@ async function main(){
   }
   assert.deepEqual(errors,[]);
   passed=true;
-  console.log(JSON.stringify({passed,run:job.dir,checks:['room filtering in 2D, 3D and walk','independent collapse','whole-plan export','concise device labels and cross-room bindings','switch preview, undo/redo and reload','separate style, live switch purpose and saved socket purpose','50 mm threshold and 4 mm saved panel spacing','saved purpose shared by list and properties',...(data.livingStrip?['existing ceiling strip shared by two switches','3D switch overlay and property editor share preview']:[]),...(checkCycle?['two-curtain open/stop/close cycle']:[])]}));
+  console.log(JSON.stringify({passed,run:job.dir,checks:['room filtering in 2D, 3D and walk','independent collapse','whole-plan export','concise device labels and cross-room bindings','switch preview, undo/redo and reload','aligned properties and shared purposes','50 mm threshold and 4 mm saved panel spacing','in-place replacement, obstruction, undo/redo and saved style',...(data.livingStrip?['existing ceiling strip shared by two switches','full 3D switch editor and preview']:[]),...(checkCycle?['two-curtain open/stop/close cycle']:[])]}));
  }finally{
   if(app){
    if(!passed)await app.evaluate(({app})=>app.exit()).catch(()=>{});

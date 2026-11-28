@@ -1184,15 +1184,14 @@ button.replacement-product:focus-visible{outline:2px solid var(--accent);outline
 .m3d .wiring-swatch[data-wire-kind="network"] { border-top-style:solid; }
 .electrical-scene-marker { padding:1px 4px; border:1px solid currentColor; border-radius:4px; background:#fffaf4; color:#783a28; font-size:10px; font-weight:700; pointer-events:none; }
 .electrical-scene-marker[data-wire-kind="network"] { color:#175caa; }
-.electrical-scene-switch { position:absolute; top:0; left:0; z-index:4; box-sizing:border-box; width:min(252px,calc(100% - 20px)); max-height:calc(100% - 20px); overflow:auto; padding:9px; border:1px solid var(--line); border-radius:10px; background:var(--panel); color:var(--ink); box-shadow:0 4px 18px #0003; font-size:12px; }
+.electrical-scene-switch { position:absolute; top:0; left:0; z-index:4; box-sizing:border-box; width:min(330px,calc(100% - 20px)); max-height:calc(100% - 20px); overflow:auto; padding:12px; border:1px solid var(--line); border-radius:10px; background:var(--panel); color:var(--ink); box-shadow:0 4px 18px #0003; font-size:12px; }
 .electrical-scene-switch[hidden] { display:none; }
-.electrical-scene-switch-header,.electrical-scene-switch-action { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.electrical-scene-switch-header { display:flex; align-items:center; justify-content:space-between; gap:8px; }
 .electrical-scene-switch-header strong { overflow-wrap:anywhere; }
 .electrical-scene-switch .electrical-switch-face { width:100%; height:42px; aspect-ratio:auto; margin:6px 0; }
-.electrical-scene-switch-action { padding:5px 0; }
-.electrical-scene-switch-action span { display:block; overflow-wrap:anywhere; }
-.electrical-scene-switch .btn { flex:none; padding:4px 7px; }
-.electrical-scene-switch [data-scene-switch-result]:empty { display:none; }
+.electrical-scene-switch .actions { display:flex; flex-wrap:wrap; gap:6px; margin:8px 0; }
+.electrical-scene-switch :is(select,.electrical-action-row label) { min-width:0; }
+.electrical-scene-switch [data-action-result]:empty { display:none; }
 .electrical-scene-switch p { margin:4px 0; }
 .wiring-list > li > [data-wire-inspect] { display:grid; justify-content:stretch; gap:4px; white-space:normal; }
 .wiring-list [data-wire-inspect] small { padding-inline-start:25px; }
@@ -1261,4 +1260,9 @@ aside.right{scroll-padding-block-start:104px}
 #panel.object-properties button:focus-visible,#panel.object-properties input:focus-visible,#panel.object-properties select:focus-visible,#panel.object-properties summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 #panel.object-properties :is(.project-error,[role=alert]):empty{display:none}
 #panel #electrical-form>.property-object-header{padding-inline:0;padding-top:0}
+#panel #electrical-form>section:is(.property-group,.electrical-switch-purpose){padding-inline:0}
+#panel #electrical-form .electrical-switch-purpose{margin-top:12px;padding-top:0}
 #panel #electrical-form .property-metrics{margin-bottom:8px}
+.electrical-type-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.electrical-type-row>div{min-width:0;overflow-wrap:anywhere}
+.electrical-type-row .btn{flex:none}
